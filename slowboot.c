@@ -29,12 +29,15 @@
 
 #define SHA512_HASH_LEN 130
 
+#define GLOW BUG();
+
 typedef struct slowboot_validation_item {
 	char hash[130];
 	u8 b_hash[65];
 	char path[PATH_MAX];
 	int is_ok;
 	char *buf;
+	size_t buf_len;
 	struct file *fp;
 	long long int pos;
 } slowboot_validation_item;
@@ -84,8 +87,6 @@ static int tinfoil_open(slowboot_validation_item *item)
 			item->is_ok);
 		return -1;
 	}
-	
-	printk(KERN_INFO "1\n");
 	item->pos = 0;
 	return 0;
 }
@@ -102,9 +103,8 @@ static int tinfoil_stat_alloc(slowboot_validation_item *item)
 			item->path);
 		return -1;
 	}
-	printk(KERN_INFO "2\n");
 	item->buf = kmalloc(tinfoil.st->size+1, GFP_KERNEL);
-	printk(KERN_INFO "3\n");
+	item->buf_len = tinfoil.st->size;
 	if (!item->buf) {
 		printk(KERN_ERR "Failure No memory:%s\n",
 			item->path);
@@ -123,7 +123,6 @@ static void tinfoil_close(slowboot_validation_item *item)
 static int tinfoil_read(slowboot_validation_item *item)
 {
 	size_t number_read;
-	int j;
 	number_read = 0;
 	number_read = kernel_read(
 		item->fp,
@@ -134,27 +133,52 @@ static int tinfoil_read(slowboot_validation_item *item)
 		kfree(item->buf);
 		return -1;
 	}
-	printk(KERN_INFO "%s\n", "xxxx");
 	if (hex2bin(item->b_hash,item->hash,64) !=0) {
-		printk(KERN_INFO "Fail:%s\n", "bad");
+		printk(KERN_INFO "StoredHashFail:%s\n", item->path);
 	}
-	for(j=0;j<64;j++) {
-		printk("%x\n",item->b_hash[j]);
-	}
-	//print_hex_dump_bytes("", DUMP_PREFIX_NONE, item->b_hash, 64);
 	return 0;
+}
+
+typedef struct sdesc {
+    struct shash_desc shash;
+    char ctx[];
+} sdesc;
+
+static sdesc* init_sdesc(struct crypto_shash *alg)
+{
+	struct sdesc *sdesc;
+	int size;
+
+	size = sizeof(struct shash_desc) + crypto_shash_descsize(alg);
+	sdesc = kmalloc(size, GFP_KERNEL);
+	if (!sdesc)
+		return ERR_PTR(-ENOMEM);
+	sdesc->shash.tfm = alg;
+	return sdesc;
 }
 
 static void tinfoil_check(slowboot_validation_item *item)
 {
-	struct crypto_ahash *tfm;
-	tfm = crypto_alloc_ahash("sha512", 0, 0);
-	if (IS_ERR(tfm)) {
-		item->is_ok = 1;
-		return;
+	struct crypto_shash *alg;
+	sdesc *sd;
+	unsigned char *digest;
+	int j;
+	
+	alg = crypto_alloc_shash("sha512", 0, 0);
+	if (IS_ERR(alg)) {
+		printk(KERN_ERR "Can't allocate alg\n");
 	}
-	// TODO: sha512, check, set	
-	crypto_free_ahash(tfm);
+	
+	digest = kmalloc(64, GFP_KERNEL);
+	memset(digest,0,64);
+	sd = init_sdesc(alg);
+	
+	crypto_shash_digest(&(sd->shash), item->buf, item->buf_len, digest);
+	for(j=0;j<64;j++){
+		if(item->b_hash[j]!=digest[j]) {
+			item->is_ok = 1;
+		}
+	}
 }
 
 /*******************************************************************************
@@ -170,10 +194,11 @@ static int tinfoil_unwrap (slowboot_validation_item *item)
 	
 	if (tinfoil_read(item) != 0)
 		return -1;
-
-	printk(KERN_INFO "F:%s\n", item->buf);	
+	
 	tinfoil_check(item);
-	printk(KERN_INFO "S%s:%s:%d\n", item->hash, item->path, item->is_ok);	
+	printk(KERN_INFO "File:%s:%s\n", 
+	       item->path, 
+	       (item->is_ok == 0 ? "PASS" : "FAIL"));	
 	tinfoil_close(item);
 	return item->is_ok;
 }
@@ -204,9 +229,11 @@ static void slowboot_run_test(void)
 	svir_1();
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	for (j = 0; j < validation_count; j++) {
-		printk(KERN_INFO "VALDATING\n");
 		tinfoil.failures += tinfoil_unwrap(
 			&(tinfoil.validation_items[j]));
+	}
+	if (tinfoil.failures > 0) {
+		GLOW
 	}
 }
 
