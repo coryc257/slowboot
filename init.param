@@ -1,4 +1,3 @@
-/usr/sbin/init
 /usr/lib/systemd/libsystemd-shared-249.so
 /lib64/libseccomp.so.2
 /lib64/libselinux.so.1
@@ -31,3 +30,4 @@
 /lib64/libibverbs.so.1
 /lib64/libnl-route-3.so.200
 /lib64/libnl-3.so.200
+/usr/sbin/init
