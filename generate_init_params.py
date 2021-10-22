@@ -25,8 +25,10 @@ if __name__ == '__main__':
 	shutil.copyfile(f,t)
 	os.system("lsinitrd --unpack ./"+fp[1])
 	os.remove(t)
-	os.system("find ./ -type f -exec sha512sum {} \\; | awk '{print $1,$2;}' > init.param")
-	shutil.copyfile("./init.param",pwd+"/init.param")	
+
+	#os.remove("./init.param")
+	os.system("find ./ -type f -exec sha512sum {} \\; | awk '{print $1,$2;}' > "+pwd+"/init.param")
+	#shutil.copyfile("./init.param",pwd+"/init.param")	
 	shutil.rmtree(td)
 	os.chdir(pwd)
 	

@@ -15,7 +15,7 @@ if __name__ == '__main__':
 	with open(sys.argv[1]) as f:
 		for l in f.readlines():
 			
-			h = l[0:127]
+			h = l[0:128]
 			f = ((l[129:],l[130:])[l[129] == "."]).strip()
 			generate_output(h,f,j)
 			j = j + 1
