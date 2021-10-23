@@ -205,9 +205,11 @@ static int tinfoil_unwrap (slowboot_validation_item *item)
 	}
 	
 	tinfoil_check(item);
-	printk(KERN_INFO "File:%s:%s\n", 
-	       item->path, 
-	       (item->is_ok == 0 ? "PASS" : "FAIL"));	
+	if (item->is_ok != 0) {
+		printk(KERN_ERR "File:%s:%s\n", 
+		       item->path, 
+		       (item->is_ok == 0 ? "PASS" : "FAIL"));
+	}
 	tinfoil_close(item);
 	return item->is_ok;
 }

@@ -2,15 +2,37 @@
 
 import sys
 import os
+import fnmatch
+
+
 
 if __name__ == '__main__':
 	j = 0
 	pwd = os.getcwd()
+	blacklist = ["slowboot.ko","/var/cache/PackageKit/35/metadata", "/home/", "/usr/lib/systemd/user/app-"]
+	
 
 	#os.remove("./init.param")
-	os.system("find / -type f -executable -exec sha512sum {} \; | awk '{print $1,$2;}' > "+pwd+"/module.param")
-	os.system("find / -type f -name *.ko -exec sha512sum {} \; | awk '{print $1,$2;}' > "+pwd+"/module.param")
+	os.system("find / -type f -executable -exec sha512sum {} \; | awk '{print $1,$2;}' > "+pwd+"/module.param.temp")
+	os.system("find / -type f -name *.ko -exec sha512sum {} \; | awk '{print $1,$2;}' >> "+pwd+"/module.param.temp")
+	os.system("find / -type f -name *.conf -exec sha512sum {} \; | awk '{print $1,$2;}' >> "+pwd+"/module.param.temp")
+	os.system("find / -type f -name *.cfg -exec sha512sum {} \; | awk '{print $1,$2;}' >> "+pwd+"/module.param.temp")
 	#? configuration files? anything else?
+	try:
+		os.system("rm " + pwd + "/module.param")
+	finally:
+		os.system("touch " + pwd + "/module.param")
+	f = open(pwd+"/module.param.temp")
+	fl = f.readlines()
+	f.close()
+	
+	for l in fl:
+		filtered = 0
+		for m in blacklist:
+			if m in l:
+				filtered = 1
+		if filtered == 0:
+			os.system("printf \"%s\n\" \""+l.strip().replace("\\","\\\\")+"\" >> "+pwd+"/module.param")
 	
 	#TODO, remake module.param removing items from a blacklist
 	
