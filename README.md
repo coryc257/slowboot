@@ -1,3 +1,4 @@
+All code/files are GPLv2 or newer with personal reservations to change them for separate use
 For systems where system integrity is paramount and simplicity of validation matters
 take matters into your own hands. Get your system into a known good state and
 add tinfoil wrapping to it. This can be compiled as a kernel module for implicit
