@@ -103,6 +103,7 @@ static int tinfoil_stat_alloc(slowboot_validation_item *item)
 	}
 
 	item->buf_len = tinfoil.st->size;
+
 	return 0;
 }
 
@@ -116,7 +117,8 @@ static int tinfoil_read(slowboot_validation_item *item)
 	size_t number_read;
 	number_read = 0;
 	
-	item->buf = kmalloc(item->buf_len+1, GFP_KERNEL);
+
+	item->buf = vmalloc(item->buf_len+1);
 	if (!item->buf) {
 		printk(KERN_ERR "Failure No memory:%s\n",
 			item->path);
@@ -131,13 +133,13 @@ static int tinfoil_read(slowboot_validation_item *item)
 		tinfoil.st->size,
 		&(item->pos));
 	if (number_read != item->buf_len) {
-		kfree(item->buf);
+		vfree(item->buf);
 		return -1;
 	}
 	if (hex2bin(item->b_hash,item->hash,64) !=0) {
 		printk(KERN_INFO "StoredHashFail:%s\n", item->path);
 	}
-	kfree(item->buf);
+	
 	return 0;
 }
 
@@ -176,6 +178,7 @@ static void tinfoil_check(slowboot_validation_item *item)
 	sd = init_sdesc(alg);
 	
 	crypto_shash_digest(&(sd->shash), item->buf, item->buf_len, digest);
+	vfree(item->buf);
 	for(j=0;j<64;j++){
 		if(item->b_hash[j]!=digest[j]) {
 			item->is_ok = 1;
