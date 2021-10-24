@@ -9,7 +9,7 @@ import fnmatch
 if __name__ == '__main__':
 	j = 0
 	pwd = os.getcwd()
-	blacklist = ["slowboot.ko","/var/cache/PackageKit/35/metadata", "/home/", "/usr/lib/systemd/user/app-"]
+	blacklist = ["slowboot.ko","/var/cache/PackageKit/35/metadata", "/home/", "/usr/lib/systemd/user/app-","/etc/cups/subscriptions.conf"]
 	
 
 	#os.remove("./init.param")
