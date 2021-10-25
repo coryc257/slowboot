@@ -6,7 +6,7 @@ import os
 def generate_output(h,f,j):
 	print("static void svir_"+str(j+1)+"(void) \n{")
 	print("\tsvi_reg(&(tinfoil.validation_items["+str(j)+"]),")
-	print("\t        \""+h+"\",")
+	print("\t        \""+h.replace("\\","\\\\")+"\",")
 	print("\t        \""+f+"\"")
 	print("\t);\n}")
 
