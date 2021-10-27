@@ -23,7 +23,8 @@
 #include <linux/stat.h>
 
 //##########TEMPLATE_PARM_ST##################################################=>
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ST
+#define NUM_HATS 1
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #define SHA512_HASH_LEN 130
@@ -58,13 +59,21 @@ static void snarf_construct_hat(const char *filename,
 }
 
 //##########TEMPLATE_PARM_FN##################################################=>
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$FN
+static void snarf_hat_1(void) 
+{
+	snarf_construct_hat("/etc/alternatives/nc",
+	        "0d8b570cf0234e7bc0355cf84beb93561277c063a9ae9e0b2ced13501d9fd3ab195094c53eed95178acc561d97fe854e712f1c3eeb5708aee21f5652db1a6e7f",
+	        0
+	);
+}
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 static void snarf_init(void)
 {
 //##########TEMPLATE_PARM_SP##################################################=>
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SP
+	snarf_hat_1();
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }
 
@@ -106,7 +115,7 @@ static int snarf_it(const char *filename, snarf_hat_item *item)
   int j;
 
   
-  
+  /*
   fp = filp_open(filename, O_RDONLY, 0);
   if (IS_ERR(fp) || fp == NULL) {
     printk(KERN_ERR "Snaf Cannot Open File:%s\n", filename);
@@ -156,8 +165,7 @@ static int snarf_it(const char *filename, snarf_hat_item *item)
   crypto_shash_digest(&(desc->shash), buf, st.size, digest);
   for(j=0;j<64;j++) {
     if(b_hash[j]!=digest[j])
-      goto fail;
-  }
+      goto fail;  
 
   if (buf != NULL)
     vfree(buf);
@@ -176,7 +184,7 @@ static int snarf_it(const char *filename, snarf_hat_item *item)
   if (!IS_ERR(alg) || alg != NULL)
     crypto_free_shash(alg);
   if (desc != NULL)
-    kfree(desc);
+    kfree(desc);*/
   return 1;
 }
 
@@ -196,3 +204,4 @@ static int snarf_check(const char *filename)
 }
 
 // exit
+

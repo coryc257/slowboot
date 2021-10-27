@@ -30,11 +30,11 @@ if __name__ == '__main__':
 	os.system("./generate_init_call.py ./init.param > init.SP")
 	os.system("./generate_init_setup.py ./init.param > init.ST")
 	
-	template = open("./slowboot.ct","r")
+	template = open("./template_slowboot.c","r")
 	t_FN = open("./init.FN","r")
 	t_SP = open("./init.SP","r")
 	t_ST = open("./init.ST","r")
-	fillin = open("./slowboot.c","w")
+	#fillin = open("./slowboot.c","w")
 	t_FN_s = t_FN.read()
 	t_FN.close()
 	t_SP_s = t_SP.read()
