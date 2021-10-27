@@ -183,16 +183,22 @@ static int snarf_it(const char *filename, snarf_hat_item *item)
 static int snarf_check(const char *filename)
 {
 	int j;
+	int is_ok;
 	if (snarf_on != 0) {
 		snarf_init();
 		snarf_on = 0;
 	}
+
+	is_ok = 1;
 	
 	for (j=0;j<NUM_HATS;j++) {
 	  if (strcmp(filename,tinfoil.items[j].filename) == 0)
-		  return snarf_it(filename,&tinfoil.items[j]);
+	    if(snarf_it(filename,&tinfoil.items[j]) == ) {
+	      is_ok = 0;
+	      break;
+	    }
 	}
-	return 1;
+	return is_ok;
 }
 
 // exit

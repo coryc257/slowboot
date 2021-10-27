@@ -1528,7 +1528,7 @@ typedef struct slowboot_validation_item {
 
 typedef struct slowboot_tinfoil {
 	struct kstat *st;
-	slowboot_validation_item validation_items[560];
+	slowboot_validation_item validation_items[561];
 	int failures;
 } slowboot_tinfoil;
 
@@ -1666,6 +1666,8 @@ static void tinfoil_check(slowboot_validation_item *item)
 	
 	crypto_shash_digest(&(sd->shash), item->buf, item->buf_len, digest);
 	vfree(item->buf);
+	kfree(sd);
+	crypto_free_shash(alg);
 	for(j=0;j<64;j++){
 		if(item->b_hash[j]!=digest[j]) {
 			item->is_ok = 1;
@@ -1692,9 +1694,11 @@ static int tinfoil_unwrap (slowboot_validation_item *item)
 	}
 	
 	tinfoil_check(item);
-	printk(KERN_INFO "File:%s:%s\n", 
-	       item->path, 
-	       (item->is_ok == 0 ? "PASS" : "FAIL"));	
+	if (item->is_ok != 0) {
+		printk(KERN_ERR "File:%s:%s\n", 
+		       item->path, 
+		       (item->is_ok == 0 ? "PASS" : "FAIL"));
+	}
 	tinfoil_close(item);
 	return item->is_ok;
 }
@@ -2864,2332 +2868,2332 @@ static void svir_165(void)
 static void svir_166(void) 
 {
 	svi_reg(&(tinfoil.validation_items[165]),
-	        "affeefc1057dfacf62e4060f63f9325dc7665b51e175389e6538dff449adcd799f70e15f9ddb68524cf1d03f2c643a01315fc0158e2f24dfb3f2aaf093fcc021",
-	        "/usr/lib/systemd/init2"
+	        "d75a845dcaf23766ea127277f9feabb043fbdc8ce5bf8af51c5ca75a2221d85a1bd4cf3967205a65d1d41fa6991628da5dacecad757d8656990a07a69e703a89",
+	        "/usr/lib/net-lib.sh"
 	);
 }
 static void svir_167(void) 
 {
 	svi_reg(&(tinfoil.validation_items[166]),
-	        "d75a845dcaf23766ea127277f9feabb043fbdc8ce5bf8af51c5ca75a2221d85a1bd4cf3967205a65d1d41fa6991628da5dacecad757d8656990a07a69e703a89",
-	        "/usr/lib/net-lib.sh"
+	        "6d4ed45554e2a2c665b4d38621956ffca5546aebd797a0bf28250c0a38a667512d93eb7f37262c2e28c80d9682a645626862c1661ee45e4beb88253d6b8cdeec",
+	        "/usr/lib/fs-lib.sh"
 	);
 }
 static void svir_168(void) 
 {
 	svi_reg(&(tinfoil.validation_items[167]),
-	        "6d4ed45554e2a2c665b4d38621956ffca5546aebd797a0bf28250c0a38a667512d93eb7f37262c2e28c80d9682a645626862c1661ee45e4beb88253d6b8cdeec",
-	        "/usr/lib/fs-lib.sh"
+	        "1eb77c7e3117e9200ea97d4f7f5117d3c96e5ca335214e3bbb4851d964350485f4d8fd5c011933fd22d0a8b42e343c8ad09488cc8c66832aa2a82e2a456b790a",
+	        "/usr/lib/dracut-lib.sh"
 	);
 }
 static void svir_169(void) 
 {
 	svi_reg(&(tinfoil.validation_items[168]),
-	        "1eb77c7e3117e9200ea97d4f7f5117d3c96e5ca335214e3bbb4851d964350485f4d8fd5c011933fd22d0a8b42e343c8ad09488cc8c66832aa2a82e2a456b790a",
-	        "/usr/lib/dracut-lib.sh"
+	        "fbc0fc6724fa6bf645434e17ee9dff4e4e188e0f3a076c322746230c8d2fd99395f448bc987632a59aac463dfb9377d05dbc33c5d0575e6074374e3eb8b5936c",
+	        "/usr/lib/dracut-dev-lib.sh"
 	);
 }
 static void svir_170(void) 
 {
 	svi_reg(&(tinfoil.validation_items[169]),
-	        "fbc0fc6724fa6bf645434e17ee9dff4e4e188e0f3a076c322746230c8d2fd99395f448bc987632a59aac463dfb9377d05dbc33c5d0575e6074374e3eb8b5936c",
-	        "/usr/lib/dracut-dev-lib.sh"
+	        "31acd0039a78d5beefb924e8337321bd2b8016c959cf9f71d51d563d4cd1151446ad4671a4cdefb4fd77a20c4e943c2dd5a19857bb7df51e8e0dfaddd0312df9",
+	        "/usr/lib/dracut/hooks/pre-udev/50-ifname-genrules.sh"
 	);
 }
 static void svir_171(void) 
 {
 	svi_reg(&(tinfoil.validation_items[170]),
-	        "31acd0039a78d5beefb924e8337321bd2b8016c959cf9f71d51d563d4cd1151446ad4671a4cdefb4fd77a20c4e943c2dd5a19857bb7df51e8e0dfaddd0312df9",
-	        "/usr/lib/dracut/hooks/pre-udev/50-ifname-genrules.sh"
+	        "21c1189591d0484c8f50b75f050c52ef9059207f15fd2d816b4ef13f8c98636074323bdbfc3817bb22a75e1de78332b1f49e37819136504d9a7349b937ffe683",
+	        "/usr/lib/dracut/hooks/pre-pivot/85-write-ifcfg.sh"
 	);
 }
 static void svir_172(void) 
 {
 	svi_reg(&(tinfoil.validation_items[171]),
-	        "21c1189591d0484c8f50b75f050c52ef9059207f15fd2d816b4ef13f8c98636074323bdbfc3817bb22a75e1de78332b1f49e37819136504d9a7349b937ffe683",
-	        "/usr/lib/dracut/hooks/pre-pivot/85-write-ifcfg.sh"
+	        "a8c81fe64e37400871d1694f523bb73a398ed8eedc23c960f3f0d7f113d0bdbc04fdae21b84e49189c041e823c241df1cd0dfcbae0c251deb493461d2205477c",
+	        "/usr/lib/dracut/hooks/initqueue/timeout/99-rootfallback.sh"
 	);
 }
 static void svir_173(void) 
 {
 	svi_reg(&(tinfoil.validation_items[172]),
-	        "a8c81fe64e37400871d1694f523bb73a398ed8eedc23c960f3f0d7f113d0bdbc04fdae21b84e49189c041e823c241df1cd0dfcbae0c251deb493461d2205477c",
-	        "/usr/lib/dracut/hooks/initqueue/timeout/99-rootfallback.sh"
+	        "5e0e45f576ba4a83363450fc1d99858f9d3749fa701338834968916a3d9c6d98bcd31bc76c7b724239d0841a537c99665a4dbf0823cb88bd91fe23f8bf52f647",
+	        "/usr/lib/dracut/hooks/initqueue/settled/99-nm-run.sh"
 	);
 }
 static void svir_174(void) 
 {
 	svi_reg(&(tinfoil.validation_items[173]),
-	        "5e0e45f576ba4a83363450fc1d99858f9d3749fa701338834968916a3d9c6d98bcd31bc76c7b724239d0841a537c99665a4dbf0823cb88bd91fe23f8bf52f647",
-	        "/usr/lib/dracut/hooks/initqueue/settled/99-nm-run.sh"
+	        "83b0026310c8956d9fddeeb9dc0d11a62704517426594616fa4c3ae377b6fe3c7cf44e3ca3d1389559efe6b373427a58f1d978f997a52aa866e9c3fd7ee1f601",
+	        "/usr/lib/dracut/hooks/emergency/50-plymouth-emergency.sh"
 	);
 }
 static void svir_175(void) 
 {
 	svi_reg(&(tinfoil.validation_items[174]),
-	        "83b0026310c8956d9fddeeb9dc0d11a62704517426594616fa4c3ae377b6fe3c7cf44e3ca3d1389559efe6b373427a58f1d978f997a52aa866e9c3fd7ee1f601",
-	        "/usr/lib/dracut/hooks/emergency/50-plymouth-emergency.sh"
+	        "e58335ed810a8e0f4a261b57cf2e5f650a37bb62e94075709a847f921e1a6b287ca2463d38eb40cbaf4809847c0be1dc8fbd29192e8be04048ea7aa57aa84b81",
+	        "/usr/lib/dracut/hooks/cmdline/99-nm-config.sh"
 	);
 }
 static void svir_176(void) 
 {
 	svi_reg(&(tinfoil.validation_items[175]),
-	        "e58335ed810a8e0f4a261b57cf2e5f650a37bb62e94075709a847f921e1a6b287ca2463d38eb40cbaf4809847c0be1dc8fbd29192e8be04048ea7aa57aa84b81",
-	        "/usr/lib/dracut/hooks/cmdline/99-nm-config.sh"
+	        "01b72229c9867e297f44768f2ebf2fa07929a980f46b2c9931cc38b6fb3998b73dd7f246f50a383a892a08e2f6b8a5d5a6074c4918e57c71f91285788b8d4356",
+	        "/usr/lib/dracut/hooks/cmdline/91-dhcp-root.sh"
 	);
 }
 static void svir_177(void) 
 {
 	svi_reg(&(tinfoil.validation_items[176]),
-	        "01b72229c9867e297f44768f2ebf2fa07929a980f46b2c9931cc38b6fb3998b73dd7f246f50a383a892a08e2f6b8a5d5a6074c4918e57c71f91285788b8d4356",
-	        "/usr/lib/dracut/hooks/cmdline/91-dhcp-root.sh"
+	        "7a886225ee1e7a2993c0e3b0d04b43e2eec75428040981b540ce311d56600240b24bf3d1dfaa6d80dcdb7c2eedbca5c37b4ae22270f3b60b139d6a7555bf2c12",
+	        "/usr/lib/dracut/hooks/cleanup/99-memstrack-report.sh"
 	);
 }
 static void svir_178(void) 
 {
 	svi_reg(&(tinfoil.validation_items[177]),
-	        "7a886225ee1e7a2993c0e3b0d04b43e2eec75428040981b540ce311d56600240b24bf3d1dfaa6d80dcdb7c2eedbca5c37b4ae22270f3b60b139d6a7555bf2c12",
-	        "/usr/lib/dracut/hooks/cleanup/99-memstrack-report.sh"
+	        "5b52441eb3e8e4d5902cee4e6563cae0b8d0b141d5a24a2ae343e88cf31620052570ce42b35c8e69f9a0db325e914b3f7727b55c64557383e79e352cd38985f4",
+	        "/usr/bin/vi"
 	);
 }
 static void svir_179(void) 
 {
 	svi_reg(&(tinfoil.validation_items[178]),
-	        "5b52441eb3e8e4d5902cee4e6563cae0b8d0b141d5a24a2ae343e88cf31620052570ce42b35c8e69f9a0db325e914b3f7727b55c64557383e79e352cd38985f4",
-	        "/usr/bin/vi"
+	        "6551fae1285ed55387ebf00a35ed2c9d95e16ca7eecc56d1f6917d3113acdb9ce00f60d8b978207a2598ff4c74bb6bf808741026c0d2ca60bb9aaa8d34d9caf2",
+	        "/usr/bin/uname"
 	);
 }
 static void svir_180(void) 
 {
 	svi_reg(&(tinfoil.validation_items[179]),
-	        "6551fae1285ed55387ebf00a35ed2c9d95e16ca7eecc56d1f6917d3113acdb9ce00f60d8b978207a2598ff4c74bb6bf808741026c0d2ca60bb9aaa8d34d9caf2",
-	        "/usr/bin/uname"
+	        "e9940eab81542676e1e8598d60e01ee847bfde04a0c2f1c8206ebef6b2584f775a9c222f5a42e9a57cfc75f3d3e3cf02df0695d33fe8ae450e94a6b45f122924",
+	        "/usr/bin/umount"
 	);
 }
 static void svir_181(void) 
 {
 	svi_reg(&(tinfoil.validation_items[180]),
-	        "e9940eab81542676e1e8598d60e01ee847bfde04a0c2f1c8206ebef6b2584f775a9c222f5a42e9a57cfc75f3d3e3cf02df0695d33fe8ae450e94a6b45f122924",
-	        "/usr/bin/umount"
+	        "787ef7ae71688145275bdfe91c7bb046509a76de9c3da37895db3048f6951e7fb6970e300b17a8f29bb001f8d8ed51064eb9bc4dda6a88af9f140c8fb266cc07",
+	        "/usr/bin/udevadm"
 	);
 }
 static void svir_182(void) 
 {
 	svi_reg(&(tinfoil.validation_items[181]),
-	        "787ef7ae71688145275bdfe91c7bb046509a76de9c3da37895db3048f6951e7fb6970e300b17a8f29bb001f8d8ed51064eb9bc4dda6a88af9f140c8fb266cc07",
-	        "/usr/bin/udevadm"
+	        "398d389040f0f89ece06e2c224c4a37beaeabb8e3f7a1bef2d7fa691180e7d72232b30b1d0db10dbc50ad168d64e0db7d77b534d3d3e5cbbfc61d2f9dc8756f9",
+	        "/usr/bin/true"
 	);
 }
 static void svir_183(void) 
 {
 	svi_reg(&(tinfoil.validation_items[182]),
-	        "398d389040f0f89ece06e2c224c4a37beaeabb8e3f7a1bef2d7fa691180e7d72232b30b1d0db10dbc50ad168d64e0db7d77b534d3d3e5cbbfc61d2f9dc8756f9",
-	        "/usr/bin/true"
+	        "f183e6d58da884c3b9408346b9492818d512f21510014cf8999b3a38cc408ecb2a966dd39b7f7dc8597485a56b4dc31830b8f68f0fda2e6baff11f245830aad7",
+	        "/usr/bin/tr"
 	);
 }
 static void svir_184(void) 
 {
 	svi_reg(&(tinfoil.validation_items[183]),
-	        "f183e6d58da884c3b9408346b9492818d512f21510014cf8999b3a38cc408ecb2a966dd39b7f7dc8597485a56b4dc31830b8f68f0fda2e6baff11f245830aad7",
-	        "/usr/bin/tr"
+	        "11c71e4990f01314b9e0b91e266e018f6d07642af909a588bd6e48352a289cb0935a4a63421d9d0de5eb894b38a49ae3c40b7825bc62acb42faa0f71e102ffe3",
+	        "/usr/bin/timeout"
 	);
 }
 static void svir_185(void) 
 {
 	svi_reg(&(tinfoil.validation_items[184]),
-	        "11c71e4990f01314b9e0b91e266e018f6d07642af909a588bd6e48352a289cb0935a4a63421d9d0de5eb894b38a49ae3c40b7825bc62acb42faa0f71e102ffe3",
-	        "/usr/bin/timeout"
+	        "a1b87180235c7482313b32dee67e54d7f9c449368454526bb93441796708788a54602857e2f95e2dab55404e1311cca42cec9d2add09b5bd24cd6c0ec8dbad4e",
+	        "/usr/bin/teamd"
 	);
 }
 static void svir_186(void) 
 {
 	svi_reg(&(tinfoil.validation_items[185]),
-	        "a1b87180235c7482313b32dee67e54d7f9c449368454526bb93441796708788a54602857e2f95e2dab55404e1311cca42cec9d2add09b5bd24cd6c0ec8dbad4e",
-	        "/usr/bin/teamd"
+	        "0424bb9173ef9d94e8029a5ff9196c0ecfdd4afe0bfa8ce796dd1c0c52dbbc47e956675ac48caf3fa8cc2225823db7af6b1da501c3c1bf80f255f61dbfc97944",
+	        "/usr/bin/systemd-tty-ask-password-agent"
 	);
 }
 static void svir_187(void) 
 {
 	svi_reg(&(tinfoil.validation_items[186]),
-	        "0424bb9173ef9d94e8029a5ff9196c0ecfdd4afe0bfa8ce796dd1c0c52dbbc47e956675ac48caf3fa8cc2225823db7af6b1da501c3c1bf80f255f61dbfc97944",
-	        "/usr/bin/systemd-tty-ask-password-agent"
+	        "a659683f56a931b44f1ce69c24c1ac62ab53ea5cf600e9992a08054b5933d4b0464ff71c8f941ed7f84038895b6b9ee2c6c9081fd36f9fa3c004f026d1cb9278",
+	        "/usr/bin/systemd-tmpfiles"
 	);
 }
 static void svir_188(void) 
 {
 	svi_reg(&(tinfoil.validation_items[187]),
-	        "a659683f56a931b44f1ce69c24c1ac62ab53ea5cf600e9992a08054b5933d4b0464ff71c8f941ed7f84038895b6b9ee2c6c9081fd36f9fa3c004f026d1cb9278",
-	        "/usr/bin/systemd-tmpfiles"
+	        "6a2ba96d14b32e582033d0fde3653741e127fc8409b50cb6fabd83853fccb73f5af648543c75a53c1a33ef8beaaff00bb3cdc6ef0ff7c7e9efbdf8c135a7b096",
+	        "/usr/bin/systemd-sysusers"
 	);
 }
 static void svir_189(void) 
 {
 	svi_reg(&(tinfoil.validation_items[188]),
-	        "6a2ba96d14b32e582033d0fde3653741e127fc8409b50cb6fabd83853fccb73f5af648543c75a53c1a33ef8beaaff00bb3cdc6ef0ff7c7e9efbdf8c135a7b096",
-	        "/usr/bin/systemd-sysusers"
+	        "c2071697f9d757dede31afa1b52dffca53a51558589e753a81c0689484f36a2aea67cb0b30cddefaaed122ea9afb7aec66194c7946f4e03ac0e3448f0724b19c",
+	        "/usr/bin/systemd-run"
 	);
 }
 static void svir_190(void) 
 {
 	svi_reg(&(tinfoil.validation_items[189]),
-	        "c2071697f9d757dede31afa1b52dffca53a51558589e753a81c0689484f36a2aea67cb0b30cddefaaed122ea9afb7aec66194c7946f4e03ac0e3448f0724b19c",
-	        "/usr/bin/systemd-run"
+	        "07839f0cd2617582079184a6fc3933678ed6250c4f11c52893be0980df20cbff3d72d1d680470aee5600e482dfee0f6792a875b82c28e3edd58a67119c1f24b9",
+	        "/usr/bin/systemd-escape"
 	);
 }
 static void svir_191(void) 
 {
 	svi_reg(&(tinfoil.validation_items[190]),
-	        "07839f0cd2617582079184a6fc3933678ed6250c4f11c52893be0980df20cbff3d72d1d680470aee5600e482dfee0f6792a875b82c28e3edd58a67119c1f24b9",
-	        "/usr/bin/systemd-escape"
+	        "bfb8f883dcb07944ac03a8a6824b492166bd21c52d48c27a1776b96241766d2c8036519db249a147072caffa046ceaae80e207af8e044e78d5ff2ec6e06201e5",
+	        "/usr/bin/systemd-cgls"
 	);
 }
 static void svir_192(void) 
 {
 	svi_reg(&(tinfoil.validation_items[191]),
-	        "bfb8f883dcb07944ac03a8a6824b492166bd21c52d48c27a1776b96241766d2c8036519db249a147072caffa046ceaae80e207af8e044e78d5ff2ec6e06201e5",
-	        "/usr/bin/systemd-cgls"
+	        "f5d688dff7ffbb5f7eb6af7939f7fc76266631dec04ba9048c5883c6f22fd4474518d30465b5cc4fd90d62ce8bd8b2e5a87bca3153355def16080a7694541fac",
+	        "/usr/bin/systemd-ask-password"
 	);
 }
 static void svir_193(void) 
 {
 	svi_reg(&(tinfoil.validation_items[192]),
-	        "f5d688dff7ffbb5f7eb6af7939f7fc76266631dec04ba9048c5883c6f22fd4474518d30465b5cc4fd90d62ce8bd8b2e5a87bca3153355def16080a7694541fac",
-	        "/usr/bin/systemd-ask-password"
+	        "280cb95b0ba73dc5c8ae9bc12ef9a42a809de1503fb67efffb29d64aac4427967378da7bdc6e9d0e5a4d0c0f60e64725cb485cedd41e40bfa1c427c227a5cab9",
+	        "/usr/bin/systemctl"
 	);
 }
 static void svir_194(void) 
 {
 	svi_reg(&(tinfoil.validation_items[193]),
-	        "280cb95b0ba73dc5c8ae9bc12ef9a42a809de1503fb67efffb29d64aac4427967378da7bdc6e9d0e5a4d0c0f60e64725cb485cedd41e40bfa1c427c227a5cab9",
-	        "/usr/bin/systemctl"
+	        "f971695f0bc14fd45d16bab545f3f2eb22e407dc7a11c20a4994525290c0bf773f594efb3dd3178c4e4eb73e1c5210cb92902c483c731bfc4854c2b1b551914a",
+	        "/usr/bin/stty"
 	);
 }
 static void svir_195(void) 
 {
 	svi_reg(&(tinfoil.validation_items[194]),
-	        "f971695f0bc14fd45d16bab545f3f2eb22e407dc7a11c20a4994525290c0bf773f594efb3dd3178c4e4eb73e1c5210cb92902c483c731bfc4854c2b1b551914a",
-	        "/usr/bin/stty"
+	        "7d6eecc8ae453e2e056b125ef3f629aa32779d741f5aa23f842fa2799d82688948d70806e87e492d53e7fa5468c89fe1ff4868255ced18ca1da928867b635f9e",
+	        "/usr/bin/stat"
 	);
 }
 static void svir_196(void) 
 {
 	svi_reg(&(tinfoil.validation_items[195]),
-	        "7d6eecc8ae453e2e056b125ef3f629aa32779d741f5aa23f842fa2799d82688948d70806e87e492d53e7fa5468c89fe1ff4868255ced18ca1da928867b635f9e",
-	        "/usr/bin/stat"
+	        "0088658666d99ed3629061aa4de4fc51d91850aaf3f34fa0a2819a5afc15bc5101e234e0c841c3b35102535e351ff556a667e8dc4e33caf772fcb8d170fb81a5",
+	        "/usr/bin/sleep"
 	);
 }
 static void svir_197(void) 
 {
 	svi_reg(&(tinfoil.validation_items[196]),
-	        "0088658666d99ed3629061aa4de4fc51d91850aaf3f34fa0a2819a5afc15bc5101e234e0c841c3b35102535e351ff556a667e8dc4e33caf772fcb8d170fb81a5",
-	        "/usr/bin/sleep"
+	        "1735ef84e210e64ebf522db6fe623f9d5824a276b5d26e84778ddf7ee55bd623e924149c52ab47587e33cd0948206020b66ef18c76940b0a6cb4937ebc7723e9",
+	        "/usr/bin/setsid"
 	);
 }
 static void svir_198(void) 
 {
 	svi_reg(&(tinfoil.validation_items[197]),
-	        "1735ef84e210e64ebf522db6fe623f9d5824a276b5d26e84778ddf7ee55bd623e924149c52ab47587e33cd0948206020b66ef18c76940b0a6cb4937ebc7723e9",
-	        "/usr/bin/setsid"
+	        "171565123bc95c0c7df7472e9523899fd34b4be6cf0780e8ddb5e96bc4bad0a2f986a3ca0ddbc322ce189f664628138f34de9668f6431773c344ab4c353626f1",
+	        "/usr/bin/setfont"
 	);
 }
 static void svir_199(void) 
 {
 	svi_reg(&(tinfoil.validation_items[198]),
-	        "171565123bc95c0c7df7472e9523899fd34b4be6cf0780e8ddb5e96bc4bad0a2f986a3ca0ddbc322ce189f664628138f34de9668f6431773c344ab4c353626f1",
-	        "/usr/bin/setfont"
+	        "3fb39e9fe5d09450453c0979886f797b28c51f0a48ecc9a5fb95adc28746acf893828f9b0e9a6c094df1bb53b410c2c1f7e2e45c4ffd1625dbdb9680971babce",
+	        "/usr/bin/sed"
 	);
 }
 static void svir_200(void) 
 {
 	svi_reg(&(tinfoil.validation_items[199]),
-	        "3fb39e9fe5d09450453c0979886f797b28c51f0a48ecc9a5fb95adc28746acf893828f9b0e9a6c094df1bb53b410c2c1f7e2e45c4ffd1625dbdb9680971babce",
-	        "/usr/bin/sed"
+	        "3a063967b0de98fa5dcf582214f6dfddfd11b3b14d4ec90271efdadf5b6046799dd46dff3011c3679a3fa6a2f179824ee2e525d6aba0ac9643c1ec1542e6b41b",
+	        "/usr/bin/rm"
 	);
 }
 static void svir_201(void) 
 {
 	svi_reg(&(tinfoil.validation_items[200]),
-	        "3a063967b0de98fa5dcf582214f6dfddfd11b3b14d4ec90271efdadf5b6046799dd46dff3011c3679a3fa6a2f179824ee2e525d6aba0ac9643c1ec1542e6b41b",
-	        "/usr/bin/rm"
+	        "ec2ce4e917a0fc222979d4a46e83699a66e6b859d7ad12c7d2c71c6e89e3415ff7fba34ae406ebda9a654b4ba3d14f0a0b39004c70d419c388fab15eb8da475a",
+	        "/usr/bin/readlink"
 	);
 }
 static void svir_202(void) 
 {
 	svi_reg(&(tinfoil.validation_items[201]),
-	        "ec2ce4e917a0fc222979d4a46e83699a66e6b859d7ad12c7d2c71c6e89e3415ff7fba34ae406ebda9a654b4ba3d14f0a0b39004c70d419c388fab15eb8da475a",
-	        "/usr/bin/readlink"
+	        "b270ac5b8a9ad028da7a11e0f53fc40fc3ee01af35244a4b5d92f50beaf0ca65640fa946bf61872602a7a344a74f2ad5852ec51c2be6d2ded77b3883a0dc3f1e",
+	        "/usr/bin/ps"
 	);
 }
 static void svir_203(void) 
 {
 	svi_reg(&(tinfoil.validation_items[202]),
-	        "b270ac5b8a9ad028da7a11e0f53fc40fc3ee01af35244a4b5d92f50beaf0ca65640fa946bf61872602a7a344a74f2ad5852ec51c2be6d2ded77b3883a0dc3f1e",
-	        "/usr/bin/ps"
+	        "7c62fe53825b5e04196121af87c4e9abbd894d0966905eb17c2a9b3d5cb35ce6e023b010fc7e8e83f7f423c001a42e646b12ee285b8fd11bfafcf95c4888f39d",
+	        "/usr/bin/plymouth"
 	);
 }
 static void svir_204(void) 
 {
 	svi_reg(&(tinfoil.validation_items[203]),
-	        "7c62fe53825b5e04196121af87c4e9abbd894d0966905eb17c2a9b3d5cb35ce6e023b010fc7e8e83f7f423c001a42e646b12ee285b8fd11bfafcf95c4888f39d",
-	        "/usr/bin/plymouth"
+	        "e4b1aff49609d3982ab9f38ee098533ba2ea4c63eb1b2b2f93b52055135bec47b218c629bc25d1cdd38f8e56c1cd1018880c08621f6f54e6bf2e478ad1d22335",
+	        "/usr/bin/pkill"
 	);
 }
 static void svir_205(void) 
 {
 	svi_reg(&(tinfoil.validation_items[204]),
-	        "e4b1aff49609d3982ab9f38ee098533ba2ea4c63eb1b2b2f93b52055135bec47b218c629bc25d1cdd38f8e56c1cd1018880c08621f6f54e6bf2e478ad1d22335",
-	        "/usr/bin/pkill"
+	        "c5467e9733162e5c3d7f9a07dcf5a7092c10d9ba7b7020e89244794449ac93bb129ae0d87d9f90c858b5d62f14ea61fee44cc59c0ebb1c10a0bff0ed3966d11a",
+	        "/usr/bin/pgrep"
 	);
 }
 static void svir_206(void) 
 {
 	svi_reg(&(tinfoil.validation_items[205]),
-	        "c5467e9733162e5c3d7f9a07dcf5a7092c10d9ba7b7020e89244794449ac93bb129ae0d87d9f90c858b5d62f14ea61fee44cc59c0ebb1c10a0bff0ed3966d11a",
-	        "/usr/bin/pgrep"
+	        "87bca35a4738b2fcce96cb5e76b4daed3c1c43ffdc4be9de130115ce6af9f6b693745e209b513ed4914f1f0a7c98dd47cd9620e64f9838ef1d9a82d85fcb1e18",
+	        "/usr/bin/nmcli"
 	);
 }
 static void svir_207(void) 
 {
 	svi_reg(&(tinfoil.validation_items[206]),
-	        "87bca35a4738b2fcce96cb5e76b4daed3c1c43ffdc4be9de130115ce6af9f6b693745e209b513ed4914f1f0a7c98dd47cd9620e64f9838ef1d9a82d85fcb1e18",
-	        "/usr/bin/nmcli"
+	        "6a71af07fcb232664dff91f4ea8f40fec056d236bead127a21ced0c6cd82da1637523796cd8db74cfcb12471f0d7221694cf48d46df395381cf7213ea6339d3e",
+	        "/usr/bin/nm-online"
 	);
 }
 static void svir_208(void) 
 {
 	svi_reg(&(tinfoil.validation_items[207]),
-	        "6a71af07fcb232664dff91f4ea8f40fec056d236bead127a21ced0c6cd82da1637523796cd8db74cfcb12471f0d7221694cf48d46df395381cf7213ea6339d3e",
-	        "/usr/bin/nm-online"
+	        "6d6901cac5d85d735c430c068bc3b598c5c11a5bc3a4bd5bd441df9477a1b3557a83b00d2e241a118bd894a1fac222fa3b43be4dd8dccdcbf4ae4a759671b4f7",
+	        "/usr/bin/ndctl"
 	);
 }
 static void svir_209(void) 
 {
 	svi_reg(&(tinfoil.validation_items[208]),
-	        "6d6901cac5d85d735c430c068bc3b598c5c11a5bc3a4bd5bd441df9477a1b3557a83b00d2e241a118bd894a1fac222fa3b43be4dd8dccdcbf4ae4a759671b4f7",
-	        "/usr/bin/ndctl"
+	        "485fe074af48a7743a960cc8890aca402de0c48e677dd6dabb40c861a5c43444dad0b4b57a76c61a065316eb5cbd0669319e613a0f991d55cc0a52b4996b0124",
+	        "/usr/bin/mv"
 	);
 }
 static void svir_210(void) 
 {
 	svi_reg(&(tinfoil.validation_items[209]),
-	        "485fe074af48a7743a960cc8890aca402de0c48e677dd6dabb40c861a5c43444dad0b4b57a76c61a065316eb5cbd0669319e613a0f991d55cc0a52b4996b0124",
-	        "/usr/bin/mv"
+	        "d2385caade1cd9d90e6ab7a265d6f9fdd459fd9b05eee2703006ba6e6eebd50be2c1c8464c739e363c4fd867af3df3e5987644507c1725fa6ab0588152b526dc",
+	        "/usr/bin/mount"
 	);
 }
 static void svir_211(void) 
 {
 	svi_reg(&(tinfoil.validation_items[210]),
-	        "d2385caade1cd9d90e6ab7a265d6f9fdd459fd9b05eee2703006ba6e6eebd50be2c1c8464c739e363c4fd867af3df3e5987644507c1725fa6ab0588152b526dc",
-	        "/usr/bin/mount"
+	        "15743d75ae57d66b05f68d70ffa49dba2faee4330cc86d0c76f0f4d4db72b9082ccbd2e5d7793e52e9f22a1fb43fa58eb60b9ca5d282af698a425aeb4329fcd7",
+	        "/usr/bin/mknod"
 	);
 }
 static void svir_212(void) 
 {
 	svi_reg(&(tinfoil.validation_items[211]),
-	        "15743d75ae57d66b05f68d70ffa49dba2faee4330cc86d0c76f0f4d4db72b9082ccbd2e5d7793e52e9f22a1fb43fa58eb60b9ca5d282af698a425aeb4329fcd7",
-	        "/usr/bin/mknod"
+	        "95d524dc11f134f3c9d8c4977fc9663e8e72ab40b4f2470ed536acc01381e2d75a0cc8076cf509c5f959e46240f2bb5fa2c377cf63d4cbb06f7bd2f66b24322d",
+	        "/usr/bin/mkfifo"
 	);
 }
 static void svir_213(void) 
 {
 	svi_reg(&(tinfoil.validation_items[212]),
-	        "95d524dc11f134f3c9d8c4977fc9663e8e72ab40b4f2470ed536acc01381e2d75a0cc8076cf509c5f959e46240f2bb5fa2c377cf63d4cbb06f7bd2f66b24322d",
-	        "/usr/bin/mkfifo"
+	        "543d844d92c2b1720cf97625633d0514961388d9817ab2ba6e268044ecb4174859403949acc83072e8aee16fa66aa84b6c9a30a40279138e5d7806fc5e6af3b5",
+	        "/usr/bin/mkdir"
 	);
 }
 static void svir_214(void) 
 {
 	svi_reg(&(tinfoil.validation_items[213]),
-	        "543d844d92c2b1720cf97625633d0514961388d9817ab2ba6e268044ecb4174859403949acc83072e8aee16fa66aa84b6c9a30a40279138e5d7806fc5e6af3b5",
-	        "/usr/bin/mkdir"
+	        "07a158662b98498e627f8485aa1a2318c39def7cb0edf1daa48fc2ca4043afadb39d258ef8a42ba3895ba84e14664c25162bd8390abc3ab8887167820e0bd1dc",
+	        "/usr/bin/memstrack-start"
 	);
 }
 static void svir_215(void) 
 {
 	svi_reg(&(tinfoil.validation_items[214]),
-	        "07a158662b98498e627f8485aa1a2318c39def7cb0edf1daa48fc2ca4043afadb39d258ef8a42ba3895ba84e14664c25162bd8390abc3ab8887167820e0bd1dc",
-	        "/usr/bin/memstrack-start"
+	        "b9ddc84089a8718d85a27bc3b5f07df9f8f9d8a441cabe9090b5f30b8c8c9561c808c3c406a5f38ffc3e0f5bbcbcb72a0b72408d7313dc076ff47f9e061ef7dc",
+	        "/usr/bin/memstrack"
 	);
 }
 static void svir_216(void) 
 {
 	svi_reg(&(tinfoil.validation_items[215]),
-	        "b9ddc84089a8718d85a27bc3b5f07df9f8f9d8a441cabe9090b5f30b8c8c9561c808c3c406a5f38ffc3e0f5bbcbcb72a0b72408d7313dc076ff47f9e061ef7dc",
-	        "/usr/bin/memstrack"
+	        "db63e32135f087504df7fc34e9085c411195b99f3fef8df68178761481a3da7dd944a0791bfb5097a7dd82249bb2acb0b0daea1d1f4107a840452da1296001bf",
+	        "/usr/bin/ls"
 	);
 }
 static void svir_217(void) 
 {
 	svi_reg(&(tinfoil.validation_items[216]),
-	        "db63e32135f087504df7fc34e9085c411195b99f3fef8df68178761481a3da7dd944a0791bfb5097a7dd82249bb2acb0b0daea1d1f4107a840452da1296001bf",
-	        "/usr/bin/ls"
+	        "3b27b970a3246a45ad6589c0ea55fbec33a3a51227bb0b703f3e52a971ccc0d6cb4aa1a1ff5d06469ee97156320af9caad7085de22f9e501bd7bc7272d17632b",
+	        "/usr/bin/loadkeys"
 	);
 }
 static void svir_218(void) 
 {
 	svi_reg(&(tinfoil.validation_items[217]),
-	        "3b27b970a3246a45ad6589c0ea55fbec33a3a51227bb0b703f3e52a971ccc0d6cb4aa1a1ff5d06469ee97156320af9caad7085de22f9e501bd7bc7272d17632b",
-	        "/usr/bin/loadkeys"
+	        "20d57ff970272a7404d14e6f7d063994c278681682c73a8ab8683d6d2536e44625e0a8703380ad7536616eeb4d996abdbb05b19011dd3a5b356e86859d33e238",
+	        "/usr/bin/ln"
 	);
 }
 static void svir_219(void) 
 {
 	svi_reg(&(tinfoil.validation_items[218]),
-	        "20d57ff970272a7404d14e6f7d063994c278681682c73a8ab8683d6d2536e44625e0a8703380ad7536616eeb4d996abdbb05b19011dd3a5b356e86859d33e238",
-	        "/usr/bin/ln"
+	        "126aa131057fad2702f04275465a0b16055219784ead65475a62cbc7c10fcd2c4f2ef0fb5939b4ecb2636d9caf91a3d1256dca4323ebe143c56b19acd622ed81",
+	        "/usr/bin/less"
 	);
 }
 static void svir_220(void) 
 {
 	svi_reg(&(tinfoil.validation_items[219]),
-	        "126aa131057fad2702f04275465a0b16055219784ead65475a62cbc7c10fcd2c4f2ef0fb5939b4ecb2636d9caf91a3d1256dca4323ebe143c56b19acd622ed81",
-	        "/usr/bin/less"
+	        "e2a4098377a4c4000421a1084b8f61b677502b7a060bf4252b8c3e6b6bd58b29921f0f4d8bd06bfb1bc5806cfb0493b1698c208762f0aa0942c31da53ab7d32f",
+	        "/usr/bin/kmod"
 	);
 }
 static void svir_221(void) 
 {
 	svi_reg(&(tinfoil.validation_items[220]),
-	        "e2a4098377a4c4000421a1084b8f61b677502b7a060bf4252b8c3e6b6bd58b29921f0f4d8bd06bfb1bc5806cfb0493b1698c208762f0aa0942c31da53ab7d32f",
-	        "/usr/bin/kmod"
+	        "a47512d76105e8e28fe5e09ad3be776c4cd130de224dca4ea60a70f37c139bc750e5045734da3391bd392731a26842f5944db46326a4b189eb7ca210c6a3ceb2",
+	        "/usr/bin/kbd_mode"
 	);
 }
 static void svir_222(void) 
 {
 	svi_reg(&(tinfoil.validation_items[221]),
-	        "a47512d76105e8e28fe5e09ad3be776c4cd130de224dca4ea60a70f37c139bc750e5045734da3391bd392731a26842f5944db46326a4b189eb7ca210c6a3ceb2",
-	        "/usr/bin/kbd_mode"
+	        "a033ac3a647cbf490f45b7ebe3c50be0529d99671da0fedc14067c1a6975f2be08f25d029fbef668463ef67fd4d80fa32d7fecc0d6b57790f902d55424b2b714",
+	        "/usr/bin/journalctl"
 	);
 }
 static void svir_223(void) 
 {
 	svi_reg(&(tinfoil.validation_items[222]),
-	        "a033ac3a647cbf490f45b7ebe3c50be0529d99671da0fedc14067c1a6975f2be08f25d029fbef668463ef67fd4d80fa32d7fecc0d6b57790f902d55424b2b714",
-	        "/usr/bin/journalctl"
+	        "a17bee1441eefc983fd212be611cbf5f942af4410fec37400e8340e2dbef0d19f273c7fe6f7c698513943857864a3c605d8010cd6ccafd833bdb96a7683314e7",
+	        "/usr/bin/gzip"
 	);
 }
 static void svir_224(void) 
 {
 	svi_reg(&(tinfoil.validation_items[223]),
-	        "a17bee1441eefc983fd212be611cbf5f942af4410fec37400e8340e2dbef0d19f273c7fe6f7c698513943857864a3c605d8010cd6ccafd833bdb96a7683314e7",
-	        "/usr/bin/gzip"
+	        "da489e66efb8dd8a452a79302ce753f0dc5a51f021c6d1b2fb1ebcf6effdefbaf037d8a43733b6be2d6714a56b07985ae322bbab2e834c94f0c76f8e8d569331",
+	        "/usr/bin/grep"
 	);
 }
 static void svir_225(void) 
 {
 	svi_reg(&(tinfoil.validation_items[224]),
-	        "da489e66efb8dd8a452a79302ce753f0dc5a51f021c6d1b2fb1ebcf6effdefbaf037d8a43733b6be2d6714a56b07985ae322bbab2e834c94f0c76f8e8d569331",
-	        "/usr/bin/grep"
+	        "1a5c986509df98c100487a5b6440204543e20000b5c93bfff252997ecb4856c62c16dba7a77a33af5f8da4f9df950a9366f4f92c0da021b229a4781d8b8aa4ef",
+	        "/usr/bin/gawk"
 	);
 }
 static void svir_226(void) 
 {
 	svi_reg(&(tinfoil.validation_items[225]),
-	        "1a5c986509df98c100487a5b6440204543e20000b5c93bfff252997ecb4856c62c16dba7a77a33af5f8da4f9df950a9366f4f92c0da021b229a4781d8b8aa4ef",
-	        "/usr/bin/gawk"
+	        "9d203693c61bce0f06cca6f6ead4b29a58010fa9f2474e0d2e5af0e1de91cd62987a935ec1cf3b26c052edcc6b041c370fcffe455d9af11339fa65330821e2f2",
+	        "/usr/bin/flock"
 	);
 }
 static void svir_227(void) 
 {
 	svi_reg(&(tinfoil.validation_items[226]),
-	        "9d203693c61bce0f06cca6f6ead4b29a58010fa9f2474e0d2e5af0e1de91cd62987a935ec1cf3b26c052edcc6b041c370fcffe455d9af11339fa65330821e2f2",
-	        "/usr/bin/flock"
+	        "334854271683430c2c32a4055ff4cd5b53f43fae1fccdb71880059b3228aba8f722389501319108b3c9da8a233d82e181c1a7191b17bf25a07ad06fbc53f1956",
+	        "/usr/bin/findmnt"
 	);
 }
 static void svir_228(void) 
 {
 	svi_reg(&(tinfoil.validation_items[227]),
-	        "334854271683430c2c32a4055ff4cd5b53f43fae1fccdb71880059b3228aba8f722389501319108b3c9da8a233d82e181c1a7191b17bf25a07ad06fbc53f1956",
-	        "/usr/bin/findmnt"
+	        "7f62b6ba6f87e8e3a0fae9b5daf27b55be8979c7ce272293acd99a37a856e36e4ecf3ec625e42b749bb000a89444a86e9c6dde63484318a23d63ed013acec211",
+	        "/usr/bin/echo"
 	);
 }
 static void svir_229(void) 
 {
 	svi_reg(&(tinfoil.validation_items[228]),
-	        "7f62b6ba6f87e8e3a0fae9b5daf27b55be8979c7ce272293acd99a37a856e36e4ecf3ec625e42b749bb000a89444a86e9c6dde63484318a23d63ed013acec211",
-	        "/usr/bin/echo"
+	        "409cd5c6f06f968d41481fa68824abcc0e24175a6376bf0a2c3b2461ac172b8771cc7193c0c0669e072357bd4ecced56b64be0ee6c0facb2422394cc13469ade",
+	        "/usr/bin/dracut-util"
 	);
 }
 static void svir_230(void) 
 {
 	svi_reg(&(tinfoil.validation_items[229]),
-	        "25f5b8678e4155e3008ef4053f10ad1c169488fa57a1536316a22eee9df970a1ea80c2029f1c22ebb04645582a77cd2c1aaedda0a50bfeb1c9258465750dd711",
-	        "/usr/bin/dracut-util"
+	        "de0a515d47806fc8f8a5200a8d236de4394dd92ea6fa6b8a1b21756445408c7ef6e133b70b0ff7ee52e35da3c81e1d38833767aa7b9a2c56d1feab5b4ebe7bd9",
+	        "/usr/bin/dracut-pre-udev"
 	);
 }
 static void svir_231(void) 
 {
 	svi_reg(&(tinfoil.validation_items[230]),
-	        "de0a515d47806fc8f8a5200a8d236de4394dd92ea6fa6b8a1b21756445408c7ef6e133b70b0ff7ee52e35da3c81e1d38833767aa7b9a2c56d1feab5b4ebe7bd9",
-	        "/usr/bin/dracut-pre-udev"
+	        "525ef470fe178560424560818ae6f764a2be5c2ec9710ceb9fb9bba2f38c30d25ab29fa645c705db6f00bace9b6de65e8966fe891c59e85343f2a12a495a6f67",
+	        "/usr/bin/dracut-pre-trigger"
 	);
 }
 static void svir_232(void) 
 {
 	svi_reg(&(tinfoil.validation_items[231]),
-	        "525ef470fe178560424560818ae6f764a2be5c2ec9710ceb9fb9bba2f38c30d25ab29fa645c705db6f00bace9b6de65e8966fe891c59e85343f2a12a495a6f67",
-	        "/usr/bin/dracut-pre-trigger"
+	        "62616f3f0a29b617605e5ad796b0074e60c21dc98d90e85be6b616b380c366d3140031bfef673b4a0d70f5dd1bc7e99bfce01e3a817557c042dcee7ca7ae2f1e",
+	        "/usr/bin/dracut-pre-pivot"
 	);
 }
 static void svir_233(void) 
 {
 	svi_reg(&(tinfoil.validation_items[232]),
-	        "62616f3f0a29b617605e5ad796b0074e60c21dc98d90e85be6b616b380c366d3140031bfef673b4a0d70f5dd1bc7e99bfce01e3a817557c042dcee7ca7ae2f1e",
-	        "/usr/bin/dracut-pre-pivot"
+	        "ae71bd75f29773b64dbbe9902755dee241f93f8516e54bdfc5c689f3174d11e96d5d6f8f41bbe675a40c0c3940fe578084bb8a00e0b3470410f445968dc84f92",
+	        "/usr/bin/dracut-pre-mount"
 	);
 }
 static void svir_234(void) 
 {
 	svi_reg(&(tinfoil.validation_items[233]),
-	        "ae71bd75f29773b64dbbe9902755dee241f93f8516e54bdfc5c689f3174d11e96d5d6f8f41bbe675a40c0c3940fe578084bb8a00e0b3470410f445968dc84f92",
-	        "/usr/bin/dracut-pre-mount"
+	        "002cafe9aa8e6cdb3579a5c36a408ca911ecb3246ae364e088d49365347af227c6884245910ce0e13aad7ca163f568af2e9c4b90ab144d7fc33e8341ac01fed6",
+	        "/usr/bin/dracut-mount"
 	);
 }
 static void svir_235(void) 
 {
 	svi_reg(&(tinfoil.validation_items[234]),
-	        "002cafe9aa8e6cdb3579a5c36a408ca911ecb3246ae364e088d49365347af227c6884245910ce0e13aad7ca163f568af2e9c4b90ab144d7fc33e8341ac01fed6",
-	        "/usr/bin/dracut-mount"
+	        "ad56deb30e2ee425e153b81ef90b6e1e46e9c813d395c7ba85cb3671d6f34237b5732ac24ff8e8825fc9c3f4e84b5c7d45c9925f7af24b292577656267c8894b",
+	        "/usr/bin/dracut-initqueue"
 	);
 }
 static void svir_236(void) 
 {
 	svi_reg(&(tinfoil.validation_items[235]),
-	        "ad56deb30e2ee425e153b81ef90b6e1e46e9c813d395c7ba85cb3671d6f34237b5732ac24ff8e8825fc9c3f4e84b5c7d45c9925f7af24b292577656267c8894b",
-	        "/usr/bin/dracut-initqueue"
+	        "8734e2ac401f8e6a2feb1c5f4590a17fb9e8761e239c346096a1c206f1e2c6fb1b7a7cee3d5830991ddc9fd985dadae34d63795e5146215fae618ff40ea53d13",
+	        "/usr/bin/dracut-emergency"
 	);
 }
 static void svir_237(void) 
 {
 	svi_reg(&(tinfoil.validation_items[236]),
-	        "8734e2ac401f8e6a2feb1c5f4590a17fb9e8761e239c346096a1c206f1e2c6fb1b7a7cee3d5830991ddc9fd985dadae34d63795e5146215fae618ff40ea53d13",
-	        "/usr/bin/dracut-emergency"
+	        "3a20bc69f74ced6c0d251ba3b8244c0c6d71ff407abe2171c937ae23ad88f1c21f8b4dc92bb3282a8887cfe71e8d021ffe874b734ae3b60781ec76d1469051af",
+	        "/usr/bin/dracut-cmdline-ask"
 	);
 }
 static void svir_238(void) 
 {
 	svi_reg(&(tinfoil.validation_items[237]),
-	        "3a20bc69f74ced6c0d251ba3b8244c0c6d71ff407abe2171c937ae23ad88f1c21f8b4dc92bb3282a8887cfe71e8d021ffe874b734ae3b60781ec76d1469051af",
-	        "/usr/bin/dracut-cmdline-ask"
+	        "a75c88e4c77efd29df71b166a7405406a20ad6df26da520345454c316dfd4b74cbbb265d6eb1cc83c4d364977e1335870d15db67841ccaea2745a4bf7f2a6942",
+	        "/usr/bin/dracut-cmdline"
 	);
 }
 static void svir_239(void) 
 {
 	svi_reg(&(tinfoil.validation_items[238]),
-	        "a75c88e4c77efd29df71b166a7405406a20ad6df26da520345454c316dfd4b74cbbb265d6eb1cc83c4d364977e1335870d15db67841ccaea2745a4bf7f2a6942",
-	        "/usr/bin/dracut-cmdline"
+	        "e0844dbe6a3b4923c6a8fb7cfafa19c11befc000fe865e187280cdef4ec49a000622887424382e817abb5f45a71e6c6f0363ca779ec8fd27f9b307454219d1a2",
+	        "/usr/bin/dmesg"
 	);
 }
 static void svir_240(void) 
 {
 	svi_reg(&(tinfoil.validation_items[239]),
-	        "e0844dbe6a3b4923c6a8fb7cfafa19c11befc000fe865e187280cdef4ec49a000622887424382e817abb5f45a71e6c6f0363ca779ec8fd27f9b307454219d1a2",
-	        "/usr/bin/dmesg"
+	        "b3af0eaf4c9c5bf91401437d68d960c4b5027488a306a96de3364c12682cd62b8685ab552588c9d398bb48b802a3a630fe7523a760c76950ca61eb3e370244e0",
+	        "/usr/bin/dbus-broker-launch"
 	);
 }
 static void svir_241(void) 
 {
 	svi_reg(&(tinfoil.validation_items[240]),
-	        "b3af0eaf4c9c5bf91401437d68d960c4b5027488a306a96de3364c12682cd62b8685ab552588c9d398bb48b802a3a630fe7523a760c76950ca61eb3e370244e0",
-	        "/usr/bin/dbus-broker-launch"
+	        "c884aa66cc49792352b6ba8dcddf7570805ff546614bd80e3246ffa045ea17791d6aa099c438a4ba4c26da6006ff513a87fbf00beafee31e6252ac0837dcf32b",
+	        "/usr/bin/dbus-broker"
 	);
 }
 static void svir_242(void) 
 {
 	svi_reg(&(tinfoil.validation_items[241]),
-	        "c884aa66cc49792352b6ba8dcddf7570805ff546614bd80e3246ffa045ea17791d6aa099c438a4ba4c26da6006ff513a87fbf00beafee31e6252ac0837dcf32b",
-	        "/usr/bin/dbus-broker"
+	        "3ec49238c55786c2f371032a38aa7926695197c9e1f28248e7a045102c22bf8600d9d793d4ed165e617904b603597754802f217070b73c197dfd37f9a7f740cd",
+	        "/usr/bin/cp"
 	);
 }
 static void svir_243(void) 
 {
 	svi_reg(&(tinfoil.validation_items[242]),
-	        "3ec49238c55786c2f371032a38aa7926695197c9e1f28248e7a045102c22bf8600d9d793d4ed165e617904b603597754802f217070b73c197dfd37f9a7f740cd",
-	        "/usr/bin/cp"
+	        "b46b1a8194f781f2870ee8bc73af29e7119b6f08373d6f746aa877b6ef8056f4f53fb705ece653c6b0d7972d5a136430356985f95e67029a2267140aa22956eb",
+	        "/usr/bin/chown"
 	);
 }
 static void svir_244(void) 
 {
 	svi_reg(&(tinfoil.validation_items[243]),
-	        "b46b1a8194f781f2870ee8bc73af29e7119b6f08373d6f746aa877b6ef8056f4f53fb705ece653c6b0d7972d5a136430356985f95e67029a2267140aa22956eb",
-	        "/usr/bin/chown"
+	        "fee55ec5d985699ec18db0154383925921b7b18f9db99c404c3eb9b809833434c8ac147a34ce59eeb3522ddb65e3302557779a1e8f33a4fc733fd23c4a0b8397",
+	        "/usr/bin/chmod"
 	);
 }
 static void svir_245(void) 
 {
 	svi_reg(&(tinfoil.validation_items[244]),
-	        "fee55ec5d985699ec18db0154383925921b7b18f9db99c404c3eb9b809833434c8ac147a34ce59eeb3522ddb65e3302557779a1e8f33a4fc733fd23c4a0b8397",
-	        "/usr/bin/chmod"
+	        "775a5f04e1382bc36c5ba3a6555b62347de39c11aafdbb30ac086c3e40acff04370e07465d3e4ba2d865b2888c66e4184fd560fdcffb0ef4277560f0d057e52b",
+	        "/usr/bin/cat"
 	);
 }
 static void svir_246(void) 
 {
 	svi_reg(&(tinfoil.validation_items[245]),
-	        "775a5f04e1382bc36c5ba3a6555b62347de39c11aafdbb30ac086c3e40acff04370e07465d3e4ba2d865b2888c66e4184fd560fdcffb0ef4277560f0d057e52b",
-	        "/usr/bin/cat"
+	        "4bf67ee5d0d9b1ac89eebc3b2861693c2454f7ea2c2304703be01982e290fb03710a4261afd20dbe8d859a7d8529a6013a77c661dbfa32464aedf620c04d1575",
+	        "/usr/bin/busctl"
 	);
 }
 static void svir_247(void) 
 {
 	svi_reg(&(tinfoil.validation_items[246]),
-	        "4bf67ee5d0d9b1ac89eebc3b2861693c2454f7ea2c2304703be01982e290fb03710a4261afd20dbe8d859a7d8529a6013a77c661dbfa32464aedf620c04d1575",
-	        "/usr/bin/busctl"
+	        "80a20a3ae25c67f0d450e7684477f2ed862c709d6a84245bf39d3488b80e035c7b6ace048038e76c7f2e9022a3bbcaafc2580e67e35812571019986b9abbaf65",
+	        "/usr/bin/bash"
 	);
 }
 static void svir_248(void) 
 {
 	svi_reg(&(tinfoil.validation_items[247]),
-	        "80a20a3ae25c67f0d450e7684477f2ed862c709d6a84245bf39d3488b80e035c7b6ace048038e76c7f2e9022a3bbcaafc2580e67e35812571019986b9abbaf65",
-	        "/usr/bin/bash"
+	        "1e46c6fabb7bfe425359a5bebc136ab0232ca7d97b1da27face335a02a7f2e726501369bea71ed168380c0f85654f240eaccffa1eb92b01f2aa737a85bad0d4e",
+	        "/usr/bin/arping"
 	);
 }
 static void svir_249(void) 
 {
 	svi_reg(&(tinfoil.validation_items[248]),
-	        "1e46c6fabb7bfe425359a5bebc136ab0232ca7d97b1da27face335a02a7f2e726501369bea71ed168380c0f85654f240eaccffa1eb92b01f2aa737a85bad0d4e",
-	        "/usr/bin/arping"
+	        "3fd78329be9db1bf7dcdc74f589182bcbd6a5c098391a65ae05103b586e7a7b8dbdbd32301c0278c814d19a73d687c7c7d19f90174d8ae92a50a850d5c372185",
+	        "/shutdown"
 	);
 }
 static void svir_250(void) 
 {
 	svi_reg(&(tinfoil.validation_items[249]),
-	        "3fd78329be9db1bf7dcdc74f589182bcbd6a5c098391a65ae05103b586e7a7b8dbdbd32301c0278c814d19a73d687c7c7d19f90174d8ae92a50a850d5c372185",
-	        "/shutdown"
+	        "7942259e070fc6639bcd3f99924464b4a194266341acaa9ecdb02de5ce8b48dcea8d6f6806aa4f779096429e761deba0c613697e72475b74be1909e876cc4d35",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/sound/soundcore.ko"
 	);
 }
 static void svir_251(void) 
 {
 	svi_reg(&(tinfoil.validation_items[250]),
-	        "7942259e070fc6639bcd3f99924464b4a194266341acaa9ecdb02de5ce8b48dcea8d6f6806aa4f779096429e761deba0c613697e72475b74be1909e876cc4d35",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/sound/soundcore.ko"
+	        "bd087b5bdc5c83777dd0a29415712d116555de7d6fc1c737735b207b50aa6d929368e98c70f4424d2edc9b18668935a4902884d52d0416c534fb0c3f3a414098",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/sound/core/snd.ko"
 	);
 }
 static void svir_252(void) 
 {
 	svi_reg(&(tinfoil.validation_items[251]),
-	        "bd087b5bdc5c83777dd0a29415712d116555de7d6fc1c737735b207b50aa6d929368e98c70f4424d2edc9b18668935a4902884d52d0416c534fb0c3f3a414098",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/sound/core/snd.ko"
+	        "83f3e1f2506559485162e9146aa741a2b92a333e4ea2a15195a9000cdf771064be7c5c120ff580d27c81649222b762b240bfdd72f815a4006667e90d07f5ffbd",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/sound/core/snd-seq-device.ko"
 	);
 }
 static void svir_253(void) 
 {
 	svi_reg(&(tinfoil.validation_items[252]),
-	        "83f3e1f2506559485162e9146aa741a2b92a333e4ea2a15195a9000cdf771064be7c5c120ff580d27c81649222b762b240bfdd72f815a4006667e90d07f5ffbd",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/sound/core/snd-seq-device.ko"
+	        "f859f64233c00b8b4bba0ddb5c788093d921322fa85a951f45a80b76c9b798c08e04656481d77e87a7e21898fad5526b2c6d31907145a8cdb408d24b4639e8b2",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/sound/core/snd-rawmidi.ko"
 	);
 }
 static void svir_254(void) 
 {
 	svi_reg(&(tinfoil.validation_items[253]),
-	        "f859f64233c00b8b4bba0ddb5c788093d921322fa85a951f45a80b76c9b798c08e04656481d77e87a7e21898fad5526b2c6d31907145a8cdb408d24b4639e8b2",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/sound/core/snd-rawmidi.ko"
+	        "fa6aac4dae8fb527437916f98cddf2d8eb6e0a3165fb47b22762829fcdea11d135a236e78cef28ec931a704eb35297a99533155fef8a3636c492edb33e67ea54",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/security/keys/trusted-keys/trusted.ko"
 	);
 }
 static void svir_255(void) 
 {
 	svi_reg(&(tinfoil.validation_items[254]),
-	        "fa6aac4dae8fb527437916f98cddf2d8eb6e0a3165fb47b22762829fcdea11d135a236e78cef28ec931a704eb35297a99533155fef8a3636c492edb33e67ea54",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/security/keys/trusted-keys/trusted.ko"
+	        "9567a86a47a9640141bcba6f9a1bb2cc91d16b5fe17f3f7213d548df6756f4c1df872fbd6e03d0a428f2d4e681b43588ad3bf65c2e538e6a8afe0ac606034a0e",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/net/rfkill/rfkill.ko"
 	);
 }
 static void svir_256(void) 
 {
 	svi_reg(&(tinfoil.validation_items[255]),
-	        "9567a86a47a9640141bcba6f9a1bb2cc91d16b5fe17f3f7213d548df6756f4c1df872fbd6e03d0a428f2d4e681b43588ad3bf65c2e538e6a8afe0ac606034a0e",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/net/rfkill/rfkill.ko"
+	        "a991a7dffd8976d700a7a2a1d2caec21c9b574d2120cee64865ba04c06b05503286480eb9d2711998e6f68b14f9f745d0ee102c6b917f54db128511959a7d733",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/net/core/failover.ko"
 	);
 }
 static void svir_257(void) 
 {
 	svi_reg(&(tinfoil.validation_items[256]),
-	        "a991a7dffd8976d700a7a2a1d2caec21c9b574d2120cee64865ba04c06b05503286480eb9d2711998e6f68b14f9f745d0ee102c6b917f54db128511959a7d733",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/net/core/failover.ko"
+	        "757c8c470f4bf9b3241fc3b2f12ca2fcb7f520e6159e70b0be072448453551e4e297a388aa47a06319ddb58bd1c6b95f7be5616c09a699ba47b3675a7844c7ca",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/lib/lz4/lz4hc_compress.ko"
 	);
 }
 static void svir_258(void) 
 {
 	svi_reg(&(tinfoil.validation_items[257]),
-	        "757c8c470f4bf9b3241fc3b2f12ca2fcb7f520e6159e70b0be072448453551e4e297a388aa47a06319ddb58bd1c6b95f7be5616c09a699ba47b3675a7844c7ca",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/lib/lz4/lz4hc_compress.ko"
+	        "0d6b14a7acf433e514e10866e6b1ffb439ef8f14a380d404c1db06e88c0ce291cb0f5f2f9505ca633d3326dad1fd9155b4be91982b34b1c433ef6440a3fbc51b",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/lib/lz4/lz4_compress.ko"
 	);
 }
 static void svir_259(void) 
 {
 	svi_reg(&(tinfoil.validation_items[258]),
-	        "0d6b14a7acf433e514e10866e6b1ffb439ef8f14a380d404c1db06e88c0ce291cb0f5f2f9505ca633d3326dad1fd9155b4be91982b34b1c433ef6440a3fbc51b",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/lib/lz4/lz4_compress.ko"
+	        "3820db641dcd0dadb452fb234fd459b5abd38675d1bfd46f715228093550acd320002671ce831f2e43722bdb3708fc81606f26ee8eca01d8c6712e49d2e3b1c8",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/lib/crypto/libdes.ko"
 	);
 }
 static void svir_260(void) 
 {
 	svi_reg(&(tinfoil.validation_items[259]),
-	        "3820db641dcd0dadb452fb234fd459b5abd38675d1bfd46f715228093550acd320002671ce831f2e43722bdb3708fc81606f26ee8eca01d8c6712e49d2e3b1c8",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/lib/crypto/libdes.ko"
+	        "fe3cd61840bf2cd4587d8199010e574a95e3bc4c5df205528afe07294f243bf7986c9d9e135ee91d974eef635f07425a67fb0ea5f52f6482468d90f075fd4935",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/lib/crypto/libcurve25519-generic.ko"
 	);
 }
 static void svir_261(void) 
 {
 	svi_reg(&(tinfoil.validation_items[260]),
-	        "fe3cd61840bf2cd4587d8199010e574a95e3bc4c5df205528afe07294f243bf7986c9d9e135ee91d974eef635f07425a67fb0ea5f52f6482468d90f075fd4935",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/lib/crypto/libcurve25519-generic.ko"
+	        "921056f9e0d8943fa72eea37612ac5495d7d5e7384372d18f9801bcd5f291bce2372fd6a773e5de23940fd7613264b6e92ec79224ba3ac40870bbd0f86724626",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/lib/crypto/libblake2s-generic.ko"
 	);
 }
 static void svir_262(void) 
 {
 	svi_reg(&(tinfoil.validation_items[261]),
-	        "921056f9e0d8943fa72eea37612ac5495d7d5e7384372d18f9801bcd5f291bce2372fd6a773e5de23940fd7613264b6e92ec79224ba3ac40870bbd0f86724626",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/lib/crypto/libblake2s-generic.ko"
+	        "15354b3076df292939ad56c36a216ee6f1a1ebf54a35e47708b300184b8b84100228fe14d88be0f527370b7d35d5ebe1dd5cfea35996e80808741a4097534680",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/lib/asn1_encoder.ko"
 	);
 }
 static void svir_263(void) 
 {
 	svi_reg(&(tinfoil.validation_items[262]),
-	        "15354b3076df292939ad56c36a216ee6f1a1ebf54a35e47708b300184b8b84100228fe14d88be0f527370b7d35d5ebe1dd5cfea35996e80808741a4097534680",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/lib/asn1_encoder.ko"
+	        "b4c2b6aaac0763de96f47e6b337454062ce4adef6efc52bdc4b91a4452ef43da2b7d41ce4083aac10c147f0a8708f1f554a562680e363fc9316cf388aa255246",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/fs/fuse/fuse.ko"
 	);
 }
 static void svir_264(void) 
 {
 	svi_reg(&(tinfoil.validation_items[263]),
-	        "b4c2b6aaac0763de96f47e6b337454062ce4adef6efc52bdc4b91a4452ef43da2b7d41ce4083aac10c147f0a8708f1f554a562680e363fc9316cf388aa255246",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/fs/fuse/fuse.ko"
+	        "353dbc3e2940f07114ba0d06e9e34405a724527093a880485b22b4de6192182b15bf796a7e75a0181d0393c44925daad7c0d05c91b6e88439501a6de97f2d7b4",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/fs/fat/vfat.ko"
 	);
 }
 static void svir_265(void) 
 {
 	svi_reg(&(tinfoil.validation_items[264]),
-	        "353dbc3e2940f07114ba0d06e9e34405a724527093a880485b22b4de6192182b15bf796a7e75a0181d0393c44925daad7c0d05c91b6e88439501a6de97f2d7b4",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/fs/fat/vfat.ko"
+	        "034a39ff9109ba5f3603a4897fd3fde4a2f43eb7f70c3e6789c8ea4514ede5f791e65955b932e71daf1e5875e2db9f99b55b0b6a76cd18734c717bbb84a635f7",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/fs/fat/fat.ko"
 	);
 }
 static void svir_266(void) 
 {
 	svi_reg(&(tinfoil.validation_items[265]),
-	        "034a39ff9109ba5f3603a4897fd3fde4a2f43eb7f70c3e6789c8ea4514ede5f791e65955b932e71daf1e5875e2db9f99b55b0b6a76cd18734c717bbb84a635f7",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/fs/fat/fat.ko"
+	        "cd7ef5aabc2c59de0780e92da09f405ec9d8199691e239f5ec580e7323b218b72ba49146f9d8927abce4657f43acff7f435bb2141fd691beea498b83497c7030",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/xen_wdt.ko"
 	);
 }
 static void svir_267(void) 
 {
 	svi_reg(&(tinfoil.validation_items[266]),
-	        "cd7ef5aabc2c59de0780e92da09f405ec9d8199691e239f5ec580e7323b218b72ba49146f9d8927abce4657f43acff7f435bb2141fd691beea498b83497c7030",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/xen_wdt.ko"
+	        "11ea9759ba44505b0ffec10c3f3c9bfce35d0bf83ade3cf61e6c093ce977b129b55dce4fb5d439084dbd92b1de957942024389f58db76bffbfc7e814337d3f2a",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/wdt_pci.ko"
 	);
 }
 static void svir_268(void) 
 {
 	svi_reg(&(tinfoil.validation_items[267]),
-	        "11ea9759ba44505b0ffec10c3f3c9bfce35d0bf83ade3cf61e6c093ce977b129b55dce4fb5d439084dbd92b1de957942024389f58db76bffbfc7e814337d3f2a",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/wdt_pci.ko"
+	        "32acded35eee2883a3a7a3f9ec59f3680f32e1b6e15fceb8eeb5fba0ba480e925a8c4ad4fccfeff2af6b4df7b76fbd9f14b78bce1ee7dce85a91f0ea8f3a61f3",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/wdat_wdt.ko"
 	);
 }
 static void svir_269(void) 
 {
 	svi_reg(&(tinfoil.validation_items[268]),
-	        "32acded35eee2883a3a7a3f9ec59f3680f32e1b6e15fceb8eeb5fba0ba480e925a8c4ad4fccfeff2af6b4df7b76fbd9f14b78bce1ee7dce85a91f0ea8f3a61f3",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/wdat_wdt.ko"
+	        "febc1ea170deeb62a62137070c09306301a2e75c237fe457a22c0e16867eb191c34861bab8acdf101c60259f6b1c493b633052750e1c7f8ddc66926a1203e33f",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/w83977f_wdt.ko"
 	);
 }
 static void svir_270(void) 
 {
 	svi_reg(&(tinfoil.validation_items[269]),
-	        "febc1ea170deeb62a62137070c09306301a2e75c237fe457a22c0e16867eb191c34861bab8acdf101c60259f6b1c493b633052750e1c7f8ddc66926a1203e33f",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/w83977f_wdt.ko"
+	        "cf759ee05a97aae881ce3245f4956489c821aa06fa106ba313edc289af41e6f0a3165ca214447ad06e36c799c4f846c535a0b420c49bd6d0d7eb79ded601d8d3",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/w83877f_wdt.ko"
 	);
 }
 static void svir_271(void) 
 {
 	svi_reg(&(tinfoil.validation_items[270]),
-	        "cf759ee05a97aae881ce3245f4956489c821aa06fa106ba313edc289af41e6f0a3165ca214447ad06e36c799c4f846c535a0b420c49bd6d0d7eb79ded601d8d3",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/w83877f_wdt.ko"
+	        "d7354ece747c69b34db2ecede40031be20c88d770d6daecede42e7bead979018dbcb2a0cf8e98899929dbcf2481f6b186fefa42e7aa1c6572db02055f0358917",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/w83627hf_wdt.ko"
 	);
 }
 static void svir_272(void) 
 {
 	svi_reg(&(tinfoil.validation_items[271]),
-	        "d7354ece747c69b34db2ecede40031be20c88d770d6daecede42e7bead979018dbcb2a0cf8e98899929dbcf2481f6b186fefa42e7aa1c6572db02055f0358917",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/w83627hf_wdt.ko"
+	        "adbdfb6801a423707a38b9a2327d851ad91277c5360b1ec3699922f788f9a4c36d75429b2a32c9e2265f5a888b462f072e25b5bf7c2aacbcf0cbc6773d6b2746",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/via_wdt.ko"
 	);
 }
 static void svir_273(void) 
 {
 	svi_reg(&(tinfoil.validation_items[272]),
-	        "adbdfb6801a423707a38b9a2327d851ad91277c5360b1ec3699922f788f9a4c36d75429b2a32c9e2265f5a888b462f072e25b5bf7c2aacbcf0cbc6773d6b2746",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/via_wdt.ko"
+	        "2721534094426841a1e09e37aac21285ccc7125c4033de07a3e2668dc57e2872f554e9aa4550535130e2cac1c192791869c5eea4b05ea5a5f94911cba641a733",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/tqmx86_wdt.ko"
 	);
 }
 static void svir_274(void) 
 {
 	svi_reg(&(tinfoil.validation_items[273]),
-	        "2721534094426841a1e09e37aac21285ccc7125c4033de07a3e2668dc57e2872f554e9aa4550535130e2cac1c192791869c5eea4b05ea5a5f94911cba641a733",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/tqmx86_wdt.ko"
+	        "78a708d0c69cdd496dfd462b05c7e83d85895733a77596f6680535a2133e4d4d44be9f53d30e81914d2036f202993e83cde6756cb07adb37c2bfc0c4c98514ab",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/sp5100_tco.ko"
 	);
 }
 static void svir_275(void) 
 {
 	svi_reg(&(tinfoil.validation_items[274]),
-	        "78a708d0c69cdd496dfd462b05c7e83d85895733a77596f6680535a2133e4d4d44be9f53d30e81914d2036f202993e83cde6756cb07adb37c2bfc0c4c98514ab",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/sp5100_tco.ko"
+	        "a5f7db44897645c24770d583dce328e6f6d744822a2846c6c7c3ca40f78129fdb097724717dc57e824ce34602ea880b9eebf2553c0bf4cf7803d29b3b8e98142",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/softdog.ko"
 	);
 }
 static void svir_276(void) 
 {
 	svi_reg(&(tinfoil.validation_items[275]),
-	        "a5f7db44897645c24770d583dce328e6f6d744822a2846c6c7c3ca40f78129fdb097724717dc57e824ce34602ea880b9eebf2553c0bf4cf7803d29b3b8e98142",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/softdog.ko"
+	        "f923a9a7ee9371e0a28b0d36865c173fc37cdd2f67e22a543b4e236ce1674ee42969e9170f32d9605c7814474b2e6d6e224712e6c0c816eea017a140b56ce91c",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/sch311x_wdt.ko"
 	);
 }
 static void svir_277(void) 
 {
 	svi_reg(&(tinfoil.validation_items[276]),
-	        "f923a9a7ee9371e0a28b0d36865c173fc37cdd2f67e22a543b4e236ce1674ee42969e9170f32d9605c7814474b2e6d6e224712e6c0c816eea017a140b56ce91c",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/sch311x_wdt.ko"
+	        "8ea272c5a26525a86ed19adbe483a5486c718910b1915b45cf16d3c6fd314f4940e74f74b1061b025cb81db804f16ad972daa2b958e9a8cc30f8f93900b3328f",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/sbc_fitpc2_wdt.ko"
 	);
 }
 static void svir_278(void) 
 {
 	svi_reg(&(tinfoil.validation_items[277]),
-	        "8ea272c5a26525a86ed19adbe483a5486c718910b1915b45cf16d3c6fd314f4940e74f74b1061b025cb81db804f16ad972daa2b958e9a8cc30f8f93900b3328f",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/sbc_fitpc2_wdt.ko"
+	        "fe95740bd5c15ed78adc0e779ba15c4e8f16ad8a0432bc3be0742f0e60c6f36ac0d74eaecb89a0d630330b7ea63eafbff14d9079b88e67bcd34c659994e7daf2",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/pcwd_usb.ko"
 	);
 }
 static void svir_279(void) 
 {
 	svi_reg(&(tinfoil.validation_items[278]),
-	        "fe95740bd5c15ed78adc0e779ba15c4e8f16ad8a0432bc3be0742f0e60c6f36ac0d74eaecb89a0d630330b7ea63eafbff14d9079b88e67bcd34c659994e7daf2",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/pcwd_usb.ko"
+	        "55d237a7efd78b3aa545ae000a531f01c5aadbf4368cb4a5bb9275075e6b8785d9f2862910f731f274ebbe20b9d0cfc113e13fe84beafb7892790b821ac87b4c",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/pcwd_pci.ko"
 	);
 }
 static void svir_280(void) 
 {
 	svi_reg(&(tinfoil.validation_items[279]),
-	        "55d237a7efd78b3aa545ae000a531f01c5aadbf4368cb4a5bb9275075e6b8785d9f2862910f731f274ebbe20b9d0cfc113e13fe84beafb7892790b821ac87b4c",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/pcwd_pci.ko"
+	        "953e4081d73af13718a59bc73f8fc267e2c9c4447475f9fa2e21f3cb70ade01a82c25de74cba35943175f20e34df284e2591b329db6b995332c4f3edfa168258",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/nv_tco.ko"
 	);
 }
 static void svir_281(void) 
 {
 	svi_reg(&(tinfoil.validation_items[280]),
-	        "953e4081d73af13718a59bc73f8fc267e2c9c4447475f9fa2e21f3cb70ade01a82c25de74cba35943175f20e34df284e2591b329db6b995332c4f3edfa168258",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/nv_tco.ko"
+	        "e950880499339b00b28e90e96c2905795feab48647809e604fc0ee5e516d913d73be3162343a22cca9eb944e526c9b9bde879a17c9a04b3e5b900b5b3b5a6963",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/nic7018_wdt.ko"
 	);
 }
 static void svir_282(void) 
 {
 	svi_reg(&(tinfoil.validation_items[281]),
-	        "e950880499339b00b28e90e96c2905795feab48647809e604fc0ee5e516d913d73be3162343a22cca9eb944e526c9b9bde879a17c9a04b3e5b900b5b3b5a6963",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/nic7018_wdt.ko"
+	        "7dd5ada2587009e888c4cefee840712767ced03146ef98a047f425bd21edabe36fe4f151039090a449b071acd6c0ce4b318568fe3bab24d0068ab0224e3b3602",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/mlx_wdt.ko"
 	);
 }
 static void svir_283(void) 
 {
 	svi_reg(&(tinfoil.validation_items[282]),
-	        "7dd5ada2587009e888c4cefee840712767ced03146ef98a047f425bd21edabe36fe4f151039090a449b071acd6c0ce4b318568fe3bab24d0068ab0224e3b3602",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/mlx_wdt.ko"
+	        "5532ce4cdfb066b8871739b4755a63f3d4db31a1e09a06a5541198ddd322333300e5f2aa09ce2df0c770f135349bb344a74ad4abbc0a0c9c7fa872f181c2b358",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/mei_wdt.ko"
 	);
 }
 static void svir_284(void) 
 {
 	svi_reg(&(tinfoil.validation_items[283]),
-	        "5532ce4cdfb066b8871739b4755a63f3d4db31a1e09a06a5541198ddd322333300e5f2aa09ce2df0c770f135349bb344a74ad4abbc0a0c9c7fa872f181c2b358",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/mei_wdt.ko"
+	        "5a4445e606390cc98817d13eea0925aeb3efd488f09c25083aef62c9b7cfbcc27c4ae5c2e0f1245f32ba64bf7ce5b544a8f5e29278cb95a81ab781585d0ac74d",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/machzwd.ko"
 	);
 }
 static void svir_285(void) 
 {
 	svi_reg(&(tinfoil.validation_items[284]),
-	        "5a4445e606390cc98817d13eea0925aeb3efd488f09c25083aef62c9b7cfbcc27c4ae5c2e0f1245f32ba64bf7ce5b544a8f5e29278cb95a81ab781585d0ac74d",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/machzwd.ko"
+	        "9fa7f91e5c8803e67967baad22cc08c06d0a6ac0f061d77ef5b20a7af762300a3c2bdee6cf49d1bb84aa9debb22a968bfcf98e112fff5ddf662b140183cc819d",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/it87_wdt.ko"
 	);
 }
 static void svir_286(void) 
 {
 	svi_reg(&(tinfoil.validation_items[285]),
-	        "9fa7f91e5c8803e67967baad22cc08c06d0a6ac0f061d77ef5b20a7af762300a3c2bdee6cf49d1bb84aa9debb22a968bfcf98e112fff5ddf662b140183cc819d",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/it87_wdt.ko"
+	        "a5facd814126beccc449f4a772fee1a4c18da471d4ffe502d1a293d0220cc72fbb1d97024c9d1f38317eaa4cc89088a0f6b14c33829560909f95b6312053f91b",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/it8712f_wdt.ko"
 	);
 }
 static void svir_287(void) 
 {
 	svi_reg(&(tinfoil.validation_items[286]),
-	        "a5facd814126beccc449f4a772fee1a4c18da471d4ffe502d1a293d0220cc72fbb1d97024c9d1f38317eaa4cc89088a0f6b14c33829560909f95b6312053f91b",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/it8712f_wdt.ko"
+	        "47daf01414467d92d2daa1ba4e41c26f4ccf0b7bb87a413617ebdbce1a59ebccad0a9938ecd67258be2d740281226cbed9ee0ae64b1296c3e4508ba13903c9e7",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/ie6xx_wdt.ko"
 	);
 }
 static void svir_288(void) 
 {
 	svi_reg(&(tinfoil.validation_items[287]),
-	        "47daf01414467d92d2daa1ba4e41c26f4ccf0b7bb87a413617ebdbce1a59ebccad0a9938ecd67258be2d740281226cbed9ee0ae64b1296c3e4508ba13903c9e7",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/ie6xx_wdt.ko"
+	        "760afa32f3d9a3537bd08d52edd1e6aab402e2ef5aeb538d61791a5f7ab9002194a35de16e3e1575d98a9ca995b46e1fde8374e2e0b0b706986de7c0e7e565fb",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/ibmasr.ko"
 	);
 }
 static void svir_289(void) 
 {
 	svi_reg(&(tinfoil.validation_items[288]),
-	        "760afa32f3d9a3537bd08d52edd1e6aab402e2ef5aeb538d61791a5f7ab9002194a35de16e3e1575d98a9ca995b46e1fde8374e2e0b0b706986de7c0e7e565fb",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/ibmasr.ko"
+	        "725e9f767355fbd802105bf37439dd4dea7a9ca7bb0a2117eea8af803d8e93e71abd1ce1276c5698b38789fad04e81a8ec6a8522df769db702627d5b87c17dc0",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/ib700wdt.ko"
 	);
 }
 static void svir_290(void) 
 {
 	svi_reg(&(tinfoil.validation_items[289]),
-	        "725e9f767355fbd802105bf37439dd4dea7a9ca7bb0a2117eea8af803d8e93e71abd1ce1276c5698b38789fad04e81a8ec6a8522df769db702627d5b87c17dc0",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/ib700wdt.ko"
+	        "e7bad2c861e17462ca73708fce57f3bc0547556643fa62b2c1e6548b48f5f0ce6ce367061e5dbc293af44190c0331e49e2e692829274bb7675c66a5ff6420fc1",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/iTCO_wdt.ko"
 	);
 }
 static void svir_291(void) 
 {
 	svi_reg(&(tinfoil.validation_items[290]),
-	        "e7bad2c861e17462ca73708fce57f3bc0547556643fa62b2c1e6548b48f5f0ce6ce367061e5dbc293af44190c0331e49e2e692829274bb7675c66a5ff6420fc1",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/iTCO_wdt.ko"
+	        "94bf5d66d918fabb21daeb886715cb77dbde788d0a91e76c1a1044801e41990bdb9153a6160c18b12293e6857f16da70dbe522a1b2edcc25e5451c9e5bc56ae1",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/iTCO_vendor_support.ko"
 	);
 }
 static void svir_292(void) 
 {
 	svi_reg(&(tinfoil.validation_items[291]),
-	        "94bf5d66d918fabb21daeb886715cb77dbde788d0a91e76c1a1044801e41990bdb9153a6160c18b12293e6857f16da70dbe522a1b2edcc25e5451c9e5bc56ae1",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/iTCO_vendor_support.ko"
+	        "2e2179ef01d761527062aebeee5cfbf40710ef104562d216a167573d3d61220136c9b97a365d9c1748a7735e849713281a53e978c56be9154c722831284eb8c1",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/i6300esb.ko"
 	);
 }
 static void svir_293(void) 
 {
 	svi_reg(&(tinfoil.validation_items[292]),
-	        "2e2179ef01d761527062aebeee5cfbf40710ef104562d216a167573d3d61220136c9b97a365d9c1748a7735e849713281a53e978c56be9154c722831284eb8c1",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/i6300esb.ko"
+	        "a34396b1e6c76a89bc08d6aaa3d4d82d9c7a07b7e8c4f828611669edf926dab5e9b60de9badfb4b6942acd89405572c76d3bd04b83d3fa83eb42e38eaf097655",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/hpwdt.ko"
 	);
 }
 static void svir_294(void) 
 {
 	svi_reg(&(tinfoil.validation_items[293]),
-	        "a34396b1e6c76a89bc08d6aaa3d4d82d9c7a07b7e8c4f828611669edf926dab5e9b60de9badfb4b6942acd89405572c76d3bd04b83d3fa83eb42e38eaf097655",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/hpwdt.ko"
+	        "db7ed44be6a89bfef419202c0ce89e6b3a28190554e545a40c3d6fc0bbb4218fdad78a2e43a807a7f64aadb7e9fa691a2b72c8a253174a1eae22e3d20cf2e7fa",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/f71808e_wdt.ko"
 	);
 }
 static void svir_295(void) 
 {
 	svi_reg(&(tinfoil.validation_items[294]),
-	        "db7ed44be6a89bfef419202c0ce89e6b3a28190554e545a40c3d6fc0bbb4218fdad78a2e43a807a7f64aadb7e9fa691a2b72c8a253174a1eae22e3d20cf2e7fa",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/f71808e_wdt.ko"
+	        "692fb7c057d9faf1648f71e6e338335ab58d8c2fbea994fca0cc741499814c01d647cd5dd2b0dc0d9ff910a93e21949c6ced3066ba75ca3373a5c4d4e37c9fec",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/alim7101_wdt.ko"
 	);
 }
 static void svir_296(void) 
 {
 	svi_reg(&(tinfoil.validation_items[295]),
-	        "692fb7c057d9faf1648f71e6e338335ab58d8c2fbea994fca0cc741499814c01d647cd5dd2b0dc0d9ff910a93e21949c6ced3066ba75ca3373a5c4d4e37c9fec",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/alim7101_wdt.ko"
+	        "99c843aa4de579e4544f5aeb43e9b1163714ec20158e80f268cccd2f6b7c7ce067c8782ea934a31f96b5fdbb1db834fdca06f76f6579680c6394bf9868f2b87a",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/alim1535_wdt.ko"
 	);
 }
 static void svir_297(void) 
 {
 	svi_reg(&(tinfoil.validation_items[296]),
-	        "99c843aa4de579e4544f5aeb43e9b1163714ec20158e80f268cccd2f6b7c7ce067c8782ea934a31f96b5fdbb1db834fdca06f76f6579680c6394bf9868f2b87a",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/alim1535_wdt.ko"
+	        "1af46faccf540bf661fa9eca99801894909d6c7a1139d9fe57e8476b6c29c8f870c728ae709bd5089a411f7d1af93bf9e853f9a2ce732172131b770cebcc727e",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/virtio/virtio_mem.ko"
 	);
 }
 static void svir_298(void) 
 {
 	svi_reg(&(tinfoil.validation_items[297]),
-	        "1af46faccf540bf661fa9eca99801894909d6c7a1139d9fe57e8476b6c29c8f870c728ae709bd5089a411f7d1af93bf9e853f9a2ce732172131b770cebcc727e",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/virtio/virtio_mem.ko"
+	        "bd48037a5ce5b94f190283b997dee48d3f42a577f9d9aae8b16e13e931b8b5a771a51660d6694e261c864788a6046eadacb8171e2ae9f234367a58d9f21377ae",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/video/backlight/lcd.ko"
 	);
 }
 static void svir_299(void) 
 {
 	svi_reg(&(tinfoil.validation_items[298]),
-	        "bd48037a5ce5b94f190283b997dee48d3f42a577f9d9aae8b16e13e931b8b5a771a51660d6694e261c864788a6046eadacb8171e2ae9f234367a58d9f21377ae",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/video/backlight/lcd.ko"
+	        "f8f4ebb20b463732309d9d48f2406f13af35a59adcc1f76ef586f781b03abd1a4bf9b988c28bb50825f695de37f7b838f0634b4a12fbc2e88a1cb6f990a1bd83",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/ucsi/ucsi_ccg.ko"
 	);
 }
 static void svir_300(void) 
 {
 	svi_reg(&(tinfoil.validation_items[299]),
-	        "f8f4ebb20b463732309d9d48f2406f13af35a59adcc1f76ef586f781b03abd1a4bf9b988c28bb50825f695de37f7b838f0634b4a12fbc2e88a1cb6f990a1bd83",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/ucsi/ucsi_ccg.ko"
+	        "f9d246a0f31f418f151302b34fa0ee74b8dfee0d33cae6b7eed6de6ef929043afda2e784c760863c1be22741197f3bd41b4d362fe3ba26d296ee4dc14c8e87c3",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/ucsi/ucsi_acpi.ko"
 	);
 }
 static void svir_301(void) 
 {
 	svi_reg(&(tinfoil.validation_items[300]),
-	        "f9d246a0f31f418f151302b34fa0ee74b8dfee0d33cae6b7eed6de6ef929043afda2e784c760863c1be22741197f3bd41b4d362fe3ba26d296ee4dc14c8e87c3",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/ucsi/ucsi_acpi.ko"
+	        "6d739ed909e4374124c99805990cd21099f1f2f3e3febf648a41aa7e6274d5190c70015bfd776b5017c5c3bd7e732698d05ea2d1336c511a11aeb8db32b40514",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/ucsi/typec_ucsi.ko"
 	);
 }
 static void svir_302(void) 
 {
 	svi_reg(&(tinfoil.validation_items[301]),
-	        "6d739ed909e4374124c99805990cd21099f1f2f3e3febf648a41aa7e6274d5190c70015bfd776b5017c5c3bd7e732698d05ea2d1336c511a11aeb8db32b40514",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/ucsi/typec_ucsi.ko"
+	        "cc7277083e6dac5717e615ac9b5163f431fe79a1189ec1a4bbb0bf3e8cf46abe6128a189f934f14bfdab1c59472a54f6398c83427f1c3a269c80de4bef9139d2",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/typec.ko"
 	);
 }
 static void svir_303(void) 
 {
 	svi_reg(&(tinfoil.validation_items[302]),
-	        "cc7277083e6dac5717e615ac9b5163f431fe79a1189ec1a4bbb0bf3e8cf46abe6128a189f934f14bfdab1c59472a54f6398c83427f1c3a269c80de4bef9139d2",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/typec.ko"
+	        "3b590df2afe4027261257b3e692ed18355636adaf12f84027b06f2aff126a2619bbe8638440604f8089a4aa173fd79207483cabed0a2daa9669eada0725f9104",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/tipd/tps6598x.ko"
 	);
 }
 static void svir_304(void) 
 {
 	svi_reg(&(tinfoil.validation_items[303]),
-	        "3b590df2afe4027261257b3e692ed18355636adaf12f84027b06f2aff126a2619bbe8638440604f8089a4aa173fd79207483cabed0a2daa9669eada0725f9104",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/tipd/tps6598x.ko"
+	        "75d54f55ab331796c572c2769c1cf043347e9901a21b4aa7f457c65b57a8d517f37a0d70448d953ac42368c5e7be0060b9a62a2c021e15bd43614c5f6a0ce406",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/tcpm/typec_wcove.ko"
 	);
 }
 static void svir_305(void) 
 {
 	svi_reg(&(tinfoil.validation_items[304]),
-	        "75d54f55ab331796c572c2769c1cf043347e9901a21b4aa7f457c65b57a8d517f37a0d70448d953ac42368c5e7be0060b9a62a2c021e15bd43614c5f6a0ce406",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/tcpm/typec_wcove.ko"
+	        "6aa5c6ac6c1564593c0a40bc781c76a451c84f93da277748ecd30f6fc0299ed413911409f7b9ba32e4d2ada07bf231f977a4f0ad6922acf4596e807c6f3d85f7",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/tcpm/tcpm.ko"
 	);
 }
 static void svir_306(void) 
 {
 	svi_reg(&(tinfoil.validation_items[305]),
-	        "6aa5c6ac6c1564593c0a40bc781c76a451c84f93da277748ecd30f6fc0299ed413911409f7b9ba32e4d2ada07bf231f977a4f0ad6922acf4596e807c6f3d85f7",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/tcpm/tcpm.ko"
+	        "d18847d30f17a68c67bf9e0d66600c8488f72c851a1f60ece3a853a8cbe3098b4229783a56de00e619dfd28a260d377a59184368caac03bd429084b80323c929",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/tcpm/tcpci_maxim.ko"
 	);
 }
 static void svir_307(void) 
 {
 	svi_reg(&(tinfoil.validation_items[306]),
-	        "d18847d30f17a68c67bf9e0d66600c8488f72c851a1f60ece3a853a8cbe3098b4229783a56de00e619dfd28a260d377a59184368caac03bd429084b80323c929",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/tcpm/tcpci_maxim.ko"
+	        "7bcbea22413851a8589e3ed62b3439d5475b489eb4f76d31d3c4c1022f504621a21ed22865a0c701b30c752da7d3d749e0f2e51b373a4c7679f74b59ef0c9209",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/tcpm/tcpci.ko"
 	);
 }
 static void svir_308(void) 
 {
 	svi_reg(&(tinfoil.validation_items[307]),
-	        "7bcbea22413851a8589e3ed62b3439d5475b489eb4f76d31d3c4c1022f504621a21ed22865a0c701b30c752da7d3d749e0f2e51b373a4c7679f74b59ef0c9209",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/tcpm/tcpci.ko"
+	        "a0f5e96a6cf0f6307e0c59c448b499cdb23a358230acf642b45956e801c6c779b8c52ca892660fb75fb4519b9c9438e1b7766f902b15ef8e87e254317dd081f0",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/tcpm/fusb302.ko"
 	);
 }
 static void svir_309(void) 
 {
 	svi_reg(&(tinfoil.validation_items[308]),
-	        "a0f5e96a6cf0f6307e0c59c448b499cdb23a358230acf642b45956e801c6c779b8c52ca892660fb75fb4519b9c9438e1b7766f902b15ef8e87e254317dd081f0",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/tcpm/fusb302.ko"
+	        "f7353bb20c865fa650a6f5f18b7df891db56695748a8f17b66ae6ad568efa31cfbe7d19a5b6262937cb183151589cdf48d19e510415bd6842c87d3eae5fde72d",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/stusb160x.ko"
 	);
 }
 static void svir_310(void) 
 {
 	svi_reg(&(tinfoil.validation_items[309]),
-	        "f7353bb20c865fa650a6f5f18b7df891db56695748a8f17b66ae6ad568efa31cfbe7d19a5b6262937cb183151589cdf48d19e510415bd6842c87d3eae5fde72d",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/stusb160x.ko"
+	        "9d334d033056b51d46f58b182fe8def9b22155ffc2cfa899c74c39e008f1fabb63e1e96baf94a9e151dc364512a76f7c1d169eef279fe23be31b4b4a77781b4e",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/mux/pi3usb30532.ko"
 	);
 }
 static void svir_311(void) 
 {
 	svi_reg(&(tinfoil.validation_items[310]),
-	        "9d334d033056b51d46f58b182fe8def9b22155ffc2cfa899c74c39e008f1fabb63e1e96baf94a9e151dc364512a76f7c1d169eef279fe23be31b4b4a77781b4e",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/mux/pi3usb30532.ko"
+	        "414ce9e165515e320a73c47cd2828e1544a98c68a59c39020efe5cd4430b764a1796c7cf6eac26f77c97f936ffa1e7ef807b747d372b8f1cab520e076d75785e",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/mux/intel_pmc_mux.ko"
 	);
 }
 static void svir_312(void) 
 {
 	svi_reg(&(tinfoil.validation_items[311]),
-	        "414ce9e165515e320a73c47cd2828e1544a98c68a59c39020efe5cd4430b764a1796c7cf6eac26f77c97f936ffa1e7ef807b747d372b8f1cab520e076d75785e",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/mux/intel_pmc_mux.ko"
+	        "1a65f39fa82d88ccad3727ece680a575a71439224ddc2476830bcc809313ee60ed04fd2da689b0d317f704b87b0c978a5c597f2422261a9bc2b6da66cf37dc03",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/hd3ss3220.ko"
 	);
 }
 static void svir_313(void) 
 {
 	svi_reg(&(tinfoil.validation_items[312]),
-	        "1a65f39fa82d88ccad3727ece680a575a71439224ddc2476830bcc809313ee60ed04fd2da689b0d317f704b87b0c978a5c597f2422261a9bc2b6da66cf37dc03",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/hd3ss3220.ko"
+	        "0fdf150017ae7effc7f8b5f1ddf36c773ee9a89b0a4f0d0a2d8c31edcb84ff0792b2088483e9cd97476baebed5fb6dddc6f6b4be62a5371810214394f4069bca",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/altmodes/typec_nvidia.ko"
 	);
 }
 static void svir_314(void) 
 {
 	svi_reg(&(tinfoil.validation_items[313]),
-	        "0fdf150017ae7effc7f8b5f1ddf36c773ee9a89b0a4f0d0a2d8c31edcb84ff0792b2088483e9cd97476baebed5fb6dddc6f6b4be62a5371810214394f4069bca",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/altmodes/typec_nvidia.ko"
+	        "3e65fbfd52c36cfd0ecadb1a53bff3cc89331c28bcebb81435f7bc6c6036eecb032fd9c91435a47f78bb389e9126c2aef7fa47e5e0b603c82dfa20915102b71b",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/altmodes/typec_displayport.ko"
 	);
 }
 static void svir_315(void) 
 {
 	svi_reg(&(tinfoil.validation_items[314]),
-	        "3e65fbfd52c36cfd0ecadb1a53bff3cc89331c28bcebb81435f7bc6c6036eecb032fd9c91435a47f78bb389e9126c2aef7fa47e5e0b603c82dfa20915102b71b",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/altmodes/typec_displayport.ko"
+	        "554c568ab4ca9a2142d5924863b69effd9a3699b05537fbd69ff1d160fb68e499a09751e8e0a3ca3b972db44aba2f49c229db2105df10ba430a61cd5aa0abfa1",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/host/xhci-plat-hcd.ko"
 	);
 }
 static void svir_316(void) 
 {
 	svi_reg(&(tinfoil.validation_items[315]),
-	        "554c568ab4ca9a2142d5924863b69effd9a3699b05537fbd69ff1d160fb68e499a09751e8e0a3ca3b972db44aba2f49c229db2105df10ba430a61cd5aa0abfa1",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/host/xhci-plat-hcd.ko"
+	        "6251bc185fd3627b516681f71fbacc623c1bbc3379541a506d41cb7822a358b7baf01c1594d3f1af68827d0abc60ef252f19d9471c382d35872d9797b8e66489",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/tty/serial/sc16is7xx.ko"
 	);
 }
 static void svir_317(void) 
 {
 	svi_reg(&(tinfoil.validation_items[316]),
-	        "6251bc185fd3627b516681f71fbacc623c1bbc3379541a506d41cb7822a358b7baf01c1594d3f1af68827d0abc60ef252f19d9471c382d35872d9797b8e66489",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/tty/serial/sc16is7xx.ko"
+	        "2c6516b3f7db351397fcf416f80f747f4c7bc199385098461016b25c549556b36b5e74dd0a6b87e0c123d0a4b34a9f148bc43761035139d72be8b73f96bdb700",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/tty/serial/jsm/jsm.ko"
 	);
 }
 static void svir_318(void) 
 {
 	svi_reg(&(tinfoil.validation_items[317]),
-	        "2c6516b3f7db351397fcf416f80f747f4c7bc199385098461016b25c549556b36b5e74dd0a6b87e0c123d0a4b34a9f148bc43761035139d72be8b73f96bdb700",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/tty/serial/jsm/jsm.ko"
+	        "134da0b4a7cb0a368acec66124525e02b156fea0551929c45b4443d67f51877b1ad33d87e15d652cdee83b106663d035f367337cfe818beb832da21ee8ff2c70",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/tty/serial/arc_uart.ko"
 	);
 }
 static void svir_319(void) 
 {
 	svi_reg(&(tinfoil.validation_items[318]),
-	        "134da0b4a7cb0a368acec66124525e02b156fea0551929c45b4443d67f51877b1ad33d87e15d652cdee83b106663d035f367337cfe818beb832da21ee8ff2c70",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/tty/serial/arc_uart.ko"
+	        "23bb97440908ff13ae7735db5604b175035a52dd1fa0dea16ab2c964b7006302ef743521dcf862767dcaf6d924804da0b46b62a651904c017671517e3f29423a",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/tty/serial/8250/serial_cs.ko"
 	);
 }
 static void svir_320(void) 
 {
 	svi_reg(&(tinfoil.validation_items[319]),
-	        "23bb97440908ff13ae7735db5604b175035a52dd1fa0dea16ab2c964b7006302ef743521dcf862767dcaf6d924804da0b46b62a651904c017671517e3f29423a",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/tty/serial/8250/serial_cs.ko"
+	        "07382e01f8e5b50c4efe8fc1a236c287029ef7c58102d17a1de64168d555c8f7713042ca7fd4a22698134b4797c9150a1e6f624014cd9c93971e5956792949a1",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/tty/serial/8250/8250_exar.ko"
 	);
 }
 static void svir_321(void) 
 {
 	svi_reg(&(tinfoil.validation_items[320]),
-	        "07382e01f8e5b50c4efe8fc1a236c287029ef7c58102d17a1de64168d555c8f7713042ca7fd4a22698134b4797c9150a1e6f624014cd9c93971e5956792949a1",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/tty/serial/8250/8250_exar.ko"
+	        "fec327604da6e8f91189f32525fe949016577470ad56b128a9b4ab7e38fa56206c0563a6205f043ec36071eec426e2732ee0d4ea312ae4e4f0f2188830228069",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/scsi/virtio_scsi.ko"
 	);
 }
 static void svir_322(void) 
 {
 	svi_reg(&(tinfoil.validation_items[321]),
-	        "fec327604da6e8f91189f32525fe949016577470ad56b128a9b4ab7e38fa56206c0563a6205f043ec36071eec426e2732ee0d4ea312ae4e4f0f2188830228069",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/scsi/virtio_scsi.ko"
+	        "8dc92b738aa3730dba663c2f2db70f2f57ed02d09baa306dba4194074fa863b665b9af471c1596c536a62a740e2e8dc3cd6d82f5df68c4033d0dd6f9509dc11d",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/platform/x86/wmi.ko"
 	);
 }
 static void svir_323(void) 
 {
 	svi_reg(&(tinfoil.validation_items[322]),
-	        "8dc92b738aa3730dba663c2f2db70f2f57ed02d09baa306dba4194074fa863b665b9af471c1596c536a62a740e2e8dc3cd6d82f5df68c4033d0dd6f9509dc11d",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/platform/x86/wmi.ko"
+	        "73bef52e7731c15f309b69336cd0d48c23f3a37c59da68f02a987104ee01f77bcc32aa9328ba3438cf82b1c55e2fe476de8847bf7842d67135e8aba87fb7d301",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/platform/x86/asus-wmi.ko"
 	);
 }
 static void svir_324(void) 
 {
 	svi_reg(&(tinfoil.validation_items[323]),
-	        "73bef52e7731c15f309b69336cd0d48c23f3a37c59da68f02a987104ee01f77bcc32aa9328ba3438cf82b1c55e2fe476de8847bf7842d67135e8aba87fb7d301",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/platform/x86/asus-wmi.ko"
+	        "577a439bc0fcab448c2265890ce3e1c0dece3c88f71c385b72f1b1d28d6bd4177f9296a94200501d3ec187b9760db451107ae0a84e2a72864c8759e856719d45",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/platform/surface/aggregator/surface_aggregator.ko"
 	);
 }
 static void svir_325(void) 
 {
 	svi_reg(&(tinfoil.validation_items[324]),
-	        "577a439bc0fcab448c2265890ce3e1c0dece3c88f71c385b72f1b1d28d6bd4177f9296a94200501d3ec187b9760db451107ae0a84e2a72864c8759e856719d45",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/platform/surface/aggregator/surface_aggregator.ko"
+	        "c46d46f86c2ab5c26aaea198bb4404f0b79b054b6190c252df022ab138420fb829920941b5ee47f196ea98d6151fddec5bed617c7fdc775e763239191b159bca",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-tigerlake.ko"
 	);
 }
 static void svir_326(void) 
 {
 	svi_reg(&(tinfoil.validation_items[325]),
-	        "c46d46f86c2ab5c26aaea198bb4404f0b79b054b6190c252df022ab138420fb829920941b5ee47f196ea98d6151fddec5bed617c7fdc775e763239191b159bca",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-tigerlake.ko"
+	        "875341ec2d5cad28bc0a4f8d022027b8c3fb98c7b2c1e7a39fb262bf8315a09433c52823b7399073988b4d04456978e15ab7ccf88cc009fd8aa03d0ed15f7da5",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-sunrisepoint.ko"
 	);
 }
 static void svir_327(void) 
 {
 	svi_reg(&(tinfoil.validation_items[326]),
-	        "875341ec2d5cad28bc0a4f8d022027b8c3fb98c7b2c1e7a39fb262bf8315a09433c52823b7399073988b4d04456978e15ab7ccf88cc009fd8aa03d0ed15f7da5",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-sunrisepoint.ko"
+	        "b632f7c77badd0bd123fd7e0c2b02160e5e6e6ca6075b8eecea644c79a4e8954a4e7177a410eb97d71b4d5b8492e0a2e586a7e4b8ffb40e72e0b07751e032123",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-lynxpoint.ko"
 	);
 }
 static void svir_328(void) 
 {
 	svi_reg(&(tinfoil.validation_items[327]),
-	        "b632f7c77badd0bd123fd7e0c2b02160e5e6e6ca6075b8eecea644c79a4e8954a4e7177a410eb97d71b4d5b8492e0a2e586a7e4b8ffb40e72e0b07751e032123",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-lynxpoint.ko"
+	        "8b144c88a0909f14000fcd1be5b768e98665c4fd9258db4c3f6f33b1e2795c2d087e948f9ba71e65bf3b53d918b4b7975c33fce492dd07f738057b49e6a5b456",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-lewisburg.ko"
 	);
 }
 static void svir_329(void) 
 {
 	svi_reg(&(tinfoil.validation_items[328]),
-	        "8b144c88a0909f14000fcd1be5b768e98665c4fd9258db4c3f6f33b1e2795c2d087e948f9ba71e65bf3b53d918b4b7975c33fce492dd07f738057b49e6a5b456",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-lewisburg.ko"
+	        "42217e708a12081f10d48c2276e3ed88c8012cdc0e57451530705b9685ff32f08f88a1d17be9942974b54e890df47e880c3f24512df114149ba1df3801b106c1",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-lakefield.ko"
 	);
 }
 static void svir_330(void) 
 {
 	svi_reg(&(tinfoil.validation_items[329]),
-	        "42217e708a12081f10d48c2276e3ed88c8012cdc0e57451530705b9685ff32f08f88a1d17be9942974b54e890df47e880c3f24512df114149ba1df3801b106c1",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-lakefield.ko"
+	        "8a99be1f8ae7fe1b594df47b9fb925cf07b260ca55ecc73bfd0771568f5c90b20347fd05dad6953faf4e2aff930065fb9efa91c78eb8550dc6d68a947cad68e7",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-jasperlake.ko"
 	);
 }
 static void svir_331(void) 
 {
 	svi_reg(&(tinfoil.validation_items[330]),
-	        "8a99be1f8ae7fe1b594df47b9fb925cf07b260ca55ecc73bfd0771568f5c90b20347fd05dad6953faf4e2aff930065fb9efa91c78eb8550dc6d68a947cad68e7",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-jasperlake.ko"
+	        "07bc2028748163afd7e0c2e3319d7b35dd20c441e8f3bc3c6dea1375d5151621b99661e277e979cbf70abf41f3ece2bbc08feeafb55ffe059cb81dfa6b183e1e",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-icelake.ko"
 	);
 }
 static void svir_332(void) 
 {
 	svi_reg(&(tinfoil.validation_items[331]),
-	        "07bc2028748163afd7e0c2e3319d7b35dd20c441e8f3bc3c6dea1375d5151621b99661e277e979cbf70abf41f3ece2bbc08feeafb55ffe059cb81dfa6b183e1e",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-icelake.ko"
+	        "79293f21632be2a02ebb0f886dfc6ddaf0021abd4f2b7510e6d50e144ac6a3b24cd1c303a405c0a991f59917740d5bc1acbcd4a3814c62a641ff7a914ab73c14",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-geminilake.ko"
 	);
 }
 static void svir_333(void) 
 {
 	svi_reg(&(tinfoil.validation_items[332]),
-	        "79293f21632be2a02ebb0f886dfc6ddaf0021abd4f2b7510e6d50e144ac6a3b24cd1c303a405c0a991f59917740d5bc1acbcd4a3814c62a641ff7a914ab73c14",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-geminilake.ko"
+	        "3abbe1ad89e9308b368ed7bfddc2c121a3f029a0d2fd1f8a5a6015c0cf59076f021237b80578283e334d711968b853d84cc5be6fcb27cece6aa4c5238378ef66",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-emmitsburg.ko"
 	);
 }
 static void svir_334(void) 
 {
 	svi_reg(&(tinfoil.validation_items[333]),
-	        "3abbe1ad89e9308b368ed7bfddc2c121a3f029a0d2fd1f8a5a6015c0cf59076f021237b80578283e334d711968b853d84cc5be6fcb27cece6aa4c5238378ef66",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-emmitsburg.ko"
+	        "6362f7cd819df4f6c06ca42e6bf45f165cd6dcebfb65f4a1b9765b46e51740b37e117e4a7396762c82264bda4234e8f4b6aba364498c8b616396a02dc2edfe99",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-elkhartlake.ko"
 	);
 }
 static void svir_335(void) 
 {
 	svi_reg(&(tinfoil.validation_items[334]),
-	        "6362f7cd819df4f6c06ca42e6bf45f165cd6dcebfb65f4a1b9765b46e51740b37e117e4a7396762c82264bda4234e8f4b6aba364498c8b616396a02dc2edfe99",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-elkhartlake.ko"
+	        "059db3945677a29988cdef78a118ea3f2eae169e1619b024ee2d221f557b4e59c30fd0e721ec938fb9c9676eb7f3d476ace5289aceeb5992d06fc580378a71fb",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-denverton.ko"
 	);
 }
 static void svir_336(void) 
 {
 	svi_reg(&(tinfoil.validation_items[335]),
-	        "059db3945677a29988cdef78a118ea3f2eae169e1619b024ee2d221f557b4e59c30fd0e721ec938fb9c9676eb7f3d476ace5289aceeb5992d06fc580378a71fb",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-denverton.ko"
+	        "682a6158eade10481d4f85e0bce6d7cda9987c7e69592ed305e0db42bdd553de120647e05a8d46e4a1eb50d13b5bb5558b656be3f1ac8c26fae0404624bf4dd0",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-cedarfork.ko"
 	);
 }
 static void svir_337(void) 
 {
 	svi_reg(&(tinfoil.validation_items[336]),
-	        "682a6158eade10481d4f85e0bce6d7cda9987c7e69592ed305e0db42bdd553de120647e05a8d46e4a1eb50d13b5bb5558b656be3f1ac8c26fae0404624bf4dd0",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-cedarfork.ko"
+	        "eaac1f58c1548c6815da56a995453e5923540294ef3907618f809ef9c743bd08b2d8a5c326e2b4150543c8a2f540bb9382bbda300db3b7103388cd843edcfc2b",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-cannonlake.ko"
 	);
 }
 static void svir_338(void) 
 {
 	svi_reg(&(tinfoil.validation_items[337]),
-	        "eaac1f58c1548c6815da56a995453e5923540294ef3907618f809ef9c743bd08b2d8a5c326e2b4150543c8a2f540bb9382bbda300db3b7103388cd843edcfc2b",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-cannonlake.ko"
+	        "a2b6abf848a89e8032810c7d352bde8cc2bdfb543422d259ee315500be3e04dc6c48ae11d471bfed8d46e0dd3078e1f7ee441ca72acbf36e9c65e331eb390cfc",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-broxton.ko"
 	);
 }
 static void svir_339(void) 
 {
 	svi_reg(&(tinfoil.validation_items[338]),
-	        "a2b6abf848a89e8032810c7d352bde8cc2bdfb543422d259ee315500be3e04dc6c48ae11d471bfed8d46e0dd3078e1f7ee441ca72acbf36e9c65e331eb390cfc",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-broxton.ko"
+	        "ea5a8b0cd04685a0bd8628892e2794588b62110d5d0b5fc2f374f7309906f645e2b3184fee8a3de86bcee5be71ea0ec3d5f7f9bc2580395e280c2c32d3674275",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-alderlake.ko"
 	);
 }
 static void svir_340(void) 
 {
 	svi_reg(&(tinfoil.validation_items[339]),
-	        "ea5a8b0cd04685a0bd8628892e2794588b62110d5d0b5fc2f374f7309906f645e2b3184fee8a3de86bcee5be71ea0ec3d5f7f9bc2580395e280c2c32d3674275",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-alderlake.ko"
+	        "1f36f9bee8c13d4bbb1878d8c7245c6348488e1fd07a28e4d3d93dbb75c4698bdc817269035cad31d1afc31d37803fb9a51f3c0712be72eb117d88f769d7aa67",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pci/controller/vmd.ko"
 	);
 }
 static void svir_341(void) 
 {
 	svi_reg(&(tinfoil.validation_items[340]),
-	        "1f36f9bee8c13d4bbb1878d8c7245c6348488e1fd07a28e4d3d93dbb75c4698bdc817269035cad31d1afc31d37803fb9a51f3c0712be72eb117d88f769d7aa67",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pci/controller/vmd.ko"
+	        "1ecd18f6233adb42809b943196aa73f68087e4c8855852a886095100fcb8fa3bdcde96060474c320241a2b958a50432dcf86fdb440b89c77b5930e9221c6a795",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pci/controller/pci-hyperv.ko"
 	);
 }
 static void svir_342(void) 
 {
 	svi_reg(&(tinfoil.validation_items[341]),
-	        "1ecd18f6233adb42809b943196aa73f68087e4c8855852a886095100fcb8fa3bdcde96060474c320241a2b958a50432dcf86fdb440b89c77b5930e9221c6a795",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pci/controller/pci-hyperv.ko"
+	        "9dd8a85346d52d42c17d65c55bf84106076fba09be05f9b396af3fb00a39df510ba54100fa229e1761fdc048bba05ac422d7b88f48dd4f9c115c18861c195d69",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pci/controller/pci-hyperv-intf.ko"
 	);
 }
 static void svir_343(void) 
 {
 	svi_reg(&(tinfoil.validation_items[342]),
-	        "9dd8a85346d52d42c17d65c55bf84106076fba09be05f9b396af3fb00a39df510ba54100fa229e1761fdc048bba05ac422d7b88f48dd4f9c115c18861c195d69",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pci/controller/pci-hyperv-intf.ko"
+	        "5a03ea316d1f9e1fa1a8fc80e561f3a24c2285fb09942485636f73dffa77255169a1b60abfe39a658579e1b0c73c94a3028a4f4ba9a57843ae08dc3b6f63b1cb",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/nvdimm/libnvdimm.ko"
 	);
 }
 static void svir_344(void) 
 {
 	svi_reg(&(tinfoil.validation_items[343]),
-	        "5a03ea316d1f9e1fa1a8fc80e561f3a24c2285fb09942485636f73dffa77255169a1b60abfe39a658579e1b0c73c94a3028a4f4ba9a57843ae08dc3b6f63b1cb",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/nvdimm/libnvdimm.ko"
+	        "7600a39bbf4cb545e0149506d4bd72c350c736b6d57c726b92fcf9a1f1fa83a60f9021927623fb67057d3ebba991729acf613a67723f2d5c835e762bbfe2461f",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/virtio_net.ko"
 	);
 }
 static void svir_345(void) 
 {
 	svi_reg(&(tinfoil.validation_items[344]),
-	        "7600a39bbf4cb545e0149506d4bd72c350c736b6d57c726b92fcf9a1f1fa83a60f9021927623fb67057d3ebba991729acf613a67723f2d5c835e762bbfe2461f",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/virtio_net.ko"
+	        "48ef0135a0b5e7f782c6c50e22be8a9322f4723b2cfadea57f1ac53b04ef57dab94a05f1782ac63358a56055f5175ab86ad5b7a703e79aedf0ac1c02b0525ba2",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/net_failover.ko"
 	);
 }
 static void svir_346(void) 
 {
 	svi_reg(&(tinfoil.validation_items[345]),
-	        "48ef0135a0b5e7f782c6c50e22be8a9322f4723b2cfadea57f1ac53b04ef57dab94a05f1782ac63358a56055f5175ab86ad5b7a703e79aedf0ac1c02b0525ba2",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/net_failover.ko"
+	        "d5a745fe99426702a1a79b9e0551a6a3bbd1f5ddefbb8f95e8206d0a8ad3011efc83a166378ded59b19c8bd814ba267fe3612981c3575f7cc95fcf6a86b86824",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/mii.ko"
 	);
 }
 static void svir_347(void) 
 {
 	svi_reg(&(tinfoil.validation_items[346]),
-	        "d5a745fe99426702a1a79b9e0551a6a3bbd1f5ddefbb8f95e8206d0a8ad3011efc83a166378ded59b19c8bd814ba267fe3612981c3575f7cc95fcf6a86b86824",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/mii.ko"
+	        "d87dfdf9d80a7cf58597c2cf8192b3527f76a8101acce2971ddf3b452f78fea203aeeafb75581a886a2d61c1af7923f2a904b056d547f3777a31994d0d9c8b8c",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/ethernet/realtek/8139cp.ko"
 	);
 }
 static void svir_348(void) 
 {
 	svi_reg(&(tinfoil.validation_items[347]),
-	        "d87dfdf9d80a7cf58597c2cf8192b3527f76a8101acce2971ddf3b452f78fea203aeeafb75581a886a2d61c1af7923f2a904b056d547f3777a31994d0d9c8b8c",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/ethernet/realtek/8139cp.ko"
+	        "cad2343639925927e46fc50a708722c60d5af81663b76668c5f8f909d6cbb9b0ab8ea7835db2a89d3430dd6fc0d07163fa157ef10a24ba1d8450be58d97be2b5",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/ethernet/intel/e1000/e1000.ko"
 	);
 }
 static void svir_349(void) 
 {
 	svi_reg(&(tinfoil.validation_items[348]),
-	        "cad2343639925927e46fc50a708722c60d5af81663b76668c5f8f909d6cbb9b0ab8ea7835db2a89d3430dd6fc0d07163fa157ef10a24ba1d8450be58d97be2b5",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/ethernet/intel/e1000/e1000.ko"
+	        "0085c214dd4299f46e76a56b26a436038216d6db0d7088a14f02f9df415ea05612523a0ef93d2bfbaca46aadd47fec5de6e8ac1ba8cbe164bd057e659ae4b0e6",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/ethernet/intel/e100.ko"
 	);
 }
 static void svir_350(void) 
 {
 	svi_reg(&(tinfoil.validation_items[349]),
-	        "0085c214dd4299f46e76a56b26a436038216d6db0d7088a14f02f9df415ea05612523a0ef93d2bfbaca46aadd47fec5de6e8ac1ba8cbe164bd057e659ae4b0e6",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/ethernet/intel/e100.ko"
+	        "889846c87ff2e0d5d4f870865f008b3b7739f1534655f3f3786be9fb247e11d2b9667b8873e6c4f77347a4e31e24b58322e7cb55207518c9ff1f45c874660ce9",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/ethernet/amd/pcnet32.ko"
 	);
 }
 static void svir_351(void) 
 {
 	svi_reg(&(tinfoil.validation_items[350]),
-	        "889846c87ff2e0d5d4f870865f008b3b7739f1534655f3f3786be9fb247e11d2b9667b8873e6c4f77347a4e31e24b58322e7cb55207518c9ff1f45c874660ce9",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/ethernet/amd/pcnet32.ko"
+	        "c9b7a6464acfbd9a81909dcdf297fc9bb5ec858e1bb223f7f9bc603a3a22d95f8cc07e37ff415e813113305768394849928950050957d8b09643a9bfb043753e",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/ethernet/8390/ne2k-pci.ko"
 	);
 }
 static void svir_352(void) 
 {
 	svi_reg(&(tinfoil.validation_items[351]),
-	        "c9b7a6464acfbd9a81909dcdf297fc9bb5ec858e1bb223f7f9bc603a3a22d95f8cc07e37ff415e813113305768394849928950050957d8b09643a9bfb043753e",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/ethernet/8390/ne2k-pci.ko"
+	        "540ca827cda6dc66f7cb6060cf1dc5413f133372d5f9d0cf3a5f099831744ec6421bfb8067c08e1525781519734672bc3f560a715a97f52133e51be496ec1d97",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/ethernet/8390/8390.ko"
 	);
 }
 static void svir_353(void) 
 {
 	svi_reg(&(tinfoil.validation_items[352]),
-	        "540ca827cda6dc66f7cb6060cf1dc5413f133372d5f9d0cf3a5f099831744ec6421bfb8067c08e1525781519734672bc3f560a715a97f52133e51be496ec1d97",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/ethernet/8390/8390.ko"
+	        "5dc111d90cfbf5430f3c77bddf70489ebff0f922f2c37e83e118bf9b529f0ab45944d6431342025cbb0e51bffab0bf4e823b307af4589a4020045a5fb7410c36",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/misc/mei/mei.ko"
 	);
 }
 static void svir_354(void) 
 {
 	svi_reg(&(tinfoil.validation_items[353]),
-	        "5dc111d90cfbf5430f3c77bddf70489ebff0f922f2c37e83e118bf9b529f0ab45944d6431342025cbb0e51bffab0bf4e823b307af4589a4020045a5fb7410c36",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/misc/mei/mei.ko"
+	        "2928d1f9be367f2a77d6247220e4c4f1895e5422614ffc3c7791b2e3c8106ffd3d10ced7cb05b2dc9fd88a9bc87dc66adc59c6616ff88327f0651c0fdbc21e5d",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/mfd/intel_pmc_bxt.ko"
 	);
 }
 static void svir_355(void) 
 {
 	svi_reg(&(tinfoil.validation_items[354]),
-	        "2928d1f9be367f2a77d6247220e4c4f1895e5422614ffc3c7791b2e3c8106ffd3d10ced7cb05b2dc9fd88a9bc87dc66adc59c6616ff88327f0651c0fdbc21e5d",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/mfd/intel_pmc_bxt.ko"
+	        "ec7529bcf4b55149f67084fe9e2560cd8b3e3ac303013780b73788040756da8fd761b34b1e9185d984e29d45d4cff9dd32e0d30c357f40897acebaea28dfdeaa",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/media/cec/core/cec.ko"
 	);
 }
 static void svir_356(void) 
 {
 	svi_reg(&(tinfoil.validation_items[355]),
-	        "ec7529bcf4b55149f67084fe9e2560cd8b3e3ac303013780b73788040756da8fd761b34b1e9185d984e29d45d4cff9dd32e0d30c357f40897acebaea28dfdeaa",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/media/cec/core/cec.ko"
+	        "cb282764666712fe7f7644f9fb0ca2619a2a7aef96ee87cff7ea7f8d582af0ceb639512734102b471bfa65fac1eb3ceecb7aa95175bf4a817a5c7ba0791a261a",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/sparse-keymap.ko"
 	);
 }
 static void svir_357(void) 
 {
 	svi_reg(&(tinfoil.validation_items[356]),
-	        "cb282764666712fe7f7644f9fb0ca2619a2a7aef96ee87cff7ea7f8d582af0ceb639512734102b471bfa65fac1eb3ceecb7aa95175bf4a817a5c7ba0791a261a",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/sparse-keymap.ko"
+	        "2c4255c6c35d5e7fc0e1a9fe604c387ed5093bedcd12ebe74c1c26515bdd2be530ad947b4ec1b20ca889080d22b7bfb6ed51633b8ad26d47ddc4e9a7c274ab28",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/serio/serport.ko"
 	);
 }
 static void svir_358(void) 
 {
 	svi_reg(&(tinfoil.validation_items[357]),
-	        "2c4255c6c35d5e7fc0e1a9fe604c387ed5093bedcd12ebe74c1c26515bdd2be530ad947b4ec1b20ca889080d22b7bfb6ed51633b8ad26d47ddc4e9a7c274ab28",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/serio/serport.ko"
+	        "4e9d1c4182cf16f6128c4015421fee9a82f3b4d213dc97a1c9b2cdfbba08612695b7d3dd39d700ce58b38416995f522b4716b6567cb90a63c7180da883fb4319",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/serio/serio_raw.ko"
 	);
 }
 static void svir_359(void) 
 {
 	svi_reg(&(tinfoil.validation_items[358]),
-	        "4e9d1c4182cf16f6128c4015421fee9a82f3b4d213dc97a1c9b2cdfbba08612695b7d3dd39d700ce58b38416995f522b4716b6567cb90a63c7180da883fb4319",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/serio/serio_raw.ko"
+	        "058c191775effaddc391eec9a72e0cca5bb4be0ba196a42f4449420f2b1034d808249ddb87b1a3cced268f301adf5dd44d73b65215e5724fc4c12e6e1fd84f60",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/serio/hyperv-keyboard.ko"
 	);
 }
 static void svir_360(void) 
 {
 	svi_reg(&(tinfoil.validation_items[359]),
-	        "058c191775effaddc391eec9a72e0cca5bb4be0ba196a42f4449420f2b1034d808249ddb87b1a3cced268f301adf5dd44d73b65215e5724fc4c12e6e1fd84f60",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/serio/hyperv-keyboard.ko"
+	        "c43f1ee8a2e11842efd22bea7cd6e376a170903ea8d23ef42bed2831aa67cf81527cb064a3670cac7997b9bbceb60d08a02e8a83e362e6314d0fde2c7614270e",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/serio/arc_ps2.ko"
 	);
 }
 static void svir_361(void) 
 {
 	svi_reg(&(tinfoil.validation_items[360]),
-	        "c43f1ee8a2e11842efd22bea7cd6e376a170903ea8d23ef42bed2831aa67cf81527cb064a3670cac7997b9bbceb60d08a02e8a83e362e6314d0fde2c7614270e",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/serio/arc_ps2.ko"
+	        "f03ee3b5c09d0a9beaa3255ce9dac348baaad61808e5b2309b3116b2290927455a3d3606bee1482b7da5f401a5015a9b8ba842abcd5964e7ab68465684c63e00",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/serio/altera_ps2.ko"
 	);
 }
 static void svir_362(void) 
 {
 	svi_reg(&(tinfoil.validation_items[361]),
-	        "f03ee3b5c09d0a9beaa3255ce9dac348baaad61808e5b2309b3116b2290927455a3d3606bee1482b7da5f401a5015a9b8ba842abcd5964e7ab68465684c63e00",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/serio/altera_ps2.ko"
+	        "ea3a647bbe4cdda4d73ea0631f3e02e60fba61e3d8abb43532cf540bfd44b7d5f2f90ea38a5ee68e42589d8e666fc6139da44aaa2876b9dcfbc6535a6b463e76",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/rmi4/rmi_core.ko"
 	);
 }
 static void svir_363(void) 
 {
 	svi_reg(&(tinfoil.validation_items[362]),
-	        "ea3a647bbe4cdda4d73ea0631f3e02e60fba61e3d8abb43532cf540bfd44b7d5f2f90ea38a5ee68e42589d8e666fc6139da44aaa2876b9dcfbc6535a6b463e76",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/rmi4/rmi_core.ko"
+	        "5168fe8b96694a8c802a64c55660446756b56d46e27a7c709bd4fdf66bd415d7d654945ded873f146ea3f4e618e320c73b52123e29c1ec83e07f90c33615a8ae",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/keyboard/tm2-touchkey.ko"
 	);
 }
 static void svir_364(void) 
 {
 	svi_reg(&(tinfoil.validation_items[363]),
-	        "5168fe8b96694a8c802a64c55660446756b56d46e27a7c709bd4fdf66bd415d7d654945ded873f146ea3f4e618e320c73b52123e29c1ec83e07f90c33615a8ae",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/keyboard/tm2-touchkey.ko"
+	        "d5ff9f9ecf0a73030aa6dd6b675987835fa7dd7cfcd928c2cb3b7e07274730519e3cc1f311538429c2c1d5ac993eba7d9565eb781a4ef55c148b0d6f5e8851e7",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/keyboard/qt1070.ko"
 	);
 }
 static void svir_365(void) 
 {
 	svi_reg(&(tinfoil.validation_items[364]),
-	        "d5ff9f9ecf0a73030aa6dd6b675987835fa7dd7cfcd928c2cb3b7e07274730519e3cc1f311538429c2c1d5ac993eba7d9565eb781a4ef55c148b0d6f5e8851e7",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/keyboard/qt1070.ko"
+	        "beeb459cab7a751b0bfc8b4c84c69d713d78e96a27ad98a8ab96c673efbc937974d614a7704f91a8ba1d6547cc494fff84c1fa50606dec4826429e6f77d60d3c",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/keyboard/qt1050.ko"
 	);
 }
 static void svir_366(void) 
 {
 	svi_reg(&(tinfoil.validation_items[365]),
-	        "beeb459cab7a751b0bfc8b4c84c69d713d78e96a27ad98a8ab96c673efbc937974d614a7704f91a8ba1d6547cc494fff84c1fa50606dec4826429e6f77d60d3c",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/keyboard/qt1050.ko"
+	        "607cee5a644792a0b027d8da01a2dc82506e8c726193412a4086e0522fcc0f4b77d6421d927da3d6e6455b90ba2f5478da1a209579f3e7bdb1b557649e54d9da",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/keyboard/gpio_keys_polled.ko"
 	);
 }
 static void svir_367(void) 
 {
 	svi_reg(&(tinfoil.validation_items[366]),
-	        "607cee5a644792a0b027d8da01a2dc82506e8c726193412a4086e0522fcc0f4b77d6421d927da3d6e6455b90ba2f5478da1a209579f3e7bdb1b557649e54d9da",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/keyboard/gpio_keys_polled.ko"
+	        "ea15885c017884ee2d1849d841e94a6efac344b8400600b49a915e28c1a463168708ab81bc0b8028736b47b37ed55660dc4f1bdff2afc646106e00b84ac649af",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/keyboard/gpio_keys.ko"
 	);
 }
 static void svir_368(void) 
 {
 	svi_reg(&(tinfoil.validation_items[367]),
-	        "ea15885c017884ee2d1849d841e94a6efac344b8400600b49a915e28c1a463168708ab81bc0b8028736b47b37ed55660dc4f1bdff2afc646106e00b84ac649af",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/keyboard/gpio_keys.ko"
+	        "f5a7e13311555febd5cd4396a6cca44820faff7a079fec9aa23e402844c6249fb29d6a2f3ab4b3b1a7d79c6e0bb6a842b2db1cbe4f83f9e979951b5c543c58b6",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/keyboard/applespi.ko"
 	);
 }
 static void svir_369(void) 
 {
 	svi_reg(&(tinfoil.validation_items[368]),
-	        "f5a7e13311555febd5cd4396a6cca44820faff7a079fec9aa23e402844c6249fb29d6a2f3ab4b3b1a7d79c6e0bb6a842b2db1cbe4f83f9e979951b5c543c58b6",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/keyboard/applespi.ko"
+	        "26cf02edb752683c883899d7af39d27e13fe6d62d107f3efc0db4adc8838262373e6995eb3f344eb1b8409599877d6289cdfe521dc7edf7686348fa961f68390",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/ff-memless.ko"
 	);
 }
 static void svir_370(void) 
 {
 	svi_reg(&(tinfoil.validation_items[369]),
-	        "26cf02edb752683c883899d7af39d27e13fe6d62d107f3efc0db4adc8838262373e6995eb3f344eb1b8409599877d6289cdfe521dc7edf7686348fa961f68390",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/ff-memless.ko"
+	        "9b894000edb16dcc242e44a8f73d7a5da773b38f7ef445e64d702b45f68625fad4e73ee46268eb7eeacd615fb394c48ac9690ea89aba35f5f13d881cfcf24aad",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hv/hv_vmbus.ko"
 	);
 }
 static void svir_371(void) 
 {
 	svi_reg(&(tinfoil.validation_items[370]),
-	        "9b894000edb16dcc242e44a8f73d7a5da773b38f7ef445e64d702b45f68625fad4e73ee46268eb7eeacd615fb394c48ac9690ea89aba35f5f13d881cfcf24aad",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hv/hv_vmbus.ko"
+	        "bf5b6de47beef731968b9587b25055154e70ebe5a8338dcd7143efc25f50a7a34cf13f32d918eb69939dc152d2a9d2aeb2dc87d0d244e428d1df5c7c72d8aa97",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/wacom.ko"
 	);
 }
 static void svir_372(void) 
 {
 	svi_reg(&(tinfoil.validation_items[371]),
-	        "bf5b6de47beef731968b9587b25055154e70ebe5a8338dcd7143efc25f50a7a34cf13f32d918eb69939dc152d2a9d2aeb2dc87d0d244e428d1df5c7c72d8aa97",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/wacom.ko"
+	        "24dc7b5aacdf436304a881c4f895073a23b3f7acf230ee67b8d0884ca6d053eb572b45f00bb4dad36d8f99b9b59be35d46759990fc6df5d539a14cbf52730279",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/uhid.ko"
 	);
 }
 static void svir_373(void) 
 {
 	svi_reg(&(tinfoil.validation_items[372]),
-	        "24dc7b5aacdf436304a881c4f895073a23b3f7acf230ee67b8d0884ca6d053eb572b45f00bb4dad36d8f99b9b59be35d46759990fc6df5d539a14cbf52730279",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/uhid.ko"
+	        "7e0b0643fffeff0670cc550ac076e95ab62c9f7188bd69733c71e4a9f8b69a0392b5db220b1e2a03174593504392c146788f53a0b451e134ebe1c12ef7dc1e18",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/surface-hid/surface_kbd.ko"
 	);
 }
 static void svir_374(void) 
 {
 	svi_reg(&(tinfoil.validation_items[373]),
-	        "7e0b0643fffeff0670cc550ac076e95ab62c9f7188bd69733c71e4a9f8b69a0392b5db220b1e2a03174593504392c146788f53a0b451e134ebe1c12ef7dc1e18",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/surface-hid/surface_kbd.ko"
+	        "291cf528fdcc1010d146cdc0d063e6a31bed2fb080517796c4ce2214e4d38671c7716d314d207d1cff5e60b773b4c108d66aa265f9c9653480abd3716952f542",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/surface-hid/surface_hid_core.ko"
 	);
 }
 static void svir_375(void) 
 {
 	svi_reg(&(tinfoil.validation_items[374]),
-	        "291cf528fdcc1010d146cdc0d063e6a31bed2fb080517796c4ce2214e4d38671c7716d314d207d1cff5e60b773b4c108d66aa265f9c9653480abd3716952f542",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/surface-hid/surface_hid_core.ko"
+	        "60970d2d74211f019f2c2227bf9cc53d794026ee88b9c99f7f772ddea951f8ca1d9a834f9eeacf859d91bce328292e9e6f2085f4ca266e879f5a72d24671ea99",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/surface-hid/surface_hid.ko"
 	);
 }
 static void svir_376(void) 
 {
 	svi_reg(&(tinfoil.validation_items[375]),
-	        "60970d2d74211f019f2c2227bf9cc53d794026ee88b9c99f7f772ddea951f8ca1d9a834f9eeacf859d91bce328292e9e6f2085f4ca266e879f5a72d24671ea99",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/surface-hid/surface_hid.ko"
+	        "529f29c022e77c70aba874a87e9806f64d20924aab487e81fd49b1bab4c54614639b0db3d51ae127c95f024afc2182231e921f30557acdf663d07f562f47a036",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/intel-ish-hid/intel-ishtp.ko"
 	);
 }
 static void svir_377(void) 
 {
 	svi_reg(&(tinfoil.validation_items[376]),
-	        "529f29c022e77c70aba874a87e9806f64d20924aab487e81fd49b1bab4c54614639b0db3d51ae127c95f024afc2182231e921f30557acdf663d07f562f47a036",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/intel-ish-hid/intel-ishtp.ko"
+	        "bbd4ee8885930750d46809a11efcd96b3b5e39a1ff847885e9491fdaefb63f7e5ac620534f237881b6520cf8326fcf263e45e4d7eb1fb3f0549f48592a9b1eaa",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/intel-ish-hid/intel-ishtp-loader.ko"
 	);
 }
 static void svir_378(void) 
 {
 	svi_reg(&(tinfoil.validation_items[377]),
-	        "bbd4ee8885930750d46809a11efcd96b3b5e39a1ff847885e9491fdaefb63f7e5ac620534f237881b6520cf8326fcf263e45e4d7eb1fb3f0549f48592a9b1eaa",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/intel-ish-hid/intel-ishtp-loader.ko"
+	        "f2d11541715bb94d427ac962ee455c6a962506c348ddfb2cb007aa908c9272bf5b64996145bb6b9b3f38417e4595ed76a71f0f6e9fef487c22146ff278e66548",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/intel-ish-hid/intel-ishtp-hid.ko"
 	);
 }
 static void svir_379(void) 
 {
 	svi_reg(&(tinfoil.validation_items[378]),
-	        "f2d11541715bb94d427ac962ee455c6a962506c348ddfb2cb007aa908c9272bf5b64996145bb6b9b3f38417e4595ed76a71f0f6e9fef487c22146ff278e66548",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/intel-ish-hid/intel-ishtp-hid.ko"
+	        "7f13185bfe546409cce6936064cda2822d22c2bdda0dd7d00a6177b1c26db1359f5e0e0a94841ebd15771ded8d9d312ede1d5cbdcb0d92395c7377290e2dc541",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/intel-ish-hid/intel-ish-ipc.ko"
 	);
 }
 static void svir_380(void) 
 {
 	svi_reg(&(tinfoil.validation_items[379]),
-	        "7f13185bfe546409cce6936064cda2822d22c2bdda0dd7d00a6177b1c26db1359f5e0e0a94841ebd15771ded8d9d312ede1d5cbdcb0d92395c7377290e2dc541",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/intel-ish-hid/intel-ish-ipc.ko"
+	        "b768f26dfac424c44b167d65e5eed115bde9148d773d9e6b14ca408cfaceb11c852b3051cb5ab3892ff62238c1f313af6c01ef2766aa0c4437db7e4512536092",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/i2c-hid/i2c-hid.ko"
 	);
 }
 static void svir_381(void) 
 {
 	svi_reg(&(tinfoil.validation_items[380]),
-	        "b768f26dfac424c44b167d65e5eed115bde9148d773d9e6b14ca408cfaceb11c852b3051cb5ab3892ff62238c1f313af6c01ef2766aa0c4437db7e4512536092",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/i2c-hid/i2c-hid.ko"
+	        "ce9f2e7b91c58ff4feadd09fa9341c86f6c14f0e6cbe0fdf6920363e1a9b50b3434dc6f8439c2cf7150a83667355936a16e187c3bbacc14dae63446ddc03f3e0",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/i2c-hid/i2c-hid-acpi.ko"
 	);
 }
 static void svir_382(void) 
 {
 	svi_reg(&(tinfoil.validation_items[381]),
-	        "ce9f2e7b91c58ff4feadd09fa9341c86f6c14f0e6cbe0fdf6920363e1a9b50b3434dc6f8439c2cf7150a83667355936a16e187c3bbacc14dae63446ddc03f3e0",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/i2c-hid/i2c-hid-acpi.ko"
+	        "d58f84369d1ca4a986e8972300760f84bb7f2ce2c894cad2f20958ef050b86ce2693597d33b2095530aba90bc50031ed87a90f81b5a8dd4d64cbe41abad57740",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-zydacron.ko"
 	);
 }
 static void svir_383(void) 
 {
 	svi_reg(&(tinfoil.validation_items[382]),
-	        "d58f84369d1ca4a986e8972300760f84bb7f2ce2c894cad2f20958ef050b86ce2693597d33b2095530aba90bc50031ed87a90f81b5a8dd4d64cbe41abad57740",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-zydacron.ko"
+	        "0bde65a03b313c73d55cb407cc6f9f4dd9b1ded08c98439f843b377f2b5ad568fd05ae467d43bc1c6fcba2ed49c1d0490f150b42858f412ab035521939a8c1e5",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-zpff.ko"
 	);
 }
 static void svir_384(void) 
 {
 	svi_reg(&(tinfoil.validation_items[383]),
-	        "0bde65a03b313c73d55cb407cc6f9f4dd9b1ded08c98439f843b377f2b5ad568fd05ae467d43bc1c6fcba2ed49c1d0490f150b42858f412ab035521939a8c1e5",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-zpff.ko"
+	        "e9e54429a2734d019b626db77b5b2e49a8e1add3ccbd19b192ba3e938b9d1921c3e67d1ceb3316bbb88da2a3b5497a4f8cd08c9695c9da287c142f818ea9c01a",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-xinmo.ko"
 	);
 }
 static void svir_385(void) 
 {
 	svi_reg(&(tinfoil.validation_items[384]),
-	        "e9e54429a2734d019b626db77b5b2e49a8e1add3ccbd19b192ba3e938b9d1921c3e67d1ceb3316bbb88da2a3b5497a4f8cd08c9695c9da287c142f818ea9c01a",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-xinmo.ko"
+	        "94096b054a6a9d6f4b9e788b7205dd8646821a2dc2b4f69184b0ba1a93e12b4ae21ad7189af301578177b9e2aa755695b96ba87521087ebcebaa1f98ceb34e25",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-wiimote.ko"
 	);
 }
 static void svir_386(void) 
 {
 	svi_reg(&(tinfoil.validation_items[385]),
-	        "94096b054a6a9d6f4b9e788b7205dd8646821a2dc2b4f69184b0ba1a93e12b4ae21ad7189af301578177b9e2aa755695b96ba87521087ebcebaa1f98ceb34e25",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-wiimote.ko"
+	        "7d36ba41fba506d81d3c0bbc3e6806ee313235849c717d8f2cab21efe71ae984d726787ec51e53fc390fc17e45b3ec7ea2abf607bd97aa2b631efd1d6a275811",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-waltop.ko"
 	);
 }
 static void svir_387(void) 
 {
 	svi_reg(&(tinfoil.validation_items[386]),
-	        "7d36ba41fba506d81d3c0bbc3e6806ee313235849c717d8f2cab21efe71ae984d726787ec51e53fc390fc17e45b3ec7ea2abf607bd97aa2b631efd1d6a275811",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-waltop.ko"
+	        "796f513a7fc4cdc11c9c62c4e0bacab9f0ca8ef37c307595dc51fdb1a64a75afc24f848a45d9c19e60f6618ceae08ae6a6545daa76b689bfb633a4ad46995f3b",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-vivaldi.ko"
 	);
 }
 static void svir_388(void) 
 {
 	svi_reg(&(tinfoil.validation_items[387]),
-	        "796f513a7fc4cdc11c9c62c4e0bacab9f0ca8ef37c307595dc51fdb1a64a75afc24f848a45d9c19e60f6618ceae08ae6a6545daa76b689bfb633a4ad46995f3b",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-vivaldi.ko"
+	        "4a3d654e2c32e53ad9d139f425bfec4369940f6c9a2bafadf4ee985ac1f2d6f8379799749f6b56d93f59ab0edfebe5b71e850452029631493822366b9f0d73d1",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-viewsonic.ko"
 	);
 }
 static void svir_389(void) 
 {
 	svi_reg(&(tinfoil.validation_items[388]),
-	        "4a3d654e2c32e53ad9d139f425bfec4369940f6c9a2bafadf4ee985ac1f2d6f8379799749f6b56d93f59ab0edfebe5b71e850452029631493822366b9f0d73d1",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-viewsonic.ko"
+	        "57fd22069da243f568c11fe5f3dbccb549e3219779964713640016d8f78f7a636c98207bbd430896e0745e4b8cc6f5bb0230c96d61a67ff0dac00de69f36ce09",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-udraw-ps3.ko"
 	);
 }
 static void svir_390(void) 
 {
 	svi_reg(&(tinfoil.validation_items[389]),
-	        "57fd22069da243f568c11fe5f3dbccb549e3219779964713640016d8f78f7a636c98207bbd430896e0745e4b8cc6f5bb0230c96d61a67ff0dac00de69f36ce09",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-udraw-ps3.ko"
+	        "dda330b7639a77ce3654c945d698bcfeedf39740159879c7bd85a11cee0542f652061965ac0cdbe56e1aef878b426560b2f8884c43e8816cf4f925c71760a108",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-uclogic.ko"
 	);
 }
 static void svir_391(void) 
 {
 	svi_reg(&(tinfoil.validation_items[390]),
-	        "dda330b7639a77ce3654c945d698bcfeedf39740159879c7bd85a11cee0542f652061965ac0cdbe56e1aef878b426560b2f8884c43e8816cf4f925c71760a108",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-uclogic.ko"
+	        "a449a1e54f5733fb40c682c1fbca092b83ad175a0ddf99070f7048d40f7133f3099231d7f12e99d56f10ed60651b20dd038b4cc90899d29c50c37f1e7b96ebb0",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-u2fzero.ko"
 	);
 }
 static void svir_392(void) 
 {
 	svi_reg(&(tinfoil.validation_items[391]),
-	        "a449a1e54f5733fb40c682c1fbca092b83ad175a0ddf99070f7048d40f7133f3099231d7f12e99d56f10ed60651b20dd038b4cc90899d29c50c37f1e7b96ebb0",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-u2fzero.ko"
+	        "91ac0f18deaeea6bbac3ead7ae024040529588f807f07b35d3140ae1ca241dcac1a50d61043fa542234acac8d343d3c81a6b2b3765a994b0d30594a54903bb40",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-twinhan.ko"
 	);
 }
 static void svir_393(void) 
 {
 	svi_reg(&(tinfoil.validation_items[392]),
-	        "91ac0f18deaeea6bbac3ead7ae024040529588f807f07b35d3140ae1ca241dcac1a50d61043fa542234acac8d343d3c81a6b2b3765a994b0d30594a54903bb40",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-twinhan.ko"
+	        "65d0634c65662ab55e81e89855eee83330efde6fc6bed0d64166833599eef2e5e36471d3e02ffc48c7957bab0ebd3b0567cf07f980facd90c7958e446531dd3c",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-topseed.ko"
 	);
 }
 static void svir_394(void) 
 {
 	svi_reg(&(tinfoil.validation_items[393]),
-	        "65d0634c65662ab55e81e89855eee83330efde6fc6bed0d64166833599eef2e5e36471d3e02ffc48c7957bab0ebd3b0567cf07f980facd90c7958e446531dd3c",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-topseed.ko"
+	        "e4bb0fb1f1d6bd6d5d92783654ab25505075ecca0592bb7dc9f6dd7f98890ca08acedc408e5916f99411d2fb178ff202a6c21b4fa37717b78b84ddff86fb2dc1",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-tmff.ko"
 	);
 }
 static void svir_395(void) 
 {
 	svi_reg(&(tinfoil.validation_items[394]),
-	        "e4bb0fb1f1d6bd6d5d92783654ab25505075ecca0592bb7dc9f6dd7f98890ca08acedc408e5916f99411d2fb178ff202a6c21b4fa37717b78b84ddff86fb2dc1",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-tmff.ko"
+	        "a736bef598fe58edd2f372dbb19210a6cda3532f641ab629e3470a42a4d930ed1ce148c459dec1bbeefcaf28d529eb285541a24e9d0662e8614d59c58e925ba4",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-tivo.ko"
 	);
 }
 static void svir_396(void) 
 {
 	svi_reg(&(tinfoil.validation_items[395]),
-	        "a736bef598fe58edd2f372dbb19210a6cda3532f641ab629e3470a42a4d930ed1ce148c459dec1bbeefcaf28d529eb285541a24e9d0662e8614d59c58e925ba4",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-tivo.ko"
+	        "567eada90917351a3977f418c589f2e38938037cc5a483daf5627d4aff02d3fc776f8db188e3e702fedc80196971e5ba91ed1519671b8981fe49e3bc1fc7a1a0",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-thrustmaster.ko"
 	);
 }
 static void svir_397(void) 
 {
 	svi_reg(&(tinfoil.validation_items[396]),
-	        "567eada90917351a3977f418c589f2e38938037cc5a483daf5627d4aff02d3fc776f8db188e3e702fedc80196971e5ba91ed1519671b8981fe49e3bc1fc7a1a0",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-thrustmaster.ko"
+	        "30cce9151babe71c9e48637e5c5fe5f63a75cc2e85cd2b8065fc1fdaf9520a4993456f88ccc9cdd4df0fc33266bda36c39f7015b805f7bce1af66e1c83a3f618",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-sunplus.ko"
 	);
 }
 static void svir_398(void) 
 {
 	svi_reg(&(tinfoil.validation_items[397]),
-	        "30cce9151babe71c9e48637e5c5fe5f63a75cc2e85cd2b8065fc1fdaf9520a4993456f88ccc9cdd4df0fc33266bda36c39f7015b805f7bce1af66e1c83a3f618",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-sunplus.ko"
+	        "be838b56aae3207c076519cafc62c75f18247fce2f185e2fc5b218413e866cff32d5922d8fa2c20225b301ab9fb998cc7d58b7c0d9fb05ec73599a48d76448ff",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-steelseries.ko"
 	);
 }
 static void svir_399(void) 
 {
 	svi_reg(&(tinfoil.validation_items[398]),
-	        "be838b56aae3207c076519cafc62c75f18247fce2f185e2fc5b218413e866cff32d5922d8fa2c20225b301ab9fb998cc7d58b7c0d9fb05ec73599a48d76448ff",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-steelseries.ko"
+	        "bc49c3d61a4dc8ed65616432884d07bb028b437e9667f291c0e2c2a35bd1aa758f95a8bbb289b0bce3223a87b5f1fb3ed9b218cfa476d02c7b5b0d41f4f62a40",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-steam.ko"
 	);
 }
 static void svir_400(void) 
 {
 	svi_reg(&(tinfoil.validation_items[399]),
-	        "bc49c3d61a4dc8ed65616432884d07bb028b437e9667f291c0e2c2a35bd1aa758f95a8bbb289b0bce3223a87b5f1fb3ed9b218cfa476d02c7b5b0d41f4f62a40",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-steam.ko"
+	        "a6f6f3dd2f0cd744a17c294f299a2804fc3cd16cdf8af01b621fc0c017a35f5f616d4aa4ae3577f2b46069505059f026b0b22d8e0c7649c1eb56a76e01790da1",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-speedlink.ko"
 	);
 }
 static void svir_401(void) 
 {
 	svi_reg(&(tinfoil.validation_items[400]),
-	        "a6f6f3dd2f0cd744a17c294f299a2804fc3cd16cdf8af01b621fc0c017a35f5f616d4aa4ae3577f2b46069505059f026b0b22d8e0c7649c1eb56a76e01790da1",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-speedlink.ko"
+	        "4ea03517552418d9bcc89be1b573738d2fd3feb339055a071236f9981871fa2ff0ebe6726e3da446284c4d1326bd0358961e3f337c4668a0ee25948b1473d7e7",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-sony.ko"
 	);
 }
 static void svir_402(void) 
 {
 	svi_reg(&(tinfoil.validation_items[401]),
-	        "4ea03517552418d9bcc89be1b573738d2fd3feb339055a071236f9981871fa2ff0ebe6726e3da446284c4d1326bd0358961e3f337c4668a0ee25948b1473d7e7",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-sony.ko"
+	        "d334ed9ea6cd20e4bac7862605a871e5d56861e32216d42de4e67fa126b5fe7aaf35a364583cfa84e2491b0e7d1a1023d763ccc49601be167bedb25f920fab3f",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-sjoy.ko"
 	);
 }
 static void svir_403(void) 
 {
 	svi_reg(&(tinfoil.validation_items[402]),
-	        "d334ed9ea6cd20e4bac7862605a871e5d56861e32216d42de4e67fa126b5fe7aaf35a364583cfa84e2491b0e7d1a1023d763ccc49601be167bedb25f920fab3f",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-sjoy.ko"
+	        "f143c3aa607fd162ff84bfe1d78d73e80add90109ebc0e68b95cc209d5690f3c5b720a4eb9f02cb06f773a6d65aadb70db0287eb4f5f345544458b9e4fdb9af8",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-sensor-hub.ko"
 	);
 }
 static void svir_404(void) 
 {
 	svi_reg(&(tinfoil.validation_items[403]),
-	        "f143c3aa607fd162ff84bfe1d78d73e80add90109ebc0e68b95cc209d5690f3c5b720a4eb9f02cb06f773a6d65aadb70db0287eb4f5f345544458b9e4fdb9af8",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-sensor-hub.ko"
+	        "7ae058ee30bca3291ce2f757b10fb4a47d36a9ea4f93e169ea875337b7275dbd6d27dcfb2f161a6ebef003f84333e3a45c55faedd1b983e09b0a4964c9e29a57",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-semitek.ko"
 	);
 }
 static void svir_405(void) 
 {
 	svi_reg(&(tinfoil.validation_items[404]),
-	        "7ae058ee30bca3291ce2f757b10fb4a47d36a9ea4f93e169ea875337b7275dbd6d27dcfb2f161a6ebef003f84333e3a45c55faedd1b983e09b0a4964c9e29a57",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-semitek.ko"
+	        "06c4966a191791aff21d558ec3df2dbb53bec23b59d942a3ba792d4f39f4f26311d10bd5b10872c5ecce9080a7d610399c8b99946992c8dfe996873c82d4e152",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-samsung.ko"
 	);
 }
 static void svir_406(void) 
 {
 	svi_reg(&(tinfoil.validation_items[405]),
-	        "06c4966a191791aff21d558ec3df2dbb53bec23b59d942a3ba792d4f39f4f26311d10bd5b10872c5ecce9080a7d610399c8b99946992c8dfe996873c82d4e152",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-samsung.ko"
+	        "68638b1f25240d78b481722dba68a54fcce33e28c9a00c8dca56452babe952ac0657ca8aa4b4d86d61ceed8bef967aae01e623c272a7292cc0bdae9da92753a8",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-saitek.ko"
 	);
 }
 static void svir_407(void) 
 {
 	svi_reg(&(tinfoil.validation_items[406]),
-	        "68638b1f25240d78b481722dba68a54fcce33e28c9a00c8dca56452babe952ac0657ca8aa4b4d86d61ceed8bef967aae01e623c272a7292cc0bdae9da92753a8",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-saitek.ko"
+	        "ee5f36bf53e63a72ec85101abc0b45367a9f6e3b87e565a195f8125fc1dfe18455d414fe92d3f529b036a0aa0f317f7b075ab43008f37ddeb95987ffa43191af",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat.ko"
 	);
 }
 static void svir_408(void) 
 {
 	svi_reg(&(tinfoil.validation_items[407]),
-	        "ee5f36bf53e63a72ec85101abc0b45367a9f6e3b87e565a195f8125fc1dfe18455d414fe92d3f529b036a0aa0f317f7b075ab43008f37ddeb95987ffa43191af",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat.ko"
+	        "50766ee497384c9761d16f7a290df0d487fd3eb5957347c0454b2e992bc5697a07fe3eae50dd6d03d375e2acb5157f98cc192f80e7c5d6deac001175def954c0",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-savu.ko"
 	);
 }
 static void svir_409(void) 
 {
 	svi_reg(&(tinfoil.validation_items[408]),
-	        "50766ee497384c9761d16f7a290df0d487fd3eb5957347c0454b2e992bc5697a07fe3eae50dd6d03d375e2acb5157f98cc192f80e7c5d6deac001175def954c0",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-savu.ko"
+	        "b39cca0d40161f4bbe9c292583c58955be73b0635fa02960105de59101e728e6c7c2719ca04f64c32b65ee6b0d9d3f669a23895732654ffbd0b6fabe487eae9f",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-ryos.ko"
 	);
 }
 static void svir_410(void) 
 {
 	svi_reg(&(tinfoil.validation_items[409]),
-	        "b39cca0d40161f4bbe9c292583c58955be73b0635fa02960105de59101e728e6c7c2719ca04f64c32b65ee6b0d9d3f669a23895732654ffbd0b6fabe487eae9f",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-ryos.ko"
+	        "fdbddcccdbe28362605a1d8edd367200cb465528240b33006822f9d0fc4f5c3d1d344b0d198b490854a72502ca53a186d325fce00fa8b4a7e884fc423f2162a6",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-pyra.ko"
 	);
 }
 static void svir_411(void) 
 {
 	svi_reg(&(tinfoil.validation_items[410]),
-	        "fdbddcccdbe28362605a1d8edd367200cb465528240b33006822f9d0fc4f5c3d1d344b0d198b490854a72502ca53a186d325fce00fa8b4a7e884fc423f2162a6",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-pyra.ko"
+	        "1a4ac25fbf2c31e102397abf5618f0396a84bfe8fe0dccd65e3d768a73f684cd600fef98a6160e281d796a36a1be199c755302de7eaf9f008c702dc2f5fd487e",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-lua.ko"
 	);
 }
 static void svir_412(void) 
 {
 	svi_reg(&(tinfoil.validation_items[411]),
-	        "1a4ac25fbf2c31e102397abf5618f0396a84bfe8fe0dccd65e3d768a73f684cd600fef98a6160e281d796a36a1be199c755302de7eaf9f008c702dc2f5fd487e",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-lua.ko"
+	        "65022e34794ae1adc8be4e47f3765cbc7e5357e5005c63fba60d383e6ec0137fd52a76ad931c7b099df023c3f1461ac20179ad22635b851c97950a231645c7b6",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-kovaplus.ko"
 	);
 }
 static void svir_413(void) 
 {
 	svi_reg(&(tinfoil.validation_items[412]),
-	        "65022e34794ae1adc8be4e47f3765cbc7e5357e5005c63fba60d383e6ec0137fd52a76ad931c7b099df023c3f1461ac20179ad22635b851c97950a231645c7b6",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-kovaplus.ko"
+	        "7962a93cfab4f62bf110b8e7091c5d39519b5950c2f68a9ac4ad6a6221769c64b24c77d75c998b8019672739b80b777431749330561970a239302eafee37e303",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-konepure.ko"
 	);
 }
 static void svir_414(void) 
 {
 	svi_reg(&(tinfoil.validation_items[413]),
-	        "7962a93cfab4f62bf110b8e7091c5d39519b5950c2f68a9ac4ad6a6221769c64b24c77d75c998b8019672739b80b777431749330561970a239302eafee37e303",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-konepure.ko"
+	        "17852cac612a0f4b0a89b5a1b3e9d2c5384c51195d7af5bd8d70ea1388c071e3f198d1b4db0597eadd7a68ff94b0ec74587af996db610883971b07eead5d06a4",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-koneplus.ko"
 	);
 }
 static void svir_415(void) 
 {
 	svi_reg(&(tinfoil.validation_items[414]),
-	        "17852cac612a0f4b0a89b5a1b3e9d2c5384c51195d7af5bd8d70ea1388c071e3f198d1b4db0597eadd7a68ff94b0ec74587af996db610883971b07eead5d06a4",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-koneplus.ko"
+	        "5f2d5f0b211046247c72a9feaf45be8ad97e4207c1b6332c2af2c7e8c5ea0ed5607e69936b398cab5b6ba6de09b6370d77b3834e1325e4c5406bfaf3b327ff8d",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-kone.ko"
 	);
 }
 static void svir_416(void) 
 {
 	svi_reg(&(tinfoil.validation_items[415]),
-	        "5f2d5f0b211046247c72a9feaf45be8ad97e4207c1b6332c2af2c7e8c5ea0ed5607e69936b398cab5b6ba6de09b6370d77b3834e1325e4c5406bfaf3b327ff8d",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-kone.ko"
+	        "8c7f7f1f261e26161f8d1c17219ef88db6e40d3e8c2f2fcc009a85b66755c1ce50381e5efc69e89b089b2f93ae1a277ff7ee7d6c0d4d745c33e18f2abce685db",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-isku.ko"
 	);
 }
 static void svir_417(void) 
 {
 	svi_reg(&(tinfoil.validation_items[416]),
-	        "8c7f7f1f261e26161f8d1c17219ef88db6e40d3e8c2f2fcc009a85b66755c1ce50381e5efc69e89b089b2f93ae1a277ff7ee7d6c0d4d745c33e18f2abce685db",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-isku.ko"
+	        "71414a9df0eea16ee5be21f7f5cbe5c45bb4041cff9a1fd69b0e75efcc77e2d3af7348d8edeb9f3d2d13024649befb6f603aec491a59757d676620dc024fa397",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-common.ko"
 	);
 }
 static void svir_418(void) 
 {
 	svi_reg(&(tinfoil.validation_items[417]),
-	        "71414a9df0eea16ee5be21f7f5cbe5c45bb4041cff9a1fd69b0e75efcc77e2d3af7348d8edeb9f3d2d13024649befb6f603aec491a59757d676620dc024fa397",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-common.ko"
+	        "c1aee812d354612ba4a87f01ecac0610ad984bf97bdd09d2c5904990889a22d25e2d7030c0dac2beb98e9ed2e646990996f712fb40d9fdb312584e12c0bc1a4b",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-arvo.ko"
 	);
 }
 static void svir_419(void) 
 {
 	svi_reg(&(tinfoil.validation_items[418]),
-	        "c1aee812d354612ba4a87f01ecac0610ad984bf97bdd09d2c5904990889a22d25e2d7030c0dac2beb98e9ed2e646990996f712fb40d9fdb312584e12c0bc1a4b",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-arvo.ko"
+	        "aee9fafe2ff272442ba58b62e98d60c0fb1153b22c31d89896c93a747f390df70be158274f52baba126196208deb8e17105ccc565dc50bca2ef8485bb4359915",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-rmi.ko"
 	);
 }
 static void svir_420(void) 
 {
 	svi_reg(&(tinfoil.validation_items[419]),
-	        "aee9fafe2ff272442ba58b62e98d60c0fb1153b22c31d89896c93a747f390df70be158274f52baba126196208deb8e17105ccc565dc50bca2ef8485bb4359915",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-rmi.ko"
+	        "53da8b49f938d18707d3b306709dce5474d92240e44f0268c738e25e4d0f2b3c61223954c475290a03f163cc6d1536bef7bbf791cf3f1581bbf3b03c3cd79f39",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-retrode.ko"
 	);
 }
 static void svir_421(void) 
 {
 	svi_reg(&(tinfoil.validation_items[420]),
-	        "53da8b49f938d18707d3b306709dce5474d92240e44f0268c738e25e4d0f2b3c61223954c475290a03f163cc6d1536bef7bbf791cf3f1581bbf3b03c3cd79f39",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-retrode.ko"
+	        "4a553227a4629958e049977dd54520763805c84de6fb5d1c851039f22c9007d2b322fe473807b6cb931b1799bc431792316d8fef0958c1e78343882024611d95",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-prodikeys.ko"
 	);
 }
 static void svir_422(void) 
 {
 	svi_reg(&(tinfoil.validation_items[421]),
-	        "4a553227a4629958e049977dd54520763805c84de6fb5d1c851039f22c9007d2b322fe473807b6cb931b1799bc431792316d8fef0958c1e78343882024611d95",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-prodikeys.ko"
+	        "716c86234d07ccacaf59c27c38273b6fed8db8b3d2d570fdccd85d52fe79ea395567dae1dfb45399afd8a3fb222fea2d3728912278b74c86d9433c576955e9ef",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-primax.ko"
 	);
 }
 static void svir_423(void) 
 {
 	svi_reg(&(tinfoil.validation_items[422]),
-	        "716c86234d07ccacaf59c27c38273b6fed8db8b3d2d570fdccd85d52fe79ea395567dae1dfb45399afd8a3fb222fea2d3728912278b74c86d9433c576955e9ef",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-primax.ko"
+	        "bf87d09f203fd65b10c9b497200fa386ddc293f1cb2c97c0c2090615729ec874172dcb482367e316afcb4042fb37999679bfbdc3a9375983bc93cdf22d6ac2ac",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-playstation.ko"
 	);
 }
 static void svir_424(void) 
 {
 	svi_reg(&(tinfoil.validation_items[423]),
-	        "bf87d09f203fd65b10c9b497200fa386ddc293f1cb2c97c0c2090615729ec874172dcb482367e316afcb4042fb37999679bfbdc3a9375983bc93cdf22d6ac2ac",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-playstation.ko"
+	        "41e4fda37dfef50188bf05d35f1134e912f553097732ea91bd8038b3e99040072da5fa2ef659347b3838153244aef8ebca63ec0ebd73a832e7a8a6cc80014b00",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-plantronics.ko"
 	);
 }
 static void svir_425(void) 
 {
 	svi_reg(&(tinfoil.validation_items[424]),
-	        "41e4fda37dfef50188bf05d35f1134e912f553097732ea91bd8038b3e99040072da5fa2ef659347b3838153244aef8ebca63ec0ebd73a832e7a8a6cc80014b00",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-plantronics.ko"
+	        "efc25b5822aefa3435c6da8f529e3d81d87d92235a703c54faed276421f222a22efcfe01d0319dcbe1f9cee34620da3dc8ed7fdfcc3f2b56de50b58b9e8535d9",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-pl.ko"
 	);
 }
 static void svir_426(void) 
 {
 	svi_reg(&(tinfoil.validation_items[425]),
-	        "efc25b5822aefa3435c6da8f529e3d81d87d92235a703c54faed276421f222a22efcfe01d0319dcbe1f9cee34620da3dc8ed7fdfcc3f2b56de50b58b9e8535d9",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-pl.ko"
+	        "97a64171951d5d73fcb71d1e755812ff51b67073453824ee06c6ca1c74540d969b471620ee9fe46c1844c73d694e792d5b2255286d1becc37d4b5c30006fa4b4",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-picolcd.ko"
 	);
 }
 static void svir_427(void) 
 {
 	svi_reg(&(tinfoil.validation_items[426]),
-	        "97a64171951d5d73fcb71d1e755812ff51b67073453824ee06c6ca1c74540d969b471620ee9fe46c1844c73d694e792d5b2255286d1becc37d4b5c30006fa4b4",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-picolcd.ko"
+	        "04b20ef5ad08a2ca6369b308d7b498b181a6ee614e0f75e681f35868c674d820e26ffeb62818e7334cb7802fb70fe8f61b3535330383e4f88db8e5d3118db852",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-petalynx.ko"
 	);
 }
 static void svir_428(void) 
 {
 	svi_reg(&(tinfoil.validation_items[427]),
-	        "04b20ef5ad08a2ca6369b308d7b498b181a6ee614e0f75e681f35868c674d820e26ffeb62818e7334cb7802fb70fe8f61b3535330383e4f88db8e5d3118db852",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-petalynx.ko"
+	        "25cbb3abec19e9b8b97e50c27a34642636642726222728ca30a8fac09e93275bf4b0a2609aab5dc27a98bc3271aaef08d5940607b40d442dbd351046a6f74e34",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-penmount.ko"
 	);
 }
 static void svir_429(void) 
 {
 	svi_reg(&(tinfoil.validation_items[428]),
-	        "25cbb3abec19e9b8b97e50c27a34642636642726222728ca30a8fac09e93275bf4b0a2609aab5dc27a98bc3271aaef08d5940607b40d442dbd351046a6f74e34",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-penmount.ko"
+	        "7f775ab64b00a83f18f02e6d9e96ac2ae89e38c0fae274b553605caf418266db6a33bacec451b890604affbd577772cc15f4f3de54a7e8a170360b9a1049e1ea",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-ortek.ko"
 	);
 }
 static void svir_430(void) 
 {
 	svi_reg(&(tinfoil.validation_items[429]),
-	        "7f775ab64b00a83f18f02e6d9e96ac2ae89e38c0fae274b553605caf418266db6a33bacec451b890604affbd577772cc15f4f3de54a7e8a170360b9a1049e1ea",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-ortek.ko"
+	        "e6392dabe81158e04e84cc8a85003b0f096bbffaac0e887f2a5c77cd0ef95f65d1de5436bbf41159a5225d9384c6e9620c95a7228bc0de9f223c7e46813fd10a",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-nti.ko"
 	);
 }
 static void svir_431(void) 
 {
 	svi_reg(&(tinfoil.validation_items[430]),
-	        "e6392dabe81158e04e84cc8a85003b0f096bbffaac0e887f2a5c77cd0ef95f65d1de5436bbf41159a5225d9384c6e9620c95a7228bc0de9f223c7e46813fd10a",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-nti.ko"
+	        "8a16df22339f77440ca1383db90aa433a28076e85d04d76da70e4aa962078241c2bc5810d6b81246a16040be2300108ed3555cc21e951e122806ed8e04e05ec2",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-multitouch.ko"
 	);
 }
 static void svir_432(void) 
 {
 	svi_reg(&(tinfoil.validation_items[431]),
-	        "8a16df22339f77440ca1383db90aa433a28076e85d04d76da70e4aa962078241c2bc5810d6b81246a16040be2300108ed3555cc21e951e122806ed8e04e05ec2",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-multitouch.ko"
+	        "810ee380a994616e2e75b3e94fcb5a2b2c929690c2c173c4beb99ffa18c27ed1c71f63726dcd659e5db0959e291922dceea50fe9185d19dd8652c4f1a45e3e5d",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-monterey.ko"
 	);
 }
 static void svir_433(void) 
 {
 	svi_reg(&(tinfoil.validation_items[432]),
-	        "810ee380a994616e2e75b3e94fcb5a2b2c929690c2c173c4beb99ffa18c27ed1c71f63726dcd659e5db0959e291922dceea50fe9185d19dd8652c4f1a45e3e5d",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-monterey.ko"
+	        "d83761cf6216af7b20b2a24780fff65ffdef4d41d1900a16120036caa296efe1ce1fa7394b39728f93e18a6c9a4ba5774909c55f0f8111995fb626914372fbb3",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-microsoft.ko"
 	);
 }
 static void svir_434(void) 
 {
 	svi_reg(&(tinfoil.validation_items[433]),
-	        "d83761cf6216af7b20b2a24780fff65ffdef4d41d1900a16120036caa296efe1ce1fa7394b39728f93e18a6c9a4ba5774909c55f0f8111995fb626914372fbb3",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-microsoft.ko"
+	        "f1c63f03d55e99fea2c9873fb135349cbfdbfeac0d00a7cd8057ecf5a5cd324c97f905cc28e0d4b9d90224b8625663dcfe7280693f2ddd7801392a38ff9e81c4",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-mf.ko"
 	);
 }
 static void svir_435(void) 
 {
 	svi_reg(&(tinfoil.validation_items[434]),
-	        "f1c63f03d55e99fea2c9873fb135349cbfdbfeac0d00a7cd8057ecf5a5cd324c97f905cc28e0d4b9d90224b8625663dcfe7280693f2ddd7801392a38ff9e81c4",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-mf.ko"
+	        "657727f4f9802f24d7c9780a8a426d0d701f193ebd53877ce1df8c695c4f0beafff27224249106ee7c060278e7b9ed4fea67a7ce970a870faa289309b102cf58",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-mcp2221.ko"
 	);
 }
 static void svir_436(void) 
 {
 	svi_reg(&(tinfoil.validation_items[435]),
-	        "657727f4f9802f24d7c9780a8a426d0d701f193ebd53877ce1df8c695c4f0beafff27224249106ee7c060278e7b9ed4fea67a7ce970a870faa289309b102cf58",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-mcp2221.ko"
+	        "c811cd529692a41823012a48198af10a1817bca5725f7bcac3c1786a3415184b9cf2bd753b773eaac4e684644c87cf316e5e21abc7c7df3d36ab2882bad6b44a",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-maltron.ko"
 	);
 }
 static void svir_437(void) 
 {
 	svi_reg(&(tinfoil.validation_items[436]),
-	        "c811cd529692a41823012a48198af10a1817bca5725f7bcac3c1786a3415184b9cf2bd753b773eaac4e684644c87cf316e5e21abc7c7df3d36ab2882bad6b44a",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-maltron.ko"
+	        "c770e7217928f10e199332541bd613cd9cca185790ebff7965539a7c691d95a5d014df1e05922fd901fb213d6577640002154d7ba9883c21bc16fa4ffc0ea555",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-macally.ko"
 	);
 }
 static void svir_438(void) 
 {
 	svi_reg(&(tinfoil.validation_items[437]),
-	        "c770e7217928f10e199332541bd613cd9cca185790ebff7965539a7c691d95a5d014df1e05922fd901fb213d6577640002154d7ba9883c21bc16fa4ffc0ea555",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-macally.ko"
+	        "7792ca26929376f2c7728ee07f1f494208f25f9e6150b1622e90e2d6baeeef566ceff8fc7b9feaa73d276b3d1926bcfe09d951d3a6c029dd309300f0970f4e29",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-logitech.ko"
 	);
 }
 static void svir_439(void) 
 {
 	svi_reg(&(tinfoil.validation_items[438]),
-	        "7792ca26929376f2c7728ee07f1f494208f25f9e6150b1622e90e2d6baeeef566ceff8fc7b9feaa73d276b3d1926bcfe09d951d3a6c029dd309300f0970f4e29",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-logitech.ko"
+	        "77abec28f9b22c80202b8c680f4dfb9e4e07c539d02376338cc87b7b9a04b71e5dbb216206b4d1f42c80daff8e9f01924e944363d9ba7acd228427058e996f39",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-logitech-hidpp.ko"
 	);
 }
 static void svir_440(void) 
 {
 	svi_reg(&(tinfoil.validation_items[439]),
-	        "77abec28f9b22c80202b8c680f4dfb9e4e07c539d02376338cc87b7b9a04b71e5dbb216206b4d1f42c80daff8e9f01924e944363d9ba7acd228427058e996f39",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-logitech-hidpp.ko"
+	        "0d2b90268289dca5ed30f0f7c6df11e6bf96f003602d7e8cb18a5f298cbb53b8db914498a3ef864802f7f4c89a879a2e523c5b4f959622aeb8eedd5deb378c7c",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-logitech-dj.ko"
 	);
 }
 static void svir_441(void) 
 {
 	svi_reg(&(tinfoil.validation_items[440]),
-	        "0d2b90268289dca5ed30f0f7c6df11e6bf96f003602d7e8cb18a5f298cbb53b8db914498a3ef864802f7f4c89a879a2e523c5b4f959622aeb8eedd5deb378c7c",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-logitech-dj.ko"
+	        "955c5790d424676501120e41c179a0ac2f6dc49c714c35853d0f6af1b3ccce726d4dbd01254cb5475a1fb4d513b1ef8db2de2f65f9b044fc29e70a74d0876058",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-lg-g15.ko"
 	);
 }
 static void svir_442(void) 
 {
 	svi_reg(&(tinfoil.validation_items[441]),
-	        "955c5790d424676501120e41c179a0ac2f6dc49c714c35853d0f6af1b3ccce726d4dbd01254cb5475a1fb4d513b1ef8db2de2f65f9b044fc29e70a74d0876058",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-lg-g15.ko"
+	        "57701d0c32182d70e08a14c00f984b58a7eb4116ec8b0d47e9f3b22218d0aa9b657b1d7180f75cdd70fa25d56b95fb01781fc7286489cd531a545cc99ddd9e32",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-lenovo.ko"
 	);
 }
 static void svir_443(void) 
 {
 	svi_reg(&(tinfoil.validation_items[442]),
-	        "57701d0c32182d70e08a14c00f984b58a7eb4116ec8b0d47e9f3b22218d0aa9b657b1d7180f75cdd70fa25d56b95fb01781fc7286489cd531a545cc99ddd9e32",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-lenovo.ko"
+	        "8379344f1817ad262be872bc4c23b86db0593977622837200cee082e0f776b440ee07cfaeb8786b3de0a89bdc3c2d6808b3016932eb5b8febf0eb71ab2a043be",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-led.ko"
 	);
 }
 static void svir_444(void) 
 {
 	svi_reg(&(tinfoil.validation_items[443]),
-	        "8379344f1817ad262be872bc4c23b86db0593977622837200cee082e0f776b440ee07cfaeb8786b3de0a89bdc3c2d6808b3016932eb5b8febf0eb71ab2a043be",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-led.ko"
+	        "08b2a9d1386584288bdafd70fbf15f0d1cc1d1caf527e2646222a0c8c7ec2c68d4811ef9f1cfaeb793f56d8b9dcdf3a93cc4cd15c8a9994ba0ee2574c7faf987",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-lcpower.ko"
 	);
 }
 static void svir_445(void) 
 {
 	svi_reg(&(tinfoil.validation_items[444]),
-	        "08b2a9d1386584288bdafd70fbf15f0d1cc1d1caf527e2646222a0c8c7ec2c68d4811ef9f1cfaeb793f56d8b9dcdf3a93cc4cd15c8a9994ba0ee2574c7faf987",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-lcpower.ko"
+	        "e9bb68f516bfdb8ec78ecd1a9df0f6a4a9257f85290437c2e4c880b7c62b44d0e2aa0ae15bd1796a990e1983d91994cbd66b10856b6116fc2a36710b403f80b2",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-kye.ko"
 	);
 }
 static void svir_446(void) 
 {
 	svi_reg(&(tinfoil.validation_items[445]),
-	        "e9bb68f516bfdb8ec78ecd1a9df0f6a4a9257f85290437c2e4c880b7c62b44d0e2aa0ae15bd1796a990e1983d91994cbd66b10856b6116fc2a36710b403f80b2",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-kye.ko"
+	        "a3b5497814decd5ad99715d4b4fd39fc1f90e9b148db9f5dc80ca7d6cb53cb2d668c2ea1899abe5e3dab9e967015f9670a7f61cb7b99428eab65a1bda57f7592",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-keytouch.ko"
 	);
 }
 static void svir_447(void) 
 {
 	svi_reg(&(tinfoil.validation_items[446]),
-	        "a3b5497814decd5ad99715d4b4fd39fc1f90e9b148db9f5dc80ca7d6cb53cb2d668c2ea1899abe5e3dab9e967015f9670a7f61cb7b99428eab65a1bda57f7592",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-keytouch.ko"
+	        "4ef09f3524c1f68b1dda6fa9c27af83fd2a84d257f90295221441ae40f15fd3b371e14e5593db99fc18fca8f5e4f3c66b014e5632fb8ed731809d086ab068f9b",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-kensington.ko"
 	);
 }
 static void svir_448(void) 
 {
 	svi_reg(&(tinfoil.validation_items[447]),
-	        "4ef09f3524c1f68b1dda6fa9c27af83fd2a84d257f90295221441ae40f15fd3b371e14e5593db99fc18fca8f5e4f3c66b014e5632fb8ed731809d086ab068f9b",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-kensington.ko"
+	        "693446b4cb6553edfce6174ff1bc58101f2d3dad805879ebb0d11d28fd618bebb902f45ac803e267a6d83293be725ae10669b22a01e74d5ad54987633f3792ad",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-jabra.ko"
 	);
 }
 static void svir_449(void) 
 {
 	svi_reg(&(tinfoil.validation_items[448]),
-	        "693446b4cb6553edfce6174ff1bc58101f2d3dad805879ebb0d11d28fd618bebb902f45ac803e267a6d83293be725ae10669b22a01e74d5ad54987633f3792ad",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-jabra.ko"
+	        "8ac3d400e129f2c87e570c1d054bd280f04d2c5c59c48c7b3d8a0dec61cb3a2f9dffebd51e47f6626337550df0bb7e52a0539de4e03ed0db99c3468506c7e2a3",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-ite.ko"
 	);
 }
 static void svir_450(void) 
 {
 	svi_reg(&(tinfoil.validation_items[449]),
-	        "8ac3d400e129f2c87e570c1d054bd280f04d2c5c59c48c7b3d8a0dec61cb3a2f9dffebd51e47f6626337550df0bb7e52a0539de4e03ed0db99c3468506c7e2a3",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-ite.ko"
+	        "ce9a3cb156a7b188325e563a9961055274700ac629ee348f8b45289dd4b70ab008c1772f69d6bcd2cbd0da04db1b4d91d211314318b4fee654e56d4fe871a913",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-icade.ko"
 	);
 }
 static void svir_451(void) 
 {
 	svi_reg(&(tinfoil.validation_items[450]),
-	        "ce9a3cb156a7b188325e563a9961055274700ac629ee348f8b45289dd4b70ab008c1772f69d6bcd2cbd0da04db1b4d91d211314318b4fee654e56d4fe871a913",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-icade.ko"
+	        "a449a18c5fd76f201580eb5017b5a3621fb3a6d4b47aea586d2484af49734f677513ef0e3d92cf5141f19f63c605e700261002ee4e96f4d119727e08114651d0",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-hyperv.ko"
 	);
 }
 static void svir_452(void) 
 {
 	svi_reg(&(tinfoil.validation_items[451]),
-	        "a449a18c5fd76f201580eb5017b5a3621fb3a6d4b47aea586d2484af49734f677513ef0e3d92cf5141f19f63c605e700261002ee4e96f4d119727e08114651d0",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-hyperv.ko"
+	        "bae1ebe03f0ceb410a65a386f492557d504be3cff7a063370ab74e291dfad642e9f42fae1efa95622fa9f68eee31116b239dd2cf7aa7c2b29e331a834631dd43",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-holtekff.ko"
 	);
 }
 static void svir_453(void) 
 {
 	svi_reg(&(tinfoil.validation_items[452]),
-	        "bae1ebe03f0ceb410a65a386f492557d504be3cff7a063370ab74e291dfad642e9f42fae1efa95622fa9f68eee31116b239dd2cf7aa7c2b29e331a834631dd43",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-holtekff.ko"
+	        "11dd022d0c66ea64df662d08d068f0f65c62c50830dba86fdfcbfcee52c92c5e5eab4984913e7d5af1d9dfa98bfe49f7ef070a57a79b60d029c861c0ea7f0da5",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-holtek-mouse.ko"
 	);
 }
 static void svir_454(void) 
 {
 	svi_reg(&(tinfoil.validation_items[453]),
-	        "11dd022d0c66ea64df662d08d068f0f65c62c50830dba86fdfcbfcee52c92c5e5eab4984913e7d5af1d9dfa98bfe49f7ef070a57a79b60d029c861c0ea7f0da5",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-holtek-mouse.ko"
+	        "e1ec55d3e64bddd54033fcc9a9e78251d8de568950da67322e8afc36c362673fdeebde88fde9125adc1aa1c6c72d435d74057b8e2f272a37b395ae865f642b74",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-holtek-kbd.ko"
 	);
 }
 static void svir_455(void) 
 {
 	svi_reg(&(tinfoil.validation_items[454]),
-	        "e1ec55d3e64bddd54033fcc9a9e78251d8de568950da67322e8afc36c362673fdeebde88fde9125adc1aa1c6c72d435d74057b8e2f272a37b395ae865f642b74",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-holtek-kbd.ko"
+	        "68dad861c02a3da1ece03c0f4afca8a42b4f3c58662fde5de76c6081ca637044e59b01667468466fd6a6f0296a8254711a26e6eb871e32d513114292dfbf2431",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-gyration.ko"
 	);
 }
 static void svir_456(void) 
 {
 	svi_reg(&(tinfoil.validation_items[455]),
-	        "68dad861c02a3da1ece03c0f4afca8a42b4f3c58662fde5de76c6081ca637044e59b01667468466fd6a6f0296a8254711a26e6eb871e32d513114292dfbf2431",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-gyration.ko"
+	        "bb500c4a74e1a410d07cd16b23a4a4b21d38cf3d604b89b6c2516878ff45e53d3209252b135935b4882ac09d2c3fb592eb61cc8241a2f856cee3f1fd989d1e91",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-gt683r.ko"
 	);
 }
 static void svir_457(void) 
 {
 	svi_reg(&(tinfoil.validation_items[456]),
-	        "bb500c4a74e1a410d07cd16b23a4a4b21d38cf3d604b89b6c2516878ff45e53d3209252b135935b4882ac09d2c3fb592eb61cc8241a2f856cee3f1fd989d1e91",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-gt683r.ko"
+	        "bb4b99dbc5e909071136c6b6e8fd12ec3919227b5fedead2204bdc5d79ef1e38675fbe3b890bd55babb4edc350e7014cb95dafbc453caf2bf53ac271ee8169b8",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-glorious.ko"
 	);
 }
 static void svir_458(void) 
 {
 	svi_reg(&(tinfoil.validation_items[457]),
-	        "bb4b99dbc5e909071136c6b6e8fd12ec3919227b5fedead2204bdc5d79ef1e38675fbe3b890bd55babb4edc350e7014cb95dafbc453caf2bf53ac271ee8169b8",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-glorious.ko"
+	        "b5ef5726f89ac7a7ae6391aa16e7c29d125d23b0dec9178735fdb0a3e9588a40eb1f698345ad771f2336d59067803a92fa417617bb0462410b593433d84770c9",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-gfrm.ko"
 	);
 }
 static void svir_459(void) 
 {
 	svi_reg(&(tinfoil.validation_items[458]),
-	        "b5ef5726f89ac7a7ae6391aa16e7c29d125d23b0dec9178735fdb0a3e9588a40eb1f698345ad771f2336d59067803a92fa417617bb0462410b593433d84770c9",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-gfrm.ko"
+	        "b2804683b9d0b122a2cdf5976b58ad288bfd2b591faa25471c8c08882c0a597de30ded1cd32cd6066dcb3e23d16ef34df4a81f9417813b336958c739a0ce6a1f",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-gembird.ko"
 	);
 }
 static void svir_460(void) 
 {
 	svi_reg(&(tinfoil.validation_items[459]),
-	        "b2804683b9d0b122a2cdf5976b58ad288bfd2b591faa25471c8c08882c0a597de30ded1cd32cd6066dcb3e23d16ef34df4a81f9417813b336958c739a0ce6a1f",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-gembird.ko"
+	        "fef0624c3a9e0672df69068fd067f3f1ff85d1dc9895a2473b152a3483e4e07704b885923951b8a70ad54f9583fa19b9d2ef3abc6815e01d4bece04dc6dfce7a",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-gaff.ko"
 	);
 }
 static void svir_461(void) 
 {
 	svi_reg(&(tinfoil.validation_items[460]),
-	        "fef0624c3a9e0672df69068fd067f3f1ff85d1dc9895a2473b152a3483e4e07704b885923951b8a70ad54f9583fa19b9d2ef3abc6815e01d4bece04dc6dfce7a",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-gaff.ko"
+	        "b1411bbb89f348492697f5711116f2d125c758518bbd91653bf914b7cf22692e002c6313771be40a218d360b7552538ad529e32f5cafd7b64046b0d93941d315",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-ft260.ko"
 	);
 }
 static void svir_462(void) 
 {
 	svi_reg(&(tinfoil.validation_items[461]),
-	        "b1411bbb89f348492697f5711116f2d125c758518bbd91653bf914b7cf22692e002c6313771be40a218d360b7552538ad529e32f5cafd7b64046b0d93941d315",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-ft260.ko"
+	        "49f410c6babd10334adfcb431e6eaf5b77a9689255848797a1f96befb9ccd8990ffad3f09f22066cd6040147e5392307deaf83441378b5db118fb6f8c5f5b47b",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-ezkey.ko"
 	);
 }
 static void svir_463(void) 
 {
 	svi_reg(&(tinfoil.validation_items[462]),
-	        "49f410c6babd10334adfcb431e6eaf5b77a9689255848797a1f96befb9ccd8990ffad3f09f22066cd6040147e5392307deaf83441378b5db118fb6f8c5f5b47b",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-ezkey.ko"
+	        "55042b36d3430fad945e4291154c11354185303eee3f21b66151340ac6f5239fdfe20b86123a37e79799e418156e6ea35fc1ff167d327697fe07bd09f989607b",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-emsff.ko"
 	);
 }
 static void svir_464(void) 
 {
 	svi_reg(&(tinfoil.validation_items[463]),
-	        "55042b36d3430fad945e4291154c11354185303eee3f21b66151340ac6f5239fdfe20b86123a37e79799e418156e6ea35fc1ff167d327697fe07bd09f989607b",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-emsff.ko"
+	        "482cc1743cdd5a87e6f5e42988039b1239c8290ff44f361e5962fbeebaa5ee6c425d68fb1a8b92d1abc2329d65895e4b0aa9762916e57e0407844b41139bfa16",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-elo.ko"
 	);
 }
 static void svir_465(void) 
 {
 	svi_reg(&(tinfoil.validation_items[464]),
-	        "482cc1743cdd5a87e6f5e42988039b1239c8290ff44f361e5962fbeebaa5ee6c425d68fb1a8b92d1abc2329d65895e4b0aa9762916e57e0407844b41139bfa16",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-elo.ko"
+	        "e50b8f1203dc1dda4cbaa101abccafee246953dc7cdc27394ef77ccf4033ea01c13b2e0216c890cb9e98facfa65ee59521352241f9c9bd21f95021ea7e191209",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-elecom.ko"
 	);
 }
 static void svir_466(void) 
 {
 	svi_reg(&(tinfoil.validation_items[465]),
-	        "e50b8f1203dc1dda4cbaa101abccafee246953dc7cdc27394ef77ccf4033ea01c13b2e0216c890cb9e98facfa65ee59521352241f9c9bd21f95021ea7e191209",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-elecom.ko"
+	        "61a44adcc4a6677aaf3c4a7182cd19303481e3da449b718a45e89fe261f114338e267f9c808334119ffaa31dbab3ad3c5c7018a4d6820f3107ce7c0563a341d2",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-elan.ko"
 	);
 }
 static void svir_467(void) 
 {
 	svi_reg(&(tinfoil.validation_items[466]),
-	        "61a44adcc4a6677aaf3c4a7182cd19303481e3da449b718a45e89fe261f114338e267f9c808334119ffaa31dbab3ad3c5c7018a4d6820f3107ce7c0563a341d2",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-elan.ko"
+	        "3aa902672b40290ea038c3f8df5f5cce1844a4d1863d8b18f7a221fad7e577dee0d1b2f01685b714f7f9e4421ca9dc9a9b96be900b3225449309eb07ee8567da",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-dr.ko"
 	);
 }
 static void svir_468(void) 
 {
 	svi_reg(&(tinfoil.validation_items[467]),
-	        "3aa902672b40290ea038c3f8df5f5cce1844a4d1863d8b18f7a221fad7e577dee0d1b2f01685b714f7f9e4421ca9dc9a9b96be900b3225449309eb07ee8567da",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-dr.ko"
+	        "239cb84232f2b3d2f61ad607d438c18a86395d4228c9080d54323c3a62da26bf9bcf17be81979bd5068c8598142273694b5d23271946de3dbc94ed3ca5678112",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-cypress.ko"
 	);
 }
 static void svir_469(void) 
 {
 	svi_reg(&(tinfoil.validation_items[468]),
-	        "239cb84232f2b3d2f61ad607d438c18a86395d4228c9080d54323c3a62da26bf9bcf17be81979bd5068c8598142273694b5d23271946de3dbc94ed3ca5678112",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-cypress.ko"
+	        "d19949490b18b30f16842800fcdca0fc936d31020fe9958169b3abd5bbcf68bdc8f8055c17feb5cc5f11dc2567690a6c76fbc3b678b99c27d1559fa4e0d57fa9",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-creative-sb0540.ko"
 	);
 }
 static void svir_470(void) 
 {
 	svi_reg(&(tinfoil.validation_items[469]),
-	        "d19949490b18b30f16842800fcdca0fc936d31020fe9958169b3abd5bbcf68bdc8f8055c17feb5cc5f11dc2567690a6c76fbc3b678b99c27d1559fa4e0d57fa9",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-creative-sb0540.ko"
+	        "715bdadba7ecfac4993e4437b7181ef7e96334def15680e08a84d47eeae82dcfefba8571e301c92928372b5df998ff6bca30b0cdf1a62b227448872c349478eb",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-cp2112.ko"
 	);
 }
 static void svir_471(void) 
 {
 	svi_reg(&(tinfoil.validation_items[470]),
-	        "715bdadba7ecfac4993e4437b7181ef7e96334def15680e08a84d47eeae82dcfefba8571e301c92928372b5df998ff6bca30b0cdf1a62b227448872c349478eb",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-cp2112.ko"
+	        "44fd02084bfff8841bc6c009943d99d7db4dda71ecfe3816d6b1ca638b40e65872299c57f94994916f07629360c947fdecc4bd844be7402139e087eb54de1fe6",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-cougar.ko"
 	);
 }
 static void svir_472(void) 
 {
 	svi_reg(&(tinfoil.validation_items[471]),
-	        "44fd02084bfff8841bc6c009943d99d7db4dda71ecfe3816d6b1ca638b40e65872299c57f94994916f07629360c947fdecc4bd844be7402139e087eb54de1fe6",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-cougar.ko"
+	        "0d91ff2a1f879c6f3299c897775c46533a36dbdee42642f152fde831a20a2a0a97dda6f85614c8c33583bb4d19aae2a95ee8543306ad5893f83bd0f0a806ea6a",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-corsair.ko"
 	);
 }
 static void svir_473(void) 
 {
 	svi_reg(&(tinfoil.validation_items[472]),
-	        "0d91ff2a1f879c6f3299c897775c46533a36dbdee42642f152fde831a20a2a0a97dda6f85614c8c33583bb4d19aae2a95ee8543306ad5893f83bd0f0a806ea6a",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-corsair.ko"
+	        "5790267c6dd0d2d17dcf92c18fdc4b3787372c938a669af4491b08594299a12b158e409949b07e2c062794ffe39d1c66436660f3de28e54cc23274406527f751",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-cmedia.ko"
 	);
 }
 static void svir_474(void) 
 {
 	svi_reg(&(tinfoil.validation_items[473]),
-	        "5790267c6dd0d2d17dcf92c18fdc4b3787372c938a669af4491b08594299a12b158e409949b07e2c062794ffe39d1c66436660f3de28e54cc23274406527f751",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-cmedia.ko"
+	        "1f85c7c720d4fba3b7a0f971aadd56f95419c7d6263d6aee89b5695c193428d9bae3de896b049d6813aaa88e7b5b6dec7a9b91f17cfbaa0e3ca3cc18a5475d5b",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-chicony.ko"
 	);
 }
 static void svir_475(void) 
 {
 	svi_reg(&(tinfoil.validation_items[474]),
-	        "1f85c7c720d4fba3b7a0f971aadd56f95419c7d6263d6aee89b5695c193428d9bae3de896b049d6813aaa88e7b5b6dec7a9b91f17cfbaa0e3ca3cc18a5475d5b",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-chicony.ko"
+	        "7c1ae6fa6ba74d9d46a260fe02bc1fa571490b69919dfa2ec0709f9f33e9d8809700c92560ec83ec20865747bfda3a7e422e6874c8e542bbdccdabb462656b33",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-cherry.ko"
 	);
 }
 static void svir_476(void) 
 {
 	svi_reg(&(tinfoil.validation_items[475]),
-	        "7c1ae6fa6ba74d9d46a260fe02bc1fa571490b69919dfa2ec0709f9f33e9d8809700c92560ec83ec20865747bfda3a7e422e6874c8e542bbdccdabb462656b33",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-cherry.ko"
+	        "f935f8318c38e8a34990af7060be248a457b66d649c6a3a680572067f1789b6899f1752bfccebda315ce5aaed0b173a68e6c532b24ddbe30904c472f72054b4d",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-bigbenff.ko"
 	);
 }
 static void svir_477(void) 
 {
 	svi_reg(&(tinfoil.validation_items[476]),
-	        "f935f8318c38e8a34990af7060be248a457b66d649c6a3a680572067f1789b6899f1752bfccebda315ce5aaed0b173a68e6c532b24ddbe30904c472f72054b4d",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-bigbenff.ko"
+	        "e02e3e3b533ce431d5777dae72256fba53922f9046ac384c8a9c32e5f6d740435fabbc5903066e7977e8f72ea4c81a5891c6ff4b0dd953a90f4d1c277e37380f",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-betopff.ko"
 	);
 }
 static void svir_478(void) 
 {
 	svi_reg(&(tinfoil.validation_items[477]),
-	        "e02e3e3b533ce431d5777dae72256fba53922f9046ac384c8a9c32e5f6d740435fabbc5903066e7977e8f72ea4c81a5891c6ff4b0dd953a90f4d1c277e37380f",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-betopff.ko"
+	        "384e72c7570cecd1435928e3782803f9783cfdb9acc2c8291eafa90667ccb42e36b6bd11cff122c97246f512a310488580f01634ebe6a982a1b2246d80aa8d2c",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-belkin.ko"
 	);
 }
 static void svir_479(void) 
 {
 	svi_reg(&(tinfoil.validation_items[478]),
-	        "384e72c7570cecd1435928e3782803f9783cfdb9acc2c8291eafa90667ccb42e36b6bd11cff122c97246f512a310488580f01634ebe6a982a1b2246d80aa8d2c",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-belkin.ko"
+	        "99f7dc579a374de390d92e65880351e481bb89edae9229ac7f290db3dfd8b68654148add45c94dc021b0cf1b057b1dd589b106c2d5a855f04d47e12fd442e72a",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-axff.ko"
 	);
 }
 static void svir_480(void) 
 {
 	svi_reg(&(tinfoil.validation_items[479]),
-	        "99f7dc579a374de390d92e65880351e481bb89edae9229ac7f290db3dfd8b68654148add45c94dc021b0cf1b057b1dd589b106c2d5a855f04d47e12fd442e72a",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-axff.ko"
+	        "6d28a2e46fb87f1c8066bbea58fa6a5fc90f3e1f088bad555ac44a81064d25d192c8cf18a1d74b63bc698ef28ccf934aecf8c4625af03b6e0b30f31f62bf89c5",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-aureal.ko"
 	);
 }
 static void svir_481(void) 
 {
 	svi_reg(&(tinfoil.validation_items[480]),
-	        "6d28a2e46fb87f1c8066bbea58fa6a5fc90f3e1f088bad555ac44a81064d25d192c8cf18a1d74b63bc698ef28ccf934aecf8c4625af03b6e0b30f31f62bf89c5",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-aureal.ko"
+	        "ce7c38fe144dd5fe1037e0396e3851d239775d86fd34c095e5c2041ee9e58736612822ec0729f1994742407da8ef7b7ec92f42aacd9178a9a151b24f4f135586",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-asus.ko"
 	);
 }
 static void svir_482(void) 
 {
 	svi_reg(&(tinfoil.validation_items[481]),
-	        "ce7c38fe144dd5fe1037e0396e3851d239775d86fd34c095e5c2041ee9e58736612822ec0729f1994742407da8ef7b7ec92f42aacd9178a9a151b24f4f135586",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-asus.ko"
+	        "a0f7556373a7c53d870247f532fb96805494928d7f72363c9ab8dab68bac6cfa0be3be3c3f9757a295de71f5eed81e310db856ff6068e8fd882b8bc8e55df0e7",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-appleir.ko"
 	);
 }
 static void svir_483(void) 
 {
 	svi_reg(&(tinfoil.validation_items[482]),
-	        "a0f7556373a7c53d870247f532fb96805494928d7f72363c9ab8dab68bac6cfa0be3be3c3f9757a295de71f5eed81e310db856ff6068e8fd882b8bc8e55df0e7",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-appleir.ko"
+	        "acb7fc0f902e7b31f814926df4ca1c106df0a3e4643c1128de606c8f4591d52da7060f22d62dbb8680149f8064b150f9617977129d3e4c20582c5536bc42ebee",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-apple.ko"
 	);
 }
 static void svir_484(void) 
 {
 	svi_reg(&(tinfoil.validation_items[483]),
-	        "acb7fc0f902e7b31f814926df4ca1c106df0a3e4643c1128de606c8f4591d52da7060f22d62dbb8680149f8064b150f9617977129d3e4c20582c5536bc42ebee",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-apple.ko"
+	        "156eff94611ee3aa76163381ab7bfcf602dab5ab3254671c5386ad10e694ede3bd8fa2aa2f8c981dfe753718cb4c62b29a803fa369cd29107b0cfede0144ccf5",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-alps.ko"
 	);
 }
 static void svir_485(void) 
 {
 	svi_reg(&(tinfoil.validation_items[484]),
-	        "156eff94611ee3aa76163381ab7bfcf602dab5ab3254671c5386ad10e694ede3bd8fa2aa2f8c981dfe753718cb4c62b29a803fa369cd29107b0cfede0144ccf5",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-alps.ko"
+	        "f9bbed3d2a645e80246cd398b3ed51398522e3f6f76370007939bb2f87321f7e995b80b4e194553324865f6f9ca7f683252115236ee23d18450a20345d4d58f4",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-accutouch.ko"
 	);
 }
 static void svir_486(void) 
 {
 	svi_reg(&(tinfoil.validation_items[485]),
-	        "f9bbed3d2a645e80246cd398b3ed51398522e3f6f76370007939bb2f87321f7e995b80b4e194553324865f6f9ca7f683252115236ee23d18450a20345d4d58f4",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-accutouch.ko"
+	        "4a44d6339854ad416c862ce8c9c753605bca976735e1ddfde49bba10046f8db08e933bb9d755474313d1d82e76678d740a33181a0a66423ada595a5eb07297fb",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-a4tech.ko"
 	);
 }
 static void svir_487(void) 
 {
 	svi_reg(&(tinfoil.validation_items[486]),
-	        "4a44d6339854ad416c862ce8c9c753605bca976735e1ddfde49bba10046f8db08e933bb9d755474313d1d82e76678d740a33181a0a66423ada595a5eb07297fb",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-a4tech.ko"
+	        "8643d0d50568b608a6e5733157cda7f5d4e1331c920cc06beaf1ebb89b23e9926ef0d28514f22a255702334a931a30e9bce83036d1b51945b95c7da371d3a91b",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/amd-sfh-hid/amd_sfh.ko"
 	);
 }
 static void svir_488(void) 
 {
 	svi_reg(&(tinfoil.validation_items[487]),
-	        "8643d0d50568b608a6e5733157cda7f5d4e1331c920cc06beaf1ebb89b23e9926ef0d28514f22a255702334a931a30e9bce83036d1b51945b95c7da371d3a91b",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/amd-sfh-hid/amd_sfh.ko"
+	        "a32cfa2929a27064ffac7f9afbba1f87ea19e192ff7f257f673810ac82c726b8dd025737b704ad2ecd9401aa31425c35dd142b3fb930b7bfc63201f8c0f9e5e3",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/gpu/drm/ttm/ttm.ko"
 	);
 }
 static void svir_489(void) 
 {
 	svi_reg(&(tinfoil.validation_items[488]),
-	        "a32cfa2929a27064ffac7f9afbba1f87ea19e192ff7f257f673810ac82c726b8dd025737b704ad2ecd9401aa31425c35dd142b3fb930b7bfc63201f8c0f9e5e3",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/gpu/drm/ttm/ttm.ko"
+	        "afe5e174ddf103f07e0b31957836b67461c116bcf4995a272cbcf941345db4d09da2b8cc6d6d1f8e10686388f070082581b8b25552469f3ad23a5ebddac16ec5",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/gpu/drm/qxl/qxl.ko"
 	);
 }
 static void svir_490(void) 
 {
 	svi_reg(&(tinfoil.validation_items[489]),
-	        "afe5e174ddf103f07e0b31957836b67461c116bcf4995a272cbcf941345db4d09da2b8cc6d6d1f8e10686388f070082581b8b25552469f3ad23a5ebddac16ec5",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/gpu/drm/qxl/qxl.ko"
+	        "5b7c2cb2f31bd832ae7c8cc49053a41ab040cf1d21841e7ce59064937684624bc9c0b4ae24a842f2a885bf93ac04946f69590a111be94882009b5065dd5998b2",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/gpu/drm/drm_ttm_helper.ko"
 	);
 }
 static void svir_491(void) 
 {
 	svi_reg(&(tinfoil.validation_items[490]),
-	        "5b7c2cb2f31bd832ae7c8cc49053a41ab040cf1d21841e7ce59064937684624bc9c0b4ae24a842f2a885bf93ac04946f69590a111be94882009b5065dd5998b2",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/gpu/drm/drm_ttm_helper.ko"
+	        "c0301a2847fd3d9c78b72b45a213a22b864cf82f38bbc59715011e9e9baee2937895c135f0dea29ab169b96de040717e02533269518ee7a36678ba82b1e8cc4e",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/gpu/drm/drm_kms_helper.ko"
 	);
 }
 static void svir_492(void) 
 {
 	svi_reg(&(tinfoil.validation_items[491]),
-	        "c0301a2847fd3d9c78b72b45a213a22b864cf82f38bbc59715011e9e9baee2937895c135f0dea29ab169b96de040717e02533269518ee7a36678ba82b1e8cc4e",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/gpu/drm/drm_kms_helper.ko"
+	        "735634a285cf6ef0a60fd73a7ba066fc84cbdca5a98534bd184c9ccc73f08845d70fff2e09d95f968293126f0116aad66155ce346c387c09dd60d9f730f21a1d",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/gpu/drm/drm.ko"
 	);
 }
 static void svir_493(void) 
 {
 	svi_reg(&(tinfoil.validation_items[492]),
-	        "735634a285cf6ef0a60fd73a7ba066fc84cbdca5a98534bd184c9ccc73f08845d70fff2e09d95f968293126f0116aad66155ce346c387c09dd60d9f730f21a1d",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/gpu/drm/drm.ko"
+	        "d69c19080e3b727311e3ea3d9f81e1b3bd4555bf4c902b6f72d5740634258f87682602a8701154388bec94237c4f3a7829aa75f6e6c1971a62f952321c72c7d9",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/firmware/qemu_fw_cfg.ko"
 	);
 }
 static void svir_494(void) 
 {
 	svi_reg(&(tinfoil.validation_items[493]),
-	        "d69c19080e3b727311e3ea3d9f81e1b3bd4555bf4c902b6f72d5740634258f87682602a8701154388bec94237c4f3a7829aa75f6e6c1971a62f952321c72c7d9",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/firmware/qemu_fw_cfg.ko"
+	        "7bafa77db43a98a317d13d8975429245c37363b42e77e371268bab6c1d8e31b6d6cbc743ce8462ee96b5986b6075dea342127afcf26a104f567089d01c947bbc",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/char/virtio_console.ko"
 	);
 }
 static void svir_495(void) 
 {
 	svi_reg(&(tinfoil.validation_items[494]),
-	        "7bafa77db43a98a317d13d8975429245c37363b42e77e371268bab6c1d8e31b6d6cbc743ce8462ee96b5986b6075dea342127afcf26a104f567089d01c947bbc",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/char/virtio_console.ko"
+	        "1d6f27d24c77658fc8868d2c39b9dc47c52942484bc26b260c7e902b66d8c1f4050c35daed83b3a447e46d65d3aa125533744115adbde9cc8206da6e7ff336ac",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/char/ipmi/ipmi_si.ko"
 	);
 }
 static void svir_496(void) 
 {
 	svi_reg(&(tinfoil.validation_items[495]),
-	        "1d6f27d24c77658fc8868d2c39b9dc47c52942484bc26b260c7e902b66d8c1f4050c35daed83b3a447e46d65d3aa125533744115adbde9cc8206da6e7ff336ac",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/char/ipmi/ipmi_si.ko"
+	        "8489f5bf4f7ea97325d6796e71be871698353d12c1d9b920ad26ebcf00f9236bce99858084ca9a8f903469cb40f0b99d88f9c2ee3f6cc0d8f7b31b39bcdeab72",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/char/ipmi/ipmi_msghandler.ko"
 	);
 }
 static void svir_497(void) 
 {
 	svi_reg(&(tinfoil.validation_items[496]),
-	        "8489f5bf4f7ea97325d6796e71be871698353d12c1d9b920ad26ebcf00f9236bce99858084ca9a8f903469cb40f0b99d88f9c2ee3f6cc0d8f7b31b39bcdeab72",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/char/ipmi/ipmi_msghandler.ko"
+	        "242d0875165204c3ce268eed923e3c36703de49e1e5a5744c8310ed19dc4d6f8a9268da09db3bb26682d0dd496ac8bf10a321f1c3cddac328002f145893d20e6",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/char/ipmi/ipmi_devintf.ko"
 	);
 }
 static void svir_498(void) 
 {
 	svi_reg(&(tinfoil.validation_items[497]),
-	        "242d0875165204c3ce268eed923e3c36703de49e1e5a5744c8310ed19dc4d6f8a9268da09db3bb26682d0dd496ac8bf10a321f1c3cddac328002f145893d20e6",
-	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/char/ipmi/ipmi_devintf.ko"
+	        "7fee6cd6e2a3c4cfb14e665fa987d1ac1cdbc7fdaf4bd1a499722e97e643718ff285224b74b7241005f30e42b1dea23aa853f90e8b8064d7dc1397c122a74b49",
+	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/block/zram/zram.ko"
 	);
 }
 static void svir_499(void) 
@@ -5626,6 +5630,13 @@ static void svir_560(void)
 	        "/usr/lib/modules/5.14.13-tinfoil+/kernel/arch/x86/crypto/crc32-pclmul.ko"
 	);
 }
+static void svir_561(void) 
+{
+	svi_reg(&(tinfoil.validation_items[560]),
+	        "fa7a544b98c6c938c4421acf1037fb771519da4f3cc675edb59fddca1f4fec46c1e5500d2cb57f68437f7fed3c7dc23b4baf59afb1dd02c893dbba42f7785fc1",
+	        "/usr/lib/modules/5.14.13-tinfoil+/extra/slowboot.ko"
+	);
+}
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -5639,7 +5650,7 @@ static void slowboot_run_test(void)
 
 //##########TEMPLATE_PARM_SP##################################################=>	
 
-	int validation_count = 560;
+	int validation_count = 561;
 	svir_1();
 	svir_2();
 	svir_3();
@@ -6200,6 +6211,7 @@ static void slowboot_run_test(void)
 	svir_558();
 	svir_559();
 	svir_560();
+	svir_561();
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
