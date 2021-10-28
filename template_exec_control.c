@@ -37,10 +37,13 @@ typedef struct snarf_hat_item {
 } snarf_hat_item;
 
 typedef struct snarf_hat {
-	snarf_hat_item items[NUM_HATS];
+	snarf_hat_item *items;
 } snarf_hat;
 
 static snarf_hat tinfoil;
+static snarf_hat_item tinfoil_hat[]={
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$DT
+};
 
 /*******************************************************************************
 * Register data in array                                                       *
@@ -58,13 +61,14 @@ static void snarf_construct_hat(const char *filename,
 }
 
 //##########TEMPLATE_PARM_FN##################################################=>
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$FN
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$FN
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 static void snarf_init(void)
 {
 //##########TEMPLATE_PARM_SP##################################################=>
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SP
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SP
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }
 
@@ -94,93 +98,101 @@ static sdesc* init_sdesc(struct crypto_shash *alg)
 // Are not important initially as long as prototype functionaly is correct
 static int snarf_it(const char *filename, snarf_hat_item *item)
 {
-  char *buf;
-  struct kstat st;
-  int number_read;
-  struct file *fp;
-  u8 b_hash[65];
-  long long int pos;
-  struct crypto_shash *alg;
-  sdesc *desc;
-  char digest[64];
-  int j;
+	char *buf;
+	loff_t file_size;
+	int number_read;
+	struct file *fp;
+	u8 b_hash[65];
+	loff_t pos;
+	struct crypto_shash *alg;
+	sdesc *desc;
+	char digest[64];
+	int j;
 
-  
-  
-  fp = filp_open(filename, O_RDONLY, 0);
-  if (IS_ERR(fp) || fp == NULL) {
-    printk(KERN_ERR "Snaf Cannot Open File:%s\n", filename);
-    goto fail;
-  }
 
-  if (vfs_getattr(&(fp->f_path),
-	      &st,
-	      STATX_SIZE,
-		  AT_STATX_SYNC_AS_STAT) != 0 ) {
-    printk(KERN_ERR "Snarf Cannot Stat:%s\n", filename);
-    goto fail;
-  }
+	fp = NULL;
+	buf = NULL;
+	file_size = 0;
+	pos = 0;
 
-  buf = vmalloc(st.size+1);
-  if (!buf) {
-    printk(KERN_ERR "Snarf Cannot Allocate Memory:%s\n", filename);
-    goto fail;
-  }
+	fp = filp_open(filename, O_RDONLY, 0);
+	if (IS_ERR(fp) || fp == NULL) {
+		printk(KERN_ERR "Snarf Cannot Open File:%s\n", filename);
+		goto fail;
+	}
 
-  memset(buf,0,st.size+1);
-  memset(b_hash,0,65);
-  
-  number_read = kernel_read(fp, buf, st.size, &pos);
-  if (number_read != st.size) {
-    printk(KERN_ERR "Snarf File Size Mismatch:%s\n", filename);
-    goto fail;
-  }
+	printk(KERN_INFO "Snarf Current Position:%lld\n", fp->f_pos);
+	default_llseek(fp, 0, SEEK_END);
+	/*printk(KERN_INFO "Snarf Current Position:%ld\n", fp->f_pos);
+	default_llseek(fp, fp->f_pos * -1, SEEK_CUR);
+	printk(KERN_INFO "Snarf Current Position:%ld\n", fp->f_pos);*/
+	file_size = fp->f_pos;
+	printk(KERN_INFO "Snarf File Size:%lld\n", file_size);
 
-  if (hex2bin(b_hash, item->hash, 64) != 0) {
-    printk(KERN_ERR "Snarf Stored Hex2Bin Fail:%s\n", filename);
-    goto fail;
-  }
 
-  alg = crypto_alloc_shash("sha512", 0, 0);
-  if (IS_ERR(alg) || alg == NULL) {
-    printk(KERN_ERR "Snarf cannot allocate alg sha512\n");
-    goto fail;
-  }
+	buf = vmalloc(file_size+1);
+	if (!buf) {
+		printk(KERN_ERR "Snarf Cannot Allocate Memory:%s\n", filename);
+		goto fail;
+	}
 
-  desc = init_sdesc(alg);
-  if (desc == NULL) {
-    printk(KERN_ERR "Snarf cannot allocate sdesc\n");
-    goto fail;
-  }
+	memset(buf,0,file_size+1);
+	memset(b_hash,0,65);
 
-  crypto_shash_digest(&(desc->shash), buf, st.size, digest);
-  for(j=0;j<64;j++) {
-    if(b_hash[j]!=digest[j])
-      goto fail;
-  }
 
-  if (buf != NULL)
-    vfree(buf);
-  if (fp != NULL)
-    filp_close(fp, NULL);
-  if (!IS_ERR(alg) || alg != NULL)
-    crypto_free_shash(alg);
-  if (desc != NULL)
-    kfree(desc);
-  return 0;
- fail:
-  if (buf != NULL)
-    vfree(buf);
-  if (fp != NULL)
-    filp_close(fp, NULL);
-  if (!IS_ERR(alg) || alg != NULL)
-    crypto_free_shash(alg);
-  if (desc != NULL)
-    kfree(desc);
-  return 1;
+	number_read = kernel_read(fp, buf, file_size, &pos);
+	if (number_read != file_size) {
+		printk(KERN_ERR "Snarf File Size Mismatch:%s,%lld,%lld\n", filename, number_read, pos);
+		goto fail;
+	}
+
+	/*if (hex2bin(b_hash, item->hash, 64) != 0) {
+	printk(KERN_ERR "Snarf Stored Hex2Bin Fail:%s\n", filename);
+	goto fail;
+	}
+
+	alg = crypto_alloc_shash("sha512", 0, 0);
+	if (IS_ERR(alg) || alg == NULL) {
+	printk(KERN_ERR "Snarf cannot allocate alg sha512\n");
+	goto fail;
+	}
+
+	desc = init_sdesc(alg);
+	if (desc == NULL) {
+	printk(KERN_ERR "Snarf cannot allocate sdesc\n");
+	goto fail;
+	}
+
+	crypto_shash_digest(&(desc->shash), buf, st.size, digest);
+	for(j=0;j<64;j++) {
+	if(b_hash[j]!=digest[j])
+	  goto fail;
+	}
+	*/
+
+	if (buf != NULL)
+	  vfree(buf);
+	if (fp != NULL && !IS_ERR(fp))
+		filp_close(fp, NULL);
+	// if (desc != NULL)
+	//  kfree(desc);
+	//if (!IS_ERR(alg) || alg != NULL)
+	//  crypto_free_shash(alg);
+
+	return 0;
+fail:
+	if (buf != NULL)
+	  vfree(buf);
+	if (fp != NULL && !IS_ERR(fp))
+	  filp_close(fp, NULL);
+	//if (desc != NULL)
+	//  kfree(desc);
+	//if (!IS_ERR(alg) || alg != NULL)
+	//  crypto_free_shash(alg);
+	return 1;
 }
 
-static int snarf_check(const char *filename)
+static int snarf_check(struct filename *fn)
 {
 	int j;
 	int is_ok;
@@ -190,15 +202,19 @@ static int snarf_check(const char *filename)
 	}
 
 	is_ok = 1;
-	
+	printk(KERN_INFO "Snarfing:%s\n", fn->name);
 	for (j=0;j<NUM_HATS;j++) {
-	  if (strcmp(filename,tinfoil.items[j].filename) == 0)
-	    if(snarf_it(filename,&tinfoil.items[j]) == ) {
-	      is_ok = 0;
-	      break;
-	    }
+		if (strcmp(fn->name,tinfoil.items[j].filename) == 0)
+			if(snarf_it(fn->name,&tinfoil.items[j]) == 0) {
+				is_ok = 0;
+				break;
+			}
 	}
-	return is_ok;
+	if (is_ok == 1)
+		printk(KERN_ERR "Snarf Gobble:%s\n", fn->name);
+	else
+		printk(KERN_INFO "Snarf Success:%s\n", fn->name);
+	return 0;
 }
 
 // exit
