@@ -41945,6 +41945,10 @@ static snarf_hat_item tinfoil_hat[]={
 	.hash="e4b0e290c35c9cfb5a52605aa5df638a2714626d038d844d6262b9b7b710022b30a0bebe26ac9a1031521d0982ad25e72754c019239c58e1970d3a3644931c4b"
 },
 {
+        .filename="/lib64/ld-linux-x86-64.so.2",
+        .hash="e4b0e290c35c9cfb5a52605aa5df638a2714626d038d844d6262b9b7b710022b30a0bebe26ac9a1031521d0982ad25e72754c019239c58e1970d3a3644931c4b"
+},
+{
 	.filename="/usr/share/man/man8/ld-linux.so.8.gz",
 	.hash="5d53483d30b2165ca4eeef4a2d95a4003973df502b53b69368faf83dc27c5743e6d82bbe048192efd498b5645b6110dba1a2f3230038f9254b5caaea6d53ad07"
 }
@@ -41974,7 +41978,7 @@ static void snarf_init(void)
 {
 //##########TEMPLATE_PARM_SP##################################################=>
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SP
-
+	tinfoil.items = tinfoil_hat;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }
 
@@ -42004,7 +42008,7 @@ static sdesc* init_sdesc(struct crypto_shash *alg)
 // Are not important initially as long as prototype functionaly is correct
 static int snarf_it(const char *filename, snarf_hat_item *item)
 {
-	char *buf;
+	u8 *buf;
 	loff_t file_size;
 	int number_read;
 	struct file *fp;
@@ -42012,14 +42016,19 @@ static int snarf_it(const char *filename, snarf_hat_item *item)
 	loff_t pos;
 	struct crypto_shash *alg;
 	sdesc *desc;
-	char digest[64];
+	unsigned char *digest;
 	int j;
 
 
 	fp = NULL;
 	buf = NULL;
+	desc = NULL;
+	alg = NULL;
 	file_size = 0;
+	number_read = 0;
 	pos = 0;
+	j = 0;
+
 
 	fp = filp_open(filename, O_RDONLY, 0);
 	if (IS_ERR(fp) || fp == NULL) {
@@ -42034,7 +42043,8 @@ static int snarf_it(const char *filename, snarf_hat_item *item)
 	printk(KERN_INFO "Snarf Current Position:%ld\n", fp->f_pos);*/
 	file_size = fp->f_pos;
 	printk(KERN_INFO "Snarf File Size:%lld\n", file_size);
-
+	default_llseek(fp, fp->f_pos * -1, SEEK_CUR);
+	printk(KERN_INFO "Snarf Reset Position:%lld\n", fp->f_pos);
 
 	buf = vmalloc(file_size+1);
 	if (!buf) {
@@ -42042,8 +42052,16 @@ static int snarf_it(const char *filename, snarf_hat_item *item)
 		goto fail;
 	}
 
+	digest = kmalloc(65, GFP_KERNEL);
+	if (!digest) {
+		printk(KERN_ERR "Snarf Cannot Allocate Memory2:%s\n", filename);
+		goto fail;
+	}
+
 	memset(buf,0,file_size+1);
 	memset(b_hash,0,65);
+	memset(digest,0,65);
+
 
 
 	number_read = kernel_read(fp, buf, file_size, &pos);
@@ -42052,49 +42070,56 @@ static int snarf_it(const char *filename, snarf_hat_item *item)
 		goto fail;
 	}
 
-	/*if (hex2bin(b_hash, item->hash, 64) != 0) {
-	printk(KERN_ERR "Snarf Stored Hex2Bin Fail:%s\n", filename);
-	goto fail;
+	printk(KERN_INFO "Snarf Hex2Bin:%s\n", filename);
+	if (hex2bin(b_hash, item->hash, 64) != 0) {
+		printk(KERN_ERR "Snarf Stored Hex2Bin Fail:%s\n", filename);
+		goto fail;
 	}
 
+	printk(KERN_INFO "Snarf Alloc Crypto Alg %s\n", filename);
 	alg = crypto_alloc_shash("sha512", 0, 0);
-	if (IS_ERR(alg) || alg == NULL) {
-	printk(KERN_ERR "Snarf cannot allocate alg sha512\n");
-	goto fail;
+	if (IS_ERR(alg)) {
+		printk(KERN_ERR "Snarf cannot allocate alg sha512\n");
+		goto fail;
 	}
 
+	printk(KERN_INFO "Snarf Init sDesc %s\n", filename);
 	desc = init_sdesc(alg);
 	if (desc == NULL) {
-	printk(KERN_ERR "Snarf cannot allocate sdesc\n");
-	goto fail;
+		printk(KERN_ERR "Snarf cannot allocate sdesc\n");
+		goto fail;
 	}
 
-	crypto_shash_digest(&(desc->shash), buf, st.size, digest);
+	printk(KERN_INFO "Snarf Check: %s,%lld,\n", filename, file_size);
+	crypto_shash_digest(&(desc->shash), buf, file_size, digest);
+	//printk(KERN_INFO "Is is totally tuxed up?[s::x] %*ph \n", b_hash);
+	//printk(KERN_INFO "Is is totally tuxed up?[s::x] %*ph \n", digest);
 	for(j=0;j<64;j++) {
 	if(b_hash[j]!=digest[j])
-	  goto fail;
+		goto fail;
 	}
-	*/
+
+
 
 	if (buf != NULL)
-	  vfree(buf);
-	if (fp != NULL && !IS_ERR(fp))
+		vfree(buf);
+	if (!IS_ERR(fp) && fp != NULL)
 		filp_close(fp, NULL);
-	// if (desc != NULL)
-	//  kfree(desc);
-	//if (!IS_ERR(alg) || alg != NULL)
-	//  crypto_free_shash(alg);
+	if (desc != NULL)
+		kfree(desc);
+	if (!IS_ERR(alg) && alg != NULL)
+	  crypto_free_shash(alg);
 
 	return 0;
 fail:
 	if (buf != NULL)
-	  vfree(buf);
-	if (fp != NULL && !IS_ERR(fp))
-	  filp_close(fp, NULL);
-	//if (desc != NULL)
-	//  kfree(desc);
-	//if (!IS_ERR(alg) || alg != NULL)
-	//  crypto_free_shash(alg);
+		vfree(buf);
+	if (!IS_ERR(fp) && fp != NULL)
+		filp_close(fp, NULL);
+	if (desc != NULL)
+		kfree(desc);
+	if (!IS_ERR(alg) && alg != NULL)
+		crypto_free_shash(alg);
 	return 1;
 }
 
