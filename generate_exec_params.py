@@ -14,10 +14,15 @@ if __name__ == '__main__':
 	
 
 	#os.remove("./init.param")
-	os.system("find / -type f -executable 2>/dev/null -exec sha512sum {} \; | awk '{print $1,$2;}' > "+pwd+"/exec.param.temp")
-	os.system("find / -type l -executable 2>/dev/null -exec sha512sum {} \; | awk '{print $1,$2;}' >> "+pwd+"/exec.param.temp")
+	os.system("find /bin/ -type f -executable 2>/dev/null -exec sha512sum {} \; | awk '{print $1,$2;}' > "+pwd+"/exec.param.temp")
+	os.system("find /etc/ -type l -executable 2>/dev/null -exec sha512sum {} \; | awk '{print $1,$2;}' >> "+pwd+"/exec.param.temp")
+	os.system("find /lib/ -type l -executable 2>/dev/null -exec sha512sum {} \; | awk '{print $1,$2;}' >> "+pwd+"/exec.param.temp")
+	os.system("find /lib64/ -type l -executable 2>/dev/null -exec sha512sum {} \; | awk '{print $1,$2;}' >> "+pwd+"/exec.param.temp")
+	os.system("find /opt/ -type l -executable 2>/dev/null -exec sha512sum {} \; | awk '{print $1,$2;}' >> "+pwd+"/exec.param.temp")
+	os.system("find /usr/ -type l -executable 2>/dev/null -exec sha512sum {} \; | awk '{print $1,$2;}' >> "+pwd+"/exec.param.temp")
 	os.system("find / -type f -name \"*ld-linux*.so*\" 2>/dev/null -exec sha512sum {} \; | awk '{print $1,$2;}' >> "+pwd+"/exec.param.temp")
-	os.system("find / -type l -name \"*ld-linux*.so*\" 2>/dev/null -exec sha512sum {} \; | awk '{print $1,$2;}' >> "+pwd+"/exec.param.temp")	
+	os.system("find / -type l -name \"*ld-linux*.so*\" 2>/dev/null -exec sha512sum {} \; | awk '{print $1,$2;}' >> "+pwd+"/exec.param.temp")
+	#os.system("sha512sum /usr/bin/sudo | awk '{print $1,$2;}' > "+pwd+"/exec.param.temp")	
 	#? configuration files? anything else?
 	try:
 		os.system("rm " + pwd + "/exec.param")

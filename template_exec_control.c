@@ -96,7 +96,16 @@ static sdesc* init_sdesc(struct crypto_shash *alg)
 // Initially this method may be ok but going forward I may need to fix this
 // With this being dynamically genereted for each "Kernel Release" the details
 // Are not important initially as long as prototype functionaly is correct
-static int snarf_it(const char *filename, snarf_hat_item *item)
+/**
+ * snarf_it
+ * @fd:			File Descriptor passed along to the exec
+ * @fn: 		File Name passed along to the exec
+ * @fl: 		Open flags maded in the exec
+ * @item: 		Found item to hash check against based upon file name
+ *
+ * This will sha512 validate an executable before it is allowed to run (Enforcing) or trigger an alert (Permissive)
+ */
+static int snarf_it(int fd, const struct filename *fn, struct open_flags *fl, snarf_hat_item *item)
 {
 	u8 *buf;
 	loff_t file_size;
@@ -105,12 +114,15 @@ static int snarf_it(const char *filename, snarf_hat_item *item)
 	u8 b_hash[65];
 	loff_t pos;
 	struct crypto_shash *alg;
+	struct cred *c_cred;
 	sdesc *desc;
 	unsigned char *digest;
 	int j;
 	int return_code;
+	char *filename;
 
 
+	// Initialize all variables for maximum verbosity usefull in security critical pieces
 	fp = NULL;
 	buf = NULL;
 	desc = NULL;
@@ -121,14 +133,17 @@ static int snarf_it(const char *filename, snarf_hat_item *item)
 	pos = 0;
 	j = 0;
 	return_code = 0;
+	filename = fn->name;
 
 
 	// Try open file
-	fp = filp_open(filename, O_RDONLY, 0);
+	//fp = filp_open(filename, O_RDONLY, 0); // Does not like sudo
+	fp = do_filp_open(fd, fn, fl);
 	if (IS_ERR(fp) || fp == NULL) {
 		printk(KERN_ERR "Snarf Cannot Open File:%s\n", filename);
 		goto fail;
 	}
+
 
 	// Determine file size
 	printk(KERN_INFO "Snarf Current Position:%lld\n", fp->f_pos);
@@ -190,8 +205,6 @@ static int snarf_it(const char *filename, snarf_hat_item *item)
 	// Hash the file
 	printk(KERN_INFO "Snarf Check: %s,%lld,\n", filename, file_size);
 	crypto_shash_digest(&(desc->shash), buf, file_size, digest);
-	//printk(KERN_INFO "Is is totally tuxed up?[s::x] %*ph \n", b_hash);
-	//printk(KERN_INFO "Is is totally tuxed up?[s::x] %*ph \n", digest);
 
 	// Check the Hash
 	for(j=0;j<64;j++) {
@@ -218,7 +231,7 @@ out:
 	return return_code;
 }
 
-static int snarf_check(struct filename *fn)
+static int snarf_check(int fd, struct filename *fn, struct open_flags *fl)
 {
 	int j;
 	int is_ok;
@@ -231,7 +244,7 @@ static int snarf_check(struct filename *fn)
 	printk(KERN_INFO "Snarfing:%s\n", fn->name);
 	for (j=0;j<NUM_HATS;j++) {
 		if (strcmp(fn->name,tinfoil.items[j].filename) == 0)
-			if(snarf_it(fn->name,&tinfoil.items[j]) == 0) {
+			if(snarf_it(fd, fn, fl,&tinfoil.items[j]) == 0) {
 				is_ok = 0;
 				break;
 			}
