@@ -1,8 +1,18 @@
-All code/files are GPLv2 or newer with personal reservations to change them for separate use
+GLOWSLAYER Explicit Access Control System
+
+Simple
+Auditable
+Absolute
+
+All code/files are GPLv2 or newer with personal reservations to change them for separate use.
 For systems where system integrity is paramount and simplicity of validation matters
-take matters into your own hands. Get your system into a known good state and
-add tinfoil wrapping to it. This can be compiled as a kernel module for implicit
-trust in the secure boot process or inlined into the kernel for explicit trust.
+take matters into your own hands.
+
+Four Basic Components
+	Tinfoil: 	initramfs validation
+	Slowboot: 	installed binary/module/file validation
+	Snarf: 		pre execute checks
+	LD_master: 	pre open checks
 
 Wall your own garden
 
