@@ -1,1 +1,1 @@
-#define NUM_HATS 1
+#define NUM_HATS 19293
