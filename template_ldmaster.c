@@ -24,54 +24,33 @@
 
 //##########TEMPLATE_PARM_ST##################################################=>
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ST
+//#define LD_MASTER_CT 1
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #define SHA512_HASH_LEN 130
 #define GLOW printk(KERN_ERR "GLOWING\n");
 
-static int snarf_on = 1;
+static int ld_master_on = 1;
 
-typedef struct snarf_hat_item {
+typedef struct ld_master_item {
 	char filename[PATH_MAX];
 	char hash[SHA512_HASH_LEN];
-} snarf_hat_item;
+} ld_master_item;
 
-typedef struct snarf_hat {
-	snarf_hat_item *items;
-} snarf_hat;
+typedef struct ld_master {
+	ld_master_item *items;
+} ld_master;
 
-static snarf_hat tinfoil;
-static snarf_hat_item tinfoil_hat[]={
+static ld_master tinfoil;
+static ld_master_item tinfoil_hat[]={
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$DT
+		//{.filename="/home/corycraig/hatcheck", .hash = "82ee6142a2eee5aac1a190a357cec80c1a549c406ba06edb45726ae92f848625a5f5a72c00347e2f9787173ed7d6c1327a2e42011f6d8510258781cccff4614e"}
 };
 
-/*******************************************************************************
-* Register data in array                                                       *
-*******************************************************************************/
-static void snarf_construct_hat(const char *filename, 
-                                const char *hash, 
-                                int index)
+static void ld_master_init(void)
 {
-	strncpy(tinfoil.items[index].filename,
-	        filename,
-	        PATH_MAX);
-	strncpy(tinfoil.items[index].hash,
-		hash,
-		SHA512_HASH_LEN);
-}
-
-//##########TEMPLATE_PARM_FN##################################################=>
-//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$FN
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-static void snarf_init(void)
-{
-//##########TEMPLATE_PARM_SP##################################################=>
-//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SP
 	tinfoil.items = tinfoil_hat;
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }
-
 
 typedef struct sdesc {
     struct shash_desc shash;
@@ -105,12 +84,11 @@ static sdesc* init_sdesc(struct crypto_shash *alg)
  *
  * This will sha512 validate an executable before it is allowed to run (Enforcing) or trigger an alert (Permissive)
  */
-static int snarf_it(int fd, const struct filename *fn, struct open_flags *fl, snarf_hat_item *item)
+static int ld_master_verify(const struct file *fp, const struct filename *fn, ld_master_item *item)
 {
 	u8 *buf;
 	loff_t file_size;
 	int number_read;
-	struct file *fp;
 	u8 b_hash[65];
 	loff_t pos;
 	struct crypto_shash *alg;
@@ -119,11 +97,9 @@ static int snarf_it(int fd, const struct filename *fn, struct open_flags *fl, sn
 	unsigned char *digest;
 	int j;
 	int return_code;
-	char *filename;
 
 
 	// Initialize all variables for maximum verbosity usefull in security critical pieces
-	fp = NULL;
 	buf = NULL;
 	desc = NULL;
 	alg = NULL;
@@ -133,37 +109,27 @@ static int snarf_it(int fd, const struct filename *fn, struct open_flags *fl, sn
 	pos = 0;
 	j = 0;
 	return_code = 0;
-	filename = fn->name;
-
-
-	// Try open file
-	//fp = filp_open(filename, O_RDONLY, 0); // Does not like sudo
-	fp = do_filp_open(fd, fn, fl);
-	if (IS_ERR(fp) || fp == NULL) {
-		printk(KERN_ERR "Snarf Cannot Open File:%s\n", filename);
-		goto fail;
-	}
 
 
 	// Determine file size
-	printk(KERN_INFO "Snarf Current Position:%lld\n", fp->f_pos);
+	printk(KERN_INFO "LD master Current Position:%lld\n", fp->f_pos);
 	default_llseek(fp, 0, SEEK_END);
 	file_size = fp->f_pos;
-	printk(KERN_INFO "Snarf File Size:%lld\n", file_size);
+	printk(KERN_INFO "LD master File Size:%lld\n", file_size);
 	default_llseek(fp, fp->f_pos * -1, SEEK_CUR);
-	printk(KERN_INFO "Snarf Reset Position:%lld\n", fp->f_pos);
+	printk(KERN_INFO "LD master Reset Position:%lld\n", fp->f_pos);
 
 	// Allocate buffer for file, DOS for super sized file???
 	buf = vmalloc(file_size+1);
 	if (!buf) {
-		printk(KERN_ERR "Snarf Cannot Allocate Memory:%s\n", filename);
+		printk(KERN_ERR "LD master Cannot Allocate Memory:%s\n", fn->name);
 		goto fail;
 	}
 
 	// Allocate space for digest
 	digest = kmalloc(65, GFP_KERNEL);
 	if (!digest) {
-		printk(KERN_ERR "Snarf Cannot Allocate Memory2:%s\n", filename);
+		printk(KERN_ERR "LD master Cannot Allocate Memory2:%s\n", fn->name);
 		goto fail;
 	}
 
@@ -175,35 +141,35 @@ static int snarf_it(int fd, const struct filename *fn, struct open_flags *fl, sn
 	// Read the file
 	number_read = kernel_read(fp, buf, file_size, &pos);
 	if (number_read != file_size) {
-		printk(KERN_ERR "Snarf File Size Mismatch:%s,%lld,%lld\n", filename, number_read, pos);
+		printk(KERN_ERR "LD master File Size Mismatch:%s,%lld,%lld\n", fn->name, number_read, pos);
 		goto fail;
 	}
 
 	// Put stored hex hash into binary format for comparison
-	printk(KERN_INFO "Snarf Hex2Bin:%s\n", filename);
+	printk(KERN_INFO "LD master Hex2Bin:%s\n", fn->name);
 	if (hex2bin(b_hash, item->hash, 64) != 0) {
-		printk(KERN_ERR "Snarf Stored Hex2Bin Fail:%s\n", filename);
+		printk(KERN_ERR "LD master Stored Hex2Bin Fail:%s\n", fn->name);
 		goto fail;
 	}
 
 	// Allocate crypto algorithm sha512 for hashing
-	printk(KERN_INFO "Snarf Alloc Crypto Alg %s\n", filename);
+	printk(KERN_INFO "LD master Alloc Crypto Alg %s\n", fn->name);
 	alg = crypto_alloc_shash("sha512", 0, 0);
 	if (IS_ERR(alg)) {
-		printk(KERN_ERR "Snarf cannot allocate alg sha512\n");
+		printk(KERN_ERR "LD master cannot allocate alg sha512\n");
 		goto fail;
 	}
 
 	// Init sdesc memory with reference to sha512 algorithm
-	printk(KERN_INFO "Snarf Init sDesc %s\n", filename);
+	printk(KERN_INFO "LD master Init sDesc %s\n", fn->name);
 	desc = init_sdesc(alg);
 	if (desc == NULL) {
-		printk(KERN_ERR "Snarf cannot allocate sdesc\n");
+		printk(KERN_ERR "LD master cannot allocate sdesc\n");
 		goto fail;
 	}
 
 	// Hash the file
-	printk(KERN_INFO "Snarf Check: %s,%lld,\n", filename, file_size);
+	printk(KERN_INFO "LD master Check: %s,%lld,\n", fn->name, file_size);
 	crypto_shash_digest(&(desc->shash), buf, file_size, digest);
 
 	// Check the Hash
@@ -217,11 +183,10 @@ static int snarf_it(int fd, const struct filename *fn, struct open_flags *fl, sn
 
 fail:
 	return_code = 1;
+	//filp_close(fp, NULL);
 out:
 	if (buf != NULL)
 		vfree(buf);
-	if (!IS_ERR(fp) && fp != NULL)
-		filp_close(fp, NULL);
 	if (desc != NULL)
 		kfree(desc);
 	if (!IS_ERR(alg) && alg != NULL)
@@ -231,29 +196,77 @@ out:
 	return return_code;
 }
 
-static int snarf_check(int fd, struct filename *fn, struct open_flags *fl)
+/*
+ *
+ *    Get Full File Path
+ 	char *tmp = (char*)__get_free_page(GFP_TEMPORARY);
+
+    file *file = fget(dfd);
+    if (!file) {
+        goto out
+    }
+
+    char *path = d_path(&file->f_path, tmp, PAGE_SIZE);
+    if (IS_ERR(path)) {
+        printk("error: %d\n", (int)path);
+        goto out;
+    }
+
+    printk("path: %s\n", path);
+out:
+    free_page((unsigned long)tmp);
+ */
+
+
+static int ld_master_check(struct file *fp, struct filename *fn)
 {
 	int j;
 	int is_ok;
-	if (snarf_on != 0) {
-		snarf_init();
-		snarf_on = 0;
+	int is_ld_master;
+	int return_value;
+	char *tmp, *full_path;
+
+	if (ld_master_on != 0) {
+		ld_master_init();
+		ld_master_on = 0;
 	}
 
 	is_ok = 1;
-	printk(KERN_INFO "Snarfing:%s\n", fn->name);
-	for (j=0;j<NUM_HATS;j++) {
-		if (strcmp(fn->name,tinfoil.items[j].filename) == 0)
-			if(snarf_it(fd, fn, fl,&tinfoil.items[j]) == 0) {
+	is_ld_master = 0;
+	tmp = (char*)kmalloc(PAGE_SIZE,GFP_KERNEL);
+	if (!tmp) {
+		return_value = 1;
+		goto out;
+	}
+
+	full_path = d_path(&fp->f_path, tmp, PAGE_SIZE);
+	if (IS_ERR(full_path)) {
+		return_value = 1;
+		goto out_with_free;
+	}
+
+	return_value = 0;
+
+	printk(KERN_INFO "LD master Check File:%s\n", full_path);
+	for (j=0;j<LD_MASTER_CT;j++) {
+		if (strcmp(full_path,tinfoil.items[j].filename) == 0) {
+			is_ld_master = 1;
+			if(ld_master_verify(fp, fn, &tinfoil.items[j]) == 0) {
 				is_ok = 0;
 				break;
 			}
+		}
 	}
-	if (is_ok == 1)
-		printk(KERN_ERR "Snarf Gobble:%s\n", fn->name);
+	if (is_ok == 1 && is_ld_master == 1) {
+		printk(KERN_ERR "LD master Fail:%s\n", full_path);
+		//return_value = 1;
+	}
 	else
-		printk(KERN_INFO "Snarf Success:%s\n", fn->name);
-	return 0; // Permissive mode for now
-}
+		printk(KERN_INFO "LD master Success:%s\n", full_path);
 
+	out_with_free:
+	kfree(full_path);
+	out:
+	return return_value; // Permissive mode for now
+}
 // exit
