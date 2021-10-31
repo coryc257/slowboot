@@ -239,7 +239,7 @@ static int ld_master_check(struct file *fp, struct filename *fn)
 		goto out;
 	}
 
-	full_path = d_path(&fp->f_path, tmp, PAGE_SIZE);
+	full_path = d_path(&fp->f_path, tmp, PAGE_SIZE); // free this???
 	if (IS_ERR(full_path)) {
 		return_value = 1;
 		goto out_with_free;
@@ -265,7 +265,7 @@ static int ld_master_check(struct file *fp, struct filename *fn)
 		printk(KERN_INFO "LD master Success:%s\n", full_path);
 
 	out_with_free:
-	kfree(full_path);
+	kfree(tmp);
 	out:
 	return return_value; // Permissive mode for now
 }
