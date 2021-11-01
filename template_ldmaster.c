@@ -247,10 +247,12 @@ static int ld_master_check(struct file *fp, struct filename *fn)
 
 	return_value = 0;
 
-	printk(KERN_INFO "LD master Check File:%s\n", full_path);
 	for (j=0;j<LD_MASTER_CT;j++) {
 		if (strcmp(full_path,tinfoil.items[j].filename) == 0) {
-			is_ld_master = 1;
+			if (is_ld_master == 0) {
+				is_ld_master = 1;
+				printk(KERN_INFO "LD master Check File:%s\n", full_path);
+			}
 			if(ld_master_verify(fp, fn, &tinfoil.items[j]) == 0) {
 				is_ok = 0;
 				break;
@@ -260,13 +262,65 @@ static int ld_master_check(struct file *fp, struct filename *fn)
 	if (is_ok == 1 && is_ld_master == 1) {
 		printk(KERN_ERR "LD master Fail:%s\n", full_path);
 		//return_value = 1;
-	}
-	else
+	} else if (is_ld_master == 1) {
 		printk(KERN_INFO "LD master Success:%s\n", full_path);
+	}
 
 	out_with_free:
 	kfree(tmp);
 	out:
 	return return_value; // Permissive mode for now
 }
+
+/*
+ * do_sys_openat2:: before the two lines after sucessful open
+ 	 if(ld_master_check(f,tmp) != 0) {
+				filp_close(f, NULL);
+				put_unused_fd(fd);
+				fd = PTR_ERR(f);
+				goto out;
+			}
+
+
+
+static long do_sys_openat2(int dfd, const char __user *filename,
+			   struct open_how *how)
+{
+	struct open_flags op;
+	int fd = build_open_flags(how, &op);
+	struct filename *tmp;
+
+	if (fd)
+		return fd;
+
+	tmp = getname(filename);
+	if (IS_ERR(tmp))
+		return PTR_ERR(tmp);
+
+	fd = get_unused_fd_flags(how->flags);
+	if (fd >= 0) {
+		struct file *f = do_filp_open(dfd, tmp, &op);
+		//printk(KERN_INFO "LD_master Checking: %s\n", filename);
+
+
+		if (IS_ERR(f)) {
+			put_unused_fd(fd);
+			fd = PTR_ERR(f);
+		} else {
+			if(ld_master_check(f,tmp) != 0) {
+				filp_close(f, NULL);
+				put_unused_fd(fd);
+				fd = PTR_ERR(f);
+				goto out;
+			}
+			fsnotify_open(f);
+			//printk(KERN_INFO "LD_master Checking: %s\n", tmp->name);
+			fd_install(fd, f);
+		}
+	}
+	out:
+	putname(tmp);
+	return fd;
+}
+ */
 // exit
