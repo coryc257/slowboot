@@ -47,6 +47,17 @@ static ld_master_item tinfoil_hat[]={
 		//{.filename="/home/corycraig/hatcheck", .hash = "82ee6142a2eee5aac1a190a357cec80c1a549c406ba06edb45726ae92f848625a5f5a72c00347e2f9787173ed7d6c1327a2e42011f6d8510258781cccff4614e"}
 };
 
+char *ld_master_memmem(const char *s1, size_t s1_len, const char *s2, size_t s2_len)
+{
+	while (s1_len >= s2_len) {
+		s1_len--;
+		if (!memcmp(s1, s2, s2_len))
+			return (char *)s1;
+		s1++;
+	}
+	return NULL;
+}
+
 static void ld_master_init(void)
 {
 	tinfoil.items = tinfoil_hat;
@@ -248,8 +259,9 @@ static int ld_master_check(struct file *fp, struct filename *fn)
 	return_value = 0;
 
 	// FORCE VALIDATION OF .so files enforced
-	if(memmem(fn->name, strlen(fn->name)+1, ".so\0", 4) ||
-	   memmem(fn->name, strlen(fn->name)+1, ".so.", 4))
+	if((ld_master_memmem(fn->name, strlen(fn->name)+1, ".so\0", 4) ||
+	    ld_master_memmem(fn->name, strlen(fn->name)+1, ".so.", 4)) &&
+	    !ld_master_memmem(fn->name, strlen(fn->name)+1, ".cache",6)) // Exclude .so.cache
 		is_ld_master = 1;
 
 	for (j=0;j<LD_MASTER_CT;j++) {
