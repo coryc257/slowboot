@@ -22,6 +22,11 @@
 #include <linux/slab.h>
 #include <linux/stat.h>
 
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$CT
+#ifndef SLWBT_CT
+#define SLWBT_CT 0
+#endif
+
 
 #define SLWBT_MODE_REG 1
 #define SLWBT_MODE_TPM 2
@@ -42,14 +47,20 @@ typedef struct slowboot_validation_item {
 	long long int pos;
 } slowboot_validation_item;
 
-//##########TEMPLATE_PARM_ST##################################################=>
+typedef struct slowboot_tinfoil {
+	struct kstat *st;
+	slowboot_validation_item *validation_items;
+	int failures;
+} slowboot_tinfoil;
 
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ST
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 static u32 mode;
 static slowboot_tinfoil tinfoil;
+static slowboot_validation_item tinfoil_items[] = {
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$DT
+		//{.hash="", .path=""},
+};
 //static struct kstat *st;
 
 
@@ -57,22 +68,13 @@ static slowboot_tinfoil tinfoil;
 /*******************************************************************************
 * Register data in array                                                       *
 *******************************************************************************/
-static void svi_reg(slowboot_validation_item *item,
+/*static void svi_reg(slowboot_validation_item *item,
 		const char *hash,
 		const char *path)
 {
 	strncpy(item->hash, hash, SHA512_HASH_LEN);
 	strncpy(item->path, path, PATH_MAX);
-	
-	switch (mode) {
-	case SLWBT_MODE_TPM:
-		break;
-	case SLWBT_MODE_TPM2:
-		break;
-	default:
-		break;		
-	}
-}
+}*/
 
 
 static int tinfoil_open(slowboot_validation_item *item)
@@ -224,29 +226,15 @@ static int tinfoil_unwrap (slowboot_validation_item *item)
 }
 
 /*******************************************************************************
-* This section contains dynamically generated functions numbered 1-infinity    *
-* It will simply register the hash/path for each file to be validated at the   *
-* correct location in the array                                                *
-*******************************************************************************/
-//##########TEMPLATE_PARM_FN##################################################=>
-
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$FN
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/*******************************************************************************
 * Register all the svirs and then validated them all counting the failures     *
 *******************************************************************************/
 static void slowboot_run_test(void)
 {
 	int j;
 
+	tinfoil.validation_items = tinfoil_items;
 
-//##########TEMPLATE_PARM_SP##################################################=>	
-
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SP
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	for (j = 0; j < validation_count; j++) {
+	for (j = 0; j < SLWBT_CT; j++) {
 		tinfoil.failures += tinfoil_unwrap(
 			&(tinfoil.validation_items[j]));
 	}
@@ -257,11 +245,12 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SP
 
 // init
 static int __init slowboot_mod_init(void)
+//static int slowboot_mod_init(void)
 {
 	if (mode == 0)
 		mode = SLWBT_MODE_REG;
 		
-	printk(KERN_INFO "Beginning SlowBoot with mode=%u\n", mode);
+	printk(KERN_INFO "Beginning SlowBoot\n");
 	
 	tinfoil.failures = 0;
 	tinfoil.st = NULL;
@@ -269,13 +258,7 @@ static int __init slowboot_mod_init(void)
 	if (!tinfoil.st)
 		return -ENOMEM; // CHECK
 	
-	switch (mode) {
-	case SLWBT_MODE_REG:
-		slowboot_run_test();
-		break;
-	default:
-		break;
-	}
+	slowboot_run_test();
 	kfree(tinfoil.st);
 	return 0;
 }
@@ -286,8 +269,6 @@ static void __exit slowboot_mod_exit(void) { }
 module_init(slowboot_mod_init);
 module_exit(slowboot_mod_exit);
 
-module_param(mode, uint, 1);
-MODULE_PARM_DESC(mode, "Validation Method");
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Comprehensive validation of critical files on boot");
 MODULE_AUTHOR("Cory Craig <cory_craig@mail.com>");
