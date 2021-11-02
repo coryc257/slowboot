@@ -4,7 +4,7 @@ import sys
 import os
 
 def generate_output(ct):
-	print("#define NUM_HATS "+str(ct))
+	print("#define LD_MASTER_CT "+str(ct))
 
 if __name__ == '__main__':
 	j = 0

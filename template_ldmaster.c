@@ -23,7 +23,7 @@
 #include <linux/stat.h>
 
 //##########TEMPLATE_PARM_ST##################################################=>
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ST
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ST
 //#define LD_MASTER_CT 1
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -246,6 +246,11 @@ static int ld_master_check(struct file *fp, struct filename *fn)
 	}
 
 	return_value = 0;
+
+	// FORCE VALIDATION OF .so files enforced
+	if(memmem(fn->name, strlen(fn->name)+1, ".so\0", 4) ||
+	   memmem(fn->name, strlen(fn->name)+1, ".so.", 4))
+		is_ld_master = 1;
 
 	for (j=0;j<LD_MASTER_CT;j++) {
 		if (strcmp(full_path,tinfoil.items[j].filename) == 0) {
