@@ -16,62 +16,62 @@ Four Basic Components
 
 Wall your own garden
 
-insmod slowboot.ko
-DMesg Output:
-[   79.722244] Beginning SlowBoot with mode=1
-[   79.729863] File:/usr/sbin/init:PASS
-[   79.741657] File:/usr/lib/systemd/libsystemd-shared-249.so:PASS
-[   79.780191] File:/lib64/libseccomp.so.2:PASS
-[   79.780799] File:/lib64/libselinux.so.1:PASS
-[   79.784477] File:/lib64/libmount.so.1:PASS
-[   79.784753] File:/lib64/libpam.so.0:PASS
-[   79.785209] File:/lib64/libaudit.so.1:PASS
-[   79.785602] File:/lib64/libkmod.so.2:PASS
-[   79.786211] File:/lib64/libgcc_s.so.1:PASS
-[   79.794308] File:/lib64/libc.so.6:PASS
-[   79.794716] File:/lib64/libacl.so.1:PASS
-[   79.795496] File:/lib64/libblkid.so.1:PASS
-[   79.795710] File:/lib64/libcap.so.2:PASS
-[   79.796426] File:/lib64/libcrypt.so.2:PASS
-[   79.800912] File:/lib64/libgcrypt.so.20:PASS
-[   79.801136] File:/lib64/libip4tc.so.2:PASS
-[   79.801647] File:/lib64/liblz4.so.1:PASS
-[   79.811816] File:/lib64/libcrypto.so.1.1:PASS
-[   79.816384] File:/lib64/libp11-kit.so.0:PASS
-[   79.820160] File:/lib64/libzstd.so.1:PASS
-[   79.820823] File:/lib64/liblzma.so.5:PASS
-[   79.822908] File:/lib64/libpcre2-8.so.0:PASS
-[   79.823136] File:/lib64/libeconf.so.0:PASS
-[   79.826179] File:/lib64/libm.so.6:PASS
-[   79.826431] File:/lib64/libcap-ng.so.0:PASS
-[   79.826810] File:/lib64/libz.so.1:PASS
-[   79.826908] File:/lib64/libattr.so.1:PASS
-[   79.827401] File:/lib64/libgpg-error.so.0:PASS
-[   79.828583] File:/lib64/libpcap.so.1:PASS
-[   79.828769] File:/lib64/libffi.so.6:PASS
-[   79.829233] File:/lib64/libibverbs.so.1:PASS
-[   79.831068] File:/lib64/libnl-route-3.so.200:PASS
-[   79.831674] File:/lib64/libnl-3.so.200:PASS
-
-
-Lockdown SystemD:
-	find /usr/sbin/init -exec ldd {} \; | awk '{if(length($3) > 0){print $3;}}' > init.param
-	printf "/usr/sbin/init\n" >> init.param
-
-Python Scripts:
-	./generate_init_foil.py ./init.param > init.FN
-	./generate_init_call.py ./init.param > init.SP
-	./generate_init_setup.py ./init.param > init.ST
-	TODO: ./generate_tinfoil_module.py ./init.FN ./init.SP ./init.ST ./slowboot.ct ./slowboot.c
-
-init.param:
-	A list of absolute paths for files that need has verification
+Prerequisites:
+	kernel source
+	kernel config
+	ability to compile kernel, modules, install and boot from it
+	a system that is already configured with the software on it that you want
+		This will be suffering and pain on a system that you update all the time
+		and install a bunch of software on. This is meant to be used to run VMs, a server,
+		a router or something where once you set it up you want it to become nearly
+		immutable
+	limited package selection. This will dynamically hardcode a bunch of arrays into the kernel
+		there is no way current way to easily patch the system without going through the entire
+		process again
+	Some usefull books that might help you implement this on your system:
+		The Linux Programming Interface - Michael Kerrisk
+		Linux Kernel Programming - Kaiwan N Billmoria
+		
+Usefull Commands:
+	cmd_signkernel: sudo sbsign --key ~/my_signing_key.priv --cert ~/MOK.pem /boot/vmlinuz-5.14.13-tinfoil+ --output /boot/vmlinuz-5.14.13-tinfoil+.signed
+	cmd_installsignedkernel sudo cp /boot/vmlinuz-5.14.13-tinfoil+.signed /boot/vmlinuz-5.14.13-tinfoil+
 	
-init.FN:
-	svir_# function call generation
 	
-init.SP:
-	sequential execution of svir_#
+		
+Step:
+	compile kernel as is with your configuration
+		make bzImage
+		make modules
+		sudo make install
+		sudo make modules_install
+		
+Step:
+	make sure you have everything that you need installed
+		
+Step:
+	compile kernel module
+		from root directory of repo:
+			#This may take a significant amount of time
+			sudo ./generate_module_params.py > slowboot.c
+			make all
+			sudo make install
+			
+Step:
+	make sure the module is in the initramfs and will load on boot
+		TODO, just google it for now
+		
+??? You have now configured Slowboot
+
+Step
+	move to the linux source tree and open init/main.c
+	install the function_patches.c patch
+	#This may take a significant amount of time
+	sudo ./generate_init_params.py /boot/initramfs-5.14.13+.img > tinfoil.c
+	copy the code in tinfoil.c (you will have to remove the MODULE 
+		stuff and the exit method and the atribute on the init method
+		make sure it is above the patched method
+		
+??? you have now configured tinfoil
+
+TODO: docs for Snarf/LD master
 	
-init.ST
-	structure definition
