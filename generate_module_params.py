@@ -9,7 +9,7 @@ import fnmatch
 if __name__ == '__main__':
 	j = 0
 	pwd = os.getcwd()
-	blacklist = ["slowboot.ko","/var/cache/PackageKit/35/metadata", "/home/", "/usr/lib/systemd/user/app-","/etc/cups/subscriptions.conf","device-timeout.conf","/mnt/vm"]
+	blacklist = ["/usr/lib/modules/5.14.0-60.fc35.x86_64","/usr/lib/modules/5.14.12-300.fc35.x86_64","/usr/lib/modules/5.14.13+","vmlinuz", "slowboot.ko","/var/cache/PackageKit/35/metadata", "/home/", "/usr/lib/systemd/user/app-","/etc/cups/subscriptions.conf","device-timeout.conf","/mnt/vm"]
 	
 
 	#os.remove("./init.param")
@@ -36,27 +36,24 @@ if __name__ == '__main__':
 	
 	#TODO, remake module.param removing items from a blacklist
 	
-	os.system("./generate_init_foil.py ./module.param > module.FN")
-	os.system("./generate_init_call.py ./module.param > module.SP")
-	os.system("./generate_init_setup.py ./module.param > module.ST")
+	os.system("./generate_init_count.py ./module.param > module.CT")
+	os.system("./generate_init_data.py ./module.param > module.DT")
 	
-	template = open("./slowboot.ct","r")
-	t_FN = open("./module.FN","r")
-	t_SP = open("./module.SP","r")
-	t_ST = open("./module.ST","r")
-	fillin = open("./slowboot.c","w")
-	t_FN_s = t_FN.read()
-	t_FN.close()
-	t_SP_s = t_SP.read()
-	t_SP.close()
-	t_ST_s = t_ST.read()
-	t_ST.close()
+	template = open("./template_slowboot.c","r")
+	t_CT = open("./module.CT","r")
+	t_DT = open("./module.DT","r")
+	
+	t_CT_s = t_CT.read()
+	t_CT.close()
+	t_DT_s = t_DT.read()
+	t_DT.close()
+	
+	
 	tstr = template.read()
 	template.close()
 
-	tstr = tstr.replace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$FN",t_FN_s)
-	tstr = tstr.replace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SP",t_SP_s)
-	tstr = tstr.replace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ST",t_ST_s)
+	tstr = tstr.replace("//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$CT",t_CT_s)
+	tstr = tstr.replace("//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$DT",t_DT_s)
 	
 	print(tstr)
 	

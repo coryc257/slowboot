@@ -27,11 +27,6 @@
 #define SLWBT_CT 0
 #endif
 
-
-#define SLWBT_MODE_REG 1
-#define SLWBT_MODE_TPM 2
-#define SLWBT_MODE_TPM2 3
-
 #define SHA512_HASH_LEN 130
 
 #define GLOW printk(KERN_ERR "GLOWING\n");
@@ -247,9 +242,6 @@ static void slowboot_run_test(void)
 static int __init slowboot_mod_init(void)
 //static int slowboot_mod_init(void)
 {
-	if (mode == 0)
-		mode = SLWBT_MODE_REG;
-		
 	printk(KERN_INFO "Beginning SlowBoot\n");
 	
 	tinfoil.failures = 0;

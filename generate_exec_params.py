@@ -9,7 +9,7 @@ import fnmatch
 if __name__ == '__main__':
 	j = 0
 	pwd = os.getcwd()
-	blacklist = ["/proc","/mnt","/home", "/var", "/run", "/media", "/boot", ".cfg", ".conf", "/usr/sbin/nc", "/etc/alternatives/nc", ".so"]
+	blacklist = ["/proc","/mnt","/home", "/var", "/run", "/media", "/boot", ".cfg", ".conf", "/usr/sbin/nc", "/etc/alternatives/nc", ".so", "/usr/lib/.build-id"]
 	whitelist = ["ld-linux"]
 	
 
