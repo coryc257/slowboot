@@ -24,8 +24,10 @@
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$CT
 #ifndef SLWBT_CT
-#define SLWBT_CT 0
+#define SLWBT_CT __get_slwbt_ct()
 #endif
+
+DEFINE_MUTEX(gs_concurrency_locker);
 
 #define SHA512_HASH_LEN 130
 
@@ -46,19 +48,32 @@ typedef struct slowboot_tinfoil {
 	struct kstat *st;
 	slowboot_validation_item *validation_items;
 	int failures;
+	int initialized;
+	int slwbt_ct;
+	char config_file[PATH_MAX];
+	char config_file_signature[PATH_MAX];
+	char config_pkey[1053];
 } slowboot_tinfoil;
 
 
 
 static u32 mode;
-static slowboot_tinfoil tinfoil;
+static slowboot_tinfoil tinfoil = {
+		.config_file = "/testing/siggywiggy",
+		.config_file_signature = "/testing/siggywiggy.sha512",
+		.config_pkey = "3082020a02820201009af1624ec932c82d57d296ebddf3d8c1cdc03a6c5c709cb3658b33797dd8a94b4183146224a63f8dbf04032690f04c4b05138cf9b0955057e4acf4721c84eb3073eeb1ccc5c6e9bec3d36b1b3bd274c13afb42f33c5c057121debaa622f8f2c0e75bbc99cbcf78767d4225025ece9561ca6022b650ab9c9a68763e7e461164bdfdd07b72e4c623e07b38a7767ac2671c06ea899d6291fddb1eb3d8a6d03fbd78719adec4b92f8881562d73923fcf8f2bd41f324993ecf42c40cd9c596c3b58850aa96a7d28a767b0be8e919fb247897cdc557391753db766991f197217b96e430c8e9bfc3f84a9c45b4aad9e6284e87041eb1709e99fd01e8f23f1f97aa86e255eb8d4bfb13ce6f14264347e40372bb79e17a87e1c541077e8e874092f475b9dbfb4fca981c1358971004421454069c3868cd4fe8fd1ea6d46d9daac7dc00d6b60d998bebbe0121126e3f29acfc3ccc2f24e6eb6c4ab9c0f2e7670e920f33d69eb1f0ca7be630098fe220c1f8ef87e51f8be663a70621a5932ee60888c7e40aa70313e1936bc0c6d742d2c2d2d46c2ceb2b3155ebc777f01bbfad07985e847f8d00c663706b92cf15fd2504ae8dd838d9576763e4ed12e2d6b0a5f7ea21bed613d371a96a25f2206fe6e1724cfcbf2c03d04dda6f623d0d31c036a63f030158478ae820020cf6eff88c70f335db426eeac8205a2875a393d5d67343d534ef54b0203010001",
+		.initialized = 1
+};
 static slowboot_validation_item tinfoil_items[] = {
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$DT
 		//{.hash="", .path=""},
 };
 //static struct kstat *st;
 
-
+static int __get_slwbt_ct(void)
+{
+	return tinfoil.slwbt_ct;
+}
 
 /*******************************************************************************
 * Register data in array                                                       *
@@ -220,6 +235,38 @@ static int tinfoil_unwrap (slowboot_validation_item *item)
 	return item->is_ok;
 }
 
+
+static void slowboot_init(void)
+{
+	struct file *fp;
+	size_t file_size;
+	loff_t pos;
+	int num_read;
+	char *buf;
+
+	printk(KERN_INFO "Beginning SlowBoot 3 '%s'\n", tinfoil.config_file);
+
+	fp = filp_open(tinfoil.config_file, O_RDONLY, 0);
+	default_llseek(fp, 0, SEEK_END);
+	file_size = fp->f_pos;
+	default_llseek(fp, fp->f_pos * -1, SEEK_CUR);
+
+	buf = vmalloc(file_size+1);
+	pos = 0;
+
+	printk(KERN_INFO "Beginning SlowBoot 3 '%s'::'%d'\n", tinfoil.config_file, file_size);
+
+	num_read = kernel_read(fp,buf,file_size,&pos);
+
+	if (num_read != file_size) {
+		printk(KERN_ERR "File Read Error, size mismatch:%d:%d\n", num_read, file_size);
+	}
+
+	filp_close(fp, NULL);
+	printk(KERN_INFO "Beginning SlowBoot4:%d\n", num_read);
+	tinfoil.slwbt_ct = 0;
+}
+
 /*******************************************************************************
 * Register all the svirs and then validated them all counting the failures     *
 *******************************************************************************/
@@ -227,7 +274,14 @@ static void slowboot_run_test(void)
 {
 	int j;
 
-	tinfoil.validation_items = tinfoil_items;
+	mutex_lock(&gs_concurrency_locker);
+	printk(KERN_INFO "Beginning SlowBoot2\n");
+	if (tinfoil.initialized != 0) {
+		tinfoil.initialized = 0;
+		//tinfoil.validation_items = tinfoil_items;
+		slowboot_init();
+	}
+	mutex_unlock(&gs_concurrency_locker);
 
 	for (j = 0; j < SLWBT_CT; j++) {
 		tinfoil.failures += tinfoil_unwrap(
