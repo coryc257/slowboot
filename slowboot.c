@@ -503,6 +503,12 @@ static void slowboot_init(void)
 		.hash_algo = "sha512"
 	};
 
+	if (local_public_key_verify_signature(&rsa_pub_key, &sig) == 0) {
+		printk(KERN_INFO "GUD\n");
+	} else {
+		printk(KERN_ERR "BAT\n");
+	}
+
 	num_items = 0;
 
 	for (pos = 0; pos < file_size; pos++){
