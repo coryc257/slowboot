@@ -342,9 +342,13 @@ static void tinfoil_check(slowboot_validation_item *item)
 	crypto_shash_digest(&(sd->shash), item->buf, item->buf_len, digest);
 	vfree(item->buf);
 	kfree(sd);
+	item->is_ok = 0;
 	for(j=0;j<SLWBT_DGLEN;j++){
 		if(item->b_hash[j]!=digest[j]) {
 			item->is_ok = 1;
+			printk(KERN_ERR "FFF:%s", item->hash);
+			break;
+
 		}
 	}
 	kfree(digest);
@@ -394,8 +398,8 @@ static loff_t fill_in_item(slowboot_validation_item *item, char *line, loff_t *r
 
 		//printk(KERN_INFO "X:%d,%c\n",line[pos],line[pos]);
 
-		if (line[pos] == ' ' && off == 0 && rem > 2) {
-			off = pos+2;
+		if (line[pos] == ' ' && off == 0 && rem > 1) {
+			off = pos+1;
 		}
 
 		if (line[pos] == NEW_LINE) {
@@ -443,7 +447,7 @@ static int slowboot_init(void)
 	unsigned char *digest;
 	slowboot_validation_item *items, *c_item;
 	int kernel_key_len;
-	//struct public_key_signature sig;
+	struct public_key_signature sig;
 	struct public_key rsa_pub_key;
 
 	// Trust nothing
@@ -471,6 +475,12 @@ static int slowboot_init(void)
 	rsa_pub_key.id_type = SLWBT_IDTYPE;
 	rsa_pub_key.key = NULL;
 	rsa_pub_key.keylen = -1;
+	sig.s = NULL;
+	sig.s_size = 0;
+	sig.digest = NULL;
+	sig.digest_size = SLWBT_DGLEN;
+	sig.pkey_algo = SLWBT_PKALGO;
+	sig.hash_algo = SLWBT_HSALGO;
 
 
 	kernel_key_len = SLWBT_PKLEN/2;
@@ -495,8 +505,9 @@ static int slowboot_init(void)
 	printk(KERN_INFO "Beginning SlowBoot 3 '%s'\n", tinfoil.config_file);
 
 	if (IS_ERR(fp = filp_open(tinfoil.config_file, O_RDONLY, 0))) {
+		fp = NULL;
 		printk(KERN_ERR "flip open fp\n");
-		return status;
+		goto fail;
 	}
 	default_llseek(fp, 0, SEEK_END);
 	file_size = fp->f_pos;
@@ -504,20 +515,23 @@ static int slowboot_init(void)
 
 	if (IS_ERR(sfp = filp_open(tinfoil.config_file_signature, O_RDONLY, 0))) {
 		printk(KERN_ERR "flip open sfp\n");
-		return status;
+		sfp = NULL;
+		goto fail;
 	}
+
 	default_llseek(sfp, 0, SEEK_END);
 	sfp_file_size = sfp->f_pos;
 	default_llseek(sfp, sfp->f_pos * -1, SEEK_CUR);
 
 	if((buf = vmalloc(file_size+1)) == NULL) {
 		printk(KERN_ERR "alloc buf\n");
-		return status;
+		goto fail;
 	}
 	if ((sfp_buf = vmalloc(sfp_file_size+1)) == NULL) {
 		printk(KERN_ERR "alloc sfp_buf\n");
-		return status;
+		goto fail;
 	}
+
 	pos = 0;
 	sfp_pos = 0;
 
@@ -541,25 +555,29 @@ static int slowboot_init(void)
 	}
 
 	halg = crypto_alloc_shash(SLWBT_HSALGO,0,0);
-	digest = kmalloc(SLWBT_DGLEN+1, GFP_KERNEL);
+	if (IS_ERR(halg)) {
+		halg = NULL;
+		goto fail;
+	}
+
+	if(!(digest = kmalloc(SLWBT_DGLEN+1, GFP_KERNEL))) {
+		goto fail;
+	}
+
 	memset(digest,0,SLWBT_DGLEN+1);
-	hsd = init_sdesc(halg);
+
+	if(!(hsd = init_sdesc(halg))) {
+		goto fail;
+	}
 
 	crypto_shash_digest(&(hsd->shash), buf, file_size, digest);
 
-	struct public_key_signature sig = {
-		.s = sfp_buf,
-		.s_size = sfp_file_size,
-		.digest = digest,
-		.digest_size = SLWBT_DGLEN,
-		.pkey_algo = SLWBT_PKALGO,
-		.hash_algo = SLWBT_HSALGO
-	};
+	sig.s = sfp_buf;
+	sig.s_size = sfp_file_size;
+	sig.digest = digest;
 
-	if (local_public_key_verify_signature(&rsa_pub_key, &sig) == 0) {
-		printk(KERN_INFO "GUD\n");
-	} else {
-		printk(KERN_ERR "BAT\n");
+	if (local_public_key_verify_signature(&rsa_pub_key, &sig) != 0) {
+		goto fail;
 	}
 
 	num_items = 0;
@@ -571,12 +589,13 @@ static int slowboot_init(void)
 	}
 
 	if (num_items == 0)
-		goto out;
+		goto fail;
 
 	c_item = items = vmalloc(sizeof(slowboot_validation_item)*num_items);
 
 	if (!c_item) {
-		printk(KERN_ERR "Bad juju\n");
+		printk(KERN_ERR "Cannot allocate items\n");
+		goto fail;
 	}
 
 	pos = 0;
@@ -596,9 +615,24 @@ fail:
 	if (!items) {
 		vfree(items);
 	}
+	tinfoil.validation_items = NULL;
 	status = 1;
 out:
-	filp_close(fp, NULL);
+	if (fp != NULL)
+		filp_close(fp, NULL);
+	if (sfp != NULL)
+		filp_close(sfp, NULL);
+	if (halg != NULL)
+		kfree(halg);
+	if (buf != NULL)
+		vfree(buf);
+	if (sfp_buf != NULL)
+		vfree(sfp_buf);
+	if (kernel_key != NULL)
+		kfree(kernel_key);
+	if (digest != NULL)
+		kfree(digest);
+	c_item = NULL;
 	printk(KERN_INFO "Beginning SlowBoot4:%d\n", num_read);
 
 	return status;
@@ -609,23 +643,37 @@ out:
 *******************************************************************************/
 static void slowboot_run_test(void)
 {
-	int j;
+	int j, hard_fail;
 
+	hard_fail = 0;
 	mutex_lock(&gs_concurrency_locker);
 	printk(KERN_INFO "Beginning SlowBoot2\n");
 	if (tinfoil.initialized != 0) {
 		tinfoil.initialized = 0;
-		//tinfoil.validation_items = tinfoil_items;
-		slowboot_init();
+		tinfoil.validation_items = NULL;
+		if (slowboot_init() != 0) {
+			hard_fail = 1;
+		}
 	}
 	mutex_unlock(&gs_concurrency_locker);
 
+	if (hard_fail != 0)
+		goto out;
 	for (j = 0; j < SLWBT_CT; j++) {
-		printk(KERN_INFO "SBI:%d\n",j);
+		//printk(KERN_INFO "SBI:%d\n",j);
 		tinfoil.failures += tinfoil_unwrap(
 			&(tinfoil.validation_items[j]));
 	}
-	if (tinfoil.failures > 0) {
+out:
+	mutex_lock(&gs_concurrency_locker);
+		if (tinfoil.validation_items != NULL) {
+			vfree(tinfoil.validation_items);
+			tinfoil.validation_items = NULL;
+			tinfoil.initialized = 1;
+		}
+	mutex_unlock(&gs_concurrency_locker);
+
+	if (tinfoil.failures > 0 || SLWBT_CT == 0 || hard_fail == 1) {
 		GLOW
 	}
 }
