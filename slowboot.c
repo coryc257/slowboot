@@ -411,7 +411,7 @@ static void slowboot_init(void)
 	loff_t pos, remaining, sfp_pos;
 	int num_read, sfp_num_read;
 	long int num_items;
-	char *buf, sfp_buf;
+	char *buf, *sfp_buf;
 	unsigned char *kernel_key;
 	unsigned char *digest;
 	slowboot_validation_item *items, *c_item;
@@ -447,18 +447,30 @@ static void slowboot_init(void)
 
 	printk(KERN_INFO "Beginning SlowBoot 3 '%s'\n", tinfoil.config_file);
 
-	fp = filp_open(tinfoil.config_file, O_RDONLY, 0);
+	if (IS_ERR(fp = filp_open(tinfoil.config_file, O_RDONLY, 0))) {
+		printk(KERN_ERR "flip open fp\n");
+		return;
+	}
 	default_llseek(fp, 0, SEEK_END);
 	file_size = fp->f_pos;
 	default_llseek(fp, fp->f_pos * -1, SEEK_CUR);
 
-	sfp = filp_open(tinfoil.config_file_signature, O_RDONLY, 0);
+	if (IS_ERR(sfp = filp_open(tinfoil.config_file_signature, O_RDONLY, 0))) {
+		printk(KERN_ERR "flip open sfp\n");
+		return;
+	}
 	default_llseek(sfp, 0, SEEK_END);
 	sfp_file_size = sfp->f_pos;
 	default_llseek(sfp, sfp->f_pos * -1, SEEK_CUR);
 
-	buf = vmalloc(file_size+1);
-	sfp_buf = vmalloc(sfp_file_size+1);
+	if((buf = vmalloc(file_size+1)) == NULL) {
+		printk(KERN_ERR "alloc buf\n");
+		return;
+	}
+	if ((sfp_buf = vmalloc(sfp_file_size+1)) == NULL) {
+		printk(KERN_ERR "alloc sfp_buf\n");
+		return;
+	}
 	pos = 0;
 	sfp_pos = 0;
 
