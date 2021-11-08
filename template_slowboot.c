@@ -132,6 +132,7 @@ DEFINE_MUTEX(gs_concurrency_locker);
 /* What to do if at the end of the test there are failures */
 /* The idea is a distro could put in their own thing for
  * the purposes of attempted recovery
+ * BUG(); to fail boot
  */
 #ifndef CONFIG_TINFOIL_FAIL
 #define CONFIG_TINFOIL_FAIL __gs_tinfoil_fail_alert(&tinfoil);
@@ -192,16 +193,6 @@ static void __gs_tinfoil_fail_alert(slowboot_tinfoil *tf)
 {
 	printk(KERN_ERR "Tinfoil Verification Failed\n");
 }
-
-/*
- * Failure Option to BUG
- * @tf: slowboot_tinfoil struct
- */
-static void __gs_tinfoil_fail_alert(slowboot_tinfoil *tf)
-{
-	BUG();
-}
-
 
 /*
  * Initialize sdesc struct for digest measuring
@@ -402,24 +393,34 @@ static int tinfoil_read(slowboot_validation_item *item)
 	if (!item->buf) {
 		printk(KERN_ERR "Failure No memory:%s\n",
 			item->path);
-		return -1;
+		goto fail;
 	}
 	memset(item->buf,0,item->buf_len+1);
 	
-	
+	item->pos = 0;
 	number_read = kernel_read(
 		item->fp,
 		item->buf,
 		tinfoil.st->size,
 		&(item->pos));
+
 	if (number_read != item->buf_len) {
-		vfree(item->buf);
-		return -1;
+		goto fail;
 	}
+
 	if (hex2bin(item->b_hash,item->hash,64) !=0) {
 		printk(KERN_INFO "StoredHashFail:%s\n", item->path);
+		goto fail;
 	}
 	
+	goto out;
+fail:
+	if (item->buf != NULL) {
+		vfree(item->buf);
+		item->buf = NULL;
+	}
+	return -1;
+out:
 	return 0;
 }
 
@@ -531,14 +532,20 @@ static loff_t fill_in_item(slowboot_validation_item *item,
 {
 	loff_t pos, off, rem;
 
+
+	if (line == NULL) {
+		if (remaining != NULL)
+			*remaining = 0;
+		return 0;
+	}
+
+
 	pos = 0;
 	off = 0;
 	rem = *remaining;
 
 
 	while (rem > 0) {
-
-		//printk(KERN_INFO "X:%d,%c\n",line[pos],line[pos]);
 
 		if (line[pos] == ' ' && off == 0 && rem > 1) {
 			off = pos+1;
@@ -552,15 +559,17 @@ static loff_t fill_in_item(slowboot_validation_item *item,
 		rem--;
 	}
 
-	memset(item->path,0,PATH_MAX+1);
-	memset(item->hash,0,CONFIG_TINFOIL_HSLEN+2);
+	if (item->path != NULL && item->hash != NULL) {
+		memset(item->path,0,PATH_MAX+1);
+		memset(item->hash,0,CONFIG_TINFOIL_HSLEN+2);
 
-	// Make sure we have a good item
-	// This should not happen because who
-	// would sign something malicous?
-	if (pos > (CONFIG_TINFOIL_HSLEN+5) && (pos-off-1) > 0) {
-		memcpy(item->hash, line, CONFIG_TINFOIL_HSLEN);
-		memcpy(item->path, line+off, pos-off);
+		// Make sure we have a good item
+		// This should not happen because who
+		// would sign something malicous?
+		if (pos > (CONFIG_TINFOIL_HSLEN+5) && (pos-off-1) > 0) {
+			memcpy(item->hash, line, CONFIG_TINFOIL_HSLEN);
+			memcpy(item->path, line+off, pos-off);
+		}
 	}
 
 	if (rem > 0) {
@@ -571,6 +580,9 @@ static loff_t fill_in_item(slowboot_validation_item *item,
 	return pos;
 }
 
+/*
+ * Signature check the config file and initialize all the data
+ */
 static int slowboot_init(void)
 {
 	struct file *fp, *sfp;
@@ -588,7 +600,7 @@ static int slowboot_init(void)
 	struct public_key_signature sig;
 	struct public_key rsa_pub_key;
 
-	// Trust nothing
+	// trustno1
 	status = 0;
 	fp = NULL; //filp_close
 	sfp = NULL; //filp_close
@@ -621,26 +633,20 @@ static int slowboot_init(void)
 	sig.hash_algo = CONFIG_TINFOIL_HSALGO;
 
 
-	kernel_key_len = CONFIG_TINFOIL_PKLEN/2;
+	kernel_key_len = CONFIG_TINFOIL_PKLEN/2; // Hex/2
 	kernel_key = kmalloc(kernel_key_len+1, GFP_KERNEL);
 
-	if(!kernel_key) {
+	if(!kernel_key)
 		goto fail;
-	}
 
 	if (hex2bin(kernel_key, tinfoil.config_pkey, kernel_key_len) == 0) {
 		kernel_key[kernel_key_len] = '\0';
-		printk(KERN_INFO "KERNEL KEY:%s\n", kernel_key);
 	} else {
 		goto fail;
 	}
 
-
 	rsa_pub_key.key = kernel_key;
 	rsa_pub_key.keylen = kernel_key_len;
-
-
-	printk(KERN_INFO "Beginning SlowBoot 3 '%s'\n", tinfoil.config_file);
 
 	if (IS_ERR(fp = filp_open(tinfoil.config_file, O_RDONLY, 0))) {
 		fp = NULL;
@@ -656,7 +662,6 @@ static int slowboot_init(void)
 		sfp = NULL;
 		goto fail;
 	}
-
 	default_llseek(sfp, 0, SEEK_END);
 	sfp_file_size = sfp->f_pos;
 	default_llseek(sfp, sfp->f_pos * -1, SEEK_CUR);
@@ -669,13 +674,6 @@ static int slowboot_init(void)
 		printk(KERN_ERR "alloc sfp_buf\n");
 		goto fail;
 	}
-
-	pos = 0;
-	sfp_pos = 0;
-
-	printk(KERN_INFO "Beginning SlowBoot 3 '%s'::'%ld'\n",
-		   tinfoil.config_file,
-		   file_size);
 
 	num_read = kernel_read(fp,buf,file_size,&pos);
 	sfp_num_read = kernel_read(sfp,sfp_buf,sfp_file_size,&sfp_pos);
@@ -698,15 +696,13 @@ static int slowboot_init(void)
 		goto fail;
 	}
 
-	if(!(digest = kmalloc(CONFIG_TINFOIL_DGLEN+1, GFP_KERNEL))) {
+	if (!(digest = kmalloc(CONFIG_TINFOIL_DGLEN+1, GFP_KERNEL)))
 		goto fail;
-	}
 
 	memset(digest,0,CONFIG_TINFOIL_DGLEN+1);
 
-	if(!(hsd = init_sdesc(halg))) {
+	if(!(hsd = init_sdesc(halg)))
 		goto fail;
-	}
 
 	crypto_shash_digest(&(hsd->shash), buf, file_size, digest);
 
@@ -714,14 +710,11 @@ static int slowboot_init(void)
 	sig.s_size = sfp_file_size;
 	sig.digest = digest;
 
-	if (local_public_key_verify_signature(&rsa_pub_key, &sig) != 0) {
+	if (local_public_key_verify_signature(&rsa_pub_key, &sig) != 0)
 		goto fail;
-	}
 
-	num_items = 0;
-
-	for (pos = 0; pos < file_size; pos++){
-		if (buf[pos] == '\n') {
+	for (pos = 0; pos < file_size; pos++) {
+		if (buf[pos] == CONFIG_TINFOIL_NEW_LINE) {
 			num_items++;
 		}
 	}
@@ -736,7 +729,7 @@ static int slowboot_init(void)
 		goto fail;
 	}
 
-	pos = 0;
+	pos = 0; // reusing
 	remaining = file_size;
 	while (remaining){
 		//printk(KERN_INFO "fii:%d\n", pos);
@@ -771,21 +764,19 @@ out:
 	if (digest != NULL)
 		kfree(digest);
 	c_item = NULL;
-	printk(KERN_INFO "Beginning SlowBoot4:%d\n", num_read);
 
 	return status;
 }
 
-/*******************************************************************************
-* Register all the svirs and then validated them all counting the failures     *
-*******************************************************************************/
+/*
+ * Run validation test
+ */
 static void slowboot_run_test(void)
 {
 	int j, hard_fail;
 
 	hard_fail = 0;
 	mutex_lock(&gs_concurrency_locker);
-	printk(KERN_INFO "Beginning SlowBoot2\n");
 	if (tinfoil.initialized != 0) {
 		tinfoil.initialized = 0;
 		tinfoil.validation_items = NULL;
@@ -798,7 +789,6 @@ static void slowboot_run_test(void)
 	if (hard_fail != 0)
 		goto out;
 	for (j = 0; j < SLWBT_CT; j++) {
-		//printk(KERN_INFO "SBI:%d\n",j);
 		tinfoil.failures += tinfoil_unwrap(
 			&(tinfoil.validation_items[j]));
 	}
@@ -823,18 +813,19 @@ static int __init slowboot_mod_init(void)
 static int slowboot_mod_init(void)
 #endif
 {
-
-
-	printk(KERN_INFO "Beginning SlowBoot\n");
+	printk(KERN_INFO "Beginning Tinfoil Verification\n");
 	
 	tinfoil.failures = 0;
 	tinfoil.st = NULL;
 	tinfoil.st = (struct kstat *)kmalloc(sizeof(struct kstat), GFP_KERNEL);
-	if (!tinfoil.st)
-		return -ENOMEM; // CHECK
+	if (!tinfoil.st) {
+		CONFIG_TINFOIL_FAIL
+		return -ENOMEM;
+	}
 	
 	slowboot_run_test();
-	kfree(tinfoil.st);
+	if (tinfoil.st != NULL)
+		kfree(tinfoil.st);
 	return 0;
 }
 
