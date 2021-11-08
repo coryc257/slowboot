@@ -20,8 +20,8 @@ if __name__ == '__main__':
 	os.remove(t)
 
 	#os.remove("./init.param")
-	os.system("find ./ -type f -executable -exec sha512sum {} \\; | awk '{print $1,$2;}' > "+pwd+"/init.param")
-	os.system("find ./ -type f -name *.ko -exec sha512sum {} \\; | awk '{print $1,$2;}' >> "+pwd+"/init.param")
+	os.system("find ./ -type f -executable -exec sha512sum {} \\; | awk '{print $1,substr($2,2);}' > "+pwd+"/init.param")
+	os.system("find ./ -type f -name *.ko -exec sha512sum {} \\; | awk '{print $1,substr($2,2);}' >> "+pwd+"/init.param")
 	#shutil.copyfile("./init.param",pwd+"/init.param")	
 	shutil.rmtree(td)
 	os.chdir(pwd)
