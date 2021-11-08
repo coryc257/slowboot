@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-2.0-or-later
+// SPDX-License-Identifier: GPL-2.080
 /*
  * 	linux/init/tinfoil.c
  *
@@ -48,76 +48,100 @@
 #endif
 
 /* File that holds the hash(space)path(newline)... data */
-#ifndef SLWBT_CF
-#define SLWBT_CF "/testing/siggywiggy"
+#ifndef CONFIG_TINFOIL_CF
+#define CONFIG_TINFOIL_CF "/etc/gs/tinfoil"
 #endif
 
 /* Signature digest file made from openssl */
-#ifndef SLWBT_CFS
-#define SLWBT_CFS "/testing/siggywiggy.sha512"
+#ifndef CONFIG_TINFOIL_CFS
+#define CONFIG_TINFOIL_CFS "/etc/gs/tinfoil.sig"
 #endif
 
 /* Primary key in hex */
 /* this is hard-coded because the idea is you cannot trust the system because
  * everything can be hacked so you remove the ability for uncontained root
  * from breaking the system in a way that may prove fatal on reboot
+ * openssl asn1parse -inform PEM -in key.pem -strparse 19 -out kernel.key
+ * xxd -ps -c 999999 kernel.key
  */
-#ifndef SLWBT_PK
-#define SLWBT_PK "3082020a02820201009af1624ec932c82d57d296ebddf3d8c1cdc03a6c5c709cb3658b33797dd8a94b4183146224a63f8dbf04032690f04c4b05138cf9b0955057e4acf4721c84eb3073eeb1ccc5c6e9bec3d36b1b3bd274c13afb42f33c5c057121debaa622f8f2c0e75bbc99cbcf78767d4225025ece9561ca6022b650ab9c9a68763e7e461164bdfdd07b72e4c623e07b38a7767ac2671c06ea899d6291fddb1eb3d8a6d03fbd78719adec4b92f8881562d73923fcf8f2bd41f324993ecf42c40cd9c596c3b58850aa96a7d28a767b0be8e919fb247897cdc557391753db766991f197217b96e430c8e9bfc3f84a9c45b4aad9e6284e87041eb1709e99fd01e8f23f1f97aa86e255eb8d4bfb13ce6f14264347e40372bb79e17a87e1c541077e8e874092f475b9dbfb4fca981c1358971004421454069c3868cd4fe8fd1ea6d46d9daac7dc00d6b60d998bebbe0121126e3f29acfc3ccc2f24e6eb6c4ab9c0f2e7670e920f33d69eb1f0ca7be630098fe220c1f8ef87e51f8be663a70621a5932ee60888c7e40aa70313e1936bc0c6d742d2c2d2d46c2ceb2b3155ebc777f01bbfad07985e847f8d00c663706b92cf15fd2504ae8dd838d9576763e4ed12e2d6b0a5f7ea21bed613d371a96a25f2206fe6e1724cfcbf2c03d04dda6f623d0d31c036a63f030158478ae820020cf6eff88c70f335db426eeac8205a2875a393d5d67343d534ef54b0203010001"
+#ifndef CONFIG_TINFOIL_PK
+#define CONFIG_TINFOIL_PK \
+				 "3082020a02820201009af1624ec932c82d57d296ebddf3d8c1cdc03a6c5c"\
+	             "709cb3658b33797dd8a94b4183146224a63f8dbf04032690f04c4b05138c"\
+				 "f9b0955057e4acf4721c84eb3073eeb1ccc5c6e9bec3d36b1b3bd274c13a"\
+				 "fb42f33c5c057121debaa622f8f2c0e75bbc99cbcf78767d4225025ece95"\
+				 "61ca6022b650ab9c9a68763e7e461164bdfdd07b72e4c623e07b38a7767a"\
+				 "c2671c06ea899d6291fddb1eb3d8a6d03fbd78719adec4b92f8881562d73"\
+				 "923fcf8f2bd41f324993ecf42c40cd9c596c3b58850aa96a7d28a767b0be"\
+				 "8e919fb247897cdc557391753db766991f197217b96e430c8e9bfc3f84a9"\
+				 "c45b4aad9e6284e87041eb1709e99fd01e8f23f1f97aa86e255eb8d4bfb1"\
+				 "3ce6f14264347e40372bb79e17a87e1c541077e8e874092f475b9dbfb4fc"\
+				 "a981c1358971004421454069c3868cd4fe8fd1ea6d46d9daac7dc00d6b60"\
+				 "d998bebbe0121126e3f29acfc3ccc2f24e6eb6c4ab9c0f2e7670e920f33d"\
+				 "69eb1f0ca7be630098fe220c1f8ef87e51f8be663a70621a5932ee60888c"\
+				 "7e40aa70313e1936bc0c6d742d2c2d2d46c2ceb2b3155ebc777f01bbfad0"\
+				 "7985e847f8d00c663706b92cf15fd2504ae8dd838d9576763e4ed12e2d6b"\
+				 "0a5f7ea21bed613d371a96a25f2206fe6e1724cfcbf2c03d04dda6f623d0"\
+				 "d31c036a63f030158478ae820020cf6eff88c70f335db426eeac8205a287"\
+				 "5a393d5d67343d534ef54b0203010001"
+
 #endif
 
 /* Total number of characters in the primary key not including \0 */
-#ifndef SLWBT_PKLEN
-#define SLWBT_PKLEN 1052
+#ifndef CONFIG_TINFOIL_PKLEN
+#define CONFIG_TINFOIL_PKLEN 1052
 #endif
 
 /* Length of the Digest (64 for sha512) */
-#ifndef SLWBT_DGLEN
-#define SLWBT_DGLEN 64
+#ifndef CONFIG_TINFOIL_DGLEN
+#define CONFIG_TINFOIL_DGLEN 64
 #endif
 
 /* Length of the Digest in Hex (should be 2x the digest) */
-#ifndef SLWBT_HSLEN
-#define SLWBT_HSLEN 128
+#ifndef CONFIG_TINFOIL_HSLEN
+#define CONFIG_TINFOIL_HSLEN 128
 #endif
 
 /* Primary key algorithm to use, likely "rsa" */
-#ifndef SLWBT_PKALGO
-#define SLWBT_PKALGO "rsa"
+#ifndef CONFIG_TINFOIL_PKALGO
+#define CONFIG_TINFOIL_PKALGO "rsa"
 #endif
 
 /* Padding method used, likely "pkcs1pad(rsa,%s)" */
-#ifndef SLWBT_PKALGOPD
-#define SLWBT_PKALGOPD "pkcs1pad(rsa,%s)"
+#ifndef CONFIG_TINFOIL_PKALGOPD
+#define CONFIG_TINFOIL_PKALGOPD "pkcs1pad(rsa,%s)"
 #endif
 
 /* Hash algorithm used, likely "sha512" */
-#ifndef SLWBT_HSALGO
-#define SLWBT_HSALGO "sha512"
+#ifndef CONFIG_TINFOIL_HSALGO
+#define CONFIG_TINFOIL_HSALGO "sha512"
 #endif
 
 /* Id type for the certificate, likely "X509" */
-#ifndef SLWBT_IDTYPE
-#define SLWBT_IDTYPE "X509"
+#ifndef CONFIG_TINFOIL_IDTYPE
+#define CONFIG_TINFOIL_IDTYPE "X509"
 #endif
 
 DEFINE_MUTEX(gs_concurrency_locker);
 
 /* Record separator for the config file, likely '\n' */
-#ifndef NEW_LINE
-#define NEW_LINE '\n'
+#ifndef CONFIG_TINFOIL_NEW_LINE
+#define CONFIG_TINFOIL_NEW_LINE '\n'
 #endif
 
 /* What to do if at the end of the test there are failures */
-#ifndef GLOW
-#define GLOW printk(KERN_ERR "GLOWING\n");
+/* The idea is a distro could put in their own thing for
+ * the purposes of attempted recovery
+ */
+#ifndef CONFIG_TINFOIL_FAIL
+#define CONFIG_TINFOIL_FAIL __gs_tinfoil_fail_alert(&tinfoil);
 #endif
 
 
-
+/* File Validation item */
 typedef struct slowboot_validation_item {
-	char hash[SLWBT_HSLEN+2];
-	u8 b_hash[SLWBT_DGLEN+1];
+	char hash[CONFIG_TINFOIL_HSLEN+2];
+	u8 b_hash[CONFIG_TINFOIL_DGLEN+1];
 	char path[PATH_MAX+1];
 	int is_ok;
 	char *buf;
@@ -126,6 +150,7 @@ typedef struct slowboot_validation_item {
 	long long int pos;
 } slowboot_validation_item;
 
+/* Container Struct for the entire process */
 typedef struct slowboot_tinfoil {
 	struct kstat *st;
 	slowboot_validation_item *validation_items;
@@ -134,20 +159,65 @@ typedef struct slowboot_tinfoil {
 	int slwbt_ct;
 	char config_file[PATH_MAX];
 	char config_file_signature[PATH_MAX];
-	char config_pkey[SLWBT_PKLEN+1];
+	char config_pkey[CONFIG_TINFOIL_PKLEN+1];
 } slowboot_tinfoil;
 
+/* shash container struct */
+typedef struct sdesc {
+    struct shash_desc shash;
+    char ctx[];
+} sdesc;
 
+/* main data struct */
 static slowboot_tinfoil tinfoil = {
-		.config_file = SLWBT_CF,
-		.config_file_signature = SLWBT_CFS,
-		.config_pkey = SLWBT_PK,
+		.config_file = CONFIG_TINFOIL_CF,
+		.config_file_signature = CONFIG_TINFOIL_CFS,
+		.config_pkey = CONFIG_TINFOIL_PK,
 		.initialized = 1
 };
 
+/*
+ * Obtain the count of items to verify
+ */
 static int __get_slwbt_ct(void)
 {
 	return tinfoil.slwbt_ct;
+}
+
+/*
+ * Failure Option to simply alert
+ * @tf: slowboot_tinfoil struct
+ */
+static void __gs_tinfoil_fail_alert(slowboot_tinfoil *tf)
+{
+	printk(KERN_ERR "Tinfoil Verification Failed\n");
+}
+
+/*
+ * Failure Option to BUG
+ * @tf: slowboot_tinfoil struct
+ */
+static void __gs_tinfoil_fail_alert(slowboot_tinfoil *tf)
+{
+	BUG();
+}
+
+
+/*
+ * Initialize sdesc struct for digest measuring
+ * @alg: crypto_shash structure
+ */
+static sdesc* init_sdesc(struct crypto_shash *alg)
+{
+	struct sdesc *sdesc;
+	int size;
+
+	size = sizeof(struct shash_desc) + crypto_shash_descsize(alg);
+	sdesc = kmalloc(size, GFP_KERNEL);
+	if (!sdesc)
+		return NULL;
+	sdesc->shash.tfm = alg;
+	return sdesc;
 }
 
 //openssl x509 -C -in my_signing_key_pub.der -inform DER
@@ -167,7 +237,11 @@ static int __get_slwbt_ct(void)
 
 //openssl rsa -in private.pem -passin pass:1111 -pubout -out public.pem
 
-
+/*
+ * Perform ?rsa? signature verification
+ * @pkey: public key struct
+ * @sig: public key signature struct
+ */
 int local_public_key_verify_signature(const struct public_key *pkey,
                 const struct public_key_signature *sig)
 {
@@ -191,13 +265,13 @@ int local_public_key_verify_signature(const struct public_key *pkey,
         return -ENOPKG;
 
     alg_name = sig->pkey_algo;
-    if (strcmp(sig->pkey_algo, SLWBT_PKALGO) == 0) {
+    if (strcmp(sig->pkey_algo, CONFIG_TINFOIL_PKALGO) == 0) {
         /* The data wangled by the RSA algorithm is typically padded
          * and encoded in some manner, such as EMSA-PKCS1-1_5 [RFC3447
          * sec 8.2].
          */
         if (snprintf(alg_name_buf, CRYPTO_MAX_ALG_NAME,
-        		     SLWBT_PKALGOPD, sig->hash_algo
+        		     CONFIG_TINFOIL_PKALGOPD, sig->hash_algo
                  ) >= CRYPTO_MAX_ALG_NAME)
             return -EINVAL;
         alg_name = alg_name_buf;
@@ -237,7 +311,8 @@ int local_public_key_verify_signature(const struct public_key *pkey,
     sg_set_buf(&src_tab[1], sig->digest, sig->digest_size);
     sg_set_buf(&src_tab[0], sig->s, sig->s_size);
 
-    akcipher_request_set_crypt(req, src_tab, NULL, sig->s_size, sig->digest_size);
+    akcipher_request_set_crypt(req, src_tab, NULL, sig->s_size,
+    		                   sig->digest_size);
 
     crypto_init_wait(&cwait);
     akcipher_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
@@ -264,6 +339,10 @@ error_free_tfm:
     return ret;
 }
 
+/*
+ * Open file related to current item
+ * @item: slow boot validation item
+ */
 static int tinfoil_open(slowboot_validation_item *item)
 {
 	item->fp = filp_open(item->path, O_RDONLY, 0);
@@ -278,6 +357,10 @@ static int tinfoil_open(slowboot_validation_item *item)
 	return 0;
 }
 
+/*
+ * Stat file to get size
+ * @item: slow boot validation item
+ */
 static int tinfoil_stat_alloc(slowboot_validation_item *item)
 {
 	if (
@@ -296,11 +379,19 @@ static int tinfoil_stat_alloc(slowboot_validation_item *item)
 	return 0;
 }
 
+/*
+ * Close file
+ * @item: slowboot validation item
+ */
 static void tinfoil_close(slowboot_validation_item *item)
 {
 	filp_close(item->fp, NULL);
 }
 
+/*
+ * read file into buffer
+ * @item: slowboot validation item
+ */
 static int tinfoil_read(slowboot_validation_item *item)
 {
 	size_t number_read;
@@ -332,24 +423,11 @@ static int tinfoil_read(slowboot_validation_item *item)
 	return 0;
 }
 
-typedef struct sdesc {
-    struct shash_desc shash;
-    char ctx[];
-} sdesc;
-
-static sdesc* init_sdesc(struct crypto_shash *alg)
-{
-	struct sdesc *sdesc;
-	int size;
-
-	size = sizeof(struct shash_desc) + crypto_shash_descsize(alg);
-	sdesc = kmalloc(size, GFP_KERNEL);
-	if (!sdesc)
-		return NULL;
-	sdesc->shash.tfm = alg;
-	return sdesc;
-}
-
+/*
+ * Check a single item for validity
+ * @item: slowboot validation item
+ * consumes item->buf
+ */
 static void tinfoil_check(slowboot_validation_item *item)
 {
 	struct crypto_shash *alg;
@@ -357,40 +435,66 @@ static void tinfoil_check(slowboot_validation_item *item)
 	unsigned char *digest;
 	int j;
 	
-	alg = crypto_alloc_shash(SLWBT_HSALGO, 0, 0);
+	alg = NULL; //crypto_free_shash
+	sd = NULL; //kfree
+	digest = NULL; //kfree
+
+	if (item->buf == NULL || item->buf_len == 0)
+		goto err;
+
+	alg = crypto_alloc_shash(CONFIG_TINFOIL_HSALGO, 0, 0);
 	if (IS_ERR(alg)) {
+		alg = NULL;
 		printk(KERN_ERR "Can't allocate alg\n");
+		goto err;
 	}
 	
-	digest = kmalloc(SLWBT_DGLEN+1, GFP_KERNEL);
-	memset(digest,0,SLWBT_DGLEN+1);
+	digest = kmalloc(CONFIG_TINFOIL_DGLEN+1, GFP_KERNEL);
+	if (!digest) {
+		digest = NULL;
+		printk(KERN_ERR "Can't allocate digest\n");
+		goto err;
+	}
+
+	memset(digest,0,CONFIG_TINFOIL_DGLEN+1);
+
 	sd = init_sdesc(alg);
 	if (!sd) {
-	  printk(KERN_ERR "Can't allocate alg\n");
-	  vfree(item->buf);
-	  item->is_ok=1;
-	  return;
+		sd = NULL;
+		printk(KERN_ERR "Can't allocate sdesc\n");
+		goto err;
 	}
 	
 	crypto_shash_digest(&(sd->shash), item->buf, item->buf_len, digest);
-	vfree(item->buf);
-	kfree(sd);
-	item->is_ok = 0;
-	for(j=0;j<SLWBT_DGLEN;j++){
-		if(item->b_hash[j]!=digest[j]) {
-			item->is_ok = 1;
-			printk(KERN_ERR "FFF:%s", item->hash);
-			break;
 
+	item->is_ok = 0;
+	for (j=0; j<CONFIG_TINFOIL_DGLEN; j++){
+		if (item->b_hash[j] != digest[j]) {
+			goto err;
 		}
 	}
-	kfree(digest);
-	crypto_free_shash(alg);
+
+	goto out;
+err:
+	item->is_ok = 1;
+out:
+	if (item->buf != NULL) {
+		vfree(item->buf);
+		item->buf = NULL;
+	}
+	if (sd != NULL)
+		kfree(sd);
+	if (digest != NULL)
+		kfree(digest);
+	if (alg != NULL)
+		crypto_free_shash(alg);
 }
 
-/*******************************************************************************
-* Open file, read contents, hash it, compare, log state, free                  *
-*******************************************************************************/
+
+/*
+ * Validate an item (file against it's hash)
+ * @item: slowboot validation item
+ */
 static int tinfoil_unwrap (slowboot_validation_item *item)
 {
 	if (tinfoil_open(item) != 0)
@@ -416,18 +520,23 @@ static int tinfoil_unwrap (slowboot_validation_item *item)
 	return item->is_ok;
 }
 
-
-static loff_t fill_in_item(slowboot_validation_item *item, char *line, loff_t *remaining)
+/*
+ * Parse one line, fill in the item
+ * @item: slowboot validation item
+ * @line: start of current line
+ * @remaining: remaining bytes
+ */
+static loff_t fill_in_item(slowboot_validation_item *item,
+		                   char *line, loff_t *remaining)
 {
-	loff_t pos, off, rem, pst;
+	loff_t pos, off, rem;
 
 	pos = 0;
 	off = 0;
 	rem = *remaining;
-	pst = 0;
 
 
-	while(rem > 0) {
+	while (rem > 0) {
 
 		//printk(KERN_INFO "X:%d,%c\n",line[pos],line[pos]);
 
@@ -435,11 +544,7 @@ static loff_t fill_in_item(slowboot_validation_item *item, char *line, loff_t *r
 			off = pos+1;
 		}
 
-		if (line[pos] == NEW_LINE) {
-			pst = 1;
-			//line[pos] = '\0';
-			//printk(KERN_INFO "Line:%s\n", line);
-			//line[pos] = NEW_LINE;
+		if (line[pos] == CONFIG_TINFOIL_NEW_LINE) {
 			break;
 		}
 
@@ -448,13 +553,13 @@ static loff_t fill_in_item(slowboot_validation_item *item, char *line, loff_t *r
 	}
 
 	memset(item->path,0,PATH_MAX+1);
-	memset(item->hash,0,SLWBT_HSLEN+2);
+	memset(item->hash,0,CONFIG_TINFOIL_HSLEN+2);
 
 	// Make sure we have a good item
 	// This should not happen because who
 	// would sign something malicous?
-	if (pos > (SLWBT_HSLEN+5) && (pos-off-1) > 0) {
-		memcpy(item->hash, line, SLWBT_HSLEN);
+	if (pos > (CONFIG_TINFOIL_HSLEN+5) && (pos-off-1) > 0) {
+		memcpy(item->hash, line, CONFIG_TINFOIL_HSLEN);
 		memcpy(item->path, line+off, pos-off);
 	}
 
@@ -504,19 +609,19 @@ static int slowboot_init(void)
 	items = NULL; //vfree
 	c_item = NULL; //set to null
 	kernel_key_len = 0;
-	rsa_pub_key.pkey_algo = SLWBT_PKALGO;
-	rsa_pub_key.id_type = SLWBT_IDTYPE;
+	rsa_pub_key.pkey_algo = CONFIG_TINFOIL_PKALGO;
+	rsa_pub_key.id_type = CONFIG_TINFOIL_IDTYPE;
 	rsa_pub_key.key = NULL;
 	rsa_pub_key.keylen = -1;
 	sig.s = NULL;
 	sig.s_size = 0;
 	sig.digest = NULL;
-	sig.digest_size = SLWBT_DGLEN;
-	sig.pkey_algo = SLWBT_PKALGO;
-	sig.hash_algo = SLWBT_HSALGO;
+	sig.digest_size = CONFIG_TINFOIL_DGLEN;
+	sig.pkey_algo = CONFIG_TINFOIL_PKALGO;
+	sig.hash_algo = CONFIG_TINFOIL_HSALGO;
 
 
-	kernel_key_len = SLWBT_PKLEN/2;
+	kernel_key_len = CONFIG_TINFOIL_PKLEN/2;
 	kernel_key = kmalloc(kernel_key_len+1, GFP_KERNEL);
 
 	if(!kernel_key) {
@@ -587,17 +692,17 @@ static int slowboot_init(void)
 			   sfp_file_size);
 	}
 
-	halg = crypto_alloc_shash(SLWBT_HSALGO,0,0);
+	halg = crypto_alloc_shash(CONFIG_TINFOIL_HSALGO,0,0);
 	if (IS_ERR(halg)) {
 		halg = NULL;
 		goto fail;
 	}
 
-	if(!(digest = kmalloc(SLWBT_DGLEN+1, GFP_KERNEL))) {
+	if(!(digest = kmalloc(CONFIG_TINFOIL_DGLEN+1, GFP_KERNEL))) {
 		goto fail;
 	}
 
-	memset(digest,0,SLWBT_DGLEN+1);
+	memset(digest,0,CONFIG_TINFOIL_DGLEN+1);
 
 	if(!(hsd = init_sdesc(halg))) {
 		goto fail;
@@ -707,7 +812,7 @@ out:
 	mutex_unlock(&gs_concurrency_locker);
 
 	if (tinfoil.failures > 0 || SLWBT_CT == 0 || hard_fail == 1) {
-		GLOW
+		CONFIG_TINFOIL_FAIL
 	}
 }
 
