@@ -27,6 +27,7 @@
 #include <linux/uaccess.h>
 #include <linux/slab.h>
 #include <linux/stat.h>
+#include <linux/random.h>
 
 
 /*
@@ -138,6 +139,11 @@ DEFINE_MUTEX(gs_concurrency_locker);
 #define CONFIG_TINFOIL_FAIL __gs_tinfoil_fail_alert(&tinfoil);
 #endif
 
+/* Override cmdline parameter */
+#ifndef CONFIG_TINFOIL_OVERRIDE
+#define CONFIG_TINFOIL_OVERRIDE "tinfoil_override"
+#endif
+
 
 /* File Validation item */
 typedef struct slowboot_validation_item {
@@ -183,6 +189,83 @@ static slowboot_tinfoil tinfoil = {
 static int __get_slwbt_ct(void)
 {
 	return tinfoil.slwbt_ct;
+}
+
+/*
+ * Obtain size of file via seeking
+ */
+static size_t __get_file_size(struct file *fp)
+{
+	size_t file_size;
+
+	file_size = 0;
+	if (fp == NULL) {
+		printk(KERN_ERR "someting funny\n");
+		goto out;
+	}
+
+	default_llseek(fp, 0, SEEK_END);
+	file_size = fp->f_pos;
+	default_llseek(fp, fp->f_pos * -1, SEEK_CUR);
+
+out:
+	return file_size;
+}
+
+/*
+ * Read file into memory, check every thing
+ * @fp: file structure
+ * @file_size: stated size of file
+ * @pos: position offset return value
+ */
+static char *__read_file_to_memory(struct file *fp,
+		                           size_t file_size,
+								   loff_t *pos,
+								   int ignore_size)
+{
+	char *buf;
+	size_t num_read;
+
+	buf = NULL;
+
+	if (!fp || file_size < 1)
+		goto out;
+
+	buf = vmalloc(file_size+1);
+
+	if (!buf)
+		goto out;
+
+	*pos = 0;
+
+	default_llseek(fp, 0, SEEK_END);
+	default_llseek(fp, fp->f_pos * -1, SEEK_CUR);
+	num_read = kernel_read(fp, buf, file_size, pos);
+
+	if (num_read != file_size && !ignore_size) {
+		vfree(buf);
+	}
+
+	out:
+		return buf;
+}
+
+/*
+ * Check string for string, 0 is true
+ * @s1: big string
+ * @s1_len: length of big_string
+ * @s2: little string
+ * @s2_len: length of little string
+ */
+int __gs_memmem_sp(const char *s1, size_t s1_len, const char *s2, size_t s2_len)
+{
+	while (s1_len >= s2_len) {
+		s1_len--;
+		if (!memcmp(s1, s2, s2_len))
+			return 0;
+		s1++;
+	}
+	return 1;
 }
 
 /*
@@ -647,19 +730,36 @@ static int slowboot_init(void)
 		printk(KERN_ERR "flip open fp\n");
 		goto fail;
 	}
-	default_llseek(fp, 0, SEEK_END);
-	file_size = fp->f_pos;
-	default_llseek(fp, fp->f_pos * -1, SEEK_CUR);
 
 	if (IS_ERR(sfp = filp_open(tinfoil.config_file_signature, O_RDONLY, 0))) {
 		printk(KERN_ERR "flip open sfp\n");
 		sfp = NULL;
 		goto fail;
 	}
-	default_llseek(sfp, 0, SEEK_END);
-	sfp_file_size = sfp->f_pos;
-	default_llseek(sfp, sfp->f_pos * -1, SEEK_CUR);
 
+
+	file_size = __get_file_size(fp);
+	sfp_file_size = __get_file_size(sfp);
+
+	/*default_llseek(fp, 0, SEEK_END);
+	file_size = fp->f_pos;
+	default_llseek(fp, fp->f_pos * -1, SEEK_CUR);*/
+
+	/*default_llseek(sfp, 0, SEEK_END);
+	sfp_file_size = sfp->f_pos;
+	default_llseek(sfp, sfp->f_pos * -1, SEEK_CUR);*/
+
+	if (!(buf = __read_file_to_memory(fp, file_size, &pos, 0))) {
+		printk(KERN_ERR "File Read Error:%s\n", tinfoil.config_file);
+		goto fail;
+	}
+
+	if (!(sfp_buf = __read_file_to_memory(sfp, sfp_file_size, &sfp_pos, 0))) {
+		printk(KERN_ERR "File Read Error:%s\n", tinfoil.config_file_signature);
+		goto fail;
+	}
+
+	/*
 	if((buf = vmalloc(file_size+1)) == NULL) {
 		printk(KERN_ERR "alloc buf\n");
 		goto fail;
@@ -682,7 +782,7 @@ static int slowboot_init(void)
 		printk(KERN_ERR "File Read Error, size mismatch:%d:%ld\n",
 			   sfp_num_read,
 			   sfp_file_size);
-	}
+	}*/
 
 	halg = crypto_alloc_shash(CONFIG_TINFOIL_HSALGO,0,0);
 	if (IS_ERR(halg)) {
@@ -763,12 +863,64 @@ out:
 }
 
 /*
+ * check /proc/cmdline if it has been overridden
+ * dead_value is to prevent a theoretical energy weapon attack
+ */
+static int slowboot_enabled(void)
+{
+	struct file *fp;
+	size_t file_size;
+	char *buf;
+	loff_t pos;
+	int status;
+	int dead_value;
+
+	fp = NULL;
+	file_size = 0;
+	buf = NULL;
+	pos = 0;
+	status = 0;
+	dead_value = -1;
+
+
+	fp = filp_open("/proc/cmdline", O_RDONLY, 0);
+	if (IS_ERR(fp)) {
+		fp = NULL;
+		goto out;
+	}
+
+	file_size = PAGE_SIZE;
+	buf = __read_file_to_memory(fp, file_size, &pos, 1);
+
+	if (!buf) {
+		goto out;
+	}
+
+	get_random_bytes(&dead_value,sizeof(dead_value));
+
+	if(__gs_memmem_sp(buf, file_size,
+			    CONFIG_TINFOIL_OVERRIDE, strlen(CONFIG_TINFOIL_OVERRIDE)) == 0)
+		status = dead_value;
+
+out:
+	if (fp != NULL)
+		filp_close(fp, NULL);
+	if (buf != NULL)
+		vfree(buf);
+	return (status == dead_value ? 0 : 1);
+}
+
+/*
  * Run validation test
  */
 static void slowboot_run_test(void)
 {
 	int j, hard_fail;
 
+	if (!slowboot_enabled()) {
+		printk(KERN_ERR "Slowboot disabled\n");
+		return;
+	}
 	hard_fail = 0;
 	mutex_lock(&gs_concurrency_locker);
 	if (tinfoil.initialized != 0) {
@@ -836,12 +988,16 @@ MODULE_AUTHOR("Cory Craig <cory_craig@mail.com>");
 MODULE_VERSION("0.1");
 #endif
 
-#ifndef SLOWBOOT_MODULE
+
+
+//#ifndef SLOWBOOT_MODULE
 void tinfoil_verify(void)
 {
 	#ifndef CONFIG_TINFOIL
 		return;
 	#endif
-	slowboot_mod_init();
+	if (slowboot_enabled())
+		slowboot_mod_init();
+
 }
-#endif
+//#endif
