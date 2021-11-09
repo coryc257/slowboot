@@ -247,7 +247,7 @@ int local_public_key_verify_signature(const struct public_key *pkey,
     char alg_name_buf[CRYPTO_MAX_ALG_NAME];
     void *output;
     unsigned int outlen;
-    int ret;
+    int status;
 
     if (!pkey || !sig || !sig->s || !sig->digest)
         return -ENOPKG;
@@ -276,18 +276,18 @@ int local_public_key_verify_signature(const struct public_key *pkey,
         goto err;
     }
 
-    ret = -ENOMEM;
+    status = -ENOMEM;
     req = akcipher_request_alloc(tfm, GFP_KERNEL);
     if (!req) {
         goto err;
     }
 
-    ret = crypto_akcipher_set_pub_key(tfm, pkey->key, pkey->keylen);
-    if (ret) {
+    status = crypto_akcipher_set_pub_key(tfm, pkey->key, pkey->keylen);
+    if (status) {
         goto err;
     }
 
-    ret = -ENOMEM;
+    status = -ENOMEM;
     outlen = crypto_akcipher_maxsize(tfm);
     output = kmalloc(outlen, GFP_KERNEL);
     if (!output) {
@@ -308,12 +308,12 @@ int local_public_key_verify_signature(const struct public_key *pkey,
                       crypto_req_done, &cwait);
 
 
-    ret = crypto_wait_req(crypto_akcipher_verify(req), &cwait);
+    status = crypto_wait_req(crypto_akcipher_verify(req), &cwait);
     goto out;
 
 err:
-	if (ret == 0)
-		ret = 1;
+	if (status == 0)
+		status = 1;
 out:
 	if (output != NULL)
 		kfree(output);
@@ -321,7 +321,7 @@ out:
 		akcipher_request_free(req);
 	if (tfm != NULL)
 		crypto_free_akcipher(tfm);
-    return ret;
+    return status;
 }
 
 /*
