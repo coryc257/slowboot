@@ -192,6 +192,9 @@ static int __get_slwbt_ct(void)
 static void __gs_tinfoil_fail_alert(slowboot_tinfoil *tf)
 {
 	printk(KERN_ERR "Tinfoil Verification Failed\n");
+	#ifdef CONFIG_TINFOIL_BUG
+	BUG();
+	#endif
 }
 
 /*
