@@ -249,14 +249,13 @@ int local_public_key_verify_signature(const struct public_key *pkey,
     unsigned int outlen;
     int ret;
 
-    pr_devel("==>%s()\n", __func__);
-
-    BUG_ON(!pkey);
-    BUG_ON(!sig);
-    BUG_ON(!sig->s);
-
-    if (!sig->digest)
+    if (!pkey || !sig || !sig->s || !sig->digest)
         return -ENOPKG;
+
+    tfm = NULL;
+    req = NULL;
+    alg_name = NULL;
+    output = NULL;
 
     alg_name = sig->pkey_algo;
     if (strcmp(sig->pkey_algo, CONFIG_TINFOIL_PKALGO) == 0) {
@@ -271,34 +270,29 @@ int local_public_key_verify_signature(const struct public_key *pkey,
         alg_name = alg_name_buf;
     }
 
-    printk(KERN_INFO "ALGO:%s\n", alg_name);
     tfm = crypto_alloc_akcipher(alg_name, 0, 0);
     if (IS_ERR(tfm)) {
-    	printk(KERN_ERR "tfm\n");
-        return PTR_ERR(tfm);
+        tfm = NULL;
+        goto err;
     }
 
     ret = -ENOMEM;
     req = akcipher_request_alloc(tfm, GFP_KERNEL);
     if (!req) {
-    	printk(KERN_ERR "2\n");
-        goto error_free_tfm;
+        goto err;
     }
 
     ret = crypto_akcipher_set_pub_key(tfm, pkey->key, pkey->keylen);
     if (ret) {
-    	printk(KERN_ERR "3\n");
-        goto error_free_req;
+        goto err;
     }
 
     ret = -ENOMEM;
     outlen = crypto_akcipher_maxsize(tfm);
     output = kmalloc(outlen, GFP_KERNEL);
     if (!output) {
-    	printk(KERN_ERR "4\n");
-        goto error_free_req;
+        goto err;
     }
-
 
     sg_init_table(src_tab, 3);
 
@@ -315,21 +309,18 @@ int local_public_key_verify_signature(const struct public_key *pkey,
 
 
     ret = crypto_wait_req(crypto_akcipher_verify(req), &cwait);
-    if (ret) {
-    	printk(KERN_ERR "5\n");
-        goto out_free_output;
-    }
-    pr_info("verified successfuly!!!\n");
+    goto out;
 
-out_free_output:
-    kfree(output);
-error_free_req:
-    akcipher_request_free(req);
-error_free_tfm:
-    crypto_free_akcipher(tfm);
-    pr_devel("<==%s() = %d\n", __func__, ret);
-    if (WARN_ON_ONCE(ret > 0))
-        ret = -EINVAL;
+err:
+	if (ret == 0)
+		ret = 1;
+out:
+	if (output != NULL)
+		kfree(output);
+	if (req != NULL)
+		akcipher_request_free(req);
+	if (tfm != NULL)
+		crypto_free_akcipher(tfm);
     return ret;
 }
 
