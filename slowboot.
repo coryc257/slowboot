@@ -587,9 +587,10 @@ out:
 static int tinfoil_check_init(struct tinfoil_check *c,
 							  struct slowboot_validation_item *item)
 {
-	if (item == NULL || item->buf == NULL || item->buf_len == 0)
+	printk(KERN_ERR "2\n");
+	if (item == NULL || c->item->buf == NULL || c->item->buf_len == 0)
 		return 1;
-
+	printk(KERN_ERR "3\n");
 	memset(c,0,sizeof(struct tinfoil_check));
 
 	c->item = item;

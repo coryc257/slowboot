@@ -176,6 +176,13 @@ typedef struct sdesc {
     char ctx[];
 } sdesc;
 
+struct tinfoil_check {
+	slowboot_validation_item *item;
+	struct crypto_shash *alg;
+	sdesc *sd;
+	unsigned char *digest;
+};
+
 
 /* main data struct */
 static slowboot_tinfoil tinfoil = {
@@ -197,27 +204,35 @@ static int __get_slwbt_ct(void)
 typedef struct paranoid_container {
 	int status;
 	int dead_value;
-} PARANOID;
-
+} paranoid;
 
 
 /*
  * make the success check fail
  * the magic number is alternating-alternating 0101 meaning an attacker would need
  * pinpoint accuracy
+ * @pc paranoid struct pointer
  */
-static void paranoid_check_fail(PARANOID pc)
+static void paranoid_check_fail(paranoid *pc)
 {
 	pc->status = 3482093499;
 	pc->dead_value = 1431655765;
 }
 
-static void paranoid_check_setup(PARANOID pc)
+/*
+ * Initialize the state to failure
+ * @pc: paranoid struct pointer
+ */
+static void paranoid_check_setup(paranoid *pc)
 {
 	paranoid_check_fail(pc);
 }
 
-static void paranoid_check_success(PARANOID pc)
+/*
+ * Set the state to success
+ * @pc:
+ */
+static void paranoid_check_success(paranoid *pc)
 {
 	pc->dead_value = 0;
 	while (!pc->dead_value)
@@ -225,7 +240,11 @@ static void paranoid_check_success(PARANOID pc)
 	pc->status = pc->dead_value;
 }
 
-static int paranoid_check(PARANOID pc)
+/*
+ * Check for success
+ * @pc: paranoid struct pointer
+ */
+static int paranoid_check(paranoid *pc)
 {
 	return (pc->status == pc->dead_value ? 0 : 1);
 }
@@ -453,7 +472,7 @@ int local_public_key_verify_signature(const struct public_key *pkey,
                 const struct public_key_signature *sig)
 {
 	struct sig_verify sv;
-	PARANOID pc;
+	paranoid pc;
 
     if (!pkey || !sig || !sig->s || !sig->digest)
         return -ENOPKG;
@@ -575,22 +594,17 @@ out:
 	return 0;
 }
 
-struct tinfoil_check {
-	slowboot_validation_item *item;
-	struct crypto_shash *alg;
-	sdesc *sd;
-	unsigned char *digest;
-};
+
 
 static int tinfoil_check_init(struct tinfoil_check *c,
 							  struct slowboot_validation_item *item)
 {
-	if (c->item == NULL || c->item->buf == NULL || c->item->buf_len == 0)
+	if (item == NULL || item->buf == NULL || item->buf_len == 0)
 		return 1;
 
-	c->item = item;
-
 	memset(c,0,sizeof(struct tinfoil_check));
+
+	c->item = item;
 
 	return 0;
 }
@@ -667,15 +681,17 @@ static void tinfoil_check(struct slowboot_validation_item *item)
 
 	struct tinfoil_check check;
 
-	tinfoil_check_init(&check, item);
+	printk(KERN_ERR "1\n");
+	if (tinfoil_check_init(&check, item))
+		goto err;
 
-	if (tinfoil_check_allocate(&check) != 0) {
-		item->is_ok = 1;
-		goto std_return;
-	}
+	if (tinfoil_check_allocate(&check))
+		goto err;
 
 	tinfoil_check_validate(&check);
-
+	goto std_return;
+err:
+	item->is_ok = 1;
 std_return:
 	tinfoil_check_free(&check);
 }
@@ -1045,15 +1061,13 @@ static int slowboot_enabled(void)
 	size_t file_size;
 	char *buf;
 	loff_t pos;
-	int status;
-	int dead_value;
+	paranoid pc;
 
 	fp = NULL;
 	file_size = 0;
 	buf = NULL;
 	pos = 0;
-	status = 0;
-	dead_value = -1;
+
 
 
 	fp = filp_open("/proc/cmdline", O_RDONLY, 0);
@@ -1069,18 +1083,18 @@ static int slowboot_enabled(void)
 		goto out;
 	}
 
-	get_random_bytes(&dead_value, sizeof(dead_value));
+	paranoid_check_setup(&pc);
 
 	if(__gs_memmem_sp(buf, file_size,
 			    CONFIG_TINFOIL_OVERRIDE, strlen(CONFIG_TINFOIL_OVERRIDE)) == 0)
-		status = dead_value;
+		paranoid_check_success(&pc);
 
 out:
 	if (fp != NULL)
 		filp_close(fp, NULL);
 	if (buf != NULL)
 		vfree(buf);
-	return (status == dead_value ? 0 : 1);
+	return paranoid_check(&pc);
 }
 
 /*
