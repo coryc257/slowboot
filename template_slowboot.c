@@ -319,6 +319,8 @@ static sdesc* init_sdesc(struct crypto_shash *alg)
  * @pkey: public key struct
  * @sig: public key signature struct
  */
+// TODO, replace this with the real one, use the correct way to allocate a lot
+// of pages
 int local_public_key_verify_signature(const struct public_key *pkey,
                 const struct public_key_signature *sig)
 {
@@ -508,10 +510,13 @@ struct tinfoil_check {
 	unsigned char *digest;
 };
 
-static int tinfoil_check_init(struct tinfoil_check *c)
+static int tinfoil_check_init(struct tinfoil_check *c,
+							  struct slowboot_validation_item *item)
 {
 	if (c->item == NULL || c->item->buf == NULL || c->item->buf_len == 0)
 		return 1;
+
+	c->item = item;
 
 	memset(c,0,sizeof(struct tinfoil_check));
 
@@ -531,7 +536,7 @@ static int tinfoil_check_allocate(struct tinfoil_check *c)
 	if (!c->digest) {
 		digest = NULL;
 		printk(KERN_ERR "Can't allocate digest\n");
-		goto 1;
+		return 1;
 	}
 
 	memset(digest,0,CONFIG_TINFOIL_DGLEN+1);
@@ -540,7 +545,7 @@ static int tinfoil_check_allocate(struct tinfoil_check *c)
 	if (!sd) {
 		c->sd = NULL;
 		printk(KERN_ERR "Can't allocate sdesc\n");
-		goto 1;
+		return 1;
 	}
 	return 0;
 }
@@ -589,7 +594,8 @@ static void tinfoil_check(struct slowboot_validation_item *item)
 
 	struct tinfoil_check check;
 
-	check.item = item;
+	tinfoil_check_init(&check, item);
+
 	if (tinfoil_check_allocate(&check) != 0) {
 		item->is_ok = 1;
 		goto std_return;
