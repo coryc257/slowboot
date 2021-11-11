@@ -1,0 +1,15 @@
+Allow the user to sign a file containing checksums and file paths for files be
+validated before "init" happens in a manner where the public key cannot be
+changed without recomiplation of the kernel and signing of the kernel.
+
+make the kernel validate arbitrary files visible at boot and after opening of
+the initramfs but before calling init by using a signed file and a public key
+embedded in the kernel at build that cannot be changed without recompilation
+and subsequent resigning of the kernel
+
+j -> i
+trailiing spaces
+get rid of global since this purely procedural
+struct tinfoil no typedef
+one space between functions
+shorten all functions

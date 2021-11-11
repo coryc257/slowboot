@@ -1,0 +1,6 @@
+Validating the files contained within the initramfs is critical to secure boot.
+Doing it in such a way that it is easy for the user to understand and for them
+to have explicit control over it in a manner that not even state level actors
+(journalists in non free countries) can compromise can be very important in
+certains situations.
+

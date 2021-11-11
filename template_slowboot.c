@@ -169,6 +169,7 @@ typedef struct slowboot_tinfoil {
 	char config_pkey[CONFIG_TINFOIL_PKLEN+1];
 } slowboot_tinfoil;
 
+
 /* shash container struct */
 typedef struct sdesc {
     struct shash_desc shash;
@@ -200,7 +201,6 @@ static size_t __get_file_size(struct file *fp)
 
 	file_size = 0;
 	if (fp == NULL) {
-		printk(KERN_ERR "someting funny\n");
 		goto out;
 	}
 
@@ -501,13 +501,107 @@ out:
 	return 0;
 }
 
+struct tinfoil_check {
+	slowboot_validation_item *item;
+	struct crypto_shash *alg;
+	sdesc *sd;
+	unsigned char *digest;
+};
+
+static int tinfoil_check_init(struct tinfoil_check *c)
+{
+	if (c->item == NULL || c->item->buf == NULL || c->item->buf_len == 0)
+		return 1;
+
+	memset(c,0,sizeof(struct tinfoil_check));
+
+	return 0;
+}
+
+static int tinfoil_check_allocate(struct tinfoil_check *c)
+{
+	c->alg = crypto_alloc_shash(CONFIG_TINFOIL_HSALGO, 0, 0);
+	if (IS_ERR(c->alg)) {
+		c->alg = NULL;
+		printk(KERN_ERR "Can't allocate alg\n");
+		return 1;
+	}
+
+	c->digest = kmalloc(CONFIG_TINFOIL_DGLEN+1, GFP_KERNEL);
+	if (!c->digest) {
+		digest = NULL;
+		printk(KERN_ERR "Can't allocate digest\n");
+		goto 1;
+	}
+
+	memset(digest,0,CONFIG_TINFOIL_DGLEN+1);
+
+	c->sd = init_sdesc(c->alg);
+	if (!sd) {
+		c->sd = NULL;
+		printk(KERN_ERR "Can't allocate sdesc\n");
+		goto 1;
+	}
+	return 0;
+}
+
+static void tinfoil_check_validate(struct tinfoil_check *c)
+{
+	int i;
+	crypto_shash_digest(&(sd->shash), item->buf, item->buf_len, digest);
+
+	item->is_ok = 0;
+	for (i=0; i<CONFIG_TINFOIL_DGLEN; i++){
+		if (item->b_hash[i] != digest[i]) {
+			item->is_ok = 1;
+			return;
+		}
+	}
+}
+
+static void tinfoil_check_free(struct tinfoil_check *c)
+{
+	if (c->item->buf != NULL) {
+		vfree(c->item->buf);
+		c->item->buf = NULL;
+	}
+	if (c->sd != NULL)
+		kfree(c->sd);
+	if (c->digest != NULL)
+		kfree(c->digest);
+	if (c->alg != NULL)
+		crypto_free_shash(c->alg);
+}
+
 /*
  * Check a single item for validity
  * @item: slowboot validation item
  * consumes item->buf
  */
-static void tinfoil_check(slowboot_validation_item *item)
+static void tinfoil_check(struct slowboot_validation_item *item)
 {
+	/*
+	 * init
+	 * allocate
+	 * check
+	 * free
+	 */
+
+	struct tinfoil_check check;
+
+	check.item = item;
+	if (tinfoil_check_allocate(&check) != 0) {
+		item->is_ok = 1;
+		goto std_return;
+	}
+
+	tinfoil_check_validate(&check);
+
+std_return:
+	tinfoil_check_free(&check);
+}
+/*
+
 	struct crypto_shash *alg;
 	sdesc *sd;
 	unsigned char *digest;
@@ -567,7 +661,7 @@ out:
 	if (alg != NULL)
 		crypto_free_shash(alg);
 }
-
+*/
 
 /*
  * Validate an item (file against it's hash)
