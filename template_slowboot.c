@@ -176,6 +176,7 @@ typedef struct sdesc {
     char ctx[];
 } sdesc;
 
+
 /* main data struct */
 static slowboot_tinfoil tinfoil = {
 		.config_file = CONFIG_TINFOIL_CF,
@@ -190,6 +191,43 @@ static slowboot_tinfoil tinfoil = {
 static int __get_slwbt_ct(void)
 {
 	return tinfoil.slwbt_ct;
+}
+
+
+typedef struct paranoid_container {
+	int status;
+	int dead_value;
+} PARANOID;
+
+
+
+/*
+ * make the success check fail
+ * the magic number is alternating-alternating 0101 meaning an attacker would need
+ * pinpoint accuracy
+ */
+static void paranoid_check_fail(PARANOID pc)
+{
+	pc->status = 3482093499;
+	pc->dead_value = 1431655765;
+}
+
+static void paranoid_check_setup(PARANOID pc)
+{
+	paranoid_check_fail(pc);
+}
+
+static void paranoid_check_success(PARANOID pc)
+{
+	pc->dead_value = 0;
+	while (!pc->dead_value)
+		get_random_bytes(&pc->dead_value, sizeof(int));
+	pc->status = pc->dead_value;
+}
+
+static int paranoid_check(PARANOID pc)
+{
+	return (pc->status == pc->dead_value ? 0 : 1);
 }
 
 /*
@@ -314,99 +352,133 @@ static sdesc* init_sdesc(struct crypto_shash *alg)
 
 //openssl rsa -in private.pem -passin pass:1111 -pubout -out public.pem
 
+struct sig_verify {
+	struct crypto_wait cwait;
+	struct crypto_akcipher *tfm;
+	struct akcipher_request *req;
+	struct scatterlist src_tab[3];
+	const char *alg_name;
+	void *output;
+	unsigned int outlen;
+	char alg_name_buf[CRYPTO_MAX_ALG_NAME];
+};
+
+
+static int pk_sig_verify_init(struct sig_verify *sv,
+		                      const struct public_key *pkey,
+							  const struct public_key_signature *sig)
+{
+	memset(sv, 0, sizeof(struct sig_verify));
+
+	sv->alg_name = sig->pkey_algo;
+	if (strcmp(sig->pkey_algo, "rsa") == 0) {
+		/* The data wangled by the RSA algorithm is typically padded
+		 * and encoded in some manner, such as EMSA-PKCS1-1_5 [RFC3447
+		 * sec 8.2].
+		 */
+		if (snprintf(sv->alg_name_buf, CRYPTO_MAX_ALG_NAME,
+					 CONFIG_TINFOIL_PKALGOPD, sig->hash_algo
+				 ) >= CRYPTO_MAX_ALG_NAME)
+			return 1;
+		sv->alg_name = sv->alg_name_buf;
+	}
+
+	sg_init_table(sv->src_tab, 3);
+	sg_set_buf(&sv->src_tab[1], sig->digest, sig->digest_size);
+	sg_set_buf(&sv->src_tab[0], sig->s, sig->s_size);
+	return 0;
+}
+
+static int pk_sig_verify_alloc(struct sig_verify *sv,
+		                       const struct public_key *pkey)
+{
+	sv->tfm = crypto_alloc_akcipher(sv->alg_name, 0, 0);
+	if (IS_ERR(sv->tfm)) {
+		sv->tfm = NULL;
+		return 1;
+	}
+
+	sv->req = akcipher_request_alloc(sv->tfm, GFP_KERNEL);
+	if (!sv->req) {
+		return 1;
+	}
+
+
+	if (crypto_akcipher_set_pub_key(sv->tfm, pkey->key, pkey->keylen)) {
+		return 1;
+	}
+
+	sv->outlen = crypto_akcipher_maxsize(sv->tfm);
+	sv->output = kmalloc(sv->outlen, GFP_KERNEL);
+	if (!sv->output) {
+		return 1;
+	}
+
+	return 0;
+}
+
+static int pk_sig_verify_validate(struct sig_verify *sv,
+								  const struct public_key_signature *sig)
+{
+	akcipher_request_set_crypt(sv->req, sv->src_tab, NULL, sig->s_size,
+							   sig->digest_size);
+
+	crypto_init_wait(&sv->cwait);
+	akcipher_request_set_callback(sv->req, CRYPTO_TFM_REQ_MAY_BACKLOG |
+								  CRYPTO_TFM_REQ_MAY_SLEEP,
+								  crypto_req_done, &sv->cwait);
+
+
+	return crypto_wait_req(crypto_akcipher_verify(sv->req), &sv->cwait);
+}
+
+static void pk_sig_verify_free(struct sig_verify *sv)
+{
+	if (sv->output != NULL)
+		kfree(sv->output);
+	if (sv->req != NULL)
+		akcipher_request_free(sv->req);
+	if (sv->tfm != NULL)
+		crypto_free_akcipher(sv->tfm);
+}
+
+
+
 /*
  * Perform ?rsa? signature verification
  * @pkey: public key struct
  * @sig: public key signature struct
  */
-// TODO, replace this with the real one, use the correct way to allocate a lot
-// of pages
 int local_public_key_verify_signature(const struct public_key *pkey,
                 const struct public_key_signature *sig)
 {
-    struct crypto_wait cwait;
-    struct crypto_akcipher *tfm;
-    struct akcipher_request *req;
-    struct scatterlist src_tab[3];
-    const char *alg_name;
-    char alg_name_buf[CRYPTO_MAX_ALG_NAME];
-    void *output;
-    unsigned int outlen;
-    int status;
+	struct sig_verify sv;
+	PARANOID pc;
 
     if (!pkey || !sig || !sig->s || !sig->digest)
         return -ENOPKG;
 
-    tfm = NULL;
-    req = NULL;
-    alg_name = NULL;
-    output = NULL;
+    paranoid_check_setup(&pc);
 
-    alg_name = sig->pkey_algo;
-    if (strcmp(sig->pkey_algo, CONFIG_TINFOIL_PKALGO) == 0) {
-        /* The data wangled by the RSA algorithm is typically padded
-         * and encoded in some manner, such as EMSA-PKCS1-1_5 [RFC3447
-         * sec 8.2].
-         */
-        if (snprintf(alg_name_buf, CRYPTO_MAX_ALG_NAME,
-        		     CONFIG_TINFOIL_PKALGOPD, sig->hash_algo
-                 ) >= CRYPTO_MAX_ALG_NAME)
-            return -EINVAL;
-        alg_name = alg_name_buf;
+    if (pk_sig_verify_init(&sv, pkey, sig)) {
+    	goto err;
     }
 
-    tfm = crypto_alloc_akcipher(alg_name, 0, 0);
-    if (IS_ERR(tfm)) {
-        tfm = NULL;
-        goto err;
+    if (pk_sig_verify_alloc(&sv, pkey)) {
+    	goto err;
     }
 
-    status = -ENOMEM;
-    req = akcipher_request_alloc(tfm, GFP_KERNEL);
-    if (!req) {
-        goto err;
+    if (pk_sig_verify_validate(&sv, sig) == 0) {
+    	paranoid_check_success(&pc);
+    	goto out;
     }
-
-    status = crypto_akcipher_set_pub_key(tfm, pkey->key, pkey->keylen);
-    if (status) {
-        goto err;
-    }
-
-    status = -ENOMEM;
-    outlen = crypto_akcipher_maxsize(tfm);
-    output = kmalloc(outlen, GFP_KERNEL);
-    if (!output) {
-        goto err;
-    }
-
-    sg_init_table(src_tab, 3);
-
-    sg_set_buf(&src_tab[1], sig->digest, sig->digest_size);
-    sg_set_buf(&src_tab[0], sig->s, sig->s_size);
-
-    akcipher_request_set_crypt(req, src_tab, NULL, sig->s_size,
-    		                   sig->digest_size);
-
-    crypto_init_wait(&cwait);
-    akcipher_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
-                      CRYPTO_TFM_REQ_MAY_SLEEP,
-                      crypto_req_done, &cwait);
-
-
-    status = crypto_wait_req(crypto_akcipher_verify(req), &cwait);
-    goto out;
 
 err:
-	if (status == 0)
-		status = 1;
+	paranoid_check_fail(&pc);
 out:
-	if (output != NULL)
-		kfree(output);
-	if (req != NULL)
-		akcipher_request_free(req);
-	if (tfm != NULL)
-		crypto_free_akcipher(tfm);
-    return status;
+	pk_sig_verify_free(&sv);
+
+    return paranoid_check(&pc);
 }
 
 /*
@@ -534,15 +606,15 @@ static int tinfoil_check_allocate(struct tinfoil_check *c)
 
 	c->digest = kmalloc(CONFIG_TINFOIL_DGLEN+1, GFP_KERNEL);
 	if (!c->digest) {
-		digest = NULL;
+		c->digest = NULL;
 		printk(KERN_ERR "Can't allocate digest\n");
 		return 1;
 	}
 
-	memset(digest,0,CONFIG_TINFOIL_DGLEN+1);
+	memset(c->digest,0,CONFIG_TINFOIL_DGLEN+1);
 
 	c->sd = init_sdesc(c->alg);
-	if (!sd) {
+	if (!c->sd) {
 		c->sd = NULL;
 		printk(KERN_ERR "Can't allocate sdesc\n");
 		return 1;
@@ -553,12 +625,13 @@ static int tinfoil_check_allocate(struct tinfoil_check *c)
 static void tinfoil_check_validate(struct tinfoil_check *c)
 {
 	int i;
-	crypto_shash_digest(&(sd->shash), item->buf, item->buf_len, digest);
+	crypto_shash_digest(&(c->sd->shash), c->item->buf, c->item->buf_len,
+						c->digest);
 
-	item->is_ok = 0;
+	c->item->is_ok = 0;
 	for (i=0; i<CONFIG_TINFOIL_DGLEN; i++){
-		if (item->b_hash[i] != digest[i]) {
-			item->is_ok = 1;
+		if (c->item->b_hash[i] != c->digest[i]) {
+			c->item->is_ok = 1;
 			return;
 		}
 	}
@@ -996,7 +1069,7 @@ static int slowboot_enabled(void)
 		goto out;
 	}
 
-	get_random_bytes(&dead_value,sizeof(dead_value));
+	get_random_bytes(&dead_value, sizeof(dead_value));
 
 	if(__gs_memmem_sp(buf, file_size,
 			    CONFIG_TINFOIL_OVERRIDE, strlen(CONFIG_TINFOIL_OVERRIDE)) == 0)
