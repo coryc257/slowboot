@@ -687,68 +687,6 @@ err:
 std_return:
 	tinfoil_check_free(&check);
 }
-/*
-
-	struct crypto_shash *alg;
-	sdesc *sd;
-	unsigned char *digest;
-	int j;
-	
-	alg = NULL; //crypto_free_shash
-	sd = NULL; //kfree
-	digest = NULL; //kfree
-
-	if (item->buf == NULL || item->buf_len == 0)
-		goto err;
-
-	alg = crypto_alloc_shash(CONFIG_TINFOIL_HSALGO, 0, 0);
-	if (IS_ERR(alg)) {
-		alg = NULL;
-		printk(KERN_ERR "Can't allocate alg\n");
-		goto err;
-	}
-	
-	digest = kmalloc(CONFIG_TINFOIL_DGLEN+1, GFP_KERNEL);
-	if (!digest) {
-		digest = NULL;
-		printk(KERN_ERR "Can't allocate digest\n");
-		goto err;
-	}
-
-	memset(digest,0,CONFIG_TINFOIL_DGLEN+1);
-
-	sd = init_sdesc(alg);
-	if (!sd) {
-		sd = NULL;
-		printk(KERN_ERR "Can't allocate sdesc\n");
-		goto err;
-	}
-	
-	crypto_shash_digest(&(sd->shash), item->buf, item->buf_len, digest);
-
-	item->is_ok = 0;
-	for (j=0; j<CONFIG_TINFOIL_DGLEN; j++){
-		if (item->b_hash[j] != digest[j]) {
-			goto err;
-		}
-	}
-
-	goto out;
-err:
-	item->is_ok = 1;
-out:
-	if (item->buf != NULL) {
-		vfree(item->buf);
-		item->buf = NULL;
-	}
-	if (sd != NULL)
-		kfree(sd);
-	if (digest != NULL)
-		kfree(digest);
-	if (alg != NULL)
-		crypto_free_shash(alg);
-}
-*/
 
 /*
  * Validate an item (file against it's hash)
@@ -1000,7 +938,6 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 	sic->pos = 0; // reusing
 	sic->remaining = sic->file_size;
 	while (sic->remaining){
-		//printk(KERN_INFO "fii:%d\n", pos);
 		sic->pos += fill_in_item(sic->c_item, &sic->buf[sic->pos],
 								 &sic->remaining);
 		sic->c_item++;
@@ -1028,152 +965,7 @@ static int slowboot_init(struct slowboot_tinfoil *tinfoil)
 	slowboot_init_open_files(&sic, tinfoil->config_file,
 							 tinfoil->config_file_signature);
 
-//	struct file *fp, *sfp;
-//	struct crypto_shash *halg;
-//	sdesc *hsd;
-//	size_t file_size, sfp_file_size;
-//	loff_t pos, remaining, sfp_pos;
-//	int num_read, sfp_num_read, status;
-//	long int num_items;
-//	char *buf, *sfp_buf;
-//	unsigned char *kernel_key;
-//	unsigned char *digest;
-//	slowboot_validation_item *items, *c_item;
-//	int kernel_key_len;
-//	struct public_key_signature sig;
-//	struct public_key rsa_pub_key;
-
-	// trustno1
-//	status = 0;
-//	fp = NULL; //filp_close
-//	sfp = NULL; //filp_close
-//	halg = NULL; //kfree
-//	file_size = 0;
-//	sfp_file_size = 0;
-//	pos = 0;
-//	remaining = 0;
-//	sfp_pos = 0;
-//	num_read = 0;
-//	sfp_num_read = 0;
-//	status = 0;
-//	num_items = 0;
-//	buf = NULL; //vfree
-//	sfp_buf = NULL; //vfree
-//	kernel_key = NULL; //kfree
-//	digest = NULL; //kfree
-//	items = NULL; //vfree
-//	c_item = NULL; //set to null
-//	kernel_key_len = 0;
-//	rsa_pub_key.key = NULL;
-//
-//	rsa_pub_key.pkey_algo = CONFIG_TINFOIL_PKALGO;
-//	rsa_pub_key.id_type = CONFIG_TINFOIL_IDTYPE;
-//	rsa_pub_key.keylen = -1;
-//	sig.digest_size = CONFIG_TINFOIL_DGLEN;
-//	sig.pkey_algo = CONFIG_TINFOIL_PKALGO;
-//	sig.hash_algo = CONFIG_TINFOIL_HSALGO;
-//
-//	sig.s = NULL;
-//	sig.s_size = 0;
-//	sig.digest = NULL;
-
-
-
-//	kernel_key_len = CONFIG_TINFOIL_PKLEN/2; // Hex/2
-//	kernel_key = kmalloc(kernel_key_len+1, GFP_KERNEL);
-//
-//	if(!kernel_key)
-//		goto fail;
-//
-//	if (hex2bin(kernel_key, tinfoil.config_pkey, kernel_key_len) == 0) {
-//		kernel_key[kernel_key_len] = '\0';
-//	} else {
-//		goto fail;
-//	}
-//
-//	rsa_pub_key.key = kernel_key;
-//	rsa_pub_key.keylen = kernel_key_len;
-
-//	if (IS_ERR(fp = filp_open(tinfoil.config_file, O_RDONLY, 0))) {
-//		fp = NULL;
-//		printk(KERN_ERR "flip open fp\n");
-//		goto fail;
-//	}
-//
-//	if (IS_ERR(sfp = filp_open(tinfoil.config_file_signature, O_RDONLY, 0))) {
-//		printk(KERN_ERR "flip open sfp\n");
-//		sfp = NULL;
-//		goto fail;
-//	}
-//
-//
-//	file_size = __get_file_size(fp);
-//	sfp_file_size = __get_file_size(sfp);
-//
-//	/*default_llseek(fp, 0, SEEK_END);
-//	file_size = fp->f_pos;
-//	default_llseek(fp, fp->f_pos * -1, SEEK_CUR);*/
-//
-//	/*default_llseek(sfp, 0, SEEK_END);
-//	sfp_file_size = sfp->f_pos;
-//	default_llseek(sfp, sfp->f_pos * -1, SEEK_CUR);*/
-//
-//	if (!(buf = __read_file_to_memory(fp, file_size, &pos, 0))) {
-//		printk(KERN_ERR "File Read Error:%s\n", tinfoil.config_file);
-//		goto fail;
-//	}
-//
-//	if (!(sfp_buf = __read_file_to_memory(sfp, sfp_file_size, &sfp_pos, 0))) {
-//		printk(KERN_ERR "File Read Error:%s\n", tinfoil.config_file_signature);
-//		goto fail;
-//	}
-
-	/*
-	if((buf = vmalloc(file_size+1)) == NULL) {
-		printk(KERN_ERR "alloc buf\n");
-		goto fail;
-	}
-	if ((sfp_buf = vmalloc(sfp_file_size+1)) == NULL) {
-		printk(KERN_ERR "alloc sfp_buf\n");
-		goto fail;
-	}
-
-	num_read = kernel_read(fp,buf,file_size,&pos);
-	sfp_num_read = kernel_read(sfp,sfp_buf,sfp_file_size,&sfp_pos);
-
-	if (num_read != file_size) {
-		printk(KERN_ERR "File Read Error, size mismatch:%d:%ld\n",
-			   num_read,
-			   file_size);
-	}
-
-	if (sfp_num_read != sfp_file_size) {
-		printk(KERN_ERR "File Read Error, size mismatch:%d:%ld\n",
-			   sfp_num_read,
-			   sfp_file_size);
-	}*/
-
 	slowboot_init_digest(&sic);
-
-//	halg = crypto_alloc_shash(CONFIG_TINFOIL_HSALGO,0,0);
-//	if (IS_ERR(halg)) {
-//		halg = NULL;
-//		goto fail;
-//	}
-//
-//	if (!(digest = kmalloc(CONFIG_TINFOIL_DGLEN+1, GFP_KERNEL)))
-//		goto fail;
-//
-//	memset(digest,0,CONFIG_TINFOIL_DGLEN+1);
-//
-//	if(!(hsd = init_sdesc(halg)))
-//		goto fail;
-//
-//	crypto_shash_digest(&(hsd->shash), buf, file_size, digest);
-//
-//	sig.s = sfp_buf;
-//	sig.s_size = sfp_file_size;
-//	sig.digest = digest;
 
 	if (local_public_key_verify_signature(&sic.rsa_pub_key, &sic.sig) != 0)
 		goto fail;
@@ -1182,32 +974,6 @@ static int slowboot_init(struct slowboot_tinfoil *tinfoil)
 						  &tinfoil->slwbt_ct))
 		goto fail;
 
-//	for (pos = 0; pos < file_size; pos++) {
-//		if (buf[pos] == CONFIG_TINFOIL_NEW_LINE) {
-//			num_items++;
-//		}
-//	}
-//
-//	if (num_items == 0)
-//		goto fail;
-//
-//	c_item = items = vmalloc(sizeof(slowboot_validation_item)*num_items);
-//
-//	if (!c_item) {
-//		printk(KERN_ERR "Cannot allocate items\n");
-//		goto fail;
-//	}
-//
-//	pos = 0; // reusing
-//	remaining = file_size;
-//	while (remaining){
-//		//printk(KERN_INFO "fii:%d\n", pos);
-//		pos += fill_in_item(c_item, &buf[pos], &remaining);
-//		c_item++;
-//	}
-//
-//	tinfoil.validation_items = items;
-//	tinfoil.slwbt_ct = num_items;
 	goto out;
 
 fail:
@@ -1218,21 +984,6 @@ fail:
 	tinfoil->validation_items = NULL;
 	status = 1;
 out:
-//	if (fp != NULL)
-//		filp_close(fp, NULL);
-//	if (sfp != NULL)
-//		filp_close(sfp, NULL);
-//	if (halg != NULL)
-//		kfree(halg);
-//	if (buf != NULL)
-//		vfree(buf);
-//	if (sfp_buf != NULL)
-//		vfree(sfp_buf);
-//	if (kernel_key != NULL)
-//		kfree(kernel_key);
-//	if (digest != NULL)
-//		kfree(digest);
-//	c_item = NULL;
 	slowboot_init_free(&sic);
 
 	return status;
@@ -1360,11 +1111,6 @@ static int slowboot_mod_init(void)
 {
 	struct slowboot_tinfoil *tinfoil;
 	int ret;
-	/*= {
-		.config_file = CONFIG_TINFOIL_CF,
-		.config_file_signature = CONFIG_TINFOIL_CFS,
-		.config_pkey = CONFIG_TINFOIL_PK
-	};*/
 	tinfoil = kmalloc(sizeof(struct slowboot_tinfoil), GFP_KERNEL);
 	if (!tinfoil) {
 		__gs_tinfoil_fail_alert(NULL);
