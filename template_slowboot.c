@@ -104,9 +104,9 @@
 #endif
 
 /* Padding method used, likely "pkcs1pad(rsa,%s)" */
-#ifndef CONFIG_TINFOIL_PKALGOPD
-#define CONFIG_TINFOIL_PKALGOPD "pkcs1pad(rsa,%s)"
-#endif
+//#ifndef CONFIG_TINFOIL_PKALGOPD
+#define CONFIG_TINFOIL_PKALGOPD "pkcs1pad(rsa,sha512)"
+//#endif
 
 /* Hash algorithm used, likely "sha512" */
 #ifndef CONFIG_TINFOIL_HSALGO
@@ -119,22 +119,12 @@
 #endif
 
 DEFINE_MUTEX(gs_concurrency_locker);
+DEFINE_SPINLOCK(gs_irq_killer);
 
 /* Record separator for the config file, likely '\n' */
 #ifndef CONFIG_TINFOIL_NEW_LINE
 #define CONFIG_TINFOIL_NEW_LINE '\n'
 #endif
-
-/* What to do if at the end of the test there are failures */
-/* The idea is a distro could put in their own thing for
- * the purposes of attempted recovery
- * BUG(); to fail boot
- */
-/*
-#ifndef CONFIG_TINFOIL_FAIL
-#define CONFIG_TINFOIL_FAIL __gs_tinfoil_fail_alert(&tinfoil);
-#endif
-*/
 
 /* Override cmdline parameter */
 #ifndef CONFIG_TINFOIL_OVERRIDE
@@ -174,6 +164,7 @@ struct sdesc {
     char ctx[];
 };
 
+/* Container for a single item check */
 struct tinfoil_check {
 	struct slowboot_validation_item *item;
 	struct crypto_shash *alg;
@@ -182,19 +173,36 @@ struct tinfoil_check {
 };
 
 
-/* main data struct */
-/*static slowboot_tinfoil tinfoil = {
-		.config_file = CONFIG_TINFOIL_CF,
-		.config_file_signature = CONFIG_TINFOIL_CFS,
-		.config_pkey = CONFIG_TINFOIL_PK,
-		.initialized = 1
-};
-*/
-
+/* Overly paranoid boolean variable */
 typedef struct paranoid_container {
 	int status;
 	int dead_value;
 } paranoid;
+
+/* Initialization Container Holding initial signature verification items */
+struct slowboot_init_container {
+	struct file *fp;
+	struct file *sfp;
+	struct crypto_shash *halg;
+	struct sdesc *hsd;
+	size_t file_size;
+	size_t sfp_file_size;
+	loff_t pos;
+	loff_t remaining;
+	loff_t sfp_pos;
+	int num_read;
+	int sfp_num_read;
+	long int num_items;
+	char *buf;
+	char *sfp_buf;
+	unsigned char *kernel_key;
+	unsigned char *digest;
+	struct slowboot_validation_item *items;
+	struct slowboot_validation_item *c_item;
+	int kernel_key_len;
+	struct public_key_signature sig;
+	struct public_key rsa_pub_key;
+};
 
 
 /*
@@ -361,6 +369,7 @@ static struct sdesc *init_sdesc(struct crypto_shash *alg)
 
 //openssl rsa -in private.pem -passin pass:1111 -pubout -out public.pem
 
+/* Signature Verification Container */
 struct sig_verify {
 	struct crypto_wait cwait;
 	struct crypto_akcipher *tfm;
@@ -373,24 +382,24 @@ struct sig_verify {
 };
 
 
+/*
+ * Initialize public key signature verification
+ * @sv: sig verify container
+ * @pkey: public key
+ * @sig: public key signature
+ */
 static int pk_sig_verify_init(struct sig_verify *sv,
 		                      const struct public_key *pkey,
 							  const struct public_key_signature *sig)
 {
 	memset(sv, 0, sizeof(struct sig_verify));
 
-	sv->alg_name = sig->pkey_algo;
-	if (strcmp(sig->pkey_algo, "rsa") == 0) {
-		/* The data wangled by the RSA algorithm is typically padded
-		 * and encoded in some manner, such as EMSA-PKCS1-1_5 [RFC3447
-		 * sec 8.2].
-		 */
-		if (snprintf(sv->alg_name_buf, CRYPTO_MAX_ALG_NAME,
-					 CONFIG_TINFOIL_PKALGOPD, sig->hash_algo
-				 ) >= CRYPTO_MAX_ALG_NAME)
-			return 1;
+	if (strlen(CONFIG_TINFOIL_PKALGOPD) > 0) {
+		snprintf(sv->alg_name_buf, CRYPTO_MAX_ALG_NAME,
+				 CONFIG_TINFOIL_PKALGOPD);
 		sv->alg_name = sv->alg_name_buf;
-	}
+	} else
+		sv->alg_name = sig->pkey_algo;
 
 	sg_init_table(sv->src_tab, 3);
 	sg_set_buf(&sv->src_tab[1], sig->digest, sig->digest_size);
@@ -398,6 +407,11 @@ static int pk_sig_verify_init(struct sig_verify *sv,
 	return 0;
 }
 
+/*
+ * Allocate data for public key signature validation
+ * @sv: sig verify container
+ * @pk: public key
+ */
 static int pk_sig_verify_alloc(struct sig_verify *sv,
 		                       const struct public_key *pkey)
 {
@@ -426,6 +440,11 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
 	return 0;
 }
 
+/*
+ * Perform signature verification of the config file
+ * @sv: sig verify container
+ * @sig: public key signature
+ */
 static int pk_sig_verify_validate(struct sig_verify *sv,
 								  const struct public_key_signature *sig)
 {
@@ -441,6 +460,10 @@ static int pk_sig_verify_validate(struct sig_verify *sv,
 	return crypto_wait_req(crypto_akcipher_verify(sv->req), &sv->cwait);
 }
 
+/*
+ * Deallocate signature verification data
+ * @sv: sig verify container
+ */
 static void pk_sig_verify_free(struct sig_verify *sv)
 {
 	if (sv->output != NULL)
@@ -449,12 +472,16 @@ static void pk_sig_verify_free(struct sig_verify *sv)
 		akcipher_request_free(sv->req);
 	if (sv->tfm != NULL)
 		crypto_free_akcipher(sv->tfm);
+
+	sv->output = NULL;
+	sv->req = NULL;
+	sv->tfm = NULL;
 }
 
 
 
 /*
- * Perform ?rsa? signature verification
+ * Perform signature verification
  * @pkey: public key struct
  * @sig: public key signature struct
  */
@@ -498,6 +525,7 @@ static int tinfoil_open(struct slowboot_validation_item *item)
 {
 	item->fp = filp_open(item->path, O_RDONLY, 0);
 	if (IS_ERR(item->fp) || item->fp == NULL) {
+		item->fp = NULL;
 		printk(KERN_ERR "F:%s:%s:%d\n", 
 			item->hash, 
 			item->path, 
@@ -537,7 +565,8 @@ static int tinfoil_stat_alloc(struct slowboot_tinfoil *tinfoil,
  */
 static void tinfoil_close(struct slowboot_validation_item *item)
 {
-	filp_close(item->fp, NULL);
+	if (item->fp != NULL)
+		filp_close(item->fp, NULL);
 }
 
 /*
@@ -550,6 +579,8 @@ static int tinfoil_read(struct slowboot_tinfoil *tinfoil,
 	size_t number_read;
 	number_read = 0;
 	
+	if (item->fp == NULL)
+		goto fail;
 
 	item->buf = vmalloc(item->buf_len+1);
 	if (!item->buf) {
@@ -673,7 +704,6 @@ static void tinfoil_check(struct slowboot_validation_item *item)
 
 	struct tinfoil_check check;
 
-	printk(KERN_ERR "1\n");
 	if (tinfoil_check_init(&check, item))
 		goto err;
 
@@ -703,6 +733,7 @@ static int tinfoil_unwrap (struct slowboot_tinfoil *tinfoil,
 		return 1;
 	}
 	
+	// Do not access item->buf after this
 	if (tinfoil_read(tinfoil, item) != 0) {
 		tinfoil_close(item);
 		return 1;
@@ -777,30 +808,6 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 	return pos;
 }
 
-struct slowboot_init_container {
-	struct file *fp;
-	struct file *sfp;
-	struct crypto_shash *halg;
-	struct sdesc *hsd;
-	size_t file_size;
-	size_t sfp_file_size;
-	loff_t pos;
-	loff_t remaining;
-	loff_t sfp_pos;
-	int num_read;
-	int sfp_num_read;
-	long int num_items;
-	char *buf;
-	char *sfp_buf;
-	unsigned char *kernel_key;
-	unsigned char *digest;
-	struct slowboot_validation_item *items;
-	struct slowboot_validation_item *c_item;
-	int kernel_key_len;
-	struct public_key_signature sig;
-	struct public_key rsa_pub_key;
-};
-
 static void slowboot_init_setup(struct slowboot_init_container *sic)
 {
 	memset(sic, 0, sizeof(struct slowboot_init_container));
@@ -817,6 +824,9 @@ static void slowboot_init_setup(struct slowboot_init_container *sic)
 static int slowboot_init_setup_keys(struct slowboot_init_container *sic,
 									 const char * config_pkey)
 {
+
+	if (sic->kernel_key_len <= 0 || config_pkey == NULL)
+		return 1;
 
 	sic->kernel_key = (unsigned char *)
 			          kmalloc(sic->kernel_key_len+1, GFP_KERNEL);
@@ -838,6 +848,9 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
 									 const char *config_file,
 									 const char *config_file_signature)
 {
+	if (config_file == NULL || config_file_signature == NULL)
+		return 1;
+
 	if (IS_ERR(sic->fp = filp_open(config_file, O_RDONLY, 0))) {
 		sic->fp = NULL;
 		printk(KERN_ERR "flip open fp\n");
@@ -845,8 +858,8 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
 	}
 
 	if (IS_ERR(sic->sfp = filp_open(config_file_signature, O_RDONLY, 0))) {
-		printk(KERN_ERR "flip open sfp\n");
 		sic->sfp = NULL;
+		printk(KERN_ERR "flip open sfp\n");
 		return 1;
 	}
 
@@ -854,12 +867,17 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
 	sic->file_size = __get_file_size(sic->fp);
 	sic->sfp_file_size = __get_file_size(sic->sfp);
 
+	if (sic->file_size <= 0 || sic->sfp_file_size <= 0)
+		return 1;
+
+	sic->pos = 0;
 	if (!(sic->buf = __read_file_to_memory(sic->fp, sic->file_size,
 										   &sic->pos, 0))) {
 		printk(KERN_ERR "File Read Error:%s\n", config_file);
 		return 1;
 	}
 
+	sic->sfp_pos = 0;
 	if (!(sic->sfp_buf = __read_file_to_memory(sic->sfp, sic->sfp_file_size,
 											   &sic->sfp_pos, 0))) {
 		printk(KERN_ERR "File Read Error:%s\n", config_file_signature);
@@ -885,12 +903,15 @@ static int slowboot_init_digest(struct slowboot_init_container *sic)
 	if(!(sic->hsd = init_sdesc(sic->halg)))
 		return 1;
 
+	if (sic->buf == NULL || sic->file_size <= 0)
+		return 1;
+
 	crypto_shash_digest(&(sic->hsd->shash), sic->buf, sic->file_size,
 						sic->digest);
 
-	sic->sig.s = sic->sfp_buf;
-	sic->sig.s_size = sic->sfp_file_size;
-	sic->sig.digest = sic->digest;
+	sic->sig.s = sic->sfp_buf; // Raw signature file data
+	sic->sig.s_size = sic->sfp_file_size; // Length of Signature File
+	sic->sig.digest = sic->digest; // Hash of the config file
 
 	return 0;
 }
@@ -918,6 +939,10 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 								 struct slowboot_validation_item **item_ref,
 								 int *item_ct)
 {
+
+	if (sic->file_size <= 0)
+		return 1;
+
 	for (sic->pos = 0; sic->pos < sic->file_size; sic->pos++) {
 		if (sic->buf[sic->pos] == CONFIG_TINFOIL_NEW_LINE) {
 			sic->num_items++;
@@ -1039,13 +1064,15 @@ out:
 static void slowboot_run_test(struct slowboot_tinfoil *tinfoil)
 {
 	int j, hard_fail;
+	unsigned long flags;
 
 	if (!slowboot_enabled()) {
 		printk(KERN_ERR "Slowboot disabled\n");
 		return;
 	}
 	hard_fail = 0;
-	mutex_lock(&gs_concurrency_locker);
+	spin_lock_irqsave(&gs_irq_killer, flags);
+	//mutex_lock(&gs_concurrency_locker);
 	if (tinfoil->initialized != 0) {
 		tinfoil->initialized = 0;
 		tinfoil->validation_items = NULL;
@@ -1053,7 +1080,7 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil)
 			hard_fail = 1;
 		}
 	}
-	mutex_unlock(&gs_concurrency_locker);
+	//mutex_unlock(&gs_concurrency_locker);
 
 	if (hard_fail != 0)
 		goto out;
@@ -1062,17 +1089,18 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil)
 											&(tinfoil->validation_items[j]));
 	}
 out:
-	mutex_lock(&gs_concurrency_locker);
+	//mutex_lock(&gs_concurrency_locker);
 		if (tinfoil->validation_items != NULL) {
 			vfree(tinfoil->validation_items);
 			tinfoil->validation_items = NULL;
 			tinfoil->initialized = 1;
 		}
-	mutex_unlock(&gs_concurrency_locker);
+	//mutex_unlock(&gs_concurrency_locker);
 
 	if (tinfoil->failures > 0 || tinfoil->slwbt_ct == 0 || hard_fail == 1) {
 		__gs_tinfoil_fail_alert(tinfoil);
 	}
+	spin_unlock_irqrestore(&gs_irq_killer, flags);
 }
 
 static int slowboot_tinfoil_init(struct slowboot_tinfoil *tinfoil)
