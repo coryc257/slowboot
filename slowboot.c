@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.080
 /*
- * 	linux/init/tinfoil.c
- *
- * 	Copyright (C) 2021 Cory Craig
+ * linux/init/tinfoil.c
+ * GS Tinfoil/Slowboot
+ * Copyright (C) 2021 Cory Craig
  */
 #include <linux/init.h>
 #include <linux/kernel.h>
@@ -28,7 +28,6 @@
 #include <linux/slab.h>
 #include <linux/stat.h>
 #include <linux/random.h>
-
 
 /*
  * Operational parameters
@@ -62,24 +61,24 @@
  */
 #ifndef CONFIG_TINFOIL_PK
 #define CONFIG_TINFOIL_PK \
-				 "3082020a02820201009af1624ec932c82d57d296ebddf3d8c1cdc03a6c5c"\
-	             "709cb3658b33797dd8a94b4183146224a63f8dbf04032690f04c4b05138c"\
-				 "f9b0955057e4acf4721c84eb3073eeb1ccc5c6e9bec3d36b1b3bd274c13a"\
-				 "fb42f33c5c057121debaa622f8f2c0e75bbc99cbcf78767d4225025ece95"\
-				 "61ca6022b650ab9c9a68763e7e461164bdfdd07b72e4c623e07b38a7767a"\
-				 "c2671c06ea899d6291fddb1eb3d8a6d03fbd78719adec4b92f8881562d73"\
-				 "923fcf8f2bd41f324993ecf42c40cd9c596c3b58850aa96a7d28a767b0be"\
-				 "8e919fb247897cdc557391753db766991f197217b96e430c8e9bfc3f84a9"\
-				 "c45b4aad9e6284e87041eb1709e99fd01e8f23f1f97aa86e255eb8d4bfb1"\
-				 "3ce6f14264347e40372bb79e17a87e1c541077e8e874092f475b9dbfb4fc"\
-				 "a981c1358971004421454069c3868cd4fe8fd1ea6d46d9daac7dc00d6b60"\
-				 "d998bebbe0121126e3f29acfc3ccc2f24e6eb6c4ab9c0f2e7670e920f33d"\
-				 "69eb1f0ca7be630098fe220c1f8ef87e51f8be663a70621a5932ee60888c"\
-				 "7e40aa70313e1936bc0c6d742d2c2d2d46c2ceb2b3155ebc777f01bbfad0"\
-				 "7985e847f8d00c663706b92cf15fd2504ae8dd838d9576763e4ed12e2d6b"\
-				 "0a5f7ea21bed613d371a96a25f2206fe6e1724cfcbf2c03d04dda6f623d0"\
-				 "d31c036a63f030158478ae820020cf6eff88c70f335db426eeac8205a287"\
-				 "5a393d5d67343d534ef54b0203010001"
+                 "3082020a02820201009af1624ec932c82d57d296ebddf3d8c1cdc03a6c5c"\
+                 "709cb3658b33797dd8a94b4183146224a63f8dbf04032690f04c4b05138c"\
+                 "f9b0955057e4acf4721c84eb3073eeb1ccc5c6e9bec3d36b1b3bd274c13a"\
+                 "fb42f33c5c057121debaa622f8f2c0e75bbc99cbcf78767d4225025ece95"\
+                 "61ca6022b650ab9c9a68763e7e461164bdfdd07b72e4c623e07b38a7767a"\
+                 "c2671c06ea899d6291fddb1eb3d8a6d03fbd78719adec4b92f8881562d73"\
+                 "923fcf8f2bd41f324993ecf42c40cd9c596c3b58850aa96a7d28a767b0be"\
+                 "8e919fb247897cdc557391753db766991f197217b96e430c8e9bfc3f84a9"\
+                 "c45b4aad9e6284e87041eb1709e99fd01e8f23f1f97aa86e255eb8d4bfb1"\
+                 "3ce6f14264347e40372bb79e17a87e1c541077e8e874092f475b9dbfb4fc"\
+                 "a981c1358971004421454069c3868cd4fe8fd1ea6d46d9daac7dc00d6b60"\
+                 "d998bebbe0121126e3f29acfc3ccc2f24e6eb6c4ab9c0f2e7670e920f33d"\
+                 "69eb1f0ca7be630098fe220c1f8ef87e51f8be663a70621a5932ee60888c"\
+                 "7e40aa70313e1936bc0c6d742d2c2d2d46c2ceb2b3155ebc777f01bbfad0"\
+                 "7985e847f8d00c663706b92cf15fd2504ae8dd838d9576763e4ed12e2d6b"\
+                 "0a5f7ea21bed613d371a96a25f2206fe6e1724cfcbf2c03d04dda6f623d0"\
+                 "d31c036a63f030158478ae820020cf6eff88c70f335db426eeac8205a287"\
+                 "5a393d5d67343d534ef54b0203010001"
 
 #endif
 
@@ -131,7 +130,6 @@ DEFINE_SPINLOCK(gs_irq_killer);
 #define CONFIG_TINFOIL_OVERRIDE "tinfoil_override"
 #endif
 
-
 /* File Validation item */
 struct slowboot_validation_item {
 	char hash[CONFIG_TINFOIL_HSLEN+2];
@@ -157,7 +155,6 @@ struct slowboot_tinfoil {
 	int error_code;
 };
 
-
 /* shash container struct */
 struct sdesc {
     struct shash_desc shash;
@@ -171,7 +168,6 @@ struct tinfoil_check {
 	struct sdesc *sd;
 	unsigned char *digest;
 };
-
 
 /* Overly paranoid boolean variable */
 typedef struct paranoid_container {
@@ -204,11 +200,10 @@ struct slowboot_init_container {
 	struct public_key rsa_pub_key;
 };
 
-
 /*
  * make the success check fail
- * the magic number is alternating-alternating 0101 meaning an attacker would need
- * pinpoint accuracy
+ * the magic number is alternating-alternating 0101 meaning an attacker
+ * would need pinpoint accuracy
  * @pc paranoid struct pointer
  */
 static void paranoid_check_fail(paranoid *pc)
@@ -274,7 +269,7 @@ out:
  * @pos: position offset return value
  */
 static char *__read_file_to_memory(struct file *fp,
-		                           size_t file_size,
+								   size_t file_size,
 								   loff_t *pos,
 								   int ignore_size)
 {
@@ -356,7 +351,6 @@ static struct sdesc *init_sdesc(struct crypto_shash *alg)
 //xxd -i siggywiggy.sha512
 //xxd -ps -c 9999999 siggywiggy.sha512 > siggywiggy.hex
 
-
 // It helps if you are using an RSA key
 //openssl genrsa -aes256 -passout pass:<phrase> -out private.pem 4096
 //openssl rsa -in private.pem -passin pass:<phrase> -pubout -out public.pem
@@ -381,7 +375,6 @@ struct sig_verify {
 	char alg_name_buf[CRYPTO_MAX_ALG_NAME];
 };
 
-
 /*
  * Initialize public key signature verification
  * @sv: sig verify container
@@ -389,7 +382,7 @@ struct sig_verify {
  * @sig: public key signature
  */
 static int pk_sig_verify_init(struct sig_verify *sv,
-		                      const struct public_key *pkey,
+							  const struct public_key *pkey,
 							  const struct public_key_signature *sig)
 {
 	memset(sv, 0, sizeof(struct sig_verify));
@@ -413,7 +406,7 @@ static int pk_sig_verify_init(struct sig_verify *sv,
  * @pk: public key
  */
 static int pk_sig_verify_alloc(struct sig_verify *sv,
-		                       const struct public_key *pkey)
+							   const struct public_key *pkey)
 {
 	sv->tfm = crypto_alloc_akcipher(sv->alg_name, 0, 0);
 	if (IS_ERR(sv->tfm)) {
@@ -456,7 +449,6 @@ static int pk_sig_verify_validate(struct sig_verify *sv,
 								  CRYPTO_TFM_REQ_MAY_SLEEP,
 								  crypto_req_done, &sv->cwait);
 
-
 	return crypto_wait_req(crypto_akcipher_verify(sv->req), &sv->cwait);
 }
 
@@ -478,43 +470,38 @@ static void pk_sig_verify_free(struct sig_verify *sv)
 	sv->tfm = NULL;
 }
 
-
-
 /*
  * Perform signature verification
  * @pkey: public key struct
  * @sig: public key signature struct
  */
 int local_public_key_verify_signature(const struct public_key *pkey,
-                const struct public_key_signature *sig)
+									  const struct public_key_signature *sig)
 {
 	struct sig_verify sv;
 	paranoid pc;
 
-    if (!pkey || !sig || !sig->s || !sig->digest)
-        return -ENOPKG;
+	if (!pkey || !sig || !sig->s || !sig->digest)
+		return -ENOPKG;
 
-    paranoid_check_setup(&pc);
+	paranoid_check_setup(&pc);
 
-    if (pk_sig_verify_init(&sv, pkey, sig)) {
-    	goto err;
-    }
+	if (pk_sig_verify_init(&sv, pkey, sig))
+		goto err;
 
-    if (pk_sig_verify_alloc(&sv, pkey)) {
-    	goto err;
-    }
+	if (pk_sig_verify_alloc(&sv, pkey))
+		goto err;
 
-    if (pk_sig_verify_validate(&sv, sig) == 0) {
-    	paranoid_check_success(&pc);
-    	goto out;
-    }
+	if (pk_sig_verify_validate(&sv, sig) == 0) {
+		paranoid_check_success(&pc);
+		goto out;
+	}
 
 err:
 	paranoid_check_fail(&pc);
 out:
 	pk_sig_verify_free(&sv);
-
-    return paranoid_check(&pc);
+	return paranoid_check(&pc);
 }
 
 /*
@@ -526,9 +513,9 @@ static int tinfoil_open(struct slowboot_validation_item *item)
 	item->fp = filp_open(item->path, O_RDONLY, 0);
 	if (IS_ERR(item->fp) || item->fp == NULL) {
 		item->fp = NULL;
-		printk(KERN_ERR "F:%s:%s:%d\n", 
-			item->hash, 
-			item->path, 
+		printk(KERN_ERR "F:%s:%s:%d\n",
+			item->hash,
+			item->path,
 			item->is_ok);
 		return -1;
 	}
@@ -617,8 +604,6 @@ out:
 	return 0;
 }
 
-
-
 static int tinfoil_check_init(struct tinfoil_check *c,
 							  struct slowboot_validation_item *item)
 {
@@ -695,12 +680,6 @@ static void tinfoil_check_free(struct tinfoil_check *c)
  */
 static void tinfoil_check(struct slowboot_validation_item *item)
 {
-	/*
-	 * init
-	 * allocate
-	 * check
-	 * free
-	 */
 
 	struct tinfoil_check check;
 
@@ -742,8 +721,8 @@ static int tinfoil_unwrap (struct slowboot_tinfoil *tinfoil,
 	tinfoil_check(item);
 	if (item->is_ok != 0) {
 		printk(KERN_ERR "File:%s:%s\n", 
-		       item->path, 
-		       (item->is_ok == 0 ? "PASS" : "FAIL"));
+			   item->path,
+			   (item->is_ok == 0 ? "PASS" : "FAIL"));
 	}
 	tinfoil_close(item);
 	return item->is_ok;
@@ -756,10 +735,9 @@ static int tinfoil_unwrap (struct slowboot_tinfoil *tinfoil,
  * @remaining: remaining bytes
  */
 static loff_t fill_in_item(struct slowboot_validation_item *item,
-		                   char *line, loff_t *remaining)
+						   char *line, loff_t *remaining)
 {
 	loff_t pos, off, rem;
-
 
 	if (line == NULL) {
 		if (remaining != NULL)
@@ -767,14 +745,11 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 		return 0;
 	}
 
-
 	pos = 0;
 	off = 0;
 	rem = *remaining;
 
-
 	while (rem > 0) {
-
 		if (line[pos] == ' ' && off == 0 && rem > 1) {
 			off = pos+1;
 		}
@@ -829,7 +804,7 @@ static int slowboot_init_setup_keys(struct slowboot_init_container *sic,
 		return 1;
 
 	sic->kernel_key = (unsigned char *)
-			          kmalloc(sic->kernel_key_len+1, GFP_KERNEL);
+					  kmalloc(sic->kernel_key_len+1, GFP_KERNEL);
 	if(!sic->kernel_key)
 		return 1;
 
@@ -862,7 +837,6 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
 		printk(KERN_ERR "flip open sfp\n");
 		return 1;
 	}
-
 
 	sic->file_size = __get_file_size(sic->fp);
 	sic->sfp_file_size = __get_file_size(sic->sfp);
@@ -979,44 +953,57 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 static int slowboot_init(struct slowboot_tinfoil *tinfoil)
 {
 	struct slowboot_init_container sic;
-	int status;
+	paranoid pc;
+	int status_code;
 
-	status = 0;
+	status_code = 0;
+	paranoid_check_setup(&pc);
 
 	slowboot_init_setup(&sic);
 
-	slowboot_init_setup_keys(&sic, tinfoil->config_pkey);
-
-	slowboot_init_open_files(&sic, tinfoil->config_file,
-							 tinfoil->config_file_signature);
-
-	slowboot_init_digest(&sic);
-
-	if (local_public_key_verify_signature(&sic.rsa_pub_key, &sic.sig) != 0)
+	if((status_code = slowboot_init_setup_keys(&sic, tinfoil->config_pkey)))
 		goto fail;
 
-	if(slowboot_init_process(&sic, &tinfoil->validation_items,
-						  &tinfoil->slwbt_ct))
+	if((status_code =
+					 slowboot_init_open_files(&sic, tinfoil->config_file,
+											  tinfoil->config_file_signature)))
 		goto fail;
 
+	if((status_code = slowboot_init_digest(&sic)))
+		goto fail;
+
+	if ((status_code = local_public_key_verify_signature(&sic.rsa_pub_key,
+														&sic.sig)))
+		goto fail;
+
+	if((status_code = slowboot_init_process(&sic, &tinfoil->validation_items,
+										   &tinfoil->slwbt_ct)))
+		goto fail;
+
+	status_code = 0;
+	paranoid_check_success(&pc);
 	goto out;
 
 fail:
+	paranoid_check_fail(&pc);
 	tinfoil->slwbt_ct = 0;
 	if (!sic.items) {
 		vfree(sic.items);
 	}
 	tinfoil->validation_items = NULL;
-	status = 1;
+	if (status_code == 0)
+		status_code = -EINVAL;
 out:
 	slowboot_init_free(&sic);
-
-	return status;
+	if (paranoid_check(&pc) == 0 && status_code == 0)
+		return 0;
+	else {
+		return (status_code == 0 ? -EINVAL : status_code);
+	}
 }
 
 /*
- * check /proc/cmdline if it has been overridden
- * dead_value is to prevent a theoretical energy weapon attack
+ * Check for /proc/cmdlin override
  */
 static int slowboot_enabled(void)
 {
@@ -1047,7 +1034,8 @@ static int slowboot_enabled(void)
 	paranoid_check_setup(&pc);
 
 	if(__gs_memmem_sp(buf, file_size,
-			    CONFIG_TINFOIL_OVERRIDE, strlen(CONFIG_TINFOIL_OVERRIDE)) == 0)
+					  CONFIG_TINFOIL_OVERRIDE,
+					  strlen(CONFIG_TINFOIL_OVERRIDE)) == 0)
 		paranoid_check_success(&pc);
 
 out:
@@ -1060,19 +1048,24 @@ out:
 
 /*
  * Run validation test
+ * @tinfoil: slowboot tinfoil struct
  */
 static void slowboot_run_test(struct slowboot_tinfoil *tinfoil)
 {
 	int j, hard_fail;
 	unsigned long flags;
 
+	if (tinfoil == NULL)
+		BUG();
+
 	if (!slowboot_enabled()) {
+		tinfoil->error_code = 0;
 		printk(KERN_ERR "Slowboot disabled\n");
 		return;
 	}
+
 	hard_fail = 0;
-	spin_lock_irqsave(&gs_irq_killer, flags);
-	//mutex_lock(&gs_concurrency_locker);
+	spin_lock_irqsave(&gs_irq_killer, flags); // Occupy all threads?
 	if (tinfoil->initialized != 0) {
 		tinfoil->initialized = 0;
 		tinfoil->validation_items = NULL;
@@ -1080,7 +1073,6 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil)
 			hard_fail = 1;
 		}
 	}
-	//mutex_unlock(&gs_concurrency_locker);
 
 	if (hard_fail != 0)
 		goto out;
@@ -1089,13 +1081,11 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil)
 											&(tinfoil->validation_items[j]));
 	}
 out:
-	//mutex_lock(&gs_concurrency_locker);
 		if (tinfoil->validation_items != NULL) {
 			vfree(tinfoil->validation_items);
 			tinfoil->validation_items = NULL;
 			tinfoil->initialized = 1;
 		}
-	//mutex_unlock(&gs_concurrency_locker);
 
 	if (tinfoil->failures > 0 || tinfoil->slwbt_ct == 0 || hard_fail == 1) {
 		__gs_tinfoil_fail_alert(tinfoil);
@@ -1103,8 +1093,15 @@ out:
 	spin_unlock_irqrestore(&gs_irq_killer, flags);
 }
 
+/*
+ * Initialize data for verification process
+ * @tinfoil: slowboot tinfoil struct
+ */
 static int slowboot_tinfoil_init(struct slowboot_tinfoil *tinfoil)
 {
+	if (tinfoil == NULL)
+		return -EINVAL;
+
 	memset(tinfoil, 0, sizeof(struct slowboot_tinfoil));
 	strncpy(tinfoil->config_file, CONFIG_TINFOIL_CF, PATH_MAX);
 	strncpy(tinfoil->config_file_signature, CONFIG_TINFOIL_CFS, PATH_MAX);
@@ -1120,6 +1117,10 @@ static int slowboot_tinfoil_init(struct slowboot_tinfoil *tinfoil)
 	return 0;
 }
 
+/*
+ * Deallocate data
+ * @tinfoil: slowboot tinfoil struct
+ */
 static void slowboot_tinfoil_free(struct slowboot_tinfoil *tinfoil)
 {
 	if (tinfoil->st != NULL) {
@@ -1134,39 +1135,59 @@ static void slowboot_tinfoil_free(struct slowboot_tinfoil *tinfoil)
 static int __init slowboot_mod_init(void)
 #endif
 #ifndef SLOWBOOT_MODULE
+/*
+ * Main function for validation
+ */
 static int slowboot_mod_init(void)
 #endif
 {
 	struct slowboot_tinfoil *tinfoil;
-	int ret;
+	paranoid pc;
+	int status_code;
+
+	paranoid_check_setup(&pc);
+	printk(KERN_ERR "Tinfoil Verification Starting\n");
+	status_code = 0;
 	tinfoil = kmalloc(sizeof(struct slowboot_tinfoil), GFP_KERNEL);
 	if (!tinfoil) {
-		__gs_tinfoil_fail_alert(NULL);
-		return -ENOMEM;
-	}
-
-	printk(KERN_INFO "Beginning Tinfoil Verification\n");
-	
-	if(slowboot_tinfoil_init(tinfoil))
+		paranoid_check_fail(&pc);
+		tinfoil->error_code = -ENOMEM;
 		goto out;
+	}
+	
+	if(slowboot_tinfoil_init(tinfoil)) {
+		paranoid_check_fail(&pc);
+		goto out;
+	}
 
 	slowboot_run_test(tinfoil);
 
 out:
-	slowboot_tinfoil_free(tinfoil);
+	if (tinfoil) {
+		slowboot_tinfoil_free(tinfoil);
 
-	if (tinfoil->error_code != 0) {
-		__gs_tinfoil_fail_alert(tinfoil);
-	}
+		if (tinfoil->error_code != 0) {
+			paranoid_check_fail(&pc);
+			status_code = tinfoil->error_code;
+		} else
+			paranoid_check_success(&pc);
 
-	if(tinfoil) {
-		ret = tinfoil->error_code;
 		kfree(tinfoil);
+		tinfoil = NULL;
 	} else {
-		return -EINVAL;
+		paranoid_check_fail(&pc);
+		status_code = -EINVAL;
 	}
 
-	return ret;
+
+	if (paranoid_check(&pc) != 0) {
+#ifdef SLOWBOOT_MODULE
+		__gs_tinfoil_fail_alert(NULL);
+#endif
+		return (status_code == 0 ? -EINVAL : status_code);
+	} else
+		return 0;
+
 }
 
 #ifdef SLOWBOOT_MODULE
@@ -1177,7 +1198,7 @@ module_init(slowboot_mod_init);
 module_exit(slowboot_mod_exit);
 
 MODULE_LICENSE("GPL");
-MODULE_DESCRIPTION("Comprehensive validation of critical files on boot");
+MODULE_DESCRIPTION("GS Tinfoil Slowboot");
 MODULE_AUTHOR("Cory Craig <cory_craig@mail.com>");
 MODULE_VERSION("0.1");
 #endif
@@ -1185,13 +1206,20 @@ MODULE_VERSION("0.1");
 
 
 #ifndef SLOWBOOT_MODULE
+/*
+ * Verify boot files chaining off a trusted kernel
+ * There should be an LSM hook for this
+ */
 void tinfoil_verify(void)
 {
 	#ifndef CONFIG_TINFOIL
 		return;
 	#endif
 	if (slowboot_enabled())
-		slowboot_mod_init();
+		if(slowboot_mod_init())
+			__gs_tinfoil_fail_alert(NULL);
+		else
+			printk(KERN_ERR "Tinfoil Verification Success\n");
 
 }
 #endif
