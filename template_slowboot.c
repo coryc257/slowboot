@@ -28,6 +28,7 @@
 #include <linux/slab.h>
 #include <linux/stat.h>
 #include <linux/random.h>
+#include <linux/pbit.h>
 
 /*
  * Operational parameters
@@ -201,48 +202,6 @@ struct slowboot_init_container {
 };
 
 /*
- * make the success check fail
- * the magic number is alternating-alternating 0101 meaning an attacker
- * would need pinpoint accuracy
- * @pc paranoid struct pointer
- */
-static void paranoid_check_fail(paranoid *pc)
-{
-	pc->status = 3482093499;
-	pc->dead_value = 1431655765;
-}
-
-/*
- * Initialize the state to failure
- * @pc: paranoid struct pointer
- */
-static void paranoid_check_setup(paranoid *pc)
-{
-	paranoid_check_fail(pc);
-}
-
-/*
- * Set the state to success
- * @pc:
- */
-static void paranoid_check_success(paranoid *pc)
-{
-	pc->dead_value = 0;
-	while (!pc->dead_value)
-		get_random_bytes(&pc->dead_value, sizeof(int));
-	pc->status = pc->dead_value;
-}
-
-/*
- * Check for success
- * @pc: paranoid struct pointer
- */
-static int paranoid_check(paranoid *pc)
-{
-	return (pc->status == pc->dead_value ? 0 : 1);
-}
-
-/*
  * Obtain size of file via seeking
  */
 static size_t __get_file_size(struct file *fp)
@@ -269,9 +228,9 @@ out:
  * @pos: position offset return value
  */
 static char *__read_file_to_memory(struct file *fp,
-								   size_t file_size,
-								   loff_t *pos,
-								   int ignore_size)
+				   size_t file_size,
+				   loff_t *pos,
+				   int ignore_size)
 {
 	char *buf;
 	size_t num_read;
@@ -439,15 +398,15 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
  * @sig: public key signature
  */
 static int pk_sig_verify_validate(struct sig_verify *sv,
-								  const struct public_key_signature *sig)
+				  const struct public_key_signature *sig)
 {
 	akcipher_request_set_crypt(sv->req, sv->src_tab, NULL, sig->s_size,
-							   sig->digest_size);
+				   sig->digest_size);
 
 	crypto_init_wait(&sv->cwait);
 	akcipher_request_set_callback(sv->req, CRYPTO_TFM_REQ_MAY_BACKLOG |
-								  CRYPTO_TFM_REQ_MAY_SLEEP,
-								  crypto_req_done, &sv->cwait);
+				      CRYPTO_TFM_REQ_MAY_SLEEP,
+				      crypto_req_done, &sv->cwait);
 
 	return crypto_wait_req(crypto_akcipher_verify(sv->req), &sv->cwait);
 }
@@ -479,12 +438,12 @@ int local_public_key_verify_signature(const struct public_key *pkey,
 									  const struct public_key_signature *sig)
 {
 	struct sig_verify sv;
-	paranoid pc;
+	struct pbit pc;
 
 	if (!pkey || !sig || !sig->s || !sig->digest)
 		return -ENOPKG;
 
-	paranoid_check_setup(&pc);
+	pbit_check_setup(&pc, -EINVAL);
 
 	if (pk_sig_verify_init(&sv, pkey, sig))
 		goto err;
@@ -493,15 +452,15 @@ int local_public_key_verify_signature(const struct public_key *pkey,
 		goto err;
 
 	if (pk_sig_verify_validate(&sv, sig) == 0) {
-		paranoid_check_success(&pc);
+		PBIT_Y(pc, 0);
 		goto out;
 	}
 
 err:
-	paranoid_check_fail(&pc);
+	PBIT_N(pc, -EINVAL);
 out:
 	pk_sig_verify_free(&sv);
-	return paranoid_check(&pc);
+	PBIT_RET(pc);
 }
 
 /*
@@ -561,7 +520,7 @@ static void tinfoil_close(struct slowboot_validation_item *item)
  * @item: slowboot validation item
  */
 static int tinfoil_read(struct slowboot_tinfoil *tinfoil,
-						struct slowboot_validation_item *item)
+			struct slowboot_validation_item *item)
 {
 	size_t number_read;
 	number_read = 0;
@@ -572,17 +531,16 @@ static int tinfoil_read(struct slowboot_tinfoil *tinfoil,
 	item->buf = vmalloc(item->buf_len+1);
 	if (!item->buf) {
 		printk(KERN_ERR "Failure No memory:%s\n",
-			item->path);
+		       item->path);
 		goto fail;
 	}
 	memset(item->buf,0,item->buf_len+1);
 	
 	item->pos = 0;
-	number_read = kernel_read(
-		item->fp,
-		item->buf,
-		tinfoil->st->size,
-		&(item->pos));
+	number_read = kernel_read(item->fp,
+				  item->buf,
+				  tinfoil->st->size,
+				  &(item->pos));
 
 	if (number_read != item->buf_len) {
 		goto fail;
@@ -605,7 +563,7 @@ out:
 }
 
 static int tinfoil_check_init(struct tinfoil_check *c,
-							  struct slowboot_validation_item *item)
+			      struct slowboot_validation_item *item)
 {
 	if (item == NULL || item->buf == NULL || item->buf_len == 0)
 		return 1;
@@ -648,7 +606,7 @@ static void tinfoil_check_validate(struct tinfoil_check *c)
 {
 	int i;
 	crypto_shash_digest(&(c->sd->shash), c->item->buf, c->item->buf_len,
-						c->digest);
+			    c->digest);
 
 	c->item->is_ok = 0;
 	for (i=0; i<CONFIG_TINFOIL_DGLEN; i++){
@@ -702,7 +660,7 @@ std_return:
  * @item: slowboot validation item
  */
 static int tinfoil_unwrap (struct slowboot_tinfoil *tinfoil,
-						   struct slowboot_validation_item *item)
+			   struct slowboot_validation_item *item)
 {
 	if (tinfoil_open(item) != 0)
 		return 1;
@@ -721,8 +679,8 @@ static int tinfoil_unwrap (struct slowboot_tinfoil *tinfoil,
 	tinfoil_check(item);
 	if (item->is_ok != 0) {
 		printk(KERN_ERR "File:%s:%s\n", 
-			   item->path,
-			   (item->is_ok == 0 ? "PASS" : "FAIL"));
+		       item->path,
+		       (item->is_ok == 0 ? "PASS" : "FAIL"));
 	}
 	tinfoil_close(item);
 	return item->is_ok;
@@ -735,7 +693,7 @@ static int tinfoil_unwrap (struct slowboot_tinfoil *tinfoil,
  * @remaining: remaining bytes
  */
 static loff_t fill_in_item(struct slowboot_validation_item *item,
-						   char *line, loff_t *remaining)
+			   char *line, loff_t *remaining)
 {
 	loff_t pos, off, rem;
 
@@ -797,14 +755,14 @@ static void slowboot_init_setup(struct slowboot_init_container *sic)
 }
 
 static int slowboot_init_setup_keys(struct slowboot_init_container *sic,
-									 const char * config_pkey)
+				    const char * config_pkey)
 {
 
 	if (sic->kernel_key_len <= 0 || config_pkey == NULL)
 		return 1;
 
 	sic->kernel_key = (unsigned char *)
-					  kmalloc(sic->kernel_key_len+1, GFP_KERNEL);
+			  kmalloc(sic->kernel_key_len+1, GFP_KERNEL);
 	if(!sic->kernel_key)
 		return 1;
 
@@ -820,8 +778,8 @@ static int slowboot_init_setup_keys(struct slowboot_init_container *sic,
 }
 
 static int slowboot_init_open_files(struct slowboot_init_container *sic,
-									 const char *config_file,
-									 const char *config_file_signature)
+				    const char *config_file,
+				    const char *config_file_signature)
 {
 	if (config_file == NULL || config_file_signature == NULL)
 		return 1;
@@ -846,14 +804,14 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
 
 	sic->pos = 0;
 	if (!(sic->buf = __read_file_to_memory(sic->fp, sic->file_size,
-										   &sic->pos, 0))) {
+					       &sic->pos, 0))) {
 		printk(KERN_ERR "File Read Error:%s\n", config_file);
 		return 1;
 	}
 
 	sic->sfp_pos = 0;
 	if (!(sic->sfp_buf = __read_file_to_memory(sic->sfp, sic->sfp_file_size,
-											   &sic->sfp_pos, 0))) {
+						   &sic->sfp_pos, 0))) {
 		printk(KERN_ERR "File Read Error:%s\n", config_file_signature);
 		return 1;
 	}
@@ -910,8 +868,8 @@ static void slowboot_init_free(struct slowboot_init_container *sic)
 }
 
 static int slowboot_init_process(struct slowboot_init_container *sic,
-								 struct slowboot_validation_item **item_ref,
-								 int *item_ct)
+				 struct slowboot_validation_item **item_ref,
+				 int *item_ct)
 {
 
 	if (sic->file_size <= 0)
@@ -927,7 +885,8 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 		return 1;
 
 	sic->c_item = sic->items = (struct slowboot_validation_item *)
-			vmalloc(sizeof(struct slowboot_validation_item)*sic->num_items);
+				vmalloc(sizeof(struct slowboot_validation_item)
+					*sic->num_items);
 
 	if (!sic->c_item) {
 		printk(KERN_ERR "Cannot allocate items\n");
@@ -953,11 +912,11 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 static int slowboot_init(struct slowboot_tinfoil *tinfoil)
 {
 	struct slowboot_init_container sic;
-	paranoid pc;
+	struct pbit pc;
 	int status_code;
 
 	status_code = 0;
-	paranoid_check_setup(&pc);
+	pbit_check_setup(&pc, -EINVAL);
 
 	slowboot_init_setup(&sic);
 
@@ -965,8 +924,8 @@ static int slowboot_init(struct slowboot_tinfoil *tinfoil)
 		goto fail;
 
 	if((status_code =
-					 slowboot_init_open_files(&sic, tinfoil->config_file,
-											  tinfoil->config_file_signature)))
+			  slowboot_init_open_files(&sic, tinfoil->config_file,
+						   tinfoil->config_file_signature)))
 		goto fail;
 
 	if((status_code = slowboot_init_digest(&sic)))
@@ -981,24 +940,19 @@ static int slowboot_init(struct slowboot_tinfoil *tinfoil)
 		goto fail;
 
 	status_code = 0;
-	paranoid_check_success(&pc);
+	PBIT_Y(pc, 0);
 	goto out;
 
 fail:
-	paranoid_check_fail(&pc);
+	PBIT_N(pc, -EINVAL);
 	tinfoil->slwbt_ct = 0;
 	if (!sic.items) {
 		vfree(sic.items);
 	}
 	tinfoil->validation_items = NULL;
-	if (status_code == 0)
-		status_code = -EINVAL;
 out:
 	slowboot_init_free(&sic);
-	if (paranoid_check(&pc) == 0 && status_code == 0)
-		return 0;
-	else
-		return (status_code == 0 ? -EINVAL : status_code);
+	PBIT_RET(pc);
 }
 
 /*
@@ -1010,7 +964,7 @@ static int slowboot_enabled(void)
 	size_t file_size;
 	char *buf;
 	loff_t pos;
-	paranoid pc;
+	struct pbit pc;
 
 	fp = NULL;
 	file_size = 0;
@@ -1030,19 +984,20 @@ static int slowboot_enabled(void)
 		goto out;
 	}
 
-	paranoid_check_setup(&pc);
+	pbit_check_setup(&pc, -EINVAL);
 
 	if(__gs_memmem_sp(buf, file_size,
 					  CONFIG_TINFOIL_OVERRIDE,
-					  strlen(CONFIG_TINFOIL_OVERRIDE)) == 0)
-		paranoid_check_success(&pc);
+					  strlen(CONFIG_TINFOIL_OVERRIDE)) == 0) {
+		PBIT_Y(pc, 0);
+	}
 
 out:
 	if (fp != NULL)
 		filp_close(fp, NULL);
 	if (buf != NULL)
 		vfree(buf);
-	return paranoid_check(&pc);
+	PBIT_RET(pc);
 }
 
 /*
@@ -1141,21 +1096,20 @@ static int slowboot_mod_init(void)
 #endif
 {
 	struct slowboot_tinfoil *tinfoil;
-	paranoid pc;
-	int status_code;
+	struct pbit pc;
 
-	paranoid_check_setup(&pc);
+	PBIT_Y(pc, 0);
 	printk(KERN_ERR "Tinfoil Verification Starting\n");
-	status_code = 0;
+
 	tinfoil = kmalloc(sizeof(struct slowboot_tinfoil), GFP_KERNEL);
 	if (!tinfoil) {
-		paranoid_check_fail(&pc);
+		PBIT_N(pc, -ENOMEM);
 		tinfoil->error_code = -ENOMEM;
 		goto out;
 	}
 	
 	if(slowboot_tinfoil_init(tinfoil)) {
-		paranoid_check_fail(&pc);
+		PBIT_N(pc, -EINVAL);
 		goto out;
 	}
 
@@ -1166,26 +1120,24 @@ out:
 		slowboot_tinfoil_free(tinfoil);
 
 		if (tinfoil->error_code != 0) {
-			paranoid_check_fail(&pc);
-			status_code = tinfoil->error_code;
+			PBIT_N(pc, tinfoil->error_code);
 		} else
-			paranoid_check_success(&pc);
+			PBIT_Y(pc, 0);
 
 		kfree(tinfoil);
 		tinfoil = NULL;
 	} else {
-		paranoid_check_fail(&pc);
-		status_code = -EINVAL;
+		PBIT_N(pc, -EINVAL);
 	}
 
 
-	if (paranoid_check(&pc) != 0) {
+	if (PBIT_GET(pc) != 0) {
 #ifdef SLOWBOOT_MODULE
 		__gs_tinfoil_fail_alert(NULL);
 #endif
-		return (status_code == 0 ? -EINVAL : status_code);
+		PBIT_RET(pc);
 	} else
-		return 0;
+		PBIT_RET(pc);
 
 }
 
