@@ -154,6 +154,7 @@ struct slowboot_tinfoil {
 	char config_file_signature[PATH_MAX];
 	char config_pkey[CONFIG_TINFOIL_PKLEN+1];
 	int error_code;
+	struct pbit error;
 };
 
 /* shash container struct */
@@ -839,7 +840,7 @@ static int slowboot_init_digest(struct slowboot_init_container *sic)
 		return 1;
 
 	crypto_shash_digest(&(sic->hsd->shash), sic->buf, sic->file_size,
-						sic->digest);
+			    sic->digest);
 
 	sic->sig.s = sic->sfp_buf; // Raw signature file data
 	sic->sig.s_size = sic->sfp_file_size; // Length of Signature File
@@ -897,7 +898,7 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 	sic->remaining = sic->file_size;
 	while (sic->remaining){
 		sic->pos += fill_in_item(sic->c_item, &sic->buf[sic->pos],
-								 &sic->remaining);
+					 &sic->remaining);
 		sic->c_item++;
 	}
 
@@ -916,7 +917,7 @@ static int slowboot_init(struct slowboot_tinfoil *tinfoil)
 	int status_code;
 
 	status_code = 0;
-	pbit_check_setup(&pc, -EINVAL);
+	PBIT_N(pc, -EINVAL);
 
 	slowboot_init_setup(&sic);
 
@@ -932,11 +933,11 @@ static int slowboot_init(struct slowboot_tinfoil *tinfoil)
 		goto fail;
 
 	if ((status_code = local_public_key_verify_signature(&sic.rsa_pub_key,
-														&sic.sig)))
+							     &sic.sig)))
 		goto fail;
 
 	if((status_code = slowboot_init_process(&sic, &tinfoil->validation_items,
-										   &tinfoil->slwbt_ct)))
+						   &tinfoil->slwbt_ct)))
 		goto fail;
 
 	status_code = 0;
@@ -971,9 +972,12 @@ static int slowboot_enabled(void)
 	buf = NULL;
 	pos = 0;
 
+	PBIT_Y(pc, 0);
+
 	fp = filp_open("/proc/cmdline", O_RDONLY, 0);
 	if (IS_ERR(fp)) {
 		fp = NULL;
+		PBIT_N(pc, (int)fp);
 		goto out;
 	}
 
@@ -981,23 +985,32 @@ static int slowboot_enabled(void)
 	buf = __read_file_to_memory(fp, file_size, &pos, 1);
 
 	if (!buf) {
+		PBIT_N(pc, -ENOMEM);
 		goto out;
 	}
 
-	pbit_check_setup(&pc, -EINVAL);
+
 
 	if(__gs_memmem_sp(buf, file_size,
-					  CONFIG_TINFOIL_OVERRIDE,
-					  strlen(CONFIG_TINFOIL_OVERRIDE)) == 0) {
+			  CONFIG_TINFOIL_OVERRIDE,
+			  strlen(CONFIG_TINFOIL_OVERRIDE)) == 0)
 		PBIT_Y(pc, 0);
-	}
 
 out:
 	if (fp != NULL)
 		filp_close(fp, NULL);
 	if (buf != NULL)
 		vfree(buf);
-	PBIT_RET(pc);
+
+	if (PBIT_FAIL(pc) && PBIT_GET(pc) != 0)
+		printk(KERN_ERR "Error at slowboot_enabled: %d\n",
+		       PBIT_GET(pc));
+
+	if (PBIT_OK(pc) && PBIT_GET(pc) == 0)
+		return 0;
+	else
+		return 1;
+
 }
 
 /*
@@ -1011,12 +1024,6 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil)
 
 	if (tinfoil == NULL)
 		BUG();
-
-	if (!slowboot_enabled()) {
-		tinfoil->error_code = 0;
-		printk(KERN_ERR "Slowboot disabled\n");
-		return;
-	}
 
 	hard_fail = 0;
 	spin_lock_irqsave(&gs_irq_killer, flags); // Occupy all threads?
@@ -1032,7 +1039,7 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil)
 		goto out;
 	for (j = 0; j < tinfoil->slwbt_ct; j++) {
 		tinfoil->failures += tinfoil_unwrap(tinfoil,
-											&(tinfoil->validation_items[j]));
+						    &(tinfoil->validation_items[j]));
 	}
 out:
 		if (tinfoil->validation_items != NULL) {
@@ -1042,7 +1049,7 @@ out:
 		}
 
 	if (tinfoil->failures > 0 || tinfoil->slwbt_ct == 0 || hard_fail == 1) {
-		__gs_tinfoil_fail_alert(tinfoil);
+		PBIT_N(tinfoil->error, -EINVAL);
 	}
 	spin_unlock_irqrestore(&gs_irq_killer, flags);
 }
@@ -1062,10 +1069,10 @@ static int slowboot_tinfoil_init(struct slowboot_tinfoil *tinfoil)
 	strncpy(tinfoil->config_pkey, CONFIG_TINFOIL_PK, CONFIG_TINFOIL_PKLEN);
 	tinfoil->initialized = 1;
 	tinfoil->failures = 0;
-	tinfoil->error_code = 0;
+	PBIT_Y(tinfoil->error, 0);
 	tinfoil->st = (struct kstat *)kmalloc(sizeof(struct kstat), GFP_KERNEL);
 	if (!tinfoil->st) {
-		tinfoil->error_code = -ENOMEM;
+		PBIT_N(tinfoil->error, -ENOMEM);
 		return 1;
 	}
 	return 0;
@@ -1098,16 +1105,21 @@ static int slowboot_mod_init(void)
 	struct slowboot_tinfoil *tinfoil;
 	struct pbit pc;
 
-	PBIT_Y(pc, 0);
+	if (!slowboot_enabled()) {
+		printk(KERN_ERR "slowboot_mod_init: disabled\n");
+		return 0;
+	}
+
+	PBIT_N(pc, -EINVAL);
 	printk(KERN_ERR "Tinfoil Verification Starting\n");
 
 	tinfoil = kmalloc(sizeof(struct slowboot_tinfoil), GFP_KERNEL);
 	if (!tinfoil) {
 		PBIT_N(pc, -ENOMEM);
-		tinfoil->error_code = -ENOMEM;
 		goto out;
 	}
 	
+
 	if(slowboot_tinfoil_init(tinfoil)) {
 		PBIT_N(pc, -EINVAL);
 		goto out;
@@ -1119,8 +1131,8 @@ out:
 	if (tinfoil) {
 		slowboot_tinfoil_free(tinfoil);
 
-		if (tinfoil->error_code != 0) {
-			PBIT_N(pc, tinfoil->error_code);
+		if (!PBIT_OK(tinfoil->error) || PBIT_GET(tinfoil->error) != 0) {
+			PBIT_N(pc, PBIT_GET(tinfoil->error));
 		} else
 			PBIT_Y(pc, 0);
 
@@ -1131,10 +1143,8 @@ out:
 	}
 
 
-	if (PBIT_GET(pc) != 0) {
-#ifdef SLOWBOOT_MODULE
+	if (PBIT_GET(pc) != 0 || !PBIT_OK(pc)) {
 		__gs_tinfoil_fail_alert(NULL);
-#endif
 		PBIT_RET(pc);
 	} else
 		PBIT_RET(pc);
@@ -1166,11 +1176,7 @@ void tinfoil_verify(void)
 	#ifndef CONFIG_TINFOIL
 		return;
 	#endif
-	if (slowboot_enabled())
-		if(slowboot_mod_init())
-			__gs_tinfoil_fail_alert(NULL);
-		else
-			printk(KERN_ERR "Tinfoil Verification Success\n");
-
+	printk(KERN_ERR "tinfoil_verify finished with status: %d\n",
+	       slowboot_mod_init());
 }
 #endif
