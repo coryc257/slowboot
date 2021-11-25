@@ -28,7 +28,7 @@
 #include <linux/slab.h>
 #include <linux/stat.h>
 #include <linux/random.h>
-#include <linux/pbit.h>
+#include "linux/pbit.h"
 
 /*
  * Operational parameters
