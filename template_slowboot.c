@@ -288,10 +288,13 @@ int __gs_memmem_sp(const char *s1, size_t s1_len, const char *s2, size_t s2_len)
  * Failure Option to simply alert
  * @tf: slowboot_tinfoil struct
  */
-static void __gs_tinfoil_fail_alert(struct slowboot_tinfoil *tf)
+static void __gs_tinfoil_fail_alert(struct slowboot_tinfoil **tf)
 {
 	printk(KERN_ERR "Tinfoil Verification Failed\n");
 	#ifdef CONFIG_TINFOIL_BUG
+	if (*tf != NULL)
+		kfree(*tf);
+		*tf = NULL;
 	BUG();
 	#endif
 }
@@ -316,7 +319,6 @@ static struct sdesc *init_sdesc(struct crypto_shash *alg)
 //openssl x509 -C -in my_signing_key_pub.der -inform DER
 //xxd -i siggywiggy.sha512
 //xxd -ps -c 9999999 siggywiggy.sha512 > siggywiggy.hex
-
 // It helps if you are using an RSA key
 //openssl genrsa -aes256 -passout pass:<phrase> -out private.pem 4096
 //openssl rsa -in private.pem -passin pass:<phrase> -pubout -out public.pem
@@ -326,7 +328,6 @@ static struct sdesc *init_sdesc(struct crypto_shash *alg)
 //openssl dgst -sha256 -verify <pub-key> -signature /tmp/sign.sha256 <file>
 //openssl asn1parse -inform PEM -in public.pem -strparse 19 -out kernel.key
 //xxd -i kernel.key
-
 //openssl rsa -in private.pem -passin pass:1111 -pubout -out public.pem
 
 /*
@@ -400,8 +401,8 @@ static int pk_sig_verify_validate(struct sig_verify *sv,
 				   sig->digest_size);
 
 	crypto_init_wait(&sv->cwait);
-	akcipher_request_set_callback(sv->req, CRYPTO_TFM_REQ_MAY_BACKLOG |
-				      CRYPTO_TFM_REQ_MAY_SLEEP,
+	akcipher_request_set_callback(sv->req,
+		CRYPTO_TFM_REQ_MAY_BACKLOG|CRYPTO_TFM_REQ_MAY_SLEEP,
 				      crypto_req_done, &sv->cwait);
 
 	return crypto_wait_req(crypto_akcipher_verify(sv->req), &sv->cwait);
@@ -678,6 +679,8 @@ std_return:
 
 /*
  * Validate an item (file against it's hash)
+ * The functions will log the failure
+ * This must return 0 or 1 because it adds to a failure count
  * @item: slowboot validation item
  */
 static int tinfoil_unwrap (struct slowboot_tinfoil *tinfoil,
@@ -704,7 +707,10 @@ static int tinfoil_unwrap (struct slowboot_tinfoil *tinfoil,
 		       "Fail");
 	}
 	tinfoil_close(item);
-	return (PBIT_OK(item->is_ok) ? 0 : 1);
+	if (PBIT_OK(item->is_ok))
+		return 0;
+	else
+		return 1;
 }
 
 /*
@@ -965,6 +971,7 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 
 /*
  * Signature check the config file and initialize all the data
+ * The functions called will log the error so no need to store/check
  * @tinfoil: slowboot tinfoil
  */
 static int slowboot_init(struct slowboot_tinfoil *tinfoil)
@@ -1100,7 +1107,7 @@ out:
 			tinfoil->initialized = 1;
 		}
 
-	if (tinfoil->failures > 0 || tinfoil->slwbt_ct == 0 ||
+	if (tinfoil->failures != 0 || tinfoil->slwbt_ct == 0 ||
 	    !PBIT_OK(hard_fail))
 		PBIT_N(tinfoil->error, -EINVAL);
 	else
@@ -1165,7 +1172,7 @@ static int slowboot_mod_init(void)
 	}
 
 	PBIT_N(pc, -EINVAL);
-	printk(KERN_ERR "Tinfoil Verification Starting\n");
+	printk(KERN_INFO "Tinfoil Verification Starting\n");
 
 	tinfoil = kmalloc(sizeof(struct slowboot_tinfoil), GFP_KERNEL);
 	if (!tinfoil) {
@@ -1195,15 +1202,17 @@ out:
 		} else
 			PBIT_Y(pc, 0);
 
-		kfree(tinfoil);
-		tinfoil = NULL;
 	} else {
 		PBIT_N(pc, -EINVAL);
 	}
 
 
 	if (PBIT_GET(pc) != 0 || !PBIT_OK(pc)) {
-		__gs_tinfoil_fail_alert(NULL);
+		__gs_tinfoil_fail_alert(&tinfoil);
+		if (tinfoil != NULL) {
+			kfree(tinfoil);
+			tinfoil = NULL;
+		}
 		PBIT_RET(pc);
 	} else
 		PBIT_RET(pc);
