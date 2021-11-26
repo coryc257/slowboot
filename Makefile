@@ -1,6 +1,6 @@
 PWD	:= $(shell pwd)
 obj-m	+= slowboot.o
-slowboot-objs := x_pbit.o template_slowboot.o
+slowboot-objs := gs_tinfoil_slowboot.o x_pbit.o template_slowboot.o
 #obj-m += rsa_test.o
 EXTRA_CFLAGS:= -DSLOWBOOT_MODULE=1
 default:
