@@ -1,7 +1,6 @@
-// SPDX-License-Identifier: GPL-2.080
+// SPDX-License-Identifier: GPL-2.0
 /*
- * linux/init/tinfoil.c
- * GS Tinfoil/Slowboot
+ * GS Tinfoil Pre Init Integrity Check
  * Copyright (C) 2021 Cory Craig
  */
 #include <linux/init.h>
@@ -29,10 +28,6 @@
 #include <linux/stat.h>
 #include <linux/random.h>
 #include "linux/pbit.h"
-
-/*
- * Operational parameters
- */
 
 /*
  *
@@ -126,9 +121,32 @@ DEFINE_SPINLOCK(gs_irq_killer);
 #endif
 
 /* Override cmdline parameter */
+// Specify this as a kernel cmdline option to bypass check in case
+// Of BUG(); being enabled
 #ifndef CONFIG_TINFOIL_OVERRIDE
 #define CONFIG_TINFOIL_OVERRIDE "tinfoil_override"
 #endif
+
+/* Future Use Version Number */
+#ifndef CONFIG_TINFOIL_VERSION
+#define CONFIG_TINFOIL_VERSION 1
+#endif
+
+/* Configuration */
+struct gs_tfsb_config {
+	int tinfoil;
+	char tinfoil_cf[PATH_MAX+1];
+	char tinfoil_cfs[PATH_MAX+1];
+	char tinfoil_pk[PAGE_SIZE+1];
+	int tinfoil_pklen;
+	int tinfoil_hslen;
+	char tinfoil_pkalgo[PAGE_SIZE+1];
+	char tinfoil_pkalgopd[PAGE_SIZE+1];
+	char tinfoil_hsalgop[PAGE_SIZE+1];
+	char tinfoil_idtype[PAGE_SIZE+1];
+	char tinfoil_override[PAGE_SIZE+1];
+	int tinfoil_version;
+};
 
 /* File Validation item */
 struct slowboot_validation_item {
@@ -158,8 +176,8 @@ struct slowboot_tinfoil {
 
 /* shash container struct */
 struct sdesc {
-    struct shash_desc shash;
-    char ctx[];
+	struct shash_desc shash;
+	char ctx[];
 };
 
 /* Container for a single item check */
@@ -489,7 +507,7 @@ static int tinfoil_stat_alloc(struct slowboot_tinfoil *tinfoil,
 			      struct slowboot_validation_item *item)
 {
 	if (
-		vfs_getattr(&(item->fp->f_path), 
+		vfs_getattr(&(item->fp->f_path),
 			tinfoil->st,
 			STATX_SIZE,
 			AT_STATX_SYNC_AS_STAT
