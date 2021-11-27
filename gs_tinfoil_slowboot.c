@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
- * GS Tinfoil/Slowboot Integrity Check Shared
+ * GlowSlayer Tinfoil/Slowboot Shared
  * Copyright (C) 2021 Cory Craig
  */
 #include <linux/init.h>
@@ -29,6 +29,16 @@
 #include <linux/random.h>
 #include "linux/pbit.h"
 #include "linux/gs_tinfoil_slowboot.h"
+/*******************************************************************************
+*          ___   _                  ___   _                                    *
+*         / __| | |  ___  __ __ __ / __| | |  __ _   _  _   ___   _ _          *
+*        | (_-\ | | / _ \ \ V  V / \__ \ | | / _` | | || | / -_) | '_|         *
+*         \___| |_| \___/  \_/\_/  |___/ |_| \__,_|  \_, | \___| |_|           *
+*                                                    |__/                      *
+*                                                                              *
+*******************************************************************************/
+#define GLOW(code, spot) printk(KERN_ERR "GS TFSB Fail ErrorCode: %d @ %s\n",\
+				code, spot);
 ////////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -37,7 +47,7 @@
  */
 static void __gs_tinfoil_fail_alert(struct slowboot_tinfoil **tf, int is_bug)
 {
-	printk(KERN_ERR "Tinfoil Verification Failed\n");
+	printk(KERN_ERR "GS TFSB FAIL\n");
 	if (is_bug) {
 		if (*tf != NULL)
 			kfree(*tf);
@@ -45,21 +55,21 @@ static void __gs_tinfoil_fail_alert(struct slowboot_tinfoil **tf, int is_bug)
 		BUG();
 	}
 }
-
+////////////////////////////////////////////////////////////////////////////////
 //openssl x509 -C -in my_signing_key_pub.der -inform DER
 //xxd -i siggywiggy.sha512
 //xxd -ps -c 9999999 siggywiggy.sha512 > siggywiggy.hex
 // It helps if you are using an RSA key
 //openssl genrsa -aes256 -passout pass:<phrase> -out private.pem 4096
 //openssl rsa -in private.pem -passin pass:<phrase> -pubout -out public.pem
-//openssl dgst -sha256 -sign <private-key> -out /tmp/sign.sha256 <file>
+//openssl dgst -sha512 -sign <private-key> -out /tmp/sign.sha512 <file>
 //openssl base64 -in /tmp/sign.sha256 -out <signature>
 //openssl base64 -d -in <signature> -out /tmp/sign.sha256
-//openssl dgst -sha256 -verify <pub-key> -signature /tmp/sign.sha256 <file>
+//openssl dgst -sha512 -verify <pub-key> -signature /tmp/sign.sha512 <file>
 //openssl asn1parse -inform PEM -in public.pem -strparse 19 -out kernel.key
 //xxd -i kernel.key
 //openssl rsa -in private.pem -passin pass:1111 -pubout -out public.pem
-
+////////////////////////////////////////////////////////////////////////////////
 /*
  * Allocate data for public key signature validation
  * @sv: sig verify container
@@ -73,21 +83,26 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
 	if (IS_ERR(sv->tfm)) {
 		PBIT_Y(pc, (int)(long)sv->tfm);
 		sv->tfm = NULL;
+		GLOW(PBIT_GET(pc), "pk_sig_verify_alloc.crypto_alloc_akcipher");
 		PBIT_RET(pc);
 	}
 
 	sv->req = akcipher_request_alloc(sv->tfm, GFP_KERNEL);
 	if (!sv->req) {
+		GLOW(-ENOMEM, "pk_sig_verify_alloc.akcipher_request_alloc");
 		return -ENOMEM;
 	}
 
 	if (crypto_akcipher_set_pub_key(sv->tfm, pkey->key, pkey->keylen)) {
+		GLOW(-ENOMEM,
+		     "pk_sig_verify_alloc.crypto_akcipher_set_pub_key");
 		return -EINVAL;
 	}
 
 	sv->outlen = crypto_akcipher_maxsize(sv->tfm);
 	sv->output = kmalloc(sv->outlen, GFP_KERNEL);
 	if (!sv->output) {
+		GLOW(-ENOMEM, "pk_sig_verify_alloc.kmalloc(sv->output)");
 		return -ENOMEM;
 	}
 
@@ -148,11 +163,17 @@ int local_public_key_verify_signature(const struct public_key *pkey,
 
 	PBIT_N(pc, -EINVAL);
 
-	if (__gs_pk_sig_verify_init(&sv, pkey, sig, CONFIG_TINFOIL_PKALGOPD))
+	if (__gs_pk_sig_verify_init(&sv, pkey, sig, CONFIG_TINFOIL_PKALGOPD)) {
+		GLOW(-EINVAL,
+		   "local_public_key_verify_signature.__gs_pk_sig_verify_init");
 		goto err;
+	}
 
-	if (pk_sig_verify_alloc(&sv, pkey))
+	if (pk_sig_verify_alloc(&sv, pkey)) {
+		GLOW(-EINVAL,
+		     "local_public_key_verify_signature.pk_sig_verify_alloc");
 		goto err;
+	}
 
 	if (pk_sig_verify_validate(&sv, sig) == 0) {
 		PBIT_Y(pc, 0);
@@ -177,10 +198,11 @@ static int tinfoil_open(struct slowboot_validation_item *item)
 	if (IS_ERR(item->fp) || item->fp == NULL) {
 		PBIT_N(pc, (int)(long)item->fp);
 		item->fp = NULL;
-		printk(KERN_ERR "F:%s:%s:%d\n",
-			item->hash,
-			item->path,
-			PBIT_OK(item->is_ok));
+		printk(KERN_ERR
+		       "GS TFSB Fail:%s:%s:%d @ tinfoil_open.filp_open\n",
+		       item->hash,
+		       item->path,
+		       PBIT_OK(item->is_ok));
 		PBIT_RET(pc);
 	}
 	item->pos = 0;
@@ -200,7 +222,8 @@ static int tinfoil_stat_alloc(struct slowboot_tinfoil *tinfoil,
 			STATX_SIZE,
 			AT_STATX_SYNC_AS_STAT
 		) != 0) {
-		printk(KERN_ERR "Cannot stat:%s\n",
+		printk(KERN_ERR "GS TFSB Fail: Cannot ttat:%s @"
+				"tinfoil_stat_alloc.vfs_getattr\n",
 			item->path);
 		return -EINVAL;
 	}
@@ -238,7 +261,8 @@ static int tinfoil_read(struct slowboot_tinfoil *tinfoil,
 
 	item->buf = vmalloc(item->buf_len+1);
 	if (!item->buf) {
-		printk(KERN_ERR "Failure No memory:%s\n",
+		printk(KERN_ERR "GS TFSB Fail: No memory:%s"
+				" @ tinfoil_read.vmalloc\n",
 		       item->path);
 		PBIT_N(pc, -ENOMEM);
 		goto fail;
@@ -256,7 +280,8 @@ static int tinfoil_read(struct slowboot_tinfoil *tinfoil,
 	}
 
 	if (hex2bin(item->b_hash,item->hash,64) !=0) {
-		printk(KERN_INFO "StoredHashFail:%s\n", item->path);
+		printk(KERN_INFO "GS TFSB Fail: StoredHashFail:%s"
+				 " @ tinfoil_read.hex2bin\n", item->path);
 		goto fail;
 	}
 
@@ -302,14 +327,14 @@ static int tinfoil_check_allocate(struct tinfoil_check *c,
 	if (IS_ERR(c->alg)) {
 		PBIT_N(pc, (int)(long)c->alg);
 		c->alg = NULL;
-		printk(KERN_ERR "Can't allocate alg\n");
+		GLOW(PBIT_GET(pc), "tinfoil_check_allocate.crypto_alloc_shash");
 		PBIT_RET(pc);
 	}
 
 	c->digest = kmalloc(CONFIG_TINFOIL_DGLEN+1, GFP_KERNEL);
 	if (!c->digest) {
 		c->digest = NULL;
-		printk(KERN_ERR "Can't allocate digest\n");
+		GLOW(PBIT_GET(pc), "tinfoil_check_allocate.kmalloc");
 		return -ENOMEM;
 	}
 
@@ -318,7 +343,7 @@ static int tinfoil_check_allocate(struct tinfoil_check *c,
 	c->sd = __gs_init_sdesc(c->alg);
 	if (!c->sd) {
 		c->sd = NULL;
-		printk(KERN_ERR "Can't allocate sdesc\n");
+		GLOW(-EINVAL, "tinfoil_check_allocate.__gs_init_sdesc");
 		return -EINVAL;
 	}
 	return 0;
@@ -374,13 +399,17 @@ static void tinfoil_check(struct slowboot_validation_item *item,
 
 	struct tinfoil_check check;
 
-	if (tinfoil_check_init(&check, item))
+	if (tinfoil_check_init(&check, item)) {
+		GLOW(-EINVAL, "tinfoil_check.tinfoil_check_init");
 		goto err;
+	}
 
 	if (tinfoil_check_allocate(&check,
 				   CONFIG_TINFOIL_HSALGO,
-				   CONFIG_TINFOIL_DGLEN))
+				   CONFIG_TINFOIL_DGLEN)) {
+		GLOW(-EINVAL, "tinfoil_check.tinfoil_check_allocate");
 		goto err;
+	}
 
 	tinfoil_check_validate(&check, CONFIG_TINFOIL_DGLEN);
 	goto std_return;
@@ -401,23 +430,28 @@ static int tinfoil_unwrap (struct slowboot_tinfoil *tinfoil,
 			   const char *CONFIG_TINFOIL_HSALGO,
 			   int CONFIG_TINFOIL_DGLEN)
 {
-	if (tinfoil_open(item) != 0)
+	if (tinfoil_open(item) != 0) {
+		GLOW(1, "tinfoil_unwrap.tinfoil_open");
 		return 1;
+	}
 
 	if (tinfoil_stat_alloc(tinfoil, item) != 0) {
+		GLOW(1, "tinfoil_unwrap.tinfoil_close");
 		tinfoil_close(item);
 		return 1;
 	}
 
 	// Do not access item->buf after this
 	if (tinfoil_read(tinfoil, item) != 0) {
+		GLOW(1, "tinfoil_unwrap.tinfoil_read");
 		tinfoil_close(item);
 		return 1;
 	}
 
 	tinfoil_check(item, CONFIG_TINFOIL_HSALGO, CONFIG_TINFOIL_DGLEN);
 	if (!PBIT_OK(item->is_ok)) {
-		printk(KERN_ERR "File:%s:%s\n",
+		printk(KERN_ERR "GS TFSB Fail:%s:%s @ "
+				"tinfoil_unwrap.tinfoil_check\n",
 		       item->path,
 		       "Fail");
 	}
@@ -553,34 +587,42 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
 	if (IS_ERR(sic->fp = filp_open(config_file, O_RDONLY, 0))) {
 		PBIT_N(pc, (int)(long)sic->fp);
 		sic->fp = NULL;
-		printk(KERN_ERR "flip open fp\n");
+		GLOW(PBIT_GET(pc), "slowboot_init_open_files.config_file");
 		PBIT_RET(pc);
 	}
 
 	if (IS_ERR(sic->sfp = filp_open(config_file_signature, O_RDONLY, 0))) {
 		PBIT_N(pc, (int)(long)sic->sfp);
 		sic->sfp = NULL;
-		printk(KERN_ERR "flip open sfp\n");
+		GLOW(PBIT_GET(pc),
+		     "slowboot_init_open_files.config_file_signature");
 		PBIT_RET(pc);
 	}
 
 	sic->file_size = __gs_get_file_size(sic->fp);
 	sic->sfp_file_size = __gs_get_file_size(sic->sfp);
 
-	if (sic->file_size <= 0 || sic->sfp_file_size <= 0)
+	if (sic->file_size <= 0 || sic->sfp_file_size <= 0) {
+		GLOW(-EINVAL, "slowboot_init_open_files~invalid file size");
 		return -EINVAL;
+	}
 
 	sic->pos = 0;
 	if (!(sic->buf = __gs_read_file_to_memory(sic->fp, sic->file_size,
 					       &sic->pos, 0))) {
-		printk(KERN_ERR "File Read Error:%s\n", config_file);
+		printk(KERN_ERR "GS TFSB File Read Error:%s @ "
+				"slowboot_init_open_files.config_file\n",
+		       config_file);
 		return -EINVAL;
 	}
 
 	sic->sfp_pos = 0;
-	if (!(sic->sfp_buf = __gs_read_file_to_memory(sic->sfp, sic->sfp_file_size,
-						   &sic->sfp_pos, 0))) {
-		printk(KERN_ERR "File Read Error:%s\n", config_file_signature);
+	if (!(sic->sfp_buf = __gs_read_file_to_memory(sic->sfp,
+						      sic->sfp_file_size,
+						      &sic->sfp_pos, 0))) {
+		printk(KERN_ERR "GS TFSB File Read Error:%s @ "
+			"slowboot_init_open_files.config_file_signature\n",
+			config_file_signature);
 		return -EINVAL;
 	}
 
@@ -599,20 +641,28 @@ static int slowboot_init_digest(struct slowboot_init_container *sic,
 	sic->halg = crypto_alloc_shash(CONFIG_TINFOIL_HSALGO,0,0);
 	if (IS_ERR(sic->halg)) {
 		PBIT_N(pc, (int)(long)sic->halg);
+		GLOW(PBIT_GET(pc), "slowboot_init_digest.crypto_alloc_shash");
 		sic->halg = NULL;
 		PBIT_RET(pc);
 	}
 
-	if (!(sic->digest = kmalloc(CONFIG_TINFOIL_DGLEN+1, GFP_KERNEL)))
+	if (!(sic->digest = kmalloc(CONFIG_TINFOIL_DGLEN+1, GFP_KERNEL))) {
+		GLOW(-ENOMEM, "slowboot_init_digest.kmalloc~digest");
 		return -ENOMEM;
+	}
 
 	memset(sic->digest,0,CONFIG_TINFOIL_DGLEN+1);
 
-	if(!(sic->hsd = __gs_init_sdesc(sic->halg)))
+	if(!(sic->hsd = __gs_init_sdesc(sic->halg))) {
+		GLOW(-EINVAL, "slowboot_init_digest.__gs_init_sdesc");
 		return -EINVAL;
+	}
 
-	if (sic->buf == NULL || sic->file_size <= 0)
+	if (sic->buf == NULL || sic->file_size <= 0) {
+		GLOW(-EINVAL,
+		     "slowboot_init_digest~invalid buffer or file_size");
 		return -EINVAL;
+	}
 
 	crypto_shash_digest(&(sic->hsd->shash), sic->buf, sic->file_size,
 			    sic->digest);
@@ -661,8 +711,10 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 				 int CONFIG_TINFOIL_HSLEN)
 {
 
-	if (sic->file_size <= 0)
+	if (sic->file_size <= 0) {
+		GLOW(-EINVAL, "slowboot_init_process~invalid file size");
 		return -EINVAL;
+	}
 
 	for (sic->pos = 0; sic->pos < sic->file_size; sic->pos++) {
 		if (sic->buf[sic->pos] == CONFIG_TINFOIL_NEW_LINE) {
@@ -670,15 +722,17 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 		}
 	}
 
-	if (sic->num_items == 0)
+	if (sic->num_items == 0) {
+		GLOW(-EINVAL, "slowboot_init_process~no items")
 		return -EINVAL;
+	}
 
 	sic->c_item = sic->items = (struct slowboot_validation_item *)
 				vmalloc(sizeof(struct slowboot_validation_item)
 					*sic->num_items);
 
 	if (!sic->c_item) {
-		printk(KERN_ERR "Cannot allocate items\n");
+		GLOW(-ENOMEM, "slowboot_init_process.vmalloc~c_item");
 		return -ENOMEM;
 	}
 
@@ -751,6 +805,7 @@ static int slowboot_init(struct slowboot_tinfoil *tinfoil,
 
 fail:
 	PBIT_N(pc, -EINVAL);
+	GLOW(PBIT_GET(pc), "slowboot_init~^^^^^^///////////>");
 	tinfoil->slwbt_ct = 0;
 	if (!sic.items) {
 		vfree(sic.items);
@@ -806,8 +861,7 @@ out:
 		vfree(buf);
 
 	if (!PBIT_FAIL(pc) || PBIT_GET(pc) != 0)
-		printk(KERN_ERR "Error at slowboot_enabled: %d\n",
-		       PBIT_GET(pc));
+		GLOW(PBIT_GET(pc), "slowboot_enabled ???");
 
 	if (PBIT_OK(pc) && PBIT_GET(pc) == 0)
 		return 0;
@@ -1064,12 +1118,12 @@ int __gs_tfsb_go(const char *config_tinfoil_cf,
 	struct pbit pc;
 
 	if (!slowboot_enabled(config_tinfoil_override)) {
-		printk(KERN_ERR "slowboot_mod_init: disabled\n");
+		printk(KERN_ERR "GS TFSB: disabled\n");
 		return 0;
 	}
 
 	PBIT_N(pc, -EINVAL);
-	printk(KERN_INFO "Tinfoil Verification Starting\n");
+	printk(KERN_INFO "GS TFSB START\n");
 
 	tinfoil = kmalloc(sizeof(struct slowboot_tinfoil), GFP_KERNEL);
 	if (!tinfoil) {
@@ -1102,7 +1156,7 @@ out:
 	if (tinfoil) {
 		slowboot_tinfoil_free(tinfoil);
 
-		printk(KERN_INFO "Tinfoil Audit: {Total:%d/Failures:%d}\n",
+		printk(KERN_INFO "GS TFSB Audit: {Total:%d/Failures:%d}\n",
 		       tinfoil->slwbt_ct, tinfoil->failures);
 
 		if (!PBIT_OK(tinfoil->error) || PBIT_GET(tinfoil->error) != 0) {
@@ -1128,3 +1182,4 @@ out:
 		PBIT_RET(pc);
 
 }
+EXPORT_SYMBOL_GPL(__gs_tfsb_go);
