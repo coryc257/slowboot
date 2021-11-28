@@ -26,8 +26,7 @@
 #include <linux/slab.h>
 #include <linux/stat.h>
 #include <linux/random.h>
-//#include "linux/pbit.h"
-#include "pbit.h"
+#include <linux/gs_pbit.h>
 
 #define GS_STRING_BASE 4096
 

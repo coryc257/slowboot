@@ -27,15 +27,15 @@
 #include <linux/slab.h>
 #include <linux/stat.h>
 #include <linux/random.h>
-#include "linux/pbit.h"
-#include "linux/gs_tinfoil_slowboot.h"
+#include <linux/pbit.h>
+#include <linux/gs_tinfoil_slowboot.h>
 /*******************************************************************************
 *          ___   _                  ___   _                                    *
 *         / __| | |  ___  __ __ __ / __| | |  __ _   _  _   ___   _ _          *
 *        | (_-\ | | / _ \ \ V  V / \__ \ | | / _` | | || | / -_) | '_|         *
 *         \___| |_| \___/  \_/\_/  |___/ |_| \__,_|  \_, | \___| |_|           *
 *                                                    |__/                      *
-*                                                                              *
+*                         Dedicated to Terry A. Davis                          *
 *******************************************************************************/
 #define GLOW(code, spot) printk(KERN_ERR "GS TFSB Fail ErrorCode: %d @ %s\n",\
 				code, spot);

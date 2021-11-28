@@ -1,0 +1,22 @@
+/*******************************************************************************
+*          ___   _                  ___   _                                    *
+*         / __| | |  ___  __ __ __ / __| | |  __ _   _  _   ___   _ _          *
+*        | (_-\ | | / _ \ \ V  V / \__ \ | | / _` | | || | / -_) | '_|         *
+*         \___| |_| \___/  \_/\_/  |___/ |_| \__,_|  \_, | \___| |_|           *
+*                                                    |__/                      *
+*                         Dedicated to Terry A. Davis                          *
+*******************************************************************************/
+
+
+GlowSlayer Tinfoil/Slowboot Integration Guide
+
+Currently Functional:
+	Tinfoil Pre Init initramfs check (A physical access backdoor check)
+	Slowboot Module post init filesystem check (General check for compromise)
+
+* The files in folder linux must be place in the include/linux folder of your kernel
+* The file gs_tinfoil_slowboot.c must be placed in the lib folder of your kernel
+* obj-y must have gs_tinfoil_slowboot.o added in the Makefile in the lib folder of your kernel
+* make menuconfig to set up the options (under general look for tinfoil and slowboot)
+
+* For both

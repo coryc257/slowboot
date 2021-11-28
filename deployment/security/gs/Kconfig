@@ -1,0 +1,133 @@
+config GS_BASE
+	prompt "GlowSlayer Base Code"
+	bool
+	default n
+menu "Tinfoil Cryptographic Init Verification"	
+	config TINFOIL
+		prompt "Enable Tinfoil Init Verification"
+		bool
+		default n
+		depends on GS_BASE
+	config TINFOIL_CF
+		prompt "Tinfoil Config File(must be visible at boot)"
+		string 
+		default "/etc/gs/tinfoil" if TINFOIL
+		depends on TINFOIL
+	config TINFOIL_CFS
+		prompt "Tinfoil Config File Signature File (must be visible at boot)"
+		string 
+		default "/etc/gs/tinfoil.sig" if TINFOIL
+		depends on TINFOIL
+	config TINFOIL_PK
+		prompt "Tinfoil Public Key (Hex String Literal)"
+		string 
+		default "" if TINFOIL
+		depends on TINFOIL
+	config TINFOIL_PKLEN
+		prompt "Tinfoil Public Key Length (Of Hex, maybe <1052>)"
+		int 
+		default 1052 if TINFOIL
+		depends on TINFOIL
+	config TINFOIL_DGLEN
+		prompt "Digest Length for validation (sha512 is <64>)"
+		int 
+		default 64 if TINFOIL
+		depends on TINFOIL
+	config TINFOIL_HSLEN
+		prompt "Digest Has Length in Hex (sha512 is <128>)"
+		int 
+		default 128 if TINFOIL
+		depends on TINFOIL
+	config TINFOIL_PKALGO
+		prompt "Algorithm used for verification <rsa>"
+		string 
+		default "rsa" if TINFOIL
+		depends on TINFOIL
+	config TINFOIL_PKALGOPD
+		prompt "Algorithm with padding <pkcs1pad(rsa,%s)>"
+		string
+		default "pkcs1pad(rsa,%s)" if TINFOIL
+		depends on TINFOIL
+	config TINFOIL_HSALGO
+		prompt "Hash Algorithm <sha512>"
+		string 
+		default "sha512" if TINFOIL
+		depends on TINFOIL
+	config TINFOIL_IDTYPE
+		prompt "Signature ID Type <X509>"
+		string 
+		default "X509" if TINFOIL
+		depends on TINFOIL
+	config TINFOIL_BUG
+		prompt "Bug on Fail"
+		bool 
+		default n if TINFOIL
+		depends on TINFOIL
+	config TINFOIL_OVERRIDE
+		prompt "Override Parameter"
+		string
+		default "tinfoil_override" if TINFOIL
+		depends on TINFOIL
+endmenu
+menu "Slowboot Cryptographic PostInit Verification"	
+	config SLOWBOOT
+		prompt "Enable Slowboot PostInit Verification"
+		bool
+		default n
+		depends on GS_BASE
+	config SLOWBOOT_CF
+		prompt "Slowboot Config File(must be visible at boot)"
+		string 
+		default "/etc/gs/slowboot" if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_CFS
+		prompt "Slowboot Config File Signature File (must be visible at boot)"
+		string 
+		default "/etc/gs/slowboot.sig" if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_PK
+		prompt "Slowboot Public Key (Hex String Literal)"
+		string 
+		default "" if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_PKLEN
+		prompt "Slowboot Public Key Length (Of Hex, maybe <1052>)"
+		int 
+		default 1052 if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_DGLEN
+		prompt "Digest Length for validation (sha512 is <64>)"
+		int 
+		default 64 if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_HSLEN
+		prompt "Digest Has Length in Hex (sha512 is <128>)"
+		int 
+		default 128 if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_PKALGO
+		prompt "Algorithm used for verification <rsa>"
+		string 
+		default "rsa" if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_PKALGOPD
+		prompt "Algorithm with padding <pkcs1pad(rsa,%s)>"
+		string
+		default "pkcs1pad(rsa,%s)" if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_HSALGO
+		prompt "Hash Algorithm <sha512>"
+		string 
+		default "sha512" if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_IDTYPE
+		prompt "Signature ID Type <X509>"
+		string 
+		default "X509" if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_BUG
+		prompt "Bug on Fail"
+		bool 
+		default n if SLOWBOOT
+		depends on SLOWBOOT
+endmenu
