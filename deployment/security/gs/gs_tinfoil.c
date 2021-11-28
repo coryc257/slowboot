@@ -31,6 +31,18 @@
 #include <linux/gs_tinfoil_slowboot.h>
 #include <linux/gs_tinfoil.h>
 
+#ifndef CONFIG_TINFOIL_NEW_LINE
+#define CONFIG_TINFOIL_NEW_LINE '\n'
+#endif
+
+#ifndef CONFIG_TINFOIL_VERSION
+#define CONFIG_TINFOIL_VERSION 1
+#endif
+
+#ifndef CONFIG_TINFOIL_BUG
+#define CONFIG_TINFOIL_BUG 0
+#endif
+
 DEFINE_SPINLOCK(gs_irq_killer);
 
 /*

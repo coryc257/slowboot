@@ -2,7 +2,7 @@ config GS_BASE
 	prompt "GlowSlayer Base Code"
 	bool
 	default n
-menu "Tinfoil Cryptographic Init Verification"	
+menu "Tinfoil Cryptographic Init Verification"
 	config TINFOIL
 		prompt "Enable Tinfoil Init Verification"
 		bool
@@ -10,7 +10,7 @@ menu "Tinfoil Cryptographic Init Verification"
 		depends on GS_BASE
 	config TINFOIL_CF
 		prompt "Tinfoil Config File(must be visible at boot)"
-		string 
+		string
 		default "/etc/gs/tinfoil" if TINFOIL
 		depends on TINFOIL
 	config TINFOIL_CFS

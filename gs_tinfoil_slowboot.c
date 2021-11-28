@@ -35,7 +35,7 @@
 *        | (_-\ | | / _ \ \ V  V / \__ \ | | / _` | | || | / -_) | '_|         *
 *         \___| |_| \___/  \_/\_/  |___/ |_| \__,_|  \_, | \___| |_|           *
 *                                                    |__/                      *
-*                                                                              *
+*                         Dedicated to Terry A. Davis                          *
 *******************************************************************************/
 #define GLOW(code, spot) printk(KERN_ERR "GS TFSB Fail ErrorCode: %d @ %s\n",\
 				code, spot);
@@ -153,7 +153,7 @@ static void pk_sig_verify_free(struct sig_verify *sv)
  */
 int local_public_key_verify_signature(const struct public_key *pkey,
 				      const struct public_key_signature *sig,
-				      const char *CONFIG_TINFOIL_PKALGOPD)
+				      const char *XCFG_TINFOIL_PKALGOPD)
 {
 	struct sig_verify sv;
 	struct pbit pc;
@@ -163,7 +163,7 @@ int local_public_key_verify_signature(const struct public_key *pkey,
 
 	PBIT_N(pc, -EINVAL);
 
-	if (__gs_pk_sig_verify_init(&sv, pkey, sig, CONFIG_TINFOIL_PKALGOPD)) {
+	if (__gs_pk_sig_verify_init(&sv, pkey, sig, XCFG_TINFOIL_PKALGOPD)) {
 		GLOW(-EINVAL,
 		   "local_public_key_verify_signature.__gs_pk_sig_verify_init");
 		goto err;
@@ -319,11 +319,11 @@ static int tinfoil_check_init(struct tinfoil_check *c,
  * @c: tinfoil check
  */
 static int tinfoil_check_allocate(struct tinfoil_check *c,
-				  const char *CONFIG_TINFOIL_HSALGO,
-				  int CONFIG_TINFOIL_DGLEN)
+				  const char *XCFG_TINFOIL_HSALGO,
+				  int XCFG_TINFOIL_DGLEN)
 {
 	struct pbit pc;
-	c->alg = crypto_alloc_shash(CONFIG_TINFOIL_HSALGO, 0, 0);
+	c->alg = crypto_alloc_shash(XCFG_TINFOIL_HSALGO, 0, 0);
 	if (IS_ERR(c->alg)) {
 		PBIT_N(pc, (int)(long)c->alg);
 		c->alg = NULL;
@@ -331,14 +331,14 @@ static int tinfoil_check_allocate(struct tinfoil_check *c,
 		PBIT_RET(pc);
 	}
 
-	c->digest = kmalloc(CONFIG_TINFOIL_DGLEN+1, GFP_KERNEL);
+	c->digest = kmalloc(XCFG_TINFOIL_DGLEN+1, GFP_KERNEL);
 	if (!c->digest) {
 		c->digest = NULL;
 		GLOW(PBIT_GET(pc), "tinfoil_check_allocate.kmalloc");
 		return -ENOMEM;
 	}
 
-	memset(c->digest,0,CONFIG_TINFOIL_DGLEN+1);
+	memset(c->digest,0,XCFG_TINFOIL_DGLEN+1);
 
 	c->sd = __gs_init_sdesc(c->alg);
 	if (!c->sd) {
@@ -354,14 +354,14 @@ static int tinfoil_check_allocate(struct tinfoil_check *c,
  * @c: tinfoil check
  */
 static void tinfoil_check_validate(struct tinfoil_check *c,
-				   int CONFIG_TINFOIL_DGLEN)
+				   int XCFG_TINFOIL_DGLEN)
 {
 	int i;
 	crypto_shash_digest(&(c->sd->shash), c->item->buf, c->item->buf_len,
 			    c->digest);
 
 	PBIT_Y(c->item->is_ok, 0);
-	for (i=0; i<CONFIG_TINFOIL_DGLEN; i++){
+	for (i=0; i<XCFG_TINFOIL_DGLEN; i++){
 		if (c->item->b_hash[i] != c->digest[i]) {
 			PBIT_N(c->item->is_ok, 0);
 			return;
@@ -393,8 +393,8 @@ static void tinfoil_check_free(struct tinfoil_check *c)
  * consumes item->buf
  */
 static void tinfoil_check(struct slowboot_validation_item *item,
-			  const char *CONFIG_TINFOIL_HSALGO,
-			  int CONFIG_TINFOIL_DGLEN)
+			  const char *XCFG_TINFOIL_HSALGO,
+			  int XCFG_TINFOIL_DGLEN)
 {
 
 	struct tinfoil_check check;
@@ -405,13 +405,13 @@ static void tinfoil_check(struct slowboot_validation_item *item,
 	}
 
 	if (tinfoil_check_allocate(&check,
-				   CONFIG_TINFOIL_HSALGO,
-				   CONFIG_TINFOIL_DGLEN)) {
+				   XCFG_TINFOIL_HSALGO,
+				   XCFG_TINFOIL_DGLEN)) {
 		GLOW(-EINVAL, "tinfoil_check.tinfoil_check_allocate");
 		goto err;
 	}
 
-	tinfoil_check_validate(&check, CONFIG_TINFOIL_DGLEN);
+	tinfoil_check_validate(&check, XCFG_TINFOIL_DGLEN);
 	goto std_return;
 err:
 	PBIT_N(item->is_ok, 0);
@@ -427,8 +427,8 @@ std_return:
  */
 static int tinfoil_unwrap (struct slowboot_tinfoil *tinfoil,
 			   struct slowboot_validation_item *item,
-			   const char *CONFIG_TINFOIL_HSALGO,
-			   int CONFIG_TINFOIL_DGLEN)
+			   const char *XCFG_TINFOIL_HSALGO,
+			   int XCFG_TINFOIL_DGLEN)
 {
 	if (tinfoil_open(item) != 0) {
 		GLOW(1, "tinfoil_unwrap.tinfoil_open");
@@ -448,7 +448,7 @@ static int tinfoil_unwrap (struct slowboot_tinfoil *tinfoil,
 		return 1;
 	}
 
-	tinfoil_check(item, CONFIG_TINFOIL_HSALGO, CONFIG_TINFOIL_DGLEN);
+	tinfoil_check(item, XCFG_TINFOIL_HSALGO, XCFG_TINFOIL_DGLEN);
 	if (!PBIT_OK(item->is_ok)) {
 		printk(KERN_ERR "GS TFSB Fail:%s:%s @ "
 				"tinfoil_unwrap.tinfoil_check\n",
@@ -470,8 +470,8 @@ static int tinfoil_unwrap (struct slowboot_tinfoil *tinfoil,
  */
 static loff_t fill_in_item(struct slowboot_validation_item *item,
 			   char *line, loff_t *remaining,
-			   const char CONFIG_TINFOIL_NEW_LINE,
-			   int CONFIG_TINFOIL_HSLEN)
+			   const char XCFG_TINFOIL_NEW_LINE,
+			   int XCFG_TINFOIL_HSLEN)
 {
 	loff_t pos, off, rem;
 
@@ -490,7 +490,7 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 			off = pos+1;
 		}
 
-		if (line[pos] == CONFIG_TINFOIL_NEW_LINE) {
+		if (line[pos] == XCFG_TINFOIL_NEW_LINE) {
 			break;
 		}
 
@@ -500,13 +500,13 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 
 	if (item->path != NULL && item->hash != NULL) {
 		memset(item->path,0,PATH_MAX+1);
-		memset(item->hash,0,CONFIG_TINFOIL_HSLEN+2);
+		memset(item->hash,0,XCFG_TINFOIL_HSLEN+2);
 
 		// Make sure we have a good item
 		// This should not happen because who
 		// would sign something malicous?
-		if (pos > (CONFIG_TINFOIL_HSLEN+5) && (pos-off-1) > 0) {
-			memcpy(item->hash, line, CONFIG_TINFOIL_HSLEN);
+		if (pos > (XCFG_TINFOIL_HSLEN+5) && (pos-off-1) > 0) {
+			memcpy(item->hash, line, XCFG_TINFOIL_HSLEN);
 			memcpy(item->path, line+off, pos-off);
 		}
 	}
@@ -524,21 +524,21 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
  * @sic: slowboot init container
  */
 static void slowboot_init_setup(struct slowboot_init_container *sic,
-				const char *CONFIG_TINFOIL_PKALGO,
-				const char *CONFIG_TINFOIL_IDTYPE,
-				int CONFIG_TINFOIL_DGLEN,
-				const char *CONFIG_TINFOIL_HSALGO,
-				int CONFIG_TINFOIL_PKLEN)
+				const char *XCFG_TINFOIL_PKALGO,
+				const char *XCFG_TINFOIL_IDTYPE,
+				int XCFG_TINFOIL_DGLEN,
+				const char *XCFG_TINFOIL_HSALGO,
+				int XCFG_TINFOIL_PKLEN)
 {
 	memset(sic, 0, sizeof(struct slowboot_init_container));
 
-	sic->rsa_pub_key.pkey_algo = CONFIG_TINFOIL_PKALGO;
-	sic->rsa_pub_key.id_type = CONFIG_TINFOIL_IDTYPE;
+	sic->rsa_pub_key.pkey_algo = XCFG_TINFOIL_PKALGO;
+	sic->rsa_pub_key.id_type = XCFG_TINFOIL_IDTYPE;
 	sic->rsa_pub_key.keylen = -1;
-	sic->sig.digest_size = CONFIG_TINFOIL_DGLEN;
-	sic->sig.pkey_algo = CONFIG_TINFOIL_PKALGO;
-	sic->sig.hash_algo = CONFIG_TINFOIL_HSALGO;
-	sic->kernel_key_len = CONFIG_TINFOIL_PKLEN/2; // Hex/2
+	sic->sig.digest_size = XCFG_TINFOIL_DGLEN;
+	sic->sig.pkey_algo = XCFG_TINFOIL_PKALGO;
+	sic->sig.hash_algo = XCFG_TINFOIL_HSALGO;
+	sic->kernel_key_len = XCFG_TINFOIL_PKLEN/2; // Hex/2
 }
 
 /*
@@ -634,11 +634,11 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
  * @sic: slowboot init container
  */
 static int slowboot_init_digest(struct slowboot_init_container *sic,
-				int CONFIG_TINFOIL_DGLEN,
-				const char *CONFIG_TINFOIL_HSALGO)
+				int XCFG_TINFOIL_DGLEN,
+				const char *XCFG_TINFOIL_HSALGO)
 {
 	struct pbit pc;
-	sic->halg = crypto_alloc_shash(CONFIG_TINFOIL_HSALGO,0,0);
+	sic->halg = crypto_alloc_shash(XCFG_TINFOIL_HSALGO,0,0);
 	if (IS_ERR(sic->halg)) {
 		PBIT_N(pc, (int)(long)sic->halg);
 		GLOW(PBIT_GET(pc), "slowboot_init_digest.crypto_alloc_shash");
@@ -646,12 +646,12 @@ static int slowboot_init_digest(struct slowboot_init_container *sic,
 		PBIT_RET(pc);
 	}
 
-	if (!(sic->digest = kmalloc(CONFIG_TINFOIL_DGLEN+1, GFP_KERNEL))) {
+	if (!(sic->digest = kmalloc(XCFG_TINFOIL_DGLEN+1, GFP_KERNEL))) {
 		GLOW(-ENOMEM, "slowboot_init_digest.kmalloc~digest");
 		return -ENOMEM;
 	}
 
-	memset(sic->digest,0,CONFIG_TINFOIL_DGLEN+1);
+	memset(sic->digest,0,XCFG_TINFOIL_DGLEN+1);
 
 	if(!(sic->hsd = __gs_init_sdesc(sic->halg))) {
 		GLOW(-EINVAL, "slowboot_init_digest.__gs_init_sdesc");
@@ -707,8 +707,8 @@ static void slowboot_init_free(struct slowboot_init_container *sic)
 static int slowboot_init_process(struct slowboot_init_container *sic,
 				 struct slowboot_validation_item **item_ref,
 				 int *item_ct,
-				 const char CONFIG_TINFOIL_NEW_LINE,
-				 int CONFIG_TINFOIL_HSLEN)
+				 const char XCFG_TINFOIL_NEW_LINE,
+				 int XCFG_TINFOIL_HSLEN)
 {
 
 	if (sic->file_size <= 0) {
@@ -717,7 +717,7 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 	}
 
 	for (sic->pos = 0; sic->pos < sic->file_size; sic->pos++) {
-		if (sic->buf[sic->pos] == CONFIG_TINFOIL_NEW_LINE) {
+		if (sic->buf[sic->pos] == XCFG_TINFOIL_NEW_LINE) {
 			sic->num_items++;
 		}
 	}
@@ -741,8 +741,8 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 	while (sic->remaining){
 		sic->pos += fill_in_item(sic->c_item, &sic->buf[sic->pos],
 					 &sic->remaining,
-					 CONFIG_TINFOIL_NEW_LINE,
-					 CONFIG_TINFOIL_HSLEN);
+					 XCFG_TINFOIL_NEW_LINE,
+					 XCFG_TINFOIL_HSLEN);
 		sic->c_item++;
 	}
 
@@ -757,25 +757,25 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
  * @tinfoil: slowboot tinfoil
  */
 static int slowboot_init(struct slowboot_tinfoil *tinfoil,
-			 const char *CONFIG_TINFOIL_PKALGOPD,
-			 const char *CONFIG_TINFOIL_PKALGO,
-			 const char *CONFIG_TINFOIL_IDTYPE,
-			 int CONFIG_TINFOIL_DGLEN,
-			 const char *CONFIG_TINFOIL_HSALGO,
-			 int CONFIG_TINFOIL_PKLEN,
-			 const char CONFIG_TINFOIL_NEW_LINE,
-			 int CONFIG_TINFOIL_HSLEN)
+			 const char *XCFG_TINFOIL_PKALGOPD,
+			 const char *XCFG_TINFOIL_PKALGO,
+			 const char *XCFG_TINFOIL_IDTYPE,
+			 int XCFG_TINFOIL_DGLEN,
+			 const char *XCFG_TINFOIL_HSALGO,
+			 int XCFG_TINFOIL_PKLEN,
+			 const char XCFG_TINFOIL_NEW_LINE,
+			 int XCFG_TINFOIL_HSLEN)
 {
 	struct slowboot_init_container sic;
 	struct pbit pc;
 	PBIT_N(pc, -EINVAL);
 
 	slowboot_init_setup(&sic,
-			    CONFIG_TINFOIL_PKALGO,
-			    CONFIG_TINFOIL_IDTYPE,
-			    CONFIG_TINFOIL_DGLEN,
-			    CONFIG_TINFOIL_HSALGO,
-			    CONFIG_TINFOIL_PKLEN);
+			    XCFG_TINFOIL_PKALGO,
+			    XCFG_TINFOIL_IDTYPE,
+			    XCFG_TINFOIL_DGLEN,
+			    XCFG_TINFOIL_HSALGO,
+			    XCFG_TINFOIL_PKLEN);
 
 	if(slowboot_init_setup_keys(&sic, tinfoil->config_pkey))
 		goto fail;
@@ -785,19 +785,19 @@ static int slowboot_init(struct slowboot_tinfoil *tinfoil,
 		goto fail;
 
 	if(slowboot_init_digest(&sic,
-				CONFIG_TINFOIL_DGLEN,
-				CONFIG_TINFOIL_HSALGO))
+				XCFG_TINFOIL_DGLEN,
+				XCFG_TINFOIL_HSALGO))
 		goto fail;
 
 	if (local_public_key_verify_signature(&sic.rsa_pub_key,
 					      &sic.sig,
-					      CONFIG_TINFOIL_PKALGOPD))
+					      XCFG_TINFOIL_PKALGOPD))
 		goto fail;
 
 	if(slowboot_init_process(&sic, &tinfoil->validation_items,
 				 &tinfoil->slwbt_ct,
-				 CONFIG_TINFOIL_NEW_LINE,
-				 CONFIG_TINFOIL_HSLEN))
+				 XCFG_TINFOIL_NEW_LINE,
+				 XCFG_TINFOIL_HSLEN))
 		goto fail;
 
 	PBIT_Y(pc, 0);
@@ -819,7 +819,7 @@ out:
 /*
  * Check for /proc/cmdlin override
  */
-static int slowboot_enabled(const char *CONFIG_TINFOIL_OVERRIDE)
+static int slowboot_enabled(const char *XCFG_TINFOIL_OVERRIDE)
 {
 	struct file *fp;
 	size_t file_size;
@@ -850,8 +850,8 @@ static int slowboot_enabled(const char *CONFIG_TINFOIL_OVERRIDE)
 	}
 
 	if(__gs_memmem_sp(buf, file_size,
-			  CONFIG_TINFOIL_OVERRIDE,
-			  strlen(CONFIG_TINFOIL_OVERRIDE)) == 0)
+			  XCFG_TINFOIL_OVERRIDE,
+			  strlen(XCFG_TINFOIL_OVERRIDE)) == 0)
 		PBIT_Y(pc, 0);
 
 out:
@@ -875,14 +875,14 @@ out:
  * @tinfoil: slowboot tinfoil struct
  */
 static void slowboot_run_test(struct slowboot_tinfoil *tinfoil,
-			      const char *CONFIG_TINFOIL_PKALGOPD,
-			      const char *CONFIG_TINFOIL_PKALGO,
-			      const char *CONFIG_TINFOIL_IDTYPE,
-			      int CONFIG_TINFOIL_DGLEN,
-			      const char *CONFIG_TINFOIL_HSALGO,
-			      int CONFIG_TINFOIL_PKLEN,
-			      const char CONFIG_TINFOIL_NEW_LINE,
-			      int CONFIG_TINFOIL_HSLEN,
+			      const char *XCFG_TINFOIL_PKALGOPD,
+			      const char *XCFG_TINFOIL_PKALGO,
+			      const char *XCFG_TINFOIL_IDTYPE,
+			      int XCFG_TINFOIL_DGLEN,
+			      const char *XCFG_TINFOIL_HSALGO,
+			      int XCFG_TINFOIL_PKLEN,
+			      const char XCFG_TINFOIL_NEW_LINE,
+			      int XCFG_TINFOIL_HSLEN,
 			      spinlock_t *gs_irq_killer)
 {
 	int j;
@@ -900,14 +900,14 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil,
 		tinfoil->initialized = 0;
 		tinfoil->validation_items = NULL;
 		if (slowboot_init(tinfoil,
-				  CONFIG_TINFOIL_PKALGOPD,
-				  CONFIG_TINFOIL_PKALGO,
-				  CONFIG_TINFOIL_IDTYPE,
-				  CONFIG_TINFOIL_DGLEN,
-				  CONFIG_TINFOIL_HSALGO,
-				  CONFIG_TINFOIL_PKLEN,
-				  CONFIG_TINFOIL_NEW_LINE,
-				  CONFIG_TINFOIL_HSLEN) != 0) {
+				  XCFG_TINFOIL_PKALGOPD,
+				  XCFG_TINFOIL_PKALGO,
+				  XCFG_TINFOIL_IDTYPE,
+				  XCFG_TINFOIL_DGLEN,
+				  XCFG_TINFOIL_HSALGO,
+				  XCFG_TINFOIL_PKLEN,
+				  XCFG_TINFOIL_NEW_LINE,
+				  XCFG_TINFOIL_HSLEN) != 0) {
 			PBIT_N(hard_fail, 0);
 			goto out;
 		}
@@ -916,8 +916,8 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil,
 	for (j = 0; j < tinfoil->slwbt_ct; j++) {
 		tinfoil->failures += tinfoil_unwrap(tinfoil,
 					&(tinfoil->validation_items[j]),
-					CONFIG_TINFOIL_HSALGO,
-					CONFIG_TINFOIL_DGLEN);
+					XCFG_TINFOIL_HSALGO,
+					XCFG_TINFOIL_DGLEN);
 	}
 out:
 		if (tinfoil->validation_items != NULL) {
@@ -939,18 +939,18 @@ out:
  * @tinfoil: slowboot tinfoil struct
  */
 static int slowboot_tinfoil_init(struct slowboot_tinfoil *tinfoil,
-				 const char *CONFIG_TINFOIL_CF,
-				 const char *CONFIG_TINFOIL_CFS,
-				 const char *CONFIG_TINFOIL_PK,
-				 int CONFIG_TINFOIL_PKLEN)
+				 const char *XCFG_TINFOIL_CF,
+				 const char *XCFG_TINFOIL_CFS,
+				 const char *XCFG_TINFOIL_PK,
+				 int XCFG_TINFOIL_PKLEN)
 {
 	if (tinfoil == NULL)
 		return -EINVAL;
 
 	memset(tinfoil, 0, sizeof(struct slowboot_tinfoil));
-	strncpy(tinfoil->config_file, CONFIG_TINFOIL_CF, PATH_MAX);
-	strncpy(tinfoil->config_file_signature, CONFIG_TINFOIL_CFS, PATH_MAX);
-	strncpy(tinfoil->config_pkey, CONFIG_TINFOIL_PK, CONFIG_TINFOIL_PKLEN);
+	strncpy(tinfoil->config_file, XCFG_TINFOIL_CF, PATH_MAX);
+	strncpy(tinfoil->config_file_signature, XCFG_TINFOIL_CFS, PATH_MAX);
+	strncpy(tinfoil->config_pkey, XCFG_TINFOIL_PK, XCFG_TINFOIL_PKLEN);
 	tinfoil->initialized = 1;
 	tinfoil->failures = 0;
 	PBIT_Y(tinfoil->error, 0);

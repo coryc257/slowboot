@@ -32,6 +32,22 @@
 
 DEFINE_SPINLOCK(gs_s_irq_killer);
 
+#ifndef CONFIG_SLOWBOOT_NEW_LINE
+#define CONFIG_SLOWBOOT_NEW_LINE '\n'
+#endif
+
+#ifndef CONFIG_SLOWBOOT_OVERRIDE
+#define CONFIG_SLOWBOOT_OVERRIDE "not_applicable_no_gssb_override"
+#endif
+
+#ifndef CONFIG_SLOWBOOT_VERSION
+#define CONFIG_SLOWBOOT_VERSION 1
+#endif
+
+#ifndef CONFIG_SLOWBOOT_BUG
+#define CONFIG_SLOWBOOT_BUG 0
+#endif
+
 /*
  * Main function for validation
  */
