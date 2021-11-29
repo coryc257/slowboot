@@ -304,10 +304,10 @@ out:
 static int tinfoil_check_init(struct tinfoil_check *c,
 			      struct slowboot_validation_item *item)
 {
+	memset(c,0,sizeof(struct tinfoil_check));
+
 	if (item == NULL || item->buf == NULL || item->buf_len == 0)
 		return -EINVAL;
-
-	memset(c,0,sizeof(struct tinfoil_check));
 
 	c->item = item;
 
@@ -375,7 +375,7 @@ static void tinfoil_check_validate(struct tinfoil_check *c,
  */
 static void tinfoil_check_free(struct tinfoil_check *c)
 {
-	if (c->item->buf != NULL) {
+	if (c->item != NULL && c->item->buf != NULL) {
 		vfree(c->item->buf);
 		c->item->buf = NULL;
 	}
