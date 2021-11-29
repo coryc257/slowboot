@@ -46,7 +46,7 @@ menu "Tinfoil Cryptographic Init Verification"
 	config TINFOIL_PKALGOPD
 		prompt "Algorithm with padding <pkcs1pad(rsa,%s)>"
 		string
-		default "pkcs1pad(rsa,%s)" if TINFOIL
+		default "pkcs1pad(rsa,sha512)" if TINFOIL
 		depends on TINFOIL
 	config TINFOIL_HSALGO
 		prompt "Hash Algorithm <sha512>"
@@ -60,8 +60,8 @@ menu "Tinfoil Cryptographic Init Verification"
 		depends on TINFOIL
 	config TINFOIL_BUG
 		prompt "Bug on Fail"
-		bool 
-		default n if TINFOIL
+		int 
+		default 0 if TINFOIL
 		depends on TINFOIL
 	config TINFOIL_OVERRIDE
 		prompt "Override Parameter"
@@ -113,7 +113,7 @@ menu "Slowboot Cryptographic PostInit Verification"
 	config SLOWBOOT_PKALGOPD
 		prompt "Algorithm with padding <pkcs1pad(rsa,%s)>"
 		string
-		default "pkcs1pad(rsa,%s)" if SLOWBOOT
+		default "pkcs1pad(rsa,sha512)" if SLOWBOOT
 		depends on SLOWBOOT
 	config SLOWBOOT_HSALGO
 		prompt "Hash Algorithm <sha512>"
@@ -127,7 +127,7 @@ menu "Slowboot Cryptographic PostInit Verification"
 		depends on SLOWBOOT
 	config SLOWBOOT_BUG
 		prompt "Bug on Fail"
-		bool 
-		default n if SLOWBOOT
+		int 
+		default 0 if SLOWBOOT
 		depends on SLOWBOOT
 endmenu
