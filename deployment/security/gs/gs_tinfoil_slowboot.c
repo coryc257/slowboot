@@ -70,7 +70,7 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
 		PBIT_Y(pc, (int)(long)sv->tfm);
 		sv->tfm = NULL;
 		GLOW(PBIT_GET(pc), "pk_sig_verify_alloc.crypto_alloc_akcipher");
-		PBIT_RET(pc);
+		return PBIT_RET(pc);
 	}
 
 	sv->req = akcipher_request_alloc(sv->tfm, GFP_KERNEL);
@@ -170,7 +170,7 @@ err:
 	PBIT_N(pc, -EINVAL);
 out:
 	pk_sig_verify_free(&sv);
-	PBIT_RET(pc);
+	return PBIT_RET(pc);
 }
 
 /*
@@ -189,7 +189,7 @@ static int tinfoil_open(struct slowboot_validation_item *item)
 		       item->hash,
 		       item->path,
 		       PBIT_OK(item->is_ok));
-		PBIT_RET(pc);
+		return PBIT_RET(pc);
 	}
 	item->pos = 0;
 	return 0;
@@ -279,7 +279,7 @@ fail:
 		item->buf = NULL;
 	}
 out:
-	PBIT_RET(pc);
+	return PBIT_RET(pc);
 }
 
 /*
@@ -314,7 +314,7 @@ static int tinfoil_check_allocate(struct tinfoil_check *c,
 		PBIT_N(pc, (int)(long)c->alg);
 		c->alg = NULL;
 		GLOW(PBIT_GET(pc), "tinfoil_check_allocate.crypto_alloc_shash");
-		PBIT_RET(pc);
+		return PBIT_RET(pc);
 	}
 
 	c->digest = kmalloc(XCFG_TINFOIL_DGLEN+1, GFP_KERNEL);
@@ -574,7 +574,7 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
 		PBIT_N(pc, (int)(long)sic->fp);
 		sic->fp = NULL;
 		GLOW(PBIT_GET(pc), "slowboot_init_open_files.config_file");
-		PBIT_RET(pc);
+		return PBIT_RET(pc);
 	}
 
 	if (IS_ERR(sic->sfp = filp_open(config_file_signature, O_RDONLY, 0))) {
@@ -582,7 +582,7 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
 		sic->sfp = NULL;
 		GLOW(PBIT_GET(pc),
 		     "slowboot_init_open_files.config_file_signature");
-		PBIT_RET(pc);
+		return PBIT_RET(pc);
 	}
 
 	sic->file_size = __gs_get_file_size(sic->fp);
@@ -629,7 +629,7 @@ static int slowboot_init_digest(struct slowboot_init_container *sic,
 		PBIT_N(pc, (int)(long)sic->halg);
 		GLOW(PBIT_GET(pc), "slowboot_init_digest.crypto_alloc_shash");
 		sic->halg = NULL;
-		PBIT_RET(pc);
+		return PBIT_RET(pc);
 	}
 
 	if (!(sic->digest = kmalloc(XCFG_TINFOIL_DGLEN+1, GFP_KERNEL))) {
@@ -799,7 +799,7 @@ fail:
 	tinfoil->validation_items = NULL;
 out:
 	slowboot_init_free(&sic);
-	PBIT_RET(pc);
+	return PBIT_RET(pc);
 }
 
 /*
@@ -1082,6 +1082,26 @@ int __gs_pk_sig_verify_init(struct sig_verify *sv,
 	return 0;
 }
 
+/*
+ * Perform entire test
+ * @config_tinfoil_cf: path for the configuration file
+ * @config_tinfoil_cfs: path for the configuration file checksum file
+ * @config_tinfoil_pk: correctly (DER for RSA) encoded public key in HEX
+ * @config_tinfoil_pklen: strlen of @tinfoil_pk
+ * @config_tinfoil_dglen: number of bytes in digest 64 for sha512
+ * @config_tinfoil_hslen: strlen of hex representation of digest, 128 for sha512
+ * @tinfoil_pkalgo: algorithm used, likely "rsa"
+ * @tinfoil_pkalgopd: algorithm padding, likely "pkcs1pad(rsa,sha512)" can be ""
+ * @tinfoil_hsalgo: digest used, likely "sha512"
+ * @config_tinfoil_idtype: public_key.id_type likely "X509"
+ * @gs_irq_killer: Nullable spinlock_t to block IRQ during test
+ * @config_tinfoil_new_line: char for new line '\n'
+ * @config_tinfoil_override: magic cmdline value to bypass test
+ * @config_tinfoil_version: logic version to use likely 1
+ * @config_tinfoil_reserved: future use
+ * @config_tinfoil_unused: future use
+ * @config_bug_on_fail: BUG(); if errors occur
+ */
 int __gs_tfsb_go(const char *config_tinfoil_cf,
 		 const char *config_tinfoil_cfs,
 		 const char *config_tinfoil_pk,
@@ -1163,9 +1183,9 @@ out:
 			kfree(tinfoil);
 			tinfoil = NULL;
 		}
-		PBIT_RET(pc);
+		return PBIT_RET(pc);
 	} else
-		PBIT_RET(pc);
+		return PBIT_RET(pc);
 
 }
 EXPORT_SYMBOL_GPL(__gs_tfsb_go);
