@@ -30,22 +30,6 @@
 
 #define GS_STRING_BASE 4096
 
-/* Configuration */
-struct gs_tfsb_config {
-	int tinfoil;
-	char tinfoil_cf[PATH_MAX+1];
-	char tinfoil_cfs[PATH_MAX+1];
-	char tinfoil_pk[GS_STRING_BASE+1];
-	int tinfoil_pklen;
-	int tinfoil_hslen;
-	char tinfoil_pkalgo[GS_STRING_BASE+1];
-	char tinfoil_pkalgopd[GS_STRING_BASE+1];
-	char tinfoil_hsalgop[GS_STRING_BASE+1];
-	char tinfoil_idtype[GS_STRING_BASE+1];
-	char tinfoil_override[GS_STRING_BASE+1];
-	int tinfoil_version;
-};
-
 /* File Validation item */
 struct slowboot_validation_item {
 	char hash[GS_STRING_BASE+2];
@@ -135,6 +119,26 @@ int __gs_pk_sig_verify_init(struct sig_verify *sv,
 			    const struct public_key *pkey,
 			    const struct public_key_signature *sig,
 			    const char *pkalgopd);
+/*
+ * Perform entire test
+ * @config_tinfoil_cf: path for the configuration file
+ * @config_tinfoil_cfs: path for the configuration file checksum file
+ * @config_tinfoil_pk: correctly (DER for RSA) encoded public key in HEX
+ * @config_tinfoil_pklen: strlen of @tinfoil_pk
+ * @config_tinfoil_dglen: number of bytes in digest 64 for sha512
+ * @config_tinfoil_hslen: strlen of hex representation of digest, 128 for sha512
+ * @tinfoil_pkalgo: algorithm used, likely "rsa"
+ * @tinfoil_pkalgopd: algorithm padding, likely "pkcs1pad(rsa,sha512)" can be ""
+ * @tinfoil_hsalgo: digest used, likely "sha512"
+ * @config_tinfoil_idtype: public_key.id_type likely "X509"
+ * @gs_irq_killer: Nullable spinlock_t to block IRQ during test
+ * @config_tinfoil_new_line: char for new line '\n'
+ * @config_tinfoil_override: magic cmdline value to bypass test
+ * @config_tinfoil_version: logic version to use likely 1
+ * @config_tinfoil_reserved: future use
+ * @config_tinfoil_unused: future use
+ * @config_bug_on_fail: BUG(); if errors occur
+ */
 int __gs_tfsb_go(const char *config_tinfoil_cf,
 		 const char *config_tinfoil_cfs,
 		 const char *config_tinfoil_pk,

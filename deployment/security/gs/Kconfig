@@ -1,7 +1,13 @@
+# SPDX-License-Identifier: GPL-2.0-only
 config GS_BASE
 	prompt "GlowSlayer Base Code"
 	bool
 	default n
+	help
+	  This enables GS Security Enhancements for cryptographic checks of files
+	  at times when the check is useful to create a form of explicit acess
+	  control. Tinfoil is Pre-Init. Slowboot is Post-Init and controlled by
+	  the init process
 menu "Tinfoil Cryptographic Init Verification"
 	config TINFOIL
 		prompt "Enable Tinfoil Init Verification"
@@ -15,52 +21,52 @@ menu "Tinfoil Cryptographic Init Verification"
 		depends on TINFOIL
 	config TINFOIL_CFS
 		prompt "Tinfoil Config File Signature File (must be visible at boot)"
-		string 
+		string
 		default "/etc/gs/tinfoil.sig" if TINFOIL
 		depends on TINFOIL
 	config TINFOIL_PK
 		prompt "Tinfoil Public Key (Hex String Literal)"
-		string 
+		string
 		default "" if TINFOIL
 		depends on TINFOIL
 	config TINFOIL_PKLEN
 		prompt "Tinfoil Public Key Length (Of Hex, maybe <1052>)"
-		int 
+		int
 		default 1052 if TINFOIL
 		depends on TINFOIL
 	config TINFOIL_DGLEN
 		prompt "Digest Length for validation (sha512 is <64>)"
-		int 
+		int
 		default 64 if TINFOIL
 		depends on TINFOIL
 	config TINFOIL_HSLEN
 		prompt "Digest Has Length in Hex (sha512 is <128>)"
-		int 
+		int
 		default 128 if TINFOIL
 		depends on TINFOIL
 	config TINFOIL_PKALGO
 		prompt "Algorithm used for verification <rsa>"
-		string 
+		string
 		default "rsa" if TINFOIL
 		depends on TINFOIL
 	config TINFOIL_PKALGOPD
-		prompt "Algorithm with padding <pkcs1pad(rsa,%s)>"
+		prompt "Algorithm with padding <pkcs1pad(rsa,sha512)>"
 		string
 		default "pkcs1pad(rsa,sha512)" if TINFOIL
 		depends on TINFOIL
 	config TINFOIL_HSALGO
 		prompt "Hash Algorithm <sha512>"
-		string 
+		string
 		default "sha512" if TINFOIL
 		depends on TINFOIL
 	config TINFOIL_IDTYPE
 		prompt "Signature ID Type <X509>"
-		string 
+		string
 		default "X509" if TINFOIL
 		depends on TINFOIL
 	config TINFOIL_BUG
 		prompt "Bug on Fail"
-		int 
+		int
 		default 0 if TINFOIL
 		depends on TINFOIL
 	config TINFOIL_OVERRIDE
@@ -69,7 +75,7 @@ menu "Tinfoil Cryptographic Init Verification"
 		default "tinfoil_override" if TINFOIL
 		depends on TINFOIL
 endmenu
-menu "Slowboot Cryptographic PostInit Verification"	
+menu "Slowboot Cryptographic PostInit Verification"
 	config SLOWBOOT
 		prompt "Enable Slowboot PostInit Verification"
 		bool
@@ -77,57 +83,57 @@ menu "Slowboot Cryptographic PostInit Verification"
 		depends on GS_BASE
 	config SLOWBOOT_CF
 		prompt "Slowboot Config File(must be visible at boot)"
-		string 
+		string
 		default "/etc/gs/slowboot" if SLOWBOOT
 		depends on SLOWBOOT
 	config SLOWBOOT_CFS
 		prompt "Slowboot Config File Signature File (must be visible at boot)"
-		string 
+		string
 		default "/etc/gs/slowboot.sig" if SLOWBOOT
 		depends on SLOWBOOT
 	config SLOWBOOT_PK
 		prompt "Slowboot Public Key (Hex String Literal)"
-		string 
+		string
 		default "" if SLOWBOOT
 		depends on SLOWBOOT
 	config SLOWBOOT_PKLEN
 		prompt "Slowboot Public Key Length (Of Hex, maybe <1052>)"
-		int 
+		int
 		default 1052 if SLOWBOOT
 		depends on SLOWBOOT
 	config SLOWBOOT_DGLEN
 		prompt "Digest Length for validation (sha512 is <64>)"
-		int 
+		int
 		default 64 if SLOWBOOT
 		depends on SLOWBOOT
 	config SLOWBOOT_HSLEN
 		prompt "Digest Has Length in Hex (sha512 is <128>)"
-		int 
+		int
 		default 128 if SLOWBOOT
 		depends on SLOWBOOT
 	config SLOWBOOT_PKALGO
 		prompt "Algorithm used for verification <rsa>"
-		string 
+		string
 		default "rsa" if SLOWBOOT
 		depends on SLOWBOOT
 	config SLOWBOOT_PKALGOPD
-		prompt "Algorithm with padding <pkcs1pad(rsa,%s)>"
+		prompt "Algorithm with padding <pkcs1pad(rsa,sha512)>"
 		string
 		default "pkcs1pad(rsa,sha512)" if SLOWBOOT
 		depends on SLOWBOOT
 	config SLOWBOOT_HSALGO
 		prompt "Hash Algorithm <sha512>"
-		string 
+		string
 		default "sha512" if SLOWBOOT
 		depends on SLOWBOOT
 	config SLOWBOOT_IDTYPE
 		prompt "Signature ID Type <X509>"
-		string 
+		string
 		default "X509" if SLOWBOOT
 		depends on SLOWBOOT
 	config SLOWBOOT_BUG
 		prompt "Bug on Fail"
-		int 
+		int
 		default 0 if SLOWBOOT
 		depends on SLOWBOOT
 endmenu

@@ -55,21 +55,7 @@ static void __gs_tinfoil_fail_alert(struct slowboot_tinfoil **tf, int is_bug)
 		BUG();
 	}
 }
-////////////////////////////////////////////////////////////////////////////////
-//openssl x509 -C -in my_signing_key_pub.der -inform DER
-//xxd -i siggywiggy.sha512
-//xxd -ps -c 9999999 siggywiggy.sha512 > siggywiggy.hex
-// It helps if you are using an RSA key
-//openssl genrsa -aes256 -passout pass:<phrase> -out private.pem 4096
-//openssl rsa -in private.pem -passin pass:<phrase> -pubout -out public.pem
-//openssl dgst -sha512 -sign <private-key> -out /tmp/sign.sha512 <file>
-//openssl base64 -in /tmp/sign.sha256 -out <signature>
-//openssl base64 -d -in <signature> -out /tmp/sign.sha256
-//openssl dgst -sha512 -verify <pub-key> -signature /tmp/sign.sha512 <file>
-//openssl asn1parse -inform PEM -in public.pem -strparse 19 -out kernel.key
-//xxd -i kernel.key
-//openssl rsa -in private.pem -passin pass:1111 -pubout -out public.pem
-////////////////////////////////////////////////////////////////////////////////
+
 /*
  * Allocate data for public key signature validation
  * @sv: sig verify container
@@ -1183,4 +1169,3 @@ out:
 
 }
 EXPORT_SYMBOL_GPL(__gs_tfsb_go);
-
