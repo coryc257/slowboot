@@ -12,3 +12,9 @@ Add conditional compilation in init/main.c for calling tinfoil_verify
 Signed-off-by: Cory Craig <gs.cory.craig@gmail.com>
 ---
 There should be	a LSM hook to call tinfoil_verify ideally
+
+
+
+#ifdef CONFIG_TINFOIL
+#include <linux/gs_tinfoil.h>
+#endif

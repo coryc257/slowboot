@@ -877,7 +877,7 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil,
 	struct pbit hard_fail;
 
 	WARN_ON(!tinfoil);
-	if(!tinfoil)
+	if (!tinfoil)
 		return;
 
 	PBIT_Y(hard_fail, 0);
