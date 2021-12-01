@@ -322,7 +322,7 @@ static int tinfoil_check_allocate(struct tinfoil_check *c,
 		return -ENOMEM;
 	}
 
-	memset(c->digest,0,XCFG_TINFOIL_DGLEN+1);
+	memset(c->digest, 0, XCFG_TINFOIL_DGLEN+1);
 
 	c->sd = __gs_init_sdesc(c->alg);
 	if (!c->sd) {
@@ -346,7 +346,7 @@ static void tinfoil_check_validate(struct tinfoil_check *c,
 			    c->digest);
 
 	PBIT_Y(c->item->is_ok, 0);
-	for (i=0; i < XCFG_TINFOIL_DGLEN; i++) {
+	for (i = 0; i < XCFG_TINFOIL_DGLEN; i++) {
 		if (c->item->b_hash[i] != c->digest[i]) {
 			PBIT_N(c->item->is_ok, 0);
 			return;
@@ -530,7 +530,7 @@ static void slowboot_init_setup(struct slowboot_init_container *sic,
  * @config_pkey: hex representation of DER encoded public key
  */
 static int slowboot_init_setup_keys(struct slowboot_init_container *sic,
-				    const char * config_pkey)
+				    const char *config_pkey)
 {
 
 	if (sic->kernel_key_len <= 0 || config_pkey == NULL)
@@ -624,7 +624,7 @@ static int slowboot_init_digest(struct slowboot_init_container *sic,
 {
 	struct pbit pc;
 
-	sic->halg = crypto_alloc_shash(XCFG_TINFOIL_HSALGO,0,0);
+	sic->halg = crypto_alloc_shash(XCFG_TINFOIL_HSALGO, 0, 0);
 	if (IS_ERR(sic->halg)) {
 		PBIT_N(pc, (int)(long)sic->halg);
 		GLOW(PBIT_GET(pc), __func__, "crypto_alloc_shash");
@@ -876,7 +876,9 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil,
 	unsigned long flags;
 	struct pbit hard_fail;
 
-	BUG_ON(!tinfoil);
+	WARN_ON(!tinfoil);
+	if(!tinfoil)
+		return;
 
 	PBIT_Y(hard_fail, 0);
 	PBIT_N(tinfoil->error, -EINVAL);
@@ -1013,6 +1015,7 @@ char *__gs_read_file_to_memory(struct file *fp,
 
 	if (num_read != file_size && !ignore_size) {
 		vfree(buf);
+		buf = NULL;
 	}
 
 out:

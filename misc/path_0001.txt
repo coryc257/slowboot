@@ -1,3 +1,4 @@
+from Cory Craig	<gs.cory.craig@gmail.com>
 
 Add GlowSlayer Security System with Tinfoil Pre-Init check
 Add GlowSlayer Security System with Slowboot Post-Init check
@@ -6,3 +7,8 @@ Add GlowSlayer gs_tinfoil_slowboot shared code
 Add Makefiles/KConfigs
 Updated security/{Kconfig, Makefile} to allow for enabling
 GlowSlayer Security System
+Add conditional compilation in init/main.c for calling tinfoil_verify
+
+Signed-off-by: Cory Craig <gs.cory.craig@gmail.com>
+---
+There should be	a LSM hook to call tinfoil_verify ideally
