@@ -37,7 +37,7 @@
  *                        Dedicated to Terry A. Davis                          *
  ******************************************************************************/
 #define GLOW(code, spot, FUNC) pr_err("GS TFSB Fail ErrorCode: %d @ %s.%s\n",\
-				code, spot, FUNK)
+				code, spot, FUNC)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -709,7 +709,7 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 	}
 
 	if (sic->num_items == 0) {
-		GLOW(-EINVAL, __func__, "~no items")
+		GLOW(-EINVAL, __func__, "~no items");
 		return -EINVAL;
 	}
 

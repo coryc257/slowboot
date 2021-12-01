@@ -1,4 +1,6 @@
-from Cory Craig	<gs.cory.craig@gmail.com>
+  GNU nano 5.8                                              /home/corycraig/code/linux-5.16-rc1/.git/COMMIT_EDITMSG                                              Modified  
+Add GlowSlayer Security System
+from Cory Craig <gs.cory.craig@gmail.com>
 
 Add GlowSlayer Security System with Tinfoil Pre-Init check
 Add GlowSlayer Security System with Slowboot Post-Init check
@@ -11,7 +13,13 @@ Add conditional compilation in init/main.c for calling tinfoil_verify
 
 Signed-off-by: Cory Craig <gs.cory.craig@gmail.com>
 ---
-There should be	a LSM hook to call tinfoil_verify ideally
+There should be a LSM hook to call tinfoil_verify ideally
+This could prevent a physical access backdoor from being trivally
+exploited via a poisoned init program placed by the attacker
+This also helps	prevent	a successful hack of a computer	while     
+running	from putting a poisoned init causing LUKS encryption
+password from being disclosed to the adversary
+
 
 
 

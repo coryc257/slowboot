@@ -979,1242 +979,1250 @@
 	.hash="3fd78329be9db1bf7dcdc74f589182bcbd6a5c098391a65ae05103b586e7a7b8dbdbd32301c0278c814d19a73d687c7c7d19f90174d8ae92a50a850d5c372185"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/sound/soundcore.ko",
-	.hash="d34a63f8244ab70f9af7304f142b041110403e3c4d378d0f827461926b1a9a91cfe8e76d58793768463122b7249f9d501eccd69af88c34db9fa55e96b0c2d2ef"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/sound/soundcore.ko",
+	.hash="931a41de1a944865db4bf79dc699f715de682bc5805f9e3b4279258fcf52ba8807f8eeb6bf7088933addee7b51a1e20bc6abebb6074b8ec16da37ede5a47433e"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/sound/core/snd.ko",
-	.hash="13b0d058536592b1ac54a3dd300179b934c95096fbb487aa514c4e180de6f809268aadf000c17d511a196cb3e48ace3e05354f124de3a18ffcb0999a77050ece"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/sound/core/snd.ko",
+	.hash="6847b468b7dea7c077198254578f4656f5d55f1b6f57463c5185667993759e0b317dd37e86305f7670bbae3e9522dc5806922e59467d18da5ffc7b0c8300b79e"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/sound/core/snd-seq-device.ko",
-	.hash="5b7656cdbc12c86c8a3c571c664f88864105f1ee1b3879b7b407cf6029abe613f3d0dcdc6115545b6f28421f701c781324d9363ff067cdfb40192ded84fbc15b"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/sound/core/snd-seq-device.ko",
+	.hash="57105900011799a49180b55f68baf126ad9873e57f1c56d7cfd29cf502f221a85876dfbb53752f1aeb45f8f11e938553ef695b072ba49b825ef0da43a7b1694a"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/sound/core/snd-rawmidi.ko",
-	.hash="523bda067b1729ed1cd8104d46d394b8d40ed996a2666ec449a0992b9a2028aeca1d95ff03de088ba7304e5ae86c0378cd6638d702b0cf4314923021b42c8ecd"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/sound/core/snd-rawmidi.ko",
+	.hash="3ae1b1c4b3a759c95ceba79248eb07c1423e021b6450155972953a17c74e8e81a201dcb57bfac3321785fbae3409823fafff19b7256f45235801c420b951526e"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/security/keys/trusted-keys/trusted.ko",
-	.hash="e8084b0b85c904d9a70baf12452ec1d7b78f868c5a427e13618db3da0a3b588fcca0be3ae4f3ec3eb882a66cd23439277759b3e74a2c1eca9acf4997344882d8"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/security/keys/trusted-keys/trusted.ko",
+	.hash="ef051abb8912523d43eb4009352f8d2718f5099fb04f49933f48aafd57dbbb5381a2f1dd500689b68c4fd6ce68da7ee56135e245920467ce5459c609e75a106c"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/net/rfkill/rfkill.ko",
-	.hash="4202a2402313fa414c348e1b79a639c9ca1a9f590d26d79c6386b168c4252201c40320f9bd0edbbd7a7c45e236774e9e92a1167184c5e37fd528076fc917ba8e"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/net/rfkill/rfkill.ko",
+	.hash="e5e6aeaf54fdeba8e14de82b4eecb4cecc531b466d630bbbd1784828c939c3c514f8d0a6f244123e73b5e5f61cc13ce7d64551c06dc501385ab73b9790a4287d"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/net/core/failover.ko",
-	.hash="68c4aca78a25bcc8d67907c1c47c087ddd09b6abedeb2c2a5cf8304131e0e078f38920489153a0f5c7c86ea59020b58ca15079d7307fb3d31b38d98a581927e8"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/net/core/failover.ko",
+	.hash="99e4d613a8ce4e021aa31b985e41504fa1085a71023c7189fad0a884cb103064b3345626eae09918f6ae678ab68e3ee1c346e152abb94686068979d719c17cec"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/lib/lz4/lz4hc_compress.ko",
-	.hash="e522489a427e38130417a91c049bd778e399a56935fcfbff41fae085024b7a35cce08e32bb972abe418d0148093a458d88a0e0a196043b7d712679b8393ec758"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/lib/lz4/lz4hc_compress.ko",
+	.hash="99350ff6c82bf132752fe934c3651d7546de0e87996adfbc45344f5f55d7654345ef0bd8dd84b8c004717ddf011d5369adc3050f34a35866e10fa6b0084229e8"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/lib/lz4/lz4_compress.ko",
-	.hash="13bc6d8c965c6238a2ae46230e161eb91fe363184ffdb1931da7a46d109b3480d9d107f08fd07b9694cbf4816647ca289d7ae9a4016a17ed63196f5ed4c141d5"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/lib/lz4/lz4_compress.ko",
+	.hash="65bddbc53b0c6bca4c3e85da9b154c5e29c2394a8c0cfa7b6679e5878361b05db41fba4f25116bc4b399acfde69f8acd9a8de427761955b3879b48c64faa9636"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/lib/crypto/libdes.ko",
-	.hash="a8785097c4eb7c889faaee85f9a77e7bfd9097c3f49a6a2b2c5a2f2015ccae5ec394997d45c6fe7fcdae98e35208e11a7ced64b02680b1dfd2ad992f1b1bfdb0"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/lib/crypto/libdes.ko",
+	.hash="ddb773de9f0b80203fbf96bb883072b95c8ce3ba0b81bcd7d3f418500ae145e0f26fa8df607f50fbb036c64f43a5f1abe52ea89a69ff403f87bfec9c789a4fd4"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/lib/crypto/libcurve25519-generic.ko",
-	.hash="c8ab61be2b148e7ef4672a8d58498dd363f57c76414b5b0f9fe038e55e6ac6246950287e7ccfa3e6c5aa5a8876d1e618c023e5ff8a701a8f977039f7b998c42e"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/lib/crypto/libcurve25519-generic.ko",
+	.hash="9313d7b3960b70f59d3ace01121498994f0b5267d9da1cb9ddc83162f3e6b2d72fa6adbbe7e6d2c5122fb720cc02af80c85655df1e0b40b4b01d23c7bb75c11c"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/lib/crypto/libblake2s-generic.ko",
-	.hash="f6f9c8c7f9fda6dc4663b0fa7c6bf7ea7f4a10dece60360367eaa30ada08f77c11e17d1645d1596b5e8b0717de97f6276d217de0712f2521ce63ea7d95019856"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/lib/crypto/libblake2s-generic.ko",
+	.hash="b5f9243ebbb9d9f56cdd8a44162a632eb54c454329d7d79962327d5754f8463fdbd9e8358e40438ea067d519f3be8b3c91d7ebee6304e38151c9e0e7397e60b6"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/lib/asn1_encoder.ko",
-	.hash="39ea8f72902e285f45c7e196c1e879a2c379dae177d698566d7487d79afed6be1acb9bdf5afb718f2af949cb259a1ebcfeb3e1fa55d851ecda400bac0220da16"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/lib/asn1_encoder.ko",
+	.hash="18ed51e41aa51915756cfc34290417fec458d1a72d231849c43e60618d9c1d2aa13085255f74794b5c2592a1acd974caa9b032806df4413b26894c61ea9c619c"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/fs/fuse/fuse.ko",
-	.hash="ee41d9a2b3dcf7d8856eda1f0787313b7189aecf958bda628c6368a4ac10eba77ada2b79365775695f78a80c5551ebe77bfb0149a4f2c46a9853b3c45b234f26"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/fs/fuse/fuse.ko",
+	.hash="4843d78c17a432d4a376b57e6af357fa598ec80bcd2ec27589b86f4a3270a490f2b00b72c27a589de7619e84cb8092d0e18278ad0c2d208b887d35e2bf172fac"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/fs/fat/vfat.ko",
-	.hash="2288dfc3a9bc8adc580071fa858a742c98b3457057985dc940c44e7b496e3dc80c4e5d938919f9aa46821c46ce1c279b3cade07cbffabe0de2c92a5934d9611d"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/fs/fat/vfat.ko",
+	.hash="012da68f059a348b25437a2bd6bd8f4ba286038d1eaeba987297c342e580bf0d635beef2432bda86cbab84b2fdce96d2fa1aa4a711368aa62b90c96990ae949d"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/fs/fat/fat.ko",
-	.hash="cc1afae27f9879cb2dc5d98c118a179cb188a39448dff3dfb92e5c008093799edb9cb8090f49916ffb0114a69409c4900eae313100b90aa1efeee9ae5fe41d16"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/fs/fat/fat.ko",
+	.hash="280b2d3a320e911535f1bc0130fa58ec855752ddcfeca87340df0243f2e026c3fcaec88d039635656b134885a5612e84533802c2b1bf2cb6371a2e8fd853341e"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/xen_wdt.ko",
-	.hash="4bd28558e8edfe9723d8f47bf28746a2aebea308d28a9f85f7258ff8f1b734dfb5216e9daa6ec76730d0d71867b39a792d664ecf3c53523815ba31e0349daa7c"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/xen_wdt.ko",
+	.hash="06af54175780c3d709e3567ba8a3e3ae3b0009230882748984d005c9bbda69d36ddb453718eefdd33c0111d7ddad79ef9ac6a3f00d911b93fa6b513664700007"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/wdt_pci.ko",
-	.hash="f75d495c82f73b22e0e56613416d2b105f2f4d5e32363aab29bb16e30648152d2008fc282766da9a59249f08210778dab8b71277741a7346ef211da16fe853d4"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/wdt_pci.ko",
+	.hash="44eb65cf34affae3935976a6136f30deef26a434cd32ab32b77e9c001468d6a10420cb155ee4b7e1b899e0c0781eea170391f610a947a2c00943a161e0b31974"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/wdat_wdt.ko",
-	.hash="5fa59a33281ce62f1bc55125fb9e94c9c1c92ec9b8934d619c7dce77c6a1ee7c066f41dede95b58168afe84f75cf11c9afebb30f18604c2f238c06d396faa868"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/wdat_wdt.ko",
+	.hash="0779c86bafbc02290b712bea0cc7accf5d9ee8c9f5f04d0280cfad1f345f8a54b2130b24112064b48a72a669c708a4448e5cd6e19f264b2b7a5506982520126f"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/w83977f_wdt.ko",
-	.hash="5918e4065b17e2a55e4c666a9941e23dde2db184f7a59f31d00daf004dfe080f5cfae36a38df9b088799fd08fb05159a8eb88123c59ddf1cc322c731dbcd6b9d"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/w83977f_wdt.ko",
+	.hash="f58cc0b04ab274e3313824c3f74964398cc2305966ce6d8819fae0ecf54f505b30662b5d1307b942a31e9f3d351ca5b904ca84fed243dbc5ef9221ec558d18b1"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/w83877f_wdt.ko",
-	.hash="48fff15b532cb8394a113238ad5d7f00066346d5090e04e33c68787fb7399222ed1f8b04f3e442cdedc8ed173c5870e1ed0912a9798d5af803e576435074eb59"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/w83877f_wdt.ko",
+	.hash="82eb8c125c8f7d00a469f08b83549b0f84b71152f1c106def67ff2a1e2dfe6ecb39a2863e23951a11dc358211e511d9672b54abc8383672ff6ae97a0afbae826"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/w83627hf_wdt.ko",
-	.hash="f74102b7dcf398cb14e0a0bdcd90ee086a23be2afd6b7a82b31991b0bef71954004478f3903ff0665d9f272105ec9a29110325fcea7019b71e27a739d59cf836"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/w83627hf_wdt.ko",
+	.hash="fc906e84ccafae3136bd6d571237bb87fdf94ce87a8dd4f5ff0abebc9844a9a82067e2f7315f922f5363309b3cde28b1ec4f9e1dbe71b147a023ea4459be74e5"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/via_wdt.ko",
-	.hash="eb9dcfeda395e6a79ec5654f37ffc2b1a05c3ae940da52bc69fc0ed00a23e6e1196fb2d63eaaa9439876a44696a61d69b37bace5fce49e4a6546b59145ac3b55"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/via_wdt.ko",
+	.hash="e8ed04ed56cc1b1adaa80e428cd970fa8cb6abf6d26d6350da0c77da5ba172c3f96e8a65bb317f57efd41449349a63d55c2d9977ddac812e32d1d0a545037171"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/tqmx86_wdt.ko",
-	.hash="1dacd22594450d1b72a18bd33c84fbc163baf84bf45c51a8f5a240dbe1e983adba36a43867cf63ca20246ed71806ceed66048c3d5e3fcd2bd64cbaaae67cbc32"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/tqmx86_wdt.ko",
+	.hash="5f5331f9a7a8e5346938825a7d9e63c02bbf6aac8d54a0a2f6b5a65cf7ac23580582e7c90504d60f526c727eff1010ae43fade17a95f2f768447774c02689872"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/sp5100_tco.ko",
-	.hash="c9875be535e1b1c455fcd065234abcdb51457c6428398d7d478323545a49ba116199d3f7ad3253982fb4ff834832ef4d788c13875d831f603375269ac03de9eb"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/sp5100_tco.ko",
+	.hash="ff81dc484dabe33239af0e0b02cfc22f36deff73f5d0d5e8319720a41a24de64374060f807d2028e66774b02e5a74cf1bab43978f3fd2dfa3fcd3b32cd3bd83d"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/softdog.ko",
-	.hash="f0c25e5d659eadc806864b5e9560a6207229d7f9818ecb88a39524a1f7cd69ce51ee349bb31934a63b558a805c7bb1471d5487f0459c20170a0b3b09f595a0eb"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/softdog.ko",
+	.hash="78e9eb8cff5f3e11a4a2548f4eb62dde5af7066283328e1e94d052bb7205e20260a9b43c9c1a4a94ed5465c9f5c15c99776c51ee351554345cec1b520200ae5b"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/sch311x_wdt.ko",
-	.hash="ae9cea8beefe22fc56b5ee7be823ac136062c2218194ac008f082f5d9b753fc2f8830ff90c938cb6ea3bc58d56d2cf120f3c3901b17b3b7398502087d72665db"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/sch311x_wdt.ko",
+	.hash="8798aeec03931437fb80d33e9d9dd769ee7c5ebe71bd6f12d7571fd91ea671986f5dd1901287ee78110f1d4818a4c9c959c9b3e73b07f6bd9ec6eddf1943cf36"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/sbc_fitpc2_wdt.ko",
-	.hash="63d1ca6b6d87f326399d56bd5f3ab7beaa0aaade29239dea77ba5d6ec4b4f7b99d8d363f40a01146038d9a4221dc5e1817d44de52475665bccdd08fa3032596b"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/sbc_fitpc2_wdt.ko",
+	.hash="7c0b377020c65497c2a31cda7c83ced85d891111e835d06864254091df0395a8af4257bbd9b06eb26b170b421fa8df99ad16d2f1f52d190fd1c3666fea23fd85"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/pcwd_usb.ko",
-	.hash="9080b974afb30c293cb610f3c85b18f5c249dbc9c57cdd3dac09f0076aae4c003bf4fac73f6242c0af63730c2d52a41c97dc35b8df26c25173dcf8bb08744d1e"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/pcwd_usb.ko",
+	.hash="da262f4ce48acad6f9973dc51c9558670997f5777e107708d98820dbe74341080b46e95d6e9238c0a3a1230710e08f67feec5bf6e13064c764ed2630bbce0ddc"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/pcwd_pci.ko",
-	.hash="3ee2e57abfe1ad4b05475e38da91e3a819eeb2ca4cbfb5d8af55d844ce0c49a48a6b75cd0ac415d05598558c3aeafa1360f88deb92ffbf157bf42f65700f2908"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/pcwd_pci.ko",
+	.hash="6fcda0b952059e33803bed86d042c51ac8eaa305b0f03229df47d6a52891a7198abc6ef0cb0bd487e81f85545f228b7912bd52f9303a89e69095a76dfc51a096"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/nv_tco.ko",
-	.hash="9ead5804cf6985e7da6c153f3ecd4e0298937e2cdf9c9b3c82812ad3fb27f8cae94eca1da5d43d056e6cae54bd3d087ddec2f46594905271f6715fe1c95bbb43"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/nv_tco.ko",
+	.hash="4747679ccb42bb48bcf3deaf9c5d6013c0e80c305737cb8887e8925771d9995171a62103bd855ca3dc628074cdc2eb658524f5bb4fdeb75af10f2d9762d6b4b9"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/nic7018_wdt.ko",
-	.hash="d00e9c8eab7f7ab7dc2e0e61e8233ff1007d73d29fae12d548ef274e45753055019aed5cfe49f262ed2d9fd97feab1a4922b73b8a70c98d0f3f33b683d2d3842"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/nic7018_wdt.ko",
+	.hash="fbe84656a00c9bb6be402fbc9c59a9b90fdca966c578af1a596226ec2555d2994b7632fe95b06bc4511b7835318d80b6202213585f644d82f7ecc1dcb2df9f06"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/mlx_wdt.ko",
-	.hash="f18266e3dedcfa0258e877b872c3169fe2add82b3bf1e1ebd7d39cd52d87cb7ed33865227ac41901a9d3e38a5c9eca7e3e50fa5420a6d12b1772ce20e02eb692"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/mlx_wdt.ko",
+	.hash="4dc3c24ebf5fa2b300f27264232b4fca8ce7e86f8c3298410e70eb8d61ea6d31693796dde1f61a5ef678165ae6b4fc3b8513b6c3c12c38775ac0801f5f9e1cd7"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/mei_wdt.ko",
-	.hash="9f66ad105ad7b7ae4dcc66bd51fdf006e87446dbf66eb79b6baa67d235c4b3b34a586aff2c3fefcd46a441612c2efa76fcf43c5d802a86f3fe61071a4d32127b"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/mei_wdt.ko",
+	.hash="5f9acd05cba934c39da2cb1b144cc30eafe1489f3c5be7c81d7cc3cff02f3b59d06c53188b03afacde6163d7ca272e5ffcda9cd754a5630328fbdc0d7ecf7bc9"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/machzwd.ko",
-	.hash="ab50fcecebae2b4a44059095fc36f13d031295f51a2b2a550d94f3a402d7d102d383a2fcf3734144582f9cc01da1e526bd84edb4c2eb7619b039300c065d52d0"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/machzwd.ko",
+	.hash="72b0042ed5d7437dd19635c7bcc55acd9a583c074f4fb961aab91c48ae8289c606cbc4ca79c980e020af373c6afaf71cbc78f598a2b69a8bcaa92d03087cca65"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/it87_wdt.ko",
-	.hash="197f12fe0e56e3bf0ae3dff150784243450335f83a9676fcff75c69df9099f0e48f01f3861ba9b2878196251f0eff8493d429b09d4019911251956b8a51a480d"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/it87_wdt.ko",
+	.hash="258f8588c26ea4463c72b0bf7f246bfe4d8b72944540ae5d04bd70de82d6519a4e79ddd21c50be9fc0aac4e813ef8c3381247e193a6f6232b53748081a49a592"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/it8712f_wdt.ko",
-	.hash="c195a1f42c449fa44f7a33f33fe59136bcf7e6708a8faab8bd6275474d0b081d332dc67a9e73a48384df946c42cebe44015a0f90d7067d2863e9a5365f77a928"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/it8712f_wdt.ko",
+	.hash="bf71b4374b159c0a8f7955d02b71796fd1b6453d4f98bf5e131792eb180984df01dfdf29a937355b97dd98a860e10286992dfe1acc843459c14cd13acc9d1e7c"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/ie6xx_wdt.ko",
-	.hash="b6a22bca761bfc8cd3966228bcfdc66f9961416de9c5c3990308456c48a375354ccf862b325b8abee80fc0bb4178c0bab79b1d93a177cfa8854cb535aa573a69"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/ie6xx_wdt.ko",
+	.hash="5b36e3470316c127223e641b48eb4723c350b897dc2fb1eca2e0f0c96182699bea0e44521b0485f6a3d52a1f4bb0fb23b54418bc196e3b2e812cdf914fcce1f6"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/ibmasr.ko",
-	.hash="3a34f89995158679f7389c60f9327cc910d19817bab0c6c07a469e79bf429e05151c0c7898544cff96983034a955333c675d8846c44b7ba3db138b7156ba58e5"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/ibmasr.ko",
+	.hash="8eeb5f099fa996adb432b63462c184adef0bb53d86829eab38f51de225ce6a7cbe0f87bb3114952c90b2ce8f040a35eff35ef4331431d10e87f20f1bd41db68c"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/ib700wdt.ko",
-	.hash="5d72e2eb924a6570b786afa6bf571aa1c2796fd507f5e67be6431b162dffedce6d21a1f4369baf8cf2c017289bb85393a00a539568fdc9e976ee8e607bb29d6a"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/ib700wdt.ko",
+	.hash="f141f669346453fbe5f9e28d9b91a2c158ec9ae26d0bddf1854eb570632a9a175ef18c8dec13dc17f7810025f7c790acf3248c4eaee9d22600e0e8aa4d88a633"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/iTCO_wdt.ko",
-	.hash="97ae324ba613849d0227a529bdab80067014ce003bf77c251f6ef97cf27395f9976ddddb35af04cfec5adca24d1981c30002272c214843cee7e32e2c6796eb04"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/iTCO_wdt.ko",
+	.hash="1cd0d293c9b5f979c3a7d47e024ebff4c1ba9d9ab5072073e5453bdccea4825b811cbbcc8a7f96e0f4fb75ce128db5cc5edb214f125e017aa6b6c38e60852e18"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/iTCO_vendor_support.ko",
-	.hash="6fd2f4a8b20b25dd1c1d56fa3cfa66a70ea1c9832ad474a06bfe5f022bc559d75e58c2de4486aea7fab8502e4374ce94ab65937628bbadcb64822150ec81bbdc"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/iTCO_vendor_support.ko",
+	.hash="f9d916a408d6693979a6f36adffefe216e87d325f5d3acc455033d7974388ea3ce4e6fef05421588c6b565feadf17eba742a970321c36ad3aa1c834518a5fbfc"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/i6300esb.ko",
-	.hash="5a19d680ed18bec9ff25d935b423f8d39aaeffc39775548bb26cc595c7db7dd67cb4f7348654edfd752a4c556e83e33bed7bcbbd2ca5fbc60390cea00d720c7b"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/i6300esb.ko",
+	.hash="b3220c1c5e5031b1eb9ce0b6fc097eda679aba7dba0932426e6bc84b872a0aa06f826047b932cb0494068a0299f02a2a3ebdfae94ba25a9813627b679295acc0"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/hpwdt.ko",
-	.hash="3142ce3687cb271f238b266643bd03076bfc106c789c72415bb3b89f6e4c0cc20b0d0c3c8657255b8922bb695b079fd22729084d81c771f0542f6a9342413653"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/hpwdt.ko",
+	.hash="53b6ec2b8b2257760c88e59b1298d4ab45905da8539214e8027302c151e11a1433b00e96277cb904d7af4fc4ef33738074aae9d395cbc888398ede52b45c9467"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/f71808e_wdt.ko",
-	.hash="01428ae7547401dac9e9f5beb23a797911fe39ba34f949268fe2f0553ece5c44b5c1214367c71ee7426fff287b24dd81b23bc7b0d7965089fdc25b60124e6e59"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/f71808e_wdt.ko",
+	.hash="400cf8cbe77250655cd4219575341120b3ed7ecd7a9d0003e2d718a67c489d8e0e62028ca133a5083ca00d36fcafab423604385ced475e3a776da98d2b40a767"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/alim7101_wdt.ko",
-	.hash="f8bd5a3905df1a3535b2d2061fbc8a7bd0d6648d7eea57d0959b29b310cc9aaac616b0fc28ffb42799e709e5c33fe21e309841f1ff54013bb2bf7572eb39aec7"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/alim7101_wdt.ko",
+	.hash="d117614e42b579de2afbc473dc1cc5ecdb90c38cdbecb2e489705e17d5f4ea78c489da5328f0ef3c062f928993660fe50dcc5f416f9de28a0dacafae4b14a42c"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/watchdog/alim1535_wdt.ko",
-	.hash="0ef54892e564f4edd5c84799dad991979217824c4764fc29ca15b4ea18c0a4d369373e775e7678b191cb08826de757da1fb4bc8f892667ee680b59f7fca67587"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/watchdog/alim1535_wdt.ko",
+	.hash="ffa9d5ca04037750f149079730464448c06ada0cdbcc7020c4fc2659c8ab7bee3a8cca31489925f5c46c31117093328e140b17415ecbce51314cad5a22bbf187"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/virtio/virtio_mem.ko",
-	.hash="8ccdd309a44a6934539c6f6b43853d9234a886cfebdd858119fb4ae3e798db87afd2674d1a815b7538cbbc24e90b2bf7919e6fed88b6d980876b5d6d2f4fc5c6"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/virtio/virtio_mem.ko",
+	.hash="987535b859d48c038ec240dc7be68d2f52aca41452766b4249b76d228261d1221df67ecfd244409db386ba691007bb6e464577c5f44bc034a901cdfb4d293648"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/video/backlight/lcd.ko",
-	.hash="b8fb2da85a6666bfd2e6a6ea45f69dfc02136f751b2a850f53358de9c09adcbfdb02f23c868bc5bead15b8d7eac5db88eee2129a6b9e1dac482683507de2e3a9"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/video/backlight/lcd.ko",
+	.hash="dabc81e08139a1c287456c31b9bccb94459d32df94420a302eee64b5b93b4fbe54862bd02f4a7458c4e7f120cb86c2077dc35130d5015544e733aba94d671aa6"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/ucsi/ucsi_ccg.ko",
-	.hash="fa6b1df23e4247e61d482f96feb8bd7c86405d4bc8d7da3fd4d5c02edede691bfba00f3c99c7e07e9c8db5844083fa21d7e83f5b2dd57ef63ae3b9281019cd0d"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/usb/typec/ucsi/ucsi_ccg.ko",
+	.hash="63c7e1cc205e780cbe7a83f231d619d0053797244fe97e536b6c92d661fab6e03f2c9d824104a89038b096cf53ee8aed95b045e4507481ab6788a0d4d5a2427a"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/ucsi/ucsi_acpi.ko",
-	.hash="ffb2868dbe72ab45c63951b4ccc1f28d6209bf03376e31280ed1959f9deac808981c4a84c4b3985d718a33bdd2e9e5d8da91f5c2a81c39d94be16cf3ce52c910"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/usb/typec/ucsi/ucsi_acpi.ko",
+	.hash="0798eaf1609322b744cb644d64584adb166d095579212b9bdc0f610928503e6cfed0b3349aac20c5599264cfd8d0eb899d653b2ccf93a53f0efc5d7988ce0349"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/ucsi/typec_ucsi.ko",
-	.hash="e3029e1f0893e640d37452bae1e21dec7a7c6ab6e71a2781b22b42cbe50c89f3e877a0106e27de8e39ca1ab439d4cdb7293f482fdeb463bb8913fcf7dce94309"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/usb/typec/ucsi/typec_ucsi.ko",
+	.hash="ffa1e044e584926a47c8f790a6141c9455903bfeaee71d3b65cafce0b71149318cce4d816e3d5434480524ffefedd738edd8116aca72056f01f170f4356a4944"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/typec.ko",
-	.hash="ed31583db4f06275d394b9d6df3cfe65d004f64f417039dc60f94f3e40c1928c1216fc756fb435d358d5e7b3611d8b52c499450b25814ae14e305938bf27e569"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/usb/typec/typec.ko",
+	.hash="3dbc20942005e1b37ab3f32d7e4f05d314f6dfa565e610fc9021ef33b58ae2c4e5448f803d08a00f76a7eea400083df760c16e96a9254cabca264b04c5ea65e5"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/tipd/tps6598x.ko",
-	.hash="8cf9bae5261e473a73d162e9faf03f5e839a97340c6598775e3291720299decbb4c98a3b6f44735f6a2de6faaf61b9b6b3c8036da4f87591e6619984683cf15e"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/usb/typec/tipd/tps6598x.ko",
+	.hash="2412d457f2e8fa5cdba50e1b0b9a453a4270223af99587d92392e6377e2e57fba8d66af7563213ab9a9fe66a9af34a7379c3c1f64cff70fb6b895e9a2ba1a76d"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/tcpm/typec_wcove.ko",
-	.hash="c0cada096df73a2c2db4c1fea922166ddb935900c7c84c8bad5ef5244cde0f3236c8d18c27007e7cfdbd141d564ad0e4af0e4fce03375b4000c7d9008df68c1f"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/usb/typec/tcpm/typec_wcove.ko",
+	.hash="6f9e5132e9d0450989ca35acdda9fac5fac2ff0fe7fb8b7b695a72f0f451fc5aac618ee525d19e44578e2676dc4e0b52671ed46f999e223504d3641d512b95b2"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/tcpm/tcpm.ko",
-	.hash="9a0ee7d9a25efbb3ad03b26cc41045e207699bf8f61fd21565e37bbcf8b615a211a5c8012b6b6d9bc84cdf969968931aefd9fe54e7949c703068de2cb42943ce"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/usb/typec/tcpm/tcpm.ko",
+	.hash="7fad4b7ad6b870370cc8bc5b5c62ac014ef55f6ef412b2ee80e7d44eff4110529cbf8a2cef1e16383d6d1a797d114cbaaf648894bbfaa43a69189c390ae364d7"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/tcpm/tcpci_maxim.ko",
-	.hash="07f8930c198db5e510248a23490e4b1240cda66ce90cef7cd32793cb4ab371276d1cebb13ffca861f39842d47e40f6b671f29a37309b80c27ddeef36be353dc7"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/usb/typec/tcpm/tcpci_maxim.ko",
+	.hash="b1382878512fa59f5c5acadc73c1ed435ad89c8ceef79991d0fb05fb9617202a9568c6b29ce3b13c54b3ca63391e32a0fe3243adb241e1020a6b366a329992d9"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/tcpm/tcpci.ko",
-	.hash="b8f255f4bc13e392cbf220ecf6d885123150bdc825556d38dffe31cd81687519b5026e333efd3644204a82dfe7f104b219e027b4af609be6ceb4690d0a66e90c"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/usb/typec/tcpm/tcpci.ko",
+	.hash="3a53fd187f793b6ccfe4d9a57f5285471d3ed85b6caf5501c0a453bf793bade042d8fd5e79bc8cb4bcd1d3c7ab61d5877d0c43ce16fbfedf457f80de483eae93"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/tcpm/fusb302.ko",
-	.hash="4043170196d23e797de4e80b4987cabb2dde6f7e4925703732291740e25844da43da9575be51ad6392d1672495072f57ebe7a304ea9189c09a99e11851117d8e"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/usb/typec/tcpm/fusb302.ko",
+	.hash="d1064a25647a9423c45c03b75487bd8b6a12ab623b6f887bf358a26cfb56c9a069b9113d2086f1a80899357a7c7434ea33aecb98d039d2f254dd27f8648201dd"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/stusb160x.ko",
-	.hash="aeeec72e5bffeee6387012a781e9954edffeaa3021ce602b737c5d7a6c89f9dbe96fe3dd962852903eef1a42986622d378bf6459345b3c70e54db21e0c173aec"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/usb/typec/stusb160x.ko",
+	.hash="20abf7c236051230387de98c568612a52e7dcc05bf7f9bb2efc549d86d849d8be456b6eee4ca307a2427e93357cb4a2b08611cf60aa7011997560bb846ed52b7"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/mux/pi3usb30532.ko",
-	.hash="ee771f4fd76b81850fd15c647538a71160fd1b32028dc78f0d43ba5fd4e288fc917969ac3af11fe5a273cd9d0ab4b1187ffeff83acb6e12ebfdff887c125b356"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/usb/typec/mux/pi3usb30532.ko",
+	.hash="cc50e34c60900a1d6334412c429c3d89afb886ba465cdef5a994024c770e3081d081a577750ddea31d368b70de3da9766874fd8d6836ec9fa0a0bb15aefbe8e9"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/mux/intel_pmc_mux.ko",
-	.hash="40126cc88959a78f339837aa5c2ac8ded40615e193701ce3113df848258887ea3b216bc8d1131535701ba5d9b6773f95573cba5106391e85d052a0c37d2161a7"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/usb/typec/mux/intel_pmc_mux.ko",
+	.hash="57bb52db4d4df76387728b651297ab68e5c515d90ebfe634f811d546366f43dab8ce15cdd2ab556ee47d6c51a4189c319d990c9d2a7b4d3976904bf4cd1455fe"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/hd3ss3220.ko",
-	.hash="e14d7d6d81209ddb2963cd120e7a224b83670cfa5f9c8e97b99e33ca9a706bfd17a69aa3a7be3ce725518fdfe04392ef76841fbce0cac77ef08b21b7a5817d34"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/usb/typec/hd3ss3220.ko",
+	.hash="d1324581d96820f7b6b80349837c80339e5081b1f5686b3be7dffc3c9d4327f88dda3d7128072d10c74b004abee6684944f0c48e1a3d8c6506fb8c1304602197"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/altmodes/typec_nvidia.ko",
-	.hash="8a3dcdf70831614f1f6ff9588ff4e20c6829c7b5fdb13e3c1ccc91439cdd42aa0b5e3b319855dd7ebcfd8dbe74e02dac3dfa09022dda3e4b3a9c5aa854bea248"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/usb/typec/altmodes/typec_nvidia.ko",
+	.hash="38c1c9d0dbecd3da72848304f9aaceb5f27a2080b41ab4a9277cf36228d4e0bed39914245bc4a6a9ff47232aa3c5967e14320fed10190cd21ed0058b23e72f59"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/typec/altmodes/typec_displayport.ko",
-	.hash="8a525c9ec7345905ac284c92c8eb5edeb66bf53d73c08e3a7b0402a500dce415c706688a5592fb6ffbdfb04bccdb4d3728f48606022401160745bf93e14b183a"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/usb/typec/altmodes/typec_displayport.ko",
+	.hash="8232339ccf36480d19f31b02e405a910cc09fdf37dd4bae34769772651fa51b8f92dd2028227bdd8dd1fb4cb6a6a26d7f47353286d89debb0b76a051abb306c6"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/usb/host/xhci-plat-hcd.ko",
-	.hash="d49cb2a5e321f91f0a50d811ac80fcfc38fb34c308db44d4dbb4de69f0bb486a756e32761b6a8e3fac1f415b08a4136fa65aca6f0ce7ce770ad0ce37d9a4e7cf"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/usb/host/xhci-plat-hcd.ko",
+	.hash="39c5596dade9a7c7cc997e1a35268c8c65f61ef66795f848cb1781597b3ca73e06d73a4a1a0079886d54e3e1dd0812d2625a0552edf6fc4a5b270dd513b793ef"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/tty/serial/sc16is7xx.ko",
-	.hash="892f3d4d928fb3470bfb2910f62c806e63606f2026aaddd61838d339ae4ad2065a052ea38b79e404d9fdf7dcae2e05d2122b290375edb5dd6c16a363a2b5c554"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/tty/serial/sc16is7xx.ko",
+	.hash="006292ed9e8870baf201e98aec02a77b165d613c6ddf3affb88153f4e7f3d4e54c73efff35b9743d3de6c89807aefae3f6ad3934304ce7230fe3a69674314a41"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/tty/serial/jsm/jsm.ko",
-	.hash="3907775d3c031a3ae36e67cb2db16d78dac69607cdf51db64930217c74269476c07e3eff3b4f40f254415d3858bf3d459505e68227076d47b1a2ee0b1cd310ee"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/tty/serial/jsm/jsm.ko",
+	.hash="3fca74aa32af94c8833de21a86c494a98149ae04f396da09fab24c96a830620d0b885dc3e1adb6553038a79c6371297122665f28c04f452c6df7a2179b8bfb03"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/tty/serial/arc_uart.ko",
-	.hash="d928105e40981e75d0c0cd1fbab5c778f896a65573feebdec683342e074a0f65941341ba221e3022e93e4fd94980473456f28dde633d556029d6dd76adbb08d3"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/tty/serial/arc_uart.ko",
+	.hash="abd245a2b06dbe7573937e5d81d202859d0212aaa3cd22443a088407ff57386cc8151fa108a716425b6d7d328007be4c19880a1af6885ce8f71df5110c98154c"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/tty/serial/8250/serial_cs.ko",
-	.hash="b4ebe0f01d46fb43b0371b2fd100100c10c8c6030837731477c290254943da41b959e4cae1d92526a9949dad2d5a63387cecc0f4c6d303d7d402f5e057e25754"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/tty/serial/8250/serial_cs.ko",
+	.hash="0b2c6c29d1e83ecc90d24a19a1090932765f0fbce3fe101ff82f9c32ffb454ce0606ede680a4f8cb002278e3e291a4da31ee3179c6ce53b160c12fdef0fcbccb"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/tty/serial/8250/8250_exar.ko",
-	.hash="7588792bac75793b500af54ba107508ea5a039a94c0537fd668624d52074522717f302177fcfa08bef3af621dd1e9892283f84ad574fa3556f8b904dd951d415"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/tty/serial/8250/8250_exar.ko",
+	.hash="40f2918f979989f69f7e41cd8f15efb893f07dd466834f211ae4679d831f534af8698d5887d6840d9576810cd0e97ef99f0eab035c541d5aae43c5c5d83839d8"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/scsi/virtio_scsi.ko",
-	.hash="9506744ca7bee43e76b229512a82fa247537e7428be4251d7d0d721f2bf70a1a56bd5d88a5d17610b5af864cdfaf0233b9cb31947fe80fd770e1efbc0fbbf11d"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/scsi/virtio_scsi.ko",
+	.hash="062bd94e65541ecea2fdaa67f7608d6d117a097569c2dbebe6d49c9e57d0faecd82f6a6a6762882f1ffb963b2ed521beee91756ab4ed20a8e4e5ea36e018fede"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/platform/x86/wmi.ko",
-	.hash="08ab5d51ebd9e46617b9764bba9647ddf964d7576817de6ba1303a157a89402dc93db18a554e4aa50efa1486f77f81b3e18ce80edb1b69ec48d5a106ed4ab7a4"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/platform/x86/wmi.ko",
+	.hash="2d209e3036262740a15043ea0ced78019bd6d0ffd96ac7100a419258f1d6d6725e33f7559830cbef1b6b68edf1906b890faf9d124371a28338ef35471bd1023e"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/platform/x86/asus-wmi.ko",
-	.hash="d3bc4b8ae78911ee6cde0fa181557213b47cb5edb523d36bedfb88d03cfe0ffc6b9ccb9eb989d75021c2bec1c57a1190c62e19391397dc47952a16143d485d03"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/platform/x86/asus-wmi.ko",
+	.hash="d65668f30da13a1f873588df9ee1462e286b1f8718dfd275d6285588c918e2dee11b5b556f6c46719969a0c2bc250b068ec4b7f119c75643a6b18ff5fe891ec5"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/platform/surface/aggregator/surface_aggregator.ko",
-	.hash="9ee1cc191257ff5cc746946aa6f5e556b9f35b528a380b45a155c9fc521da2fc8727235f915ebabff085a57105e59fe95c94de01ccfac702efdc41c907546ac9"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/platform/surface/aggregator/surface_aggregator.ko",
+	.hash="297cf08c39a6c95541c7ce0ca48bfc7ce3911850bed8a3c9c8d3ac69863c66f65261bdda91f11d75c096161d6768a8321ce5d2a2468a9d9e6d490156bbb7cbfb"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-tigerlake.ko",
-	.hash="d7281d5f3c9cd590fe7ec35d14eb08a87b567cb5a75bcd18d6d3b4ce5f233def71709ca77e1fc0414b25036a1258bf20ecdd32a345a2cadf2a00ab5efe5205ff"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/pinctrl/intel/pinctrl-tigerlake.ko",
+	.hash="43eee02e69e1250cf52a893c28b29e32aa81edb69188d45c36f8cf07548478aa8900f020f72d22ebec68c6f2c01a53a8f4d063398aa220e5891d1be0deb57d8d"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-sunrisepoint.ko",
-	.hash="1a8105e618542de5d7d50879951a961b4d2c6ef0bd2c8a0ba9d0c216671ffc997e8a66cfbbe61f81013fe173a229f8c77e4a42a5d163c4c6cb1dc34d60810ca4"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/pinctrl/intel/pinctrl-sunrisepoint.ko",
+	.hash="c4c88e3f3f94b8791b7d6e6f23ef7b920329a2e2b6983d945da1b4c14fbb50b464e5520cf9bcf65db9d11163dbc18858dac2bce3b01020818ff52953b60a3884"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-lynxpoint.ko",
-	.hash="cb18901edacc582c1b731c8f92991863c56bb6fcb7850a8d57333d4a2e01debbb0085b2d5217bf2e20c1777540b29942e554bbfbba668de7538f41b0186f2896"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/pinctrl/intel/pinctrl-lynxpoint.ko",
+	.hash="09c22dd6bf133ea0bcfd8b2f90f26d06305686580862219e8af8f5bc720e4fa07574727c54805be12620a52ed372db973c114e786717fb74cc133712c4a2e9fd"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-lewisburg.ko",
-	.hash="233a5e8c47bb4f7e7e290aef642191acabb39713378e77c9a7a229444f693a8430a111a7329472ca3ac473255d868e10be31aa852368bf60129caf4ad87d5a77"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/pinctrl/intel/pinctrl-lewisburg.ko",
+	.hash="cff7313e33a7d1cbd481189983a4cf97edfff354f291ed3fe7b833e9dbdfe8ed5e06588d0bc68095f977534fcb7e1db4ca33cb9e8774988f3084aef8ed7b3b71"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-lakefield.ko",
-	.hash="5565b9ddcfa9bf1e5e16403cd341c8fd7fcb39e5a5d2bbdeec58187866bcb981bd28ca8063406e994433598148ec12f34b046643e52ba14f6ca5d797efdce73d"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/pinctrl/intel/pinctrl-lakefield.ko",
+	.hash="f3d98c3bf45666065afea260e6149ec265ae88a4dad89dc8b1825c151e153aa67279275b55d1cc67911ee70565d706ff65b7744de40b9467e3e0cfac4083d408"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-jasperlake.ko",
-	.hash="bca1cf8cc099f69ebe28edeea5d667bddec2b18e513de16b9c763003c44e3facd82477d69be6ae923288c6e1994c2423e55be98a09cf1e5aadebcaa57792798a"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/pinctrl/intel/pinctrl-jasperlake.ko",
+	.hash="0060cff0fbe5f900c422583eba1e419041c3d3ef2807baba0f6451288f98c718a5a429e95643853e5bfa07e5a430686d1676b5c315f7b032af58a0125c9bc95b"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-icelake.ko",
-	.hash="e88546d4ccd4d450c8db85acbe350347d644f1490ab7d021032b31a9eadc0bff79eaf656570ab680294d643b45818295cb947a44560a40d62dedcb64d35e5b8f"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/pinctrl/intel/pinctrl-icelake.ko",
+	.hash="d5f420743a8177ada2b1263cf266225ac05352c1cff7e52e43ce00b9582e91f46ffe6ab06db2779291055158bbb651daf61ba51aa59ebb347ab7fa8512681cc3"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-geminilake.ko",
-	.hash="5c2b9ca4061ea89736dc950b9bb65f04af4a379c3fa1566029aba86777a103826d19ea325d20636bac425cd9d597dc7c49d8bd888564de0f96b57cb6a96c20de"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/pinctrl/intel/pinctrl-geminilake.ko",
+	.hash="fecfcd68e77580d8df23d778b5c64c32fe0b9c78ef3d79a378c511554e534e459b2bdc162272a5d89e3cbd8d84277b429acb6c8dee8a954d1686023e23416032"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-emmitsburg.ko",
-	.hash="b1343ab8f78aa9e9f85f261fac8b6f435d96928998c80834e4c2a33c2f8415c61bb4d118b4c893e20832625cae69cf72fedc493de0751a3d3632d74a12b1269f"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/pinctrl/intel/pinctrl-emmitsburg.ko",
+	.hash="90717d9602d78183ec3b44e32f97587c4c25ddce3cd675bdce8b7be50d326b49e388f01fcc67e3f570847b785e75faffdb582c184fd1bf6b07b1474e32af297d"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-elkhartlake.ko",
-	.hash="9b8d893388d16783f12b29611054585f7090fc0e2aa0cb2bb443540a9da7a622eba7edf7078cc50a8ed6d641ec540fcb834459f171d21c0dba048eefd518247b"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/pinctrl/intel/pinctrl-elkhartlake.ko",
+	.hash="0a533a3d7c10bc29ab8483d70d8e73719cb3e4432bc4c0bfb3e64c1eaa045887ca2fb4199237d6bef7bdfcfbb3cc0bb2cc890526ed01fa5a39d63f853382ce20"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-denverton.ko",
-	.hash="8deac601d31d5a87bea8877eb7c8031ddeaf98f20500d552ffd71c0a3715536efc470741398252534f6cda08ddb578a0bb221b6f4c244072aa63d3b63ffb91e9"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/pinctrl/intel/pinctrl-denverton.ko",
+	.hash="0bb4dc2b061fc7d5da565be97979e830cdd40fb0ff2c2bd613283bec15f1aa52052165ac6b5237ddc57d5f4ce339be6f42cf691a179cc7d63f77a78df3ed1c15"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-cedarfork.ko",
-	.hash="02fb69ca44500e0a8335428559e803cc4a14148e9fbee106507109bf14c51e138baef06e78975f8f180d07e1f6f76e9095c0dea487830d68b1a9461c4018d2eb"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/pinctrl/intel/pinctrl-cedarfork.ko",
+	.hash="d442224741b65de26f579e45747948a7d7250ead3850bd14cd1e9ec900554af417da5c11e9c5a9a6034fbc241dbe50e501338f57969faa9454e06a2dce3177d3"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-cannonlake.ko",
-	.hash="e9b5c034b04c856a1ece72cedd32e56bf33a01aaf8b5c0cae3766fbf86a6f62a785691cfd057e47831a6eeaab2effcdbd469a5bbd90a39bc43d4ff8d505c98df"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/pinctrl/intel/pinctrl-cannonlake.ko",
+	.hash="057e8097e90f7a70474b4a77ae3874b5b789cd498bd37f0568ecafb782508b2291d293010327e3bc2014be117084ba474bf69191059e6cc524a7432bc5c2c57c"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-broxton.ko",
-	.hash="b4f4ba2a965709af73637577bab9c526f1b79202332190505c20309c1e58c6f820c3802adb7527403137f2927510f44d3c4a507651eb3eb8e241859f012ec22e"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/pinctrl/intel/pinctrl-broxton.ko",
+	.hash="abd70c8dd728fd1e890857d4c4885d72f7fb62cbd7bac85f6666ab78e41fe76b678293d14aeeb119cdaeb0c6a1260e790fb54ca7025cd868763caa004c9bf26b"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pinctrl/intel/pinctrl-alderlake.ko",
-	.hash="131616658ef5563f40b5e45de9962237753f61e4b20a256fb4431853ceed228079ba4427190c4bef0d13592995a2e1cfa6ca6f00df6a3f3b9a5af95a5d30cff6"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/pinctrl/intel/pinctrl-alderlake.ko",
+	.hash="6534ee4e18daa5c62d9e43a3d0275ca5ef2531f05497b9fb7db7842c8ccfe46f9ac786dd9e348b4c2c0eba04bede42d8dc117b5c2c5abfeecf4396610b73efe0"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pci/controller/vmd.ko",
-	.hash="fb703014a5e9c5f45e907a8f9f2f02a88b89fc8a381ac4f501063ad35e211e8e72d14a4d70e9bf08d6c7fb38dca96c05d69eb34c75247626411c9f5059f0c7c7"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/pci/controller/vmd.ko",
+	.hash="b94a90f3cde210af4cf871ce9f040654493e546ccd603cffbcd30341fadfc302ce47ff8e318541a1ac3c24422ce5c3e62ccc3a7fae868dc120034268f6f0210d"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pci/controller/pci-hyperv.ko",
-	.hash="30027a739d4eaf5da584866fe929230ce1d09f0d8ed77c083655edb1881c9939b178209c37d7ae2c06fc42637020a79e4bfe2758ad1ba47b3cdfe9edf910af9c"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/pci/controller/pci-hyperv.ko",
+	.hash="0daf4f7cdf8ed51219b747df683c680e8d3ebdc4ae1b7d84e967fcbe1a28220971c541a8b1269461147e9ce99106220c79f2e687d8f56d89bd27d97b2cf06071"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/pci/controller/pci-hyperv-intf.ko",
-	.hash="b8dbd88c80722e6eec114d3627f7ed19176f325f9ce3231ff818709a39a97433d50d9ee4ef3e8c3020ee9cfdc5c22f873578c12ca7d7fcaad84fbde89ae22385"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/pci/controller/pci-hyperv-intf.ko",
+	.hash="e5abf9b8b2a4a946cbb185b84f01056f57cb8ab216892ff1d96c1b325e148ac379e76ad8bff7465aba624fc3695d6c3062c58799e071d7ff787531e9a658dcf1"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/virtio_net.ko",
-	.hash="85e79623d6761f4011a47f758d9f4bcfed14024f9626578cca87dee1f1cf5d51ee17ff00487a68d15c33e544f06ccfbb260f38808872af6b0f89f1275851b086"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/net/virtio_net.ko",
+	.hash="af1baa16d4da6e8f568605b1ca4980a315807c999ac3a555135a122a60a47086f9fe1a6327cde51a00e5cb299370ce43807bbcb1c09dae1d414e6b9a15f1196d"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/net_failover.ko",
-	.hash="0bb95ba73ff1c54833a9ff347a4d42d067e15e2c284190610c58a7fc069886fa3e0bfb59530fb8e43e8d39b07d6fe3195dc349e5fab2fd80a761cb19cee8c071"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/net/net_failover.ko",
+	.hash="38f2b2d257dbbdd755069a5aaa864aa1c58a96d553b763a121ff2ba94ddb4514b907a234e63196522e05dfd6ecd1a11d8f62a0e8c7d3ce945850bc0894148a1f"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/mii.ko",
-	.hash="e20b07365848223f1910669069c7a421159458e17a9eb5dc702e2b186310b70ebc0e670ddac080860850b896195f776de9d6f13bb2e09384fe5e87baed7d971a"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/net/mii.ko",
+	.hash="a63a313e67f3e2121f47b115ae43c93dee5184e2fc4d4e4704ea17829e6e3e94bee10bcc08083e4c59b775fe56707705d55070a3423ebd8883d86af9700d63ba"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/ethernet/realtek/8139cp.ko",
-	.hash="1ce57a10a9e462b2337e4280fef39ffd697cfa2580c3cf7479e9c9a15990a2ff68c58b6738524a1550461c59f46c18088d21d5c5aa7c8a8bcfb392addf4a2795"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/net/ethernet/realtek/8139cp.ko",
+	.hash="49214602ca47f2373d264e2d528c27e7b9bdda4e0735018f122d4861aba8b72c2b6ea497b711e2cbbb25da06b62b4d9e3ecf82436e7ed2745ec516629d4559f9"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/ethernet/intel/e1000/e1000.ko",
-	.hash="442ea6c77432aa44a86e7703362e29c45d8bba1a09c9329c07c0b757dc9fabcbd0645ea73092e96623730c051c9bc09d1bc4cde4685e4bd0aa34d6f1960bd048"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/net/ethernet/intel/e1000/e1000.ko",
+	.hash="2fd830cc391c2e1861ea817bf0363834c395213863ef02837b9f7b879f43b1454eb87e2d09009d05a782a98c5fd264d4aac4eff7dca59893abaf63110374f065"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/ethernet/intel/e100.ko",
-	.hash="deca83349e8ca596b11d3831516065863846a3bb9317e88f898d7b885a1d09249d16eae343b31d5c5852a4653a18635029fc8cde3683f337a765b95ecaea169a"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/net/ethernet/intel/e100.ko",
+	.hash="8d39dbf2e9564522f6c73abadfb70f5064aeedfa96a57aad0056ba8e3ae251b90283d68e7bcc3e25167062aac87d738bffc1bfb887464301d6e0588aea94570f"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/ethernet/amd/pcnet32.ko",
-	.hash="ff067fc9eae79170761b8f3301c22572785da5d810af510668f45619fac83a9a0b271d3a150d68c8067a2a71dc45d8cd6c008a92d587f9f408a6474b419e23e4"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/net/ethernet/amd/pcnet32.ko",
+	.hash="8f138d1b07e76b1b2010691c22404541c8503de3fa8196585ca29a49d0bea11b85d639d4979ef1d3d0f41f95ab7d904ebc720fa6fcf9d79a6a264a80f1c52050"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/ethernet/8390/ne2k-pci.ko",
-	.hash="965e55edaa9dd10a92e6f16858ebf638f08cb63caf745f9c21062e94ff31617ff48da5a01199abdfa1c705fec16d680d6121027f9cf6b483a69cb9304e7d9bdc"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/net/ethernet/8390/ne2k-pci.ko",
+	.hash="e65a3f62a80a8692e9fe395e09e683545aaaaf6b5470d0c4bc5246c03964b200d2b31ca9cc0013d983399b87ec1df3011738402c08ba9b961141f9d92f3b50a5"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/net/ethernet/8390/8390.ko",
-	.hash="32c279ebf4857f870fd0c740773e2efc6c53a77f5334f434bc3eecc6c6935f034ef5e830a7961fe3e0a108c67f10271bfa7b6623d5e082c30adf41668afa5994"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/net/ethernet/8390/8390.ko",
+	.hash="908b55e8f0208b94bea3191047eed54bd6754055d859a2b0f4d4368ec95df724c81d6c6395bd0816d90145e66bf0be743b4902571c9f6c8d8c12e368001be900"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/misc/mei/mei.ko",
-	.hash="2b92b2116e02243e8fa75e2ab03018fbd5d903790d51e71f05ae63c2b6508bd99f4568ba5a4ab75472639d2d24a7a67a974642e527e95d9beef448e7ee983280"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/misc/mei/mei.ko",
+	.hash="0b49f6a4a1d900b00f5de8dd6bc4699766ecda7fed3eb989702d64fb078a3c892f755d11aad7df80d87c154a25acee11bc56209cbd79071d7a0c13a806f28154"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/mfd/intel_pmc_bxt.ko",
-	.hash="46b04f2e027702ade56ad11f6339a9054a04a256e6fd893919eba00fd9eda11fadeaaaaf9bd283abe2e49e40bae841c26c31e91ae570ea2e923f01133d373492"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/mfd/intel_pmc_bxt.ko",
+	.hash="ec4456d1c23a0e6f645cd4491d1460b2edb944bb5cdbd264eb3200c79c7c9632c0932f6b462734f1da2308723d9076d8e861481f11890537dfbb9ffcc97ff056"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/media/cec/core/cec.ko",
-	.hash="1a3c4da9c969d1541a0a3990a91828f7b853e253fb25dc24719b0403d3fc42652df7d801032657467b6f21bc0b915d0405c8d068f895fdd2a3764e76a4f95775"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/media/cec/core/cec.ko",
+	.hash="3bbc73074c3fe4375695894f4b5c542176937aeb0692f0c259fff186e1fb3442be1997be720be7b5fbbab3ccff5b49e6425465fa883821be1fccdd28b1c9ef59"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/sparse-keymap.ko",
-	.hash="ed20196ba6d3ae86c2c4bb82673c679c42f79c4902dcbaca0051066fb4388b970e3934993fdca3792fb91a891c116dda81ddc7640b2b72dc7cdc7c8e49fa79ac"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/leds/led-class-multicolor.ko",
+	.hash="9aec66e53b85c3512b2937dc38d341f91e9376bc1cae9a1e103b1beb7f5e0051e7e1eefad78c69c03e06adfaadd5a463f2079f2fa1f6929a026e996485a168f5"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/serio/serport.ko",
-	.hash="4d8b6a81378ad312e95d5fa2c35183498aaaed1029fbb0db62b9ae73d778894aee7cf9de7f2dced1de376d5df3acece6f3565e533699087057ea5dd167f7c435"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/input/sparse-keymap.ko",
+	.hash="fcdda256d49de5a28ca28caf6c0b2d4a45ad0a6a73b414f9e9f19fafeea7345e96b8dff31cd8a745a69b217fdf401fc82c53712404e065546c3dc5da43376854"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/serio/serio_raw.ko",
-	.hash="95b38b6cbb379a7c6ab3ed60f6f4924abe904b26d85aa3ab300a974a248ee82dd1541cc5cca8add0624b5c8e541315bfee41d8a3a7a4a7d66194d3838b6c87a7"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/input/serio/serport.ko",
+	.hash="5aa15eb3ddce2a96461b7662c7306a2f8e37f59f546165d4e8d22d9eb7aeba12a5215e54ae78eeb6688ae19c82d3e88e214b5888ea90441a92ffa7459693c752"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/serio/hyperv-keyboard.ko",
-	.hash="9e66b767cf37cb1ee5f777ce0552ef79115fe16775a47df3579ceab15661e597c496ab15562ab829ac9278ba4789a78d6c71afb1eef308d2d030f932baa7a986"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/input/serio/serio_raw.ko",
+	.hash="4e3c49976a5d75840664a17d7eabc1cb35dd0d8e1d10b8605af5d2bf485f5510135b8385c9baf9e486ff85fb667b35040c321d01388e49cf091fdb8e903854e9"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/serio/arc_ps2.ko",
-	.hash="3a12b2c4874757b2b3e9b7702cf7b01ea026f5472df1ac29dab2d7179d30c144a6e951d478c0ae30b6a605654418c645e0dc393947b5e51dfe427046bd5bbb54"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/input/serio/hyperv-keyboard.ko",
+	.hash="dd19d26b238791578d623fe329ecea618d8c37c088e386edf55b041bc0569713aa5068f75b69f69d024fab75dadb318f99442bf0230f7ae6b43cff60e1197027"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/serio/altera_ps2.ko",
-	.hash="fa2f54bf4c73efc65a1d3a8f1073c48b24cc24e5dcccd0653cc67610b64bb7ad88107a2da259801c9205b5dc6c2ce460262f22aa80d74cf1c1a8081f8cfc8c69"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/input/serio/arc_ps2.ko",
+	.hash="10f5eb7cbe0af97c95d2a3a439f3095d20c64d74270762c6101e8f9e4194a19e41e1edd61bd7de9efacf849f03b65ffbd870fac1591271ff55531e37b9db07c3"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/rmi4/rmi_core.ko",
-	.hash="e542a7011e26c9ae2032c40dcc4638a8969b2b69c08a4c304079fe589e310bc7f087f20ffb5e9267bf9e63a6c05b70aaab62c879f8f0b517759ee22e940d636c"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/input/serio/altera_ps2.ko",
+	.hash="bab3ddf9bf5248d14d65ac67f0eb0df3e56d046adcef2759f0866c425925d26b702d6f8de1dc775fbab2088ba3a0b76c3553ee571a0176e3b078099fce0647f5"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/keyboard/tm2-touchkey.ko",
-	.hash="a14793e5c180d74490658c5c18dfee4bdfb426616aec52b14cfb92d746c3c51f830985933ca0311f658b26d728c47152df8dd794b34629cece31d5b5dc1e4c96"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/input/rmi4/rmi_core.ko",
+	.hash="d6a775a4c8143ee0cc9972fed5c6d65e4a8c78f1a36e790ef52efb8420341b665d62363d8b48f54b113009b0fc267ba957f4603d9dc8dacc20b3aab830f3d9da"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/keyboard/qt1070.ko",
-	.hash="a8f1b97fd91031f740eae84b705890fc9a4901ef1c14208eef2232310d08dc684f790e8466dc81d462e4d0726f774cfa7104f6f52b7aa045257fe66afc449f2e"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/input/keyboard/tm2-touchkey.ko",
+	.hash="4993a278bf45dcd97662666e9e35216f87c06175fff6b33964fcaba0fd7342da0ed1ec630167c0748bf2ee7eda99ea9c2c4cd2fa7c39d9e08b3451f4524b6d72"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/keyboard/qt1050.ko",
-	.hash="87d8e92877be3ff60d695a84c8c83d3f58031ca64f2e4b7d29a981163ae3522bc64e73fbaed2be188016af8fbe406545a56582f622ae98350b78da1078c02bc5"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/input/keyboard/qt1070.ko",
+	.hash="568c3b03fb71b55a48f539041eb4a0cfb51eafcf9514ea57b512a3bdb5f73d07c203d95443aef80d74bc6ee682e53db26de209b3281621277b293f5799212e5e"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/keyboard/gpio_keys_polled.ko",
-	.hash="d4e21175f8e54a4c4afe202da5e4f34aca8c6621c89918feb9f073ecc064d5c8ae7bcf18430e0e3877f0ba5e52304704aba15a7af2866af4a81a90c15ef1b30c"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/input/keyboard/qt1050.ko",
+	.hash="8d08cc38d959027c2e6a25f543df27d6f719626e2558adf8d849ff267c9502ffeba80d82cb8d0cc6d0b85f4bcc8dd8bed6b460acbf310b5b24fcd6be97369180"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/keyboard/gpio_keys.ko",
-	.hash="ae96cf0a997595b092b51d1c19d9d5a02b1e62b1238839a06b30570687db08f1f9147ed4e28ad952905617f90b07176a85a370e88693b7be25e9b83ba1975b25"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/input/keyboard/gpio_keys_polled.ko",
+	.hash="0a593968b8434643e7f6e6e6ef044246361ac9a5b54b9170aabc147f202f293f8ca5aa10c7bb3956d759c1c0c3c203f348cee14ef101cb556e3dda51a03ddb1f"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/keyboard/applespi.ko",
-	.hash="9e5c6e9d462b1739a2d91c4fbf9bab7838450bc8f7c574c04f84a9bc7cf3805955deec3f5708353e688342f642cdcfe9dd618c9b0ba6fc9cf35cf1087f0f821f"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/input/keyboard/gpio_keys.ko",
+	.hash="07ca4a5e12e0ce777b9f019a87fc39f4eae48c4b1493cbaaab7b9c631e78486a33ba33d3548d127f05f587063c040bd9a1b2cadf180b65bf965c85cb33c713de"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/input/ff-memless.ko",
-	.hash="61997f9c9d3432666b362ac9a13b8284a6bb247365080897aeb295bdcd090a041c7572bfbd3e04b14fd6caf87184dfbdcdd4916d5b330e1cea210799ca1b4884"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/input/keyboard/applespi.ko",
+	.hash="84a88dfa040dfd23665146ff3a1a6df2f6a4c92598f161b85a77b9ecb5f72c580595b0c605e86f4aadaa24207edbb2203dc2b5bef8444a61d654a8fdae0c31bf"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hv/hv_vmbus.ko",
-	.hash="cd4173427234b23ba88ad097466992f8f1b298873c3451ea3695855705ddf3faac317a7404c7cb00be9ec16b54302b9331cb7f6c7c268c6a3c3a9b71d5f6424e"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/input/ff-memless.ko",
+	.hash="73b67fc6995b15700c061470256b6495dd545c7424ca100c09d0d9dfb257f12bf8115ae0cf896d20ea586b9d654451f66e48b3bb12e75428e1d8b8e1c1bbe6a1"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/wacom.ko",
-	.hash="4ccf9e4082bcda5825f32007801af13042e7b1224c5e6daf53918c7d23f0522c441e3196c9b31f62718c51ca9a137be31b7b9896463f58b945b0f46e3e2e0f5c"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hv/hv_vmbus.ko",
+	.hash="7b5dde9a520e424e232995c95e3ed4e9ea661fa6b78ea6285594a9ae1ee5be01e78c1a0ada14e1dd26d225ce8c3206777377d33a1529c12c960d3ed1a8fb69e7"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/uhid.ko",
-	.hash="83d86d6717268dd4d5f09ad801020e33187c76dff6a0e14e7cdf4437eb28e04404992cd41bfe8410773888c81a95cb4a745547f3dcb27d29697c70595e3ec2de"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/wacom.ko",
+	.hash="65d362f93e0b346287721cfec5c2150834cfda7de6b6be0f8260f134550b600e23c76779ef84f015eb7d08d8a83cdf7d83cbb10f509eb248e90ae76634f9e59d"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/surface-hid/surface_kbd.ko",
-	.hash="6f8e52cdab375b12bf0ced5e3e650366c1e0afd4e262895d095f62317ccb0fe0cce14728353c1615013997471c25e04103a1a533cab0fe4452b331fba4ad5a19"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/uhid.ko",
+	.hash="cf06b2914f1b451ef7ad19cf378730851c23958fad8a6550acce8372fd2d03f3f6addd5e453816eb26c85646b0555bf77a2dc41ee4060a028324eb31f17b94a0"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/surface-hid/surface_hid_core.ko",
-	.hash="a3c11fd737e16c64e01cb50187f8f22360910b22934f8a982652c2d0fb1cb873209c3bcc4d16539fe90873db4d4383c2663d9b5a8a3430a9f942455b9ccc2327"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/surface-hid/surface_kbd.ko",
+	.hash="df1f27fa5c538bbf9308ba7c73123353579560c1e126d39052575ba724b0da68d2ef90de3593406ae7667d35f38d06f91465c00eb9f77a9d09b9b21a0b598be0"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/surface-hid/surface_hid.ko",
-	.hash="ec5c4635a4802c45d6349c670006d5c844cddce7476abd2404195bf63ca328400eb7d9c6d7239768a39a0147635ffd593d2e4740ccab2cbcb50c25469a0714d4"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/surface-hid/surface_hid_core.ko",
+	.hash="8cdf87b760e4767f3230ebfcae3f2a213d4b9311162961edacd834c5e12c4640febe5f1b7b7fda8c96988d11544dc6d86d5d332acdddf72c79211420a8e8387d"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/intel-ish-hid/intel-ishtp.ko",
-	.hash="da51068a4dcb61ea8a0ecbd0fa52fcc0ec373f4bd4a4fef6a6689a128ec9b91988aa487cac8f9e0dd0702aee945df07d14f98c26d1bd4816af2977fe82a7920f"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/surface-hid/surface_hid.ko",
+	.hash="b84e958e158e84ee5c7062f09d90ce228c31aad2ad7d745275d8a4ee4875310134694e4b1cb4454d16a68b4f915875c501567005552e7810680198f25b93784f"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/intel-ish-hid/intel-ishtp-loader.ko",
-	.hash="5c48e535bfe37a017401efe02d238258e52f132cd70a36c0325045ce7a6f454fd87f95e8828bb66bc93917ab1fb4c14d9c894a861ca623715a2d7b21a2438ad9"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/intel-ish-hid/intel-ishtp.ko",
+	.hash="750048839c09a9141b39bc65ad8169e16377cd2d39d304ead42d45441aa85a9d0176fa4a5a195b8180d6c58054fbe3b35cfe3ceb2d7e7941692dc385efe64327"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/intel-ish-hid/intel-ishtp-hid.ko",
-	.hash="8a6400b245cd32ce4872f706e2669a9868bfc555deec76f8c1ab7f485bd0eee3c4036d7ba3ca538ff7cec7187fb9dc89c0bb03bba57a7bc8935f2190fd837477"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/intel-ish-hid/intel-ishtp-loader.ko",
+	.hash="85e246df58bcd5a388747f0589672425ff7be6fa81bf24390b3b1fffb8bfae84f0e1f0b6dbb63bcb71d399c9f0f2e22528047c24d0154e14be8e76d8bf35ef56"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/intel-ish-hid/intel-ish-ipc.ko",
-	.hash="7812ecc460dd88cf1b24bf4746b04356e93f37007c384f54e9f122da9f741a72e213fa5cce159d9ae99fe21fa9d0226977c3393878eca1e0263e1b4c9d2213fe"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/intel-ish-hid/intel-ishtp-hid.ko",
+	.hash="1130c743b92e1b2f1b132e2a90dcc61b9aed79db69b0e94939ef357daea4f6bf8252ccffe212b23392e1ccf5727951da3500e0defc58ec17471022cd172fde1f"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/i2c-hid/i2c-hid.ko",
-	.hash="47cd3e479869da62460c4825be9994f3cf87e8a096e5ac9adb0fd20567f2a00a48808a43273a356e93fea5bc0a1acbcd4cf46865608f2fa38ad68b560a3a5402"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/intel-ish-hid/intel-ish-ipc.ko",
+	.hash="0b9969b2e94d8691771238e501ef2c5481bb1f5f6be07b69cdf93997a316e9137890ebeb0df54da9cb84b670133e38a32db83a615b10b23e75326a5cc0a5ce36"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/i2c-hid/i2c-hid-acpi.ko",
-	.hash="773a06a0db036446b75f57d5c214a740b38fb5176cca6aa77f7b62b46d18b5fac270034eb90f730c4d68c7ee19f4d6261bc1c0d0330babedafe2fc5ea1afc461"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/i2c-hid/i2c-hid.ko",
+	.hash="8b8843c50631627dfbf0b9c78d19785ba3e7ec81e05e1d380c848229a98569eec102fcad31645013c22cabbc56afa173df1843fbd92d61b04e8b7559e266e9d3"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-zydacron.ko",
-	.hash="78119c0181e3bed8de0252885bf9bf44103b5cc162eec1b23537ef7b211ea36f5e35d0a32a3b9e2f636dd69a1e9ec3aa1a2c7b4841cd12a4f10e9d03f4f50b24"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/i2c-hid/i2c-hid-acpi.ko",
+	.hash="0427b07872c4da01055d74dcda49aece01d54cb2d0515bed68ca3fbf24c7ab41930d18c7184ba2fd8bb511664addf3b6614aecf95a54074aed37d5c5b63720b0"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-zpff.ko",
-	.hash="fc95f065f077332bd944b983b1e4e1551c98222cc7faa782debbeb08280cb4d2c50452457bfd1972e49c5c4199dc87f3c532afaf09e93f79fe320d81edb8b733"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-zydacron.ko",
+	.hash="6a33d6a00205fe153761c276afbdb6c2df055a4401e712f9fd82e0cd456e51700fb1158a803f31671f9e6fdd2dbc22cc7a8b9ac78ce8127075a6cdd4d86a55af"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-xinmo.ko",
-	.hash="2f10ba4c2127b7f667ca9a5634347a55a05a9f72c3d5a6a113b94d450328ab189472c0dfec31b949a44700954117b9217e343cd7ad1ff775a44bdb88fe0e02c7"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-zpff.ko",
+	.hash="457470bf41c46ab26cc490769baede21889acb5553896efc015949a9d1c34b1ab118ad7156bbae696a2bca07c153cf45cc1410d90d2bf90d0c11fd0a5b8ca2a7"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-wiimote.ko",
-	.hash="4e7ebc1c90a643d8e83c38dae9ac7bc8c7595b08d710dc8a971f640b9bc48fbcc852676a0b7769afbcb80a938d63bdff168f4276e255828dd766d51f2fd4844c"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-xinmo.ko",
+	.hash="02953a2ff3ddec164c6eecdcbab0d5b592961342b81c08f090509a5041fffd202dcaf24df7829204654f6b4ad4c2ba7cf05976f2982f577d376b5871cc88bd3a"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-waltop.ko",
-	.hash="c37dc341490e8a13b1684db59e4bcba3a0a378a6de4a401ece6c205fc60f2c6aecd1007a62dfa273c40d7219ab898065545045b1d4e62881b51067dc44c83814"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-wiimote.ko",
+	.hash="58add0002ca09277ce38621d37cb980746ea81c286a303c4cd402a2528f9b761c7acf50db0f8bd38419205eb15ad1e474b38be1c24154f5c8cbe3a38ea8ed23a"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-vivaldi.ko",
-	.hash="f00361a735a7a63145e3b5844b2409f0a591840b8a2f1b81378ea05faf7e0add0fd4dcafe4ba73ddac937c96c7faf7be21ad6c69147d0e189a6e16808b6f3471"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-waltop.ko",
+	.hash="5e2162f5747adeefb1e7dd0476cb7c13c2a43f37a7ba010bb48e6afba08718afadd9a8ee93312025c4c8d6038f3fee591e751e7bd89170b105ce1d71a947dff4"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-viewsonic.ko",
-	.hash="e1c309f3e643f0c24f15f1e499baeb3bcae838970557155a0aaf04d256fa5042fa103044adf2777d640f9794c7d200b32136caaf80ea2ecc85ce4991f6d80fd0"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-vivaldi.ko",
+	.hash="c8ad261e3c53a1f7ce1252276505747d7c2aef103b790cfb6ab0d9cfb209da9180db036e7937f6b2dfb2a2a12439eb8e745fdfbd9a70aa88325b1ce5da969a0e"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-udraw-ps3.ko",
-	.hash="1fac83949cfb70b40a07229db8bf24272a563f4da7ecc552ab9c23a4ab09036ddeac5022c899393434bf370a855713c7cb4970bfee79ec6f7e711f0e7aa4f31c"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-viewsonic.ko",
+	.hash="09b85cf397ec495496a819b834a797e6e78e6c9a3d31f6ed65a80a960d233ff652df1b2a44610f2c0f3532716e7f6bdacdb29fc87426fe7a6156264c3b742f1a"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-uclogic.ko",
-	.hash="5ae27feb31dd31a5ae398cfbf20101ffb8ca86b96f52ce5dce3e1f056dcc9524d5ceee35f79ef7a33d9f97fd9653df5dbcc549d3dedb08e6e26589e4afdddd72"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-udraw-ps3.ko",
+	.hash="d08707591bb892cc8b513fb384de8ec58d303d4fd3ae7f2b7c71393434ce3ecc590bc152c36ee77154634fc7a28a4c26841ba3acd72618594f65d5f91f045bdf"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-u2fzero.ko",
-	.hash="18f09865ab2b1f1d8c1111ca9b8d2abbb13aceb0559059823324834d18223e73054b8424d50d3093bac777bc3af48ddabee636b7f3f373c81f5f15c70c59b6d3"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-uclogic.ko",
+	.hash="77154b7e89fe170d8441a7df09fc7f2c9d3b9a6cc35b0cc7707be7ecd6e145feb5ccf3f8fc184467ec056f2770845163e6254efe75503dfc8cb8c15963a8fb09"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-twinhan.ko",
-	.hash="031f9e6f092bdafcdf4fd4dab1ea1c4735becca3d8c682e7ec9716a56da966f5ddbe9ee89cf81fbd7a4df3d13d8854c0f1cea96a0b27bdf7fedf081106ea0d0a"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-u2fzero.ko",
+	.hash="c8b93711b3e1898a9ba1f052d27a55c5c402ce6facecab87c40f2703bc04280ea8998d08c189ca7d3cc67c6612243fe2b624b16a3e60a3d81898788fe33e6f40"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-topseed.ko",
-	.hash="80518de158ad22408664abc3adf2e9f235d45c65adaee18365e65d8731a2b8cd014e4d2140b9f2d272cc3e4a6200ecf10e7768738040ad01cef96502048baaba"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-twinhan.ko",
+	.hash="196cf2daedee2b20a11467c9cd50dfde2387d882c96443171d55509f02603d1247cf27e26f3dfea62c3d9126d10d1be73304443b7a3ccbd40c4a02b8d2b536e1"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-tmff.ko",
-	.hash="7ff437c36c4a40fbd53e7827155748352909ad92821df462c645bb3f5fc80d5ac0c4ff24527507bbbcdf9206fac959b5a79bef0a2ea34df55f46a7f0fa6c63f7"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-topseed.ko",
+	.hash="8393074cc5af2067741a54ee48bcb36c3dbe194feee1803454df54c4fcc38a6ad0eef37a540755be413c6a48f1a71658b8f38e233d520beda3b6c98308f577f2"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-tivo.ko",
-	.hash="b8e81720039bb86639eb2794ebc2a0c1e005048af6a66a035289bd69102c5bfab684cf82970d62685e0affdd1627aa00c606a4d3e3051ebc1e8cc9420dc97c3c"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-tmff.ko",
+	.hash="5d0d11afdfb2772721942e5f9d712dfedff10d08a9389694fb24bab171e23290107beddb09ae908dfca743d0310762a84f494b44f5a32789ec996f70b85abf3f"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-thrustmaster.ko",
-	.hash="86181742d29436f315c0c44734f85715603ed8da10a744adff51e2dbcac19916b7758e6227d96093fc37de89ba5645533a1bfbcc0211f69b5282f1fe24c6b89d"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-tivo.ko",
+	.hash="ab4560e52a70500ba1800351a95d6ec79f6e6384c62eea3325f00ba5e7afb36011222011630297d403cdc097d0c1802eb200a46603cbdd54f1755d34764a1e6d"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-sunplus.ko",
-	.hash="8373740c018d27e6a1bc7b00e7f3fe650a872bdd1172ee093af600073bea036556bd1ebd20b22f3cdf427062401864ed6597125bb2e71ff835253a4226d4e4d6"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-thrustmaster.ko",
+	.hash="2ef689568dfbe339dd7d4c9799a50aaf6a92bfb2f1b5dfc202475ba7e53d1d78240f7d668815a6a6401afdcf1f14a6265c45496e4de7410cba96252891c9b5bc"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-steelseries.ko",
-	.hash="fdad7408fa927f0b7a89e1697a5b9af34d17b19fcd3c0a5f27f8f0fca47d285342da9e110b8baf89479860ecf47ecff284cd8594bde54084c0b61adf02c42035"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-sunplus.ko",
+	.hash="488b990efe6417d1334d14ac5e7fbbdc7cc0e3b27122faa8ed14b5293b670799cfcab0a11dbc6e3e3dd45bc5a0b29659da4055ea9907027c35668d72bd6fd3a7"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-steam.ko",
-	.hash="9f706f35794adb057f25de6a7ee55892223da229a22ae5412809b2036e7fe8c58802b299321cee53cfbd902e6b101f9b8bed343e2112a3bcb5c2c7ff003b6e92"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-steelseries.ko",
+	.hash="d833c1c60595038a63191282bd29212c168ec2f94e015ac1218eb73b3514823089d8cc13b47247503d514826b95003ff9a8bcf1fd48f316e2486c9e0e0603308"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-speedlink.ko",
-	.hash="c2c19d1a4675d22324b85a49162d2c758d6755d0acbff91c793673e01ab0a2694a9ee84066a672999da581e50b49b6418e52157a8d4fe1c3884983d333b35ee9"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-steam.ko",
+	.hash="09b58875894c26a503bf60d3ea49e2a6e1c4816e4527904575fa63009abebfbd5b7d23032f228e1eb58502f32633f9b77cd89efa81c68164924037d1339dc30f"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-sony.ko",
-	.hash="b906182d341e77398b188c6b9d76a6d7f8794650304c08dac3f8fefb854371c7b2fb574c836ffd8c2fa900b9f20d72bfbcb401933d0ca91257f8a5f118b64fe4"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-speedlink.ko",
+	.hash="3cdf043a62378c1a326da8408166ca7f962e50379226414c8b9eb26aabc945b80034659d1210717ca14a02935d998f98aea569a2bd686f8e2882f92f3bde53ac"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-sjoy.ko",
-	.hash="2cd22ccfc3b72287f7c9acd27c922e4c0ccbf6c758c2a85718c5c805b18ebfd72cacce6604ee0f5911e5a7612f1572c47a46c98284bdc679cec0ff3d81df16f6"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-sony.ko",
+	.hash="693d482a98470b5eb2729c1ac84834f7b1ef07b1f1aa08d0c24e4120ec248080ba0848139a625964799326e6d7c0ac5f00bc66044ad83d8155d849279273e5f9"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-sensor-hub.ko",
-	.hash="97fcbe80a20203abe24d26c150fe44fc332a894b47484eecc9478e5cdc81071731f19069aeeee813039fe1f18518a0e533e3cb1f36a788a94fdda31a959495cd"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-sjoy.ko",
+	.hash="f325cfecf3540660d91bb39231420abc6f4e730d4c9eb23c35646b0314bf4756acf4303b9688e715ef16bb8d8e77bf25562c7ab1b1e6417c25523290e3839568"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-semitek.ko",
-	.hash="73703692eca956743a12a8accaa7f1609cf60de8183c9e88a9ae385895c742688c3195d6670de3e527b23ee212444675affdcec5c63d69d149013c5ea87d6a7c"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-sensor-hub.ko",
+	.hash="94bb8f7b0bbea5beb4cfa5470c9616c2586b535324d81ab37e1bb7765a090eb6fb97bfd800a16788351f0a45608faaac582c63096962369c9ad115cbb5926395"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-samsung.ko",
-	.hash="aca9df61ca76b7f3fe525265e24534a697edcff3fc224333dd5c8354fdfbe3ac0e0fae3d27708ae7a0bb1c190bcd3e851068901cbddf479ed5954c469b0d7e3f"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-semitek.ko",
+	.hash="7668aabec0330378b4aa59b26c013c500131dfab4cac8e1e0414681a54684299d3082341c83009b48326e49a70c1dd7279213898d71a5099cfce0ad7917ccd92"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-saitek.ko",
-	.hash="f615d4155be0bfe65504fdf895ef00f5fa70739af773b09aee574fd1210a89a0cdb98191755f60219a9a08cfae586e36691f26e03b9fea93a9c982ebee5861b5"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-samsung.ko",
+	.hash="2bd4a25a9d3091fba160a3caf781f3322730e4438bcf8965e9b596fcd96ae9efd1f39dbeb0b878905aacc48cf0fd80dad6598bb0c52486fd9cb8f52caa64147e"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat.ko",
-	.hash="d29e271fed4b9c71b57c85063b398a6c0e2c31efe6e686f3fc44501c51f4eb78b41c9528a9254529e92195751142108abcd90496556030ab4fc817c24f2466cf"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-saitek.ko",
+	.hash="eed8e1de1ef8650f156076c26e19848f81533507d094954e3d07712989f16bd06935de008e9ad49472be6b70b5bfa2c0cb31e405e679d5f30b5d1cb5a45542bc"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-savu.ko",
-	.hash="79a5fe04299dbda57112443a73748fd031e32300cbff0736684fbc1e3a206222dade69f46b244c947a6ed7f48281d48a19c8d0260f2ef4ebb238855f970f2c5c"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-roccat.ko",
+	.hash="393fdd45538dddfdc34a8c806dbb540a35d177c826c490a0019b158262905c8eb254c2973a7a0d7157fb2fa9f548bd42bdcaa92e50ccd6309ef6fe7dc9f3ec45"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-ryos.ko",
-	.hash="35103f7edd069d947735231bcb56d06db2fb49a9c69325ac9602118c19def4f4ec8213375c7d16f6d4cf5afa894090cd219814e1b60c5622372343670af58398"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-roccat-savu.ko",
+	.hash="f3234c6266497521dbe8e70e9826fb8f0e18342849ff15175da7fa1e59c7a76074870fc1cdce152daa5543bebb8ed489cee10ea5e8f81090ca2ad8f6e9ef3b3c"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-pyra.ko",
-	.hash="3d1329875e74340b2487652ec7a69d87f8f83175f5585f4ca58fae4de46669151e9d2ed709017e2c69ae6018b98082ba3526bd82cf663a46769b34174f909d7e"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-roccat-ryos.ko",
+	.hash="69abb760c8abd7d98577b6fdab231defbf20208a52ee88a1791808a261c27191e02b340cc28bdb629fd352be8a08e7603b747d3d7667d081b8dd9ebf77a4d7d5"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-lua.ko",
-	.hash="85025e1a9bd1bf5e1fde3bffea3414f6c2c06627afc541cf2b313ce5ca0c70e9aaf2ae3675ed3013204e47ced01f43132994f5dbbf233147cef6657df033d4eb"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-roccat-pyra.ko",
+	.hash="da6c097d1145d4b241579faebda0e200c51744502ab4ea07a6d7594f47b8ce3b58153be8056bb28871b97a335864e8c86083611a47657c11fa3b504b5638b151"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-kovaplus.ko",
-	.hash="a7f579ffe3fb9f617994599c627445969f2e7a021537fcbd2153331df38428ec740bb3da2390285525f58e36adf6f78b2512f83b671648a7f9c26c74f6ca463b"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-roccat-lua.ko",
+	.hash="7fa325aceff2de7c2e82ea6576474047e4fea3adbc2d57db2cf07b8f20a3f2589f0c691a1f5380fb529e4e50f45a8af5e2fc7ecd3b01bc0690488a28cc30cd80"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-konepure.ko",
-	.hash="4192bc63a1ec47b12d3514ae0159f4add54532218b634a52927159a7c458a6d533b1bae2fe68d4df94117b6d5bf160da7726f8613d08f4223132fdc4841ad80e"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-roccat-kovaplus.ko",
+	.hash="6197c376b06082672d7687989cc6bd7f5a05c80a138fba885714140e58c5f46cee9306c14ed2f7c019806da587ced0ab82baac2575576f947fcfcc2730b3bb4c"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-koneplus.ko",
-	.hash="b774124acce5c48deb489fd830aeb6b321b34c680d6ad9ca5f273d52d2dc1fa7f6c29a20a22627b85e40776de9edcb2a530b8c9cfb0814ab4df83387b50458cc"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-roccat-konepure.ko",
+	.hash="6defef8237156b06a943aecde62eda2deb72553f3ecee05a16a4bd9c810205ce4ed681e3b10c9694d4f60bfa0fa6b60964fe6f7319eac8bebd81bc5e96925f38"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-kone.ko",
-	.hash="3f7effd2ef4dcb63a0a77990dbc1e152b2298545e20668de72ff1a551f4f453b4481657231923d358a829800e6931ca5b3323c856c868388e0cc738c6102bdc7"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-roccat-koneplus.ko",
+	.hash="3e560b82b6782e3f352dcade4ffa94d3ab0746ea2a36a69e9186d4d193d1fa579d34c0f3c83973eff0e26b09c0db83b8b026c4da7818c14dbcde8562434362d0"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-isku.ko",
-	.hash="2f837412de99f8a962fe4a2f1de9baf2b7bfaa632eb7d48b3ca6f905defd5dc1328acd8d90ede444465625afebb33c9921face6d847c0f8fc705bcb0c99e7253"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-roccat-kone.ko",
+	.hash="58b45af0161bfc716f540dd41d604a42e248c55a59827402d7ac50f1de481aed4abd4f3828c38e62813dafc149b0bd978a5ad938e76cb130d3983929311c4da2"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-common.ko",
-	.hash="4d1f227f6f8769977eb8fdd1c7673f478931761f0d7b8ddf5b094e48bee0570ffc2337ed13b01fda2b876199bde40abaa5e2521bba012898c5a1fd29be000955"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-roccat-isku.ko",
+	.hash="40c3b0a176a7d832f19b65a21cd9f31b3a036f67f906530df2a7392eaec3f96a5cd9a8c85bd5f3cc132801ea801859f3bf54893e1026273acdad5e12e3bc1804"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-roccat-arvo.ko",
-	.hash="64cacb49e5bc64e2302d305580ebb0b71218f9a85bcbee45046af0d364da9f7c3fdba7c609f26eb77954d984edb447e34afa3494608ad86f87d41e38972bf24e"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-roccat-common.ko",
+	.hash="40ac611eadb7d146d6986277bd21ed6970bad534e54f42849dff8ddf7219cafccfb9af611edc946d72a4d24232bdd882527e0f7ab62088662bffe6b08a70d8c2"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-rmi.ko",
-	.hash="dfffff0addc4cdaf9e5cae92de39aebfe7143905344d50f06357abbfa53d2402745f221d5d449d506aaf854c3f279e6f5446aab6736841401389a31b4ba1b008"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-roccat-arvo.ko",
+	.hash="21811720161c4c849cf13b4d415b82cdb8760911bea0be81705821bf0512c2f5aa1f30aba55583517d313720c30b518f34c6d717b8ed250a1767ed8456cf389e"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-retrode.ko",
-	.hash="242706df83012c868074d29a846ac6006123375aa8a75659814fa2da97411b48b1b344e35f58aec231a75fdb1f714ec35b77efd808d8f5e2642626028032dbf2"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-rmi.ko",
+	.hash="cdcf409b17e361b06bf860024b21f11bf3568e6854d5a6d2631ce8e19f50ec0f41ecf1edd2839d08b1161bf7db9d51d3c5ea3e2769cda29cc3823bba236d69f9"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-prodikeys.ko",
-	.hash="a1bad28f053416be9b46a88aec57d7cc17ceb2aa166d82713464fb91bc9d2094882d0b79ea479534f3e2150b4b1de11a58e0e14362899b482c1f1986169382a0"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-retrode.ko",
+	.hash="ad4e05c80262cf98b3e6456d46e8be45f2ae3c0b26e81befa2bf2e4b735a66fa6e24334d05e5a284efa9e334fb44ef0feca3c8397b43231e7e0f4ac6f39464e6"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-primax.ko",
-	.hash="3c2d1cb6ed7d9744e9f8fcecc9c1073a13c397b039bea3ad1e175fbe697386be736db6c16b0c8ecbd4e771d11eb7e8ac2c92c8c1ca6667abef25e10f386e8fb3"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-prodikeys.ko",
+	.hash="f33c0298cb7e3999620ae1a6fbda793b81f38b48811b094c00deae5d07d69407502af518e550fed6079464b4fe98ed0d3eabf493eed04260eca19935c8ff6849"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-playstation.ko",
-	.hash="4919f5a3c5b891cd5e2546a13f043fd570d642cceb4e90ee8dd516c2b841ae931ba355cd563741d6eb5cac43b9e8c7a41191cf31509d3ef8189331bf9e8c362d"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-primax.ko",
+	.hash="1d015665b01f6304494a5040901c5d515f7cef3e132dcf755a00fcdfc86bcfce67ea03c8384389239503b677f8304b7c38002c765f88cc356de9f084dd4f007f"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-plantronics.ko",
-	.hash="50d912e3f5428091d7a1c6011882a1c4aee92c6b607602b62cda41b6dbf7e49b2ad3b41fe569cee882e371bfc89e28062278fdc4cba54e6e96b5a93d22132c69"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-playstation.ko",
+	.hash="27b4a3c3a3e1ad42e554eb4165cfb0d012e5380accb4b297fbd8b9952bda0225bde954189a060a0b0314e071a164171a83b62eac59d789e2ac2c7b5e8dac5649"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-pl.ko",
-	.hash="5df5a51419d2259a8e17380e9851943218b2cc0a207574563e44574f171583f8f3d5489c91cc310b2b8cff9c0876cb2a899477491fed1bb0f327acd9b9dc4811"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-plantronics.ko",
+	.hash="10161ecd70cde5d36b14757cd88b04c079173ae823104924b916bf5c96d17686ad748998b5f9b3b7daabc51f0c4e859acd05360729d4c9bbda9616a90fa7a1fa"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-picolcd.ko",
-	.hash="f998a892780b5a9bdfaa55228ef4b0615d87f6d5dd250bc062b211ee8ab091b36fe1212f256aa916eecc0db1ba8a364615e4b389ac2ddc1a387651986ae871b6"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-pl.ko",
+	.hash="7ee073325481e06247d6aa3a41191cc345d22954e7c6931d38e30a666d15b5ccf9bd8852015678ac413b179a38facd19ff3ae8c45721dec6fc3be19cd92d5796"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-petalynx.ko",
-	.hash="e786100656522a4cebbfde78a90d19dec122a312e9cb3b4af0fc29d814b6881561435e59d0c5fb4e69418cc98f598dfbd0395f686167c607d3ac404cbc57008d"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-picolcd.ko",
+	.hash="70bb59194b6bd5533b521566f0336ac3aecdb4551e208d82c0f525186c6ac2da70d7905bcac0097c66caf4e2178904a06fc0d613e20107208c7d2e6a002d98aa"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-penmount.ko",
-	.hash="8c64a95d4b7d1eaf56141f8ba28ee3f8b67315bb6cbc1d4b8718723b453d4d6c3551657b81eafa8248d788ea57ab172c1d3a983dacc36ad3f5e77412536bc933"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-petalynx.ko",
+	.hash="b0ae19b981efc9ddf246f3ef5e8201e83d460d087b6dcffa5a869d9ad4543afa70032aa26a854e7df529fa1add5cfff5980416810d31fa7c5d562117abb43bbf"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-ortek.ko",
-	.hash="290c8436e78c200bac9e1fd7f6a5cb637f22cb0b1446cc9f21d8fb7985181affdd79bdc22e8fe8f96486bf1fff9a27c363a7091da77f2f67783a4331d54de129"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-penmount.ko",
+	.hash="5cae52241cc2defee51c2cb539b7f60546b13193fd056ccd89751be5f239d1c1f2b48769ffc8ff1e5fa93534534bdc014ce725b12de40578a8ab81ac00132b54"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-nti.ko",
-	.hash="65a4fc16337febdb5e43d655dab3f0480d60d64ff99de3abfd1357cf616c78a0bdb124810df9972d3fced2d48d286779547b24a6ad6a7578aa4c8141ecc01e96"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-ortek.ko",
+	.hash="9b8a4506fcefed9644d5afa7335a4683448511cd89ca320e297d1c921b30752105ea590c3ae0af9084631291a971fb30c67c8d4ffc252cfe2ed7f24478d1711f"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-multitouch.ko",
-	.hash="e9fe1663a1b890712dfddfe4fdb34aea8b8544c4ab76b6780bcec4a33359bf38a71f90855c690bd68d5d13b1abc429fe1128c9b29e6f7d5e1687950089afe305"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-nti.ko",
+	.hash="75f5b3e4c08fee34850344d3fd9d612fbcae3e6481b7fbe03283a9633d82a41a85541c5bec03225e9da71d9d6696378a67894e1ec74c385d6d1749318eee7215"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-monterey.ko",
-	.hash="ce8f43cd701ff457c9b204db47f6ab0cb2f0456d9a6938ebb50d1ac4ca4a589dd67e7c0fb4f830f7fdf78eb8e5e2abdf62d098ca79acedf3ba2b571f12f6fa1b"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-multitouch.ko",
+	.hash="e2c31af53f32594d4c419b43f7038753c2f820c706d4f289c7c92ed615acd05ab3ed149cfeafa98b8e70998390925e5777955df06117dd6905ecfaab91366d59"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-microsoft.ko",
-	.hash="c88db8b7178bcadf3c54d06076d77fe53c1805429a25d982a8a39adfd891cddaf21f0e77c8031f84dce9272156ddf5874b9dd22c7119332a5b26b3728f39f031"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-monterey.ko",
+	.hash="9528b1d64136c3243512ee87e2bc074920629da2b71efcd2da88529e17204805ddc69fb499f61566fb419cee3cceed2a9fe30e7c046917f0cce68d6c008262c1"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-mf.ko",
-	.hash="907ccf9b4ef06c3f5a2b6e86a4bd3f614e8b12cf91a0882bfa12208a7c0367ee15f3f542a3952922405d11a9453f7013f243cf4e9059e9a86e6fee23dfbb4ffa"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-microsoft.ko",
+	.hash="72714b4810933c3ba8a4662026790dac1395494935f858f89b1dbde17087aed973ed3e6afdff490c125efa6c4a8b931997054f04aa7428ca943af1689b8d02c0"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-mcp2221.ko",
-	.hash="54d3732f679e02016e0b0d7db86d83e5a284b4449fbb7b23b7621b7db1401d3f8d8ecb0def90dfbe43399b1b2747d8113e39eb52392d2cb600ca9fc76195f15c"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-mf.ko",
+	.hash="756aa8bf212625defb6ea85274fd45d857094fc094969e17d799d12ad7bbd5bce9a2041291f447c54c96a0765c8f0bf0e51da5c83304516fed23dca2602ba290"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-maltron.ko",
-	.hash="985794d9874e2d8b7ce5bdf3a94250e0d915bf590afccfe4df5a1cb9da4ea5c06193f8a42e92cd891ad54808dabd0efb90772c774b724f7909955cf56447b5fe"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-mcp2221.ko",
+	.hash="e046687184e7af295a1d394fe40d4323e74df945cdda5c03457a1299de9ba00ccedfffa28887cb5e0813230549945f72fc70df6f3e6f24ac376b168c9e9a9385"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-macally.ko",
-	.hash="c12cbd48031e5a0c3f6afbe40ab063a4ddd0383823b69f5a817c6beb441f59ae5044625ab895ef26dcc9311039f20e6dfaa2f8e07283051bfa3ee9d73d9983a0"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-maltron.ko",
+	.hash="a6e9621f384ac2ff0155f7addac41747e40b1bfa35cf5393d15ce11021be83c2e73807f7842a1b86f377d536ffc5c45614474f6564179d211f585b1cf460264a"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-logitech.ko",
-	.hash="3bd80b55b90cada09c369e3aaca80011620e45f802a6eb5a58b6f27cd824ab4888869f52b2ae26a8f6cb934d7d62aa8535a47a870630c3d98775789e4a8b461a"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-macally.ko",
+	.hash="d2c3733d863ea914da47cfcfa10df23cab15fe1165b9dc2c1a76bf6e4ebcdaa905c0bb20cc02b247c9799960d98d347af70c16ababa5a02b03f2494b748d5be3"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-logitech-hidpp.ko",
-	.hash="8186da569fa08b518c7def7d8093085e851ef8c78824a36705583b78e8c144f3ab936001ada0d4c6ade08b07332d9fea5d75d4d33cfef55b1ae1536bb5adae74"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-logitech.ko",
+	.hash="b5e9963baf586f30a903d6752189c0424f42dfcdbfc3f72922a7f3988b2f013077440440d9d329672effe430f53b815902533efd3a806accfdef20846158c490"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-logitech-dj.ko",
-	.hash="7e1c68310a57328bcd5c2af384e95ae9c57fd9cb3f6220ea20ddce2f24e779185d12c726daaf87079077dd532bf7d5ff76a9a17eccccd5580f53fa5acd04ff4a"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-logitech-hidpp.ko",
+	.hash="01c941893cb37c4745c54a6ab61e670014be0046a01590a9ae6852504490dd9e755dc0483916a3ae70526d35b6137ef0ef76ca0673f6b472b4b3cd441de6a7ab"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-lg-g15.ko",
-	.hash="25632f30ac37448ac7d3dcb0c80e3b7c481d20a33fbe4386be61e388ae8e50a3d2acf216aaea632146e9695c2ca0ba265b411fdb143381404690a91d39fa1dfc"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-logitech-dj.ko",
+	.hash="66810f99bfa5a85d18f05543f8a7c73869f8a3c5d95f450748b76360adee7ff85d55705e3dab44376612dd032b652b1c129f70602d0109353157f64f8328cc5d"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-lenovo.ko",
-	.hash="ccb77c32bf937fcae0d285090f05c534a34fed0dc25c31638525a26d005b811365c40b3f56b709d2d44e72efc2518244e4802a79c182d0d27bbbcc880447cd90"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-lg-g15.ko",
+	.hash="36d40aefe4f1cc3918535dbf6ba8dd31e5b29fd9e0119c9db6fbcfc83913e8d7f402c7156201a2f782fd26899d9a7f67a77b5eb0adb2b165a183f34b031dcad5"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-led.ko",
-	.hash="c56d63d6158741474bd1d26f5dfeb04f2cfa387b10c5a5ae4f9a2956f1088be71fc96b0602123e14e7b2d07311a525981859a359647497af0517bc41cd636fd7"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-lenovo.ko",
+	.hash="6ad4c33a6138526693677869ba9f48bd68b7edcb2dc0b1c55d4c90fe26fabd386be208d668f9556e0d6e70957c122e8a8a459ab0a1eba0a2291e2038bf9bddd8"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-lcpower.ko",
-	.hash="069bbb3d2a32de4f3f8c1759b328459ab85c91a3215b6a721b65439a308aeeaa7c1543015301a9917f1bf8f5fbfab6529032cec7db8ab6e2be97c51b380e3e86"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-led.ko",
+	.hash="093b0614bc8f7a3c50a0f969cd86c93a58bfae346995b49fd0339d7ae8f38acacbada9c8d257b464f0c18f71599683062eb30b90e847283569f28bb83b37a49f"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-kye.ko",
-	.hash="515dceb5ce255d57f1b9058e514e433a2e5b8f5cb072fecf3fecfa52fd89628a743105d85a67543c26c763ee1eeaf1c115a91af64866ca4c56e2752aecfccb08"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-lcpower.ko",
+	.hash="487393cb3ee30f708c12eddadefb019ea51579a5a7ed361609bbcdd55ad7950d37c3a46d8bd3cb9c9b1e1003e973f030e61769f3e270c2068be7f4edf044284c"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-keytouch.ko",
-	.hash="b31c50cf1f4d40f66a21522ad19aa573effc7dd60c07341e8c92f3d567c858e055426704a9d0829372eb0e3220ddd61d63b98d535d42c481143cc98ac6c42ce2"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-kye.ko",
+	.hash="1bd15e35ce4e5dd50e0d7cd0851f6b0c65d387dc3c6d7634a68d3a88f9e0e6709ab3b2ed99360e5e99d035302d2f7259a023a819a9dc151732a9322f90468ccb"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-kensington.ko",
-	.hash="40b3fb914ad9aa106fd99b135eb0d6123c19d91361323debcbf53ea60ad95c4eec85fad93ab7c2c16a362a2753fd3bc913e861b3fd5f4e36f84502c71840322a"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-keytouch.ko",
+	.hash="51b71143b11c9545d6001211035384756f7e4406ca144675633ce619309494c24e03c0cca5b7349563850e78231ca774f4bb133137779327bc2ee58de6cdb8c7"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-jabra.ko",
-	.hash="26eb5ee9e3ff9ccff179c43dd1bf964db1b04b2876838ecd13d6ba26944bc1caa77df72f24ee597bc4c2f9e18635c244c347a751b51df6f17c36cad41e2aebfb"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-kensington.ko",
+	.hash="5fca5ed03f2b88a87fea2257f3c8c0a0789162b82aec09a342d3b520dae1171fb8feabe796268786c1f83386066fe4dd81278cff930ffaec699f0bf1105e5b65"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-ite.ko",
-	.hash="0d62e76f04298c1533076b3f092856f37ad10833802696b8af0cd06680052eedd61120d18dc93e6f598c70ce7c8ec32c980a4a32f09afeb4a53c32f5a53cf268"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-jabra.ko",
+	.hash="298f82932b2a9ab71236c68b24e95ed3d01c7cf18b9529acb9166345f6aa9a0ca7eb9eda3c511747928c1d37c4c4fbaee6e77af62a37f7009af42f36fd11616f"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-icade.ko",
-	.hash="3e5083d2ec64ec4a628c29a6b3aeebd8faf1354f6b44fc15e78ec7f174d24b212f39c8a8d0c70412573da1375529ad672204b149973f03ed995bcea5a61107b4"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-ite.ko",
+	.hash="6758344806e0baef35476af9ff045fdc3760f6f2f5e8e26987e67a5a5d1f6a309089ac2257e87f1979dc8af17db50c61b677b9f6d1a164290092cf432d78332c"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-hyperv.ko",
-	.hash="8f4d8e1bab2facef101911876422f8c97deacfee8d90ce35b6da11c52853bb2d14c9e1ae5c1d86cb130088c45bfd0c9b1944296a0c6c284c57dd9699312412cd"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-icade.ko",
+	.hash="8f0cc99d7171024a2b90bffd22cc72bf3e6930a258854aaabbd4b1f783a1ca95f030f0eaf8e3016914579891b05f4aa7023c5ef2f0e15c4c571e92ba7dc06eb9"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-holtekff.ko",
-	.hash="f8881499cc2b80f0fe2a1efe4062597202119868d3f7e60d1bab6e2a3404482f31d1e0d056e1198d9461326a52f4117cd47d3e8e13bb9992ce749efffca46c32"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-hyperv.ko",
+	.hash="3389fc4c3eb6211e5c76606dc0200135c141b4964b4461f92fa182ab799966e9e16cfefafe57decde64c003f4506bff335a109c76daa3bfd334d564127a10cd7"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-holtek-mouse.ko",
-	.hash="e2f37c40e2e921bdc2541cbbf39a029364eab8ae3b0e0fea9428ef2e4b9cf4f88ce102f15e8ed6f1d35ed0d1ff89b69395c0139bfeff11278ac6b3d58f0cde1f"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-holtekff.ko",
+	.hash="24506e20766b2d17c0da5b6facd477f45b212750f7ce634a51fc720b72719420f9a0ceecc488f372699c858073c93317557966bcb58448b6afba01d2aece8411"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-holtek-kbd.ko",
-	.hash="1838c009304dbfcbc65d9f4867f428de819a671501c072bd4a198c619ab2f69cf8500c25b2f2d8978c939a7850c0ffcf4c21dda5a5ff312988bb81ad975b1c9f"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-holtek-mouse.ko",
+	.hash="44ad697a2ae2a0ff763d7e6422d2fd02b1449e0b1eecfea60479a8c450cefe63ba2a14356bd089ce08ad4fdfe877e7a10e60602793816c4883bc2b829f6f730f"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-gyration.ko",
-	.hash="33c359c50b652970f11f1edf447028cf9e05b02d0292ba3cb88de8b33fe298f7477a66b888e01425377b1ce5f1410ed402beb5b515ffe4c69a1e5b1ac30010ba"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-holtek-kbd.ko",
+	.hash="1f544ba1c86280559049b110de130766255a9102c13a4871e0c5a5e6282512f250e80c629b56eec95c1b89b5e00679e677f6779a26583e79d7d7494c39c3de07"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-gt683r.ko",
-	.hash="7a06127e8a5c2981b27d84a1235b9fddc634dc343cbd0cddf2c90729220c721bba1f772679b00988d288ecb317c988751be94f62ec08e301b77973a1824a1b89"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-gyration.ko",
+	.hash="deda6e194cde72ddbe54565dd9c312c3b5ae311cda5e2943070ae6c6beee2df9141c9daa5eeb0a3a48575b07ea73a6faab0f5441341bc38fae0b4997b20835d9"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-glorious.ko",
-	.hash="ac58dbfd5723089295c1e901cf863fe700830acd5f1d305d2e4a66a270516992255f52575587e355acc9a0b744cbb555e9ce7544e29a398d8d741090a64c6d56"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-gt683r.ko",
+	.hash="54f805db6f49520e726db2f176799cd0031bb9b735fb37b8b1b29897b8e4e78f817cb6e0b13b96a3168810b49b4cad7ddad758836e2db39b357691495ebad8e6"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-gfrm.ko",
-	.hash="cd1a4d4f451417643e26b78e18eba086a8e58206b5d971ee040910b29256a5881886abae251cbfec81385638af4564042be10da435c46b74188f804b8fde03fc"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-glorious.ko",
+	.hash="c002a4564236a8f5e2e71becb063db092f0b8ae1bc650ae692da074cbbfdf04a78d7191b6885b441178d8afd17207cc70582b76db83a4ec6f554ab42f8f110de"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-gembird.ko",
-	.hash="55f7b61bbf998958a5d9bf70b8a4cd718eacb4df66a157f179a69a8f74ab8abb6e3bfcccd41f895b12a4738da1c451b96a6af7f35e13b2dbccfa0030d963d437"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-gfrm.ko",
+	.hash="fdf6363322ed7d342b3b2c0aeb185ef2ae14b9b459157e0ffae7e16e4c02073cf0e447d8c2df220081c8fe18255ee7af0ded7610d4ee42b988cc9aedf4a9ce8b"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-gaff.ko",
-	.hash="ab0395c1c06466674be29e778caa661a3c7f629d2e49d3e5675a057f7d5ea655ffbcba4b01ed2c05e7d4bf7def5eabf09a91c602a8f624349743fd5fa75dc168"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-gembird.ko",
+	.hash="2be68def2389b63de9d9e340bcd7387d7a55a28cffa5961f43866407e3d1e3de43b2c51bceb74a8d9ba1e1739aebdc93b929d304bc7b6fd7ca26a91ccf175230"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-ft260.ko",
-	.hash="cedb959a025d6a9eac84355fae0a5c409602fc8e6c41c260edccf2245313a7d5e5a295f88aacf1902b2ca24da9402ec07418953b7029645340e1e0900b6771d1"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-gaff.ko",
+	.hash="6bb859b6409b2a2babd13a50117debca0c62fa23c34dcb4aa2b091e600e69f08d4abfc2772f91df65d50cba60df95a6986f4e2d4cf73a81ff67c267718a69c22"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-ezkey.ko",
-	.hash="0105c514297ed391cabd370aa350f7c7644c8635e06648c1eeea84923369670b06048f3422db8e3a83f89fc25f245c4236b4f3faea5f81712f475d54d5e1b747"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-ft260.ko",
+	.hash="4fba43a5d91cdc599ec46b766d9a1972fc2727f1c78ca1d7a202b8a44699d536a8dcbca1dd06f3e96e9ae48070981290bf22b135fb9e8e278e29f1254477a173"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-emsff.ko",
-	.hash="3174a253553096a65779cfa545e0550e2273ac089dc99b6c22b19b1bd8b634a559fd00ddfca690e03c94b8698857d7114e4ea4504e18325c538cfc9053376cbf"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-ezkey.ko",
+	.hash="66e9536a0b24f75535ce91fc051a76b70fa77c8f90d449dabe2ac0e77f4db782fdbd4be5e52d44b8053fec4784b6521ca692e68287f9341d700c939ba8a764d9"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-elo.ko",
-	.hash="fe11cda376f0c97c5db255db2c11c05458b30388164b90e7b7d1570cd6be5a8570d4f9d73ae5bdabe4efeca8db43276d7d0bb61b618cfb66c76c1dab4f230ca9"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-emsff.ko",
+	.hash="32938bc7f0f9fcc0d10a585f750766bdb1bf33bdf133931aa1c53eaedfdeff4a286d17a575250055fdda776c8cc0c07ebc4b4025afddceb91084252ce292df77"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-elecom.ko",
-	.hash="7ca6ab1df7b643ebc26cb118cc5b7230b3c3aaf5d31f65bac3af5c52f3c77472859c67a16fa2543dc6320a2ead0514b1d070c2cffa426e121aa40f2bd05f11f7"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-elo.ko",
+	.hash="7e597aaa252aa5b2b567a14ba2c79cc73353188718d8d846b6018d954c01081e34c4ce99982d9d7cadd8b1e3cd2007c38ee12a04711968b19f5e2035b92a3a5f"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-elan.ko",
-	.hash="6ad212af15cdba783c154cb38f991a60107ed84456c8edabea9b7f309c129eb968ad2ed984ab6453915fa493cb135b4926cfedcc89a0e2b9461901ef177416c5"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-elecom.ko",
+	.hash="64f8dc317d08d36356e7338ef2d81d1cbbda10663fb03e99c236afb64783ce0bb80c04f61e1a86408200306f3d9c0e63e4c1627072d6947e7051291592a71a3b"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-dr.ko",
-	.hash="fe70df40e89a7c11dcbca2d7d471510450cf20174b0a9f685b3991d229a21042dd47a809f40ad0f6c7687d330b0d04a9b0d6b1950fa05fefacdc281a75b755ad"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-elan.ko",
+	.hash="30ddaf7e864c7f8ce87f0bc2b8421057ffdac7b50ccd197844f58392ccd75d95fc81c622879ad12a497c79bcaf2692b28722ccf31a198d9612d89bb6a5650366"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-cypress.ko",
-	.hash="546c7d6998e38533abe9b70414511166d67ddeffe9b8e7478bdb54d65ae757d986fc3e04d74d0adda6953cf2651eeeaf2b60c54d6fe1e67266356f3b17809a5d"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-dr.ko",
+	.hash="210950d491fffd9b906d1550ef1d521de01052bb2a7b3cbda15e0bb7182b2d993d4a7b8656c23f9a78d6c89a3bbd2ebd126b9e78706871a8952ecdf65ea42abf"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-creative-sb0540.ko",
-	.hash="9095393613437ebf021c071e66c90d3fa93e2e2045425a2985ade27e1e08e136030b76e35c5b114bf3ab0d8c24802ea151827f54747a56cfd7d8508ca550068a"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-cypress.ko",
+	.hash="7e3ee18f77bdd649d370e131752114b6ed35a0c01aaf25322e2d55fa888c59d692a6830f2a4589f8ff221b1511026459f021d650fb6d77fa2f02a0d908c4f924"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-cp2112.ko",
-	.hash="2c6ba9fd0ea98205010257e6507b86c201534b5bbc90bed6e06e483d66626a5c67e18263258e2b904f23cded833f4a504238e2ffc1a62908b54aa2f9a586292d"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-creative-sb0540.ko",
+	.hash="aaf6bdf8b86de06665cd68c497ea3861656c1a326c29b542d6579d76c13b48500c056894c13b765a55adefab9dbdf0b702321e8388073c74a16634de57fd3d95"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-cougar.ko",
-	.hash="bbad3d3c7dfe6ad006e8accc2f492cd25cec4e37c489a8e92e7f7cfea7df2743ffacd757cfdc939fa76ee24b28f1f18621838deb1b8d9519d75ee9847a1e5114"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-cp2112.ko",
+	.hash="d477ce027f470e1a72cdce6f172bb6eb5a87b12f4f6627b120be1e0a75a2c13a9a8300fa217eb193c9ab8f98437f6f638325e4729a0c5414bd633b36b7b5c263"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-corsair.ko",
-	.hash="54c039791af4ae4cd78c9b16c0a614ed27bc74d580eb8b6ffbf983aba6e739a2c377ce8052dee2409d84363ba744777343c279eee4b86c649a154956d399ddeb"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-cougar.ko",
+	.hash="92f9d2471914bdee8d3e81fb3649d0af9cbd3ba29862205e864315400fdf5ac0df149a8d903b3119370a1da8ccf0e307bc4a0201a37271eb805cc95069c5d8a7"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-cmedia.ko",
-	.hash="fc8803f4f04a3addac007779e29fdf74efb519c059824910a6e485d405735f75fceaefa83db24dafd5e5b003613b0e1f9270273ce84f808de2293ee3cf0c0bb3"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-corsair.ko",
+	.hash="3e420adb9647ba64009e7d7b079d73ff43fd2e8faac15c5c9b0e252416d222dfeeb7f79b01352ddffc08d73114669915b8430996ac1d3facaba73da19b44ca3c"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-chicony.ko",
-	.hash="44262de88271428d808228b42e128d32fab38874de5509de651892b1456830fc0b5b850ef3cb5c2ac481936c96568b946ab58564691a196b4bed67e9c26e935b"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-cmedia.ko",
+	.hash="4a0311669500d0026e128b0ea1bf3fce405c07c5e5722ef60e274d97bdc0974fdce6e2dcdd20da417346d81fc858d803960dff72511ebdf2ec149f740c42d815"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-cherry.ko",
-	.hash="05d27381085c7ad5a74d75f417d9c63335e6aaf56d5cdf9cfaa16ecf34f11a4d3f8dc72c358d1f386bd02f9c671e3a3a4d8f692daf072119cbeb67effa3ca816"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-chicony.ko",
+	.hash="669d62891d459341936953e75ff7e1ab5968fd5dd965b7d4cc9b2ccce24319685c1cf6204d4d53a648c83c36be67e843d46b8b1cc503038669725e4a0fb05e79"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-bigbenff.ko",
-	.hash="5351e76837ee28a77f1f832c3e21f8651b9f93b422c60c118d862c44cdbee768d7fed4d83135b05212ec004e2b93e8d6ed08ff55de82eab39435020f66849dd8"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-cherry.ko",
+	.hash="02178ddae0c75e4d796ab5c3edfc253927ce1f4bde2985662f8ea5cb4d6cad938735d111431705fe460f68efe3ad2400db46e2e77115e31b1b85f956906f38aa"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-betopff.ko",
-	.hash="b542074c79a324a0b7851064c22c3f19e94935b8497d39e5911402223f09d360e3f7f6880024619eb0a5133f6cf750ec539bcabee5ccf10de4b0fa23d9d161a3"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-bigbenff.ko",
+	.hash="4415279abbf640625f8dcc05002299675dd7af52bd795272e42ea195271394ae54e6dd1afdcb6f3148ab0b5f50082c584842818ea40a59c84c805b93870e1536"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-belkin.ko",
-	.hash="5248d2bf3418d543aa13fb08091af13dafff89638cab643b57a6faee7f86f118e54024129e2408f6c735b20994edfcb609eacd90ebf556b925a77cfca6fd1bc7"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-betopff.ko",
+	.hash="a5c8213c56191fd825f21af7f589a77e99961bce3060d7f6597bab08f56a70576ce39c094e91d1176b4e0591f26f466b5af0e47ce8ed28ce90e4abfa47041319"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-axff.ko",
-	.hash="099d283dbef0223a17b1067d34f3b4f865e5a28797765489f65a78b92f4f135b84ce4a3d55ca4d2999ceb06790ba029436eb92e2a423ef9d9451f28bb6bfbc9e"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-belkin.ko",
+	.hash="ac5326d64880ac77bcf7084bc674dccb60ced46e8a8453cce9cca999297ab4ebaf98458338d5ac0fc64c1ba1201fe66d95048c373159182452793f359d4456c9"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-aureal.ko",
-	.hash="01f3c4e32875128aeb8050d8c5df5f35c9954cbbee965187d7d4a1b579431868dcc01dc34b1caf1196cba57f6597f9d4be533fdbf6c02cec4791cd91304c4caf"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-axff.ko",
+	.hash="96a46ba54a55bfc835255f982e11418f4d6c3643c93e28a9f8e42248118bcc9b88e575119efee3a5a9b552e73b60a51f23c8541cc6d838c20e0026fbe089a5fd"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-asus.ko",
-	.hash="62c3716b93e73c9ad65e872bd28b47262b9e79999ddaaf4dfaba583aa2d256a18d2a96a46a132ef22a98ab37303059b924bc728ce141ad3f48097b2462e5d455"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-aureal.ko",
+	.hash="07f6237165eb69b3be4f3c45508643191833482e4804a836540e8d5bde1e2272bda767df3a6cd83f232b9a6b35cec6c0e180cbbea7b2af7501b5a5ff6dd97673"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-appleir.ko",
-	.hash="2861af8c2d446ff768d6c1a730e7cac8b4b03a216e283dd93e321102a8eb400edb3f25655b6d545b7f4a6939484c5fda8383c1c70bbf8dff4da0704a228ed1cf"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-asus.ko",
+	.hash="79ce3cb6dadafb4743ce3c1ad1c0b561894d93914bd41301caae92dfdf5776251fca6d3a3c2deabd6eca93e316b5af116d9ae6f8b4b24293342b2dc98ab95311"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-apple.ko",
-	.hash="9d4c6bad087fbc959dcd621b26f7e177ad935d5e8e2049a2bad656ee1133b2940efdf53f7268a05f3aa50637416e14496f2c667b473e734d9a95b225e425ab0c"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-appleir.ko",
+	.hash="ddc82d998ef7bdb3a19037ddb563b313984dcb921f68adc63e10cb6071e8acd4f8b09d9ca14133e3d6a1f4b2575edc7966d0eb513ca169ca3af733654863b1b6"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-alps.ko",
-	.hash="bb94973bbe2030a5414108db58221609002e8b480c739bc0fac2f74dc9a8e7a3cd8150f360456bebafe568c9933f9452abe947582660691262f9739a0d822f83"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-apple.ko",
+	.hash="2b3e0946e4b27d2b8a367810b6c3e11003d14f0fa537a8cf137048f66b7075845ff7dd613f3dd2d53a3c445e15091953fefd917543f9446dbeeaf0966961d220"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-accutouch.ko",
-	.hash="82b5bf013522683af95de215eff76a1a6afc0d61cec7c51114bf7ba0e64b4af44b00388e6a9b1698bb1dda7fa942d21a0c5caaa880f81f5532ac7955a82b04e1"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-alps.ko",
+	.hash="1d962c888e08c187a0e7abf2a4650616315f4996d1ed891e83fe0cec371b7274ac052e3cc65df48195d121bde090c3c5473823f00d7e231731d7d07d09daddb8"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/hid-a4tech.ko",
-	.hash="2afa1289a9cea583c1cc77667b9c3dbbdf6dbea6b2b2f93301985cb27add1b6eec32fbb84581b59cfdc125b667e2aba16d02b4587de48e168034c62812132679"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-accutouch.ko",
+	.hash="047ec76fe6b58cc5248d71c697324b60ee72ea2814878f016638a1c0accdcbd75f262ef882278974063049896ffac34c64b55e1fa8062dd1e8af1dc8da2e21c4"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/hid/amd-sfh-hid/amd_sfh.ko",
-	.hash="1046d0a13267f54e900327c311838a7ee83b4274a7411bf224d65acc5de052b000bea53997c3ee14cc93e5c4780ac6e6e09234e1928f07d2ca31b30ca694826f"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/hid-a4tech.ko",
+	.hash="11899e84a09e87daeaa1195c0c0e0bf8726af16d4855db8a4d47aeb7891cbda7a8f41a9a2c962a8d37528f49ca65a81920264cd437150cd4f3213dddc737285c"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/gpu/drm/ttm/ttm.ko",
-	.hash="81a0e469f56c7ef08b5beaba1130b1f4a7188536badfa1ed4598c3faf6475f95e04b8660af6d80f9568cd8d3287c078a6243214f1147f941d496dc9311569360"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/hid/amd-sfh-hid/amd_sfh.ko",
+	.hash="4c68bbdada9a1902ca11392d52525a6fbd00787800148c7bbfc10dc1f136e32778bcfeb959eb2fceee5560bc4e3dac7860e2d811983dc4a0fff27347cf4d2c21"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/gpu/drm/qxl/qxl.ko",
-	.hash="c945b0eb34921c8a912d763c3448fdd8d7d24502f0a15965e1645e4306c5361d3a2019e44a889c51c5fed6f577b83a6aab2f8dbab43e007feb60f027866e6726"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/gpu/drm/ttm/ttm.ko",
+	.hash="e576b851eb60dd90c5703c1755462c1f77a8222354385281cd424c45cf0ca93b77a42737d65919a3c7ff47ef8b3b4f5afda3617988e3b0e8acf26c08aed42e0a"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/gpu/drm/drm_ttm_helper.ko",
-	.hash="491a95c58c898c2170725c9bd302520337401e2b2c904a965cd70f439748018b6aadd21be113b172f5b83900cacc982ea0735a4c115ea0ee1a82ca1eae1b0e8b"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/gpu/drm/qxl/qxl.ko",
+	.hash="8304566d07339ec2d30d07362f2107a771993cad92fb28c63b9b2a4cfa3fd6b5fbdd508ac171b1cdea871bffa9d2ac1faf9da553b32466c15d648d46af116a79"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/gpu/drm/drm_kms_helper.ko",
-	.hash="adb7b2117b3e2ed2376f70c0ca4300f6a84ce66eb33d00d943c2eeca755da235e6d34fe1d4d959be93615bf5dd3846aacf38449b084f47f3d49f4d2afc005553"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/gpu/drm/drm_ttm_helper.ko",
+	.hash="a5f564dbba702ff70181a8d5e7a5e703329f1bad25025b4a2a5583cd2b1b1a081949210b1dcefb0729aaaa3697662992b7a23b9919ddf078523dd4d71ddb01ac"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/gpu/drm/drm.ko",
-	.hash="80e764a0693007f60eaaecef7dd7c334e6ccb18e129f4026dc50b61ef4c40d51ce875ff02bb3801b732d17b1745c77a6565ab0cd20c20e59e9728b7b854fc456"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/gpu/drm/drm_kms_helper.ko",
+	.hash="a9831e78ce1387c77ddbf25f0c5a3e750ffaf457229b1ca8f8f84b5e73f5cf2a42390af50b72a725d22ef9acd41a0b406153f22403311f73214fe0c63ed87abf"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/firmware/qemu_fw_cfg.ko",
-	.hash="3760343a7e0606d75c3756b64f8c0daafee91b9cdec296741048d14ebbf4d9bba6d92633165e984b5bac2a2d9c73e1eceb0776f090c615372488ff26b10041c0"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/gpu/drm/drm.ko",
+	.hash="14afec1976dfef164733cab2dd9b2e25ed6d533cf5ed1e6107aecb87e29c6b73f3ddf7d46fdea3a2a16c719a654030d5361024c055c853d398b5c85f9f903119"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/char/virtio_console.ko",
-	.hash="99b60b497f1aa321962942a52faf70b3a1a6fc77352fff55190f4a10a84a4c0bc8a2b9bdde36423ad27dce8b785dac96599d015b2c237ecdc0a6a2b699be6ffd"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/firmware/qemu_fw_cfg.ko",
+	.hash="e1cf1725b3ee34955fb15ab5bb589e10af582ae9de408787f460bf08520a3a15de2568a7ef0266f46c5b31536f8715fda96d6144277b833a5cf2c2be28aad6e5"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/char/ipmi/ipmi_si.ko",
-	.hash="569642b65ec6b181c7df011c3ac0974f0f29dec278a8afefce26525d9ee347875a6e5f14b32d7b58c585969603132a9dfa3ba312130c3476c7fa948d334fbd2c"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/char/virtio_console.ko",
+	.hash="861d7d83fdc27fa9b150b648755be3bf4371586aae19e39557e50b137afea167b06a0cb506a91cde1f70f9750395d003d886ec1d4ccba585f8470eb0af0e274d"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/char/ipmi/ipmi_msghandler.ko",
-	.hash="187421a1c3cc2e2e0eb939e1501e692c9925d16cd621dcce91214c98f693063407318e191175fe6bb7d5c048bb391e173901cb9783dee62de945b38ce22ac111"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/char/ipmi/ipmi_si.ko",
+	.hash="012b0004d1e92a5feb213a759572251bad1249d80faab0e6401438c324b533992f71267dac4400c4b6de0f1b1e06e1008b08bf68a6de96e4709878462943550f"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/char/ipmi/ipmi_devintf.ko",
-	.hash="6393f98422aeab7e2d635d5c85a036123892f76efb666f49458847a0e4b68d522b697d2bc9c9c623ead4a40cec836d3c54dbbb62f3f2fb033fcf6e06c5765420"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/char/ipmi/ipmi_msghandler.ko",
+	.hash="9f235b258d5792b59375d2fd0a90d34304bd6774d026c849c4a4459655cc33deb1ef435c26102f3824e76e78369cc3cd74cf513cc63c18f99f8dc28b83e6c010"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/block/zram/zram.ko",
-	.hash="892aadb6b23964b8fd9503f78bcbc4176e53c661e3787b7169430c05005a22e99d33a2652c4071f43f2006ac4ec18349245cd58b5610c309e5d705e529a63481"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/char/ipmi/ipmi_devintf.ko",
+	.hash="fe9429fd8e604db20b60e8c70b7e4e551d3207f02d568070c2b3e31fa910ebac19d3327d37df1842b323ed6400a6984a597f4cf286ca813de72341a2893062ad"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/block/virtio_blk.ko",
-	.hash="48db0b88983981d9552432c4d1c0bedb463a7d114b5be06a164d58ca359563b3da0d14b8c7e9a8d20905fc4b8eaf02508479bbe4b82934620ab2b4931c3ea6ce"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/block/zram/zram.ko",
+	.hash="657b32938d94e8f8b7f8d7df209d9b153a3f0bae42ed8c9c15ad9e34f37504b842aef1f4580bf61c72789735c9b452670490724b3cfaf80860e42ce7f5725094"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/base/regmap/regmap-spi.ko",
-	.hash="e4b13a331b89b2eb115fa9b0f82f4974a6fae017e236e6a474d8c8bf3930d29a5cb612ba887688bb0ed142b9c967345a8bbdcdaae2da631c6262eed9cb4fd1e7"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/block/virtio_blk.ko",
+	.hash="878b676e91a14d851dbda9f897e36fdb12ce9208e38020de42221791c3a6dc769b40ecba8e0c12ec634d05ee5865dd771504759cce0705433a3c0a41988a8bf7"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/ata/pata_acpi.ko",
-	.hash="08f0cd2a4366bdc5aece28eb9fadca459b33dae4966d40304b3f381c01955987c71359c03a2a6877d22c16eff356ebf972a9dc8d67b89c710323858041f44d1c"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/base/regmap/regmap-spi.ko",
+	.hash="aeff4e3cacd0291f9f59824ffa402a1e84e396a30f2c8b10f7158fb77f69f03a106ba5236f23ba01f82a235537bdf72e49ef6eac4f4c8061c53c406e6cd97744"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/ata/ata_generic.ko",
-	.hash="48877cb1d3c526ff90900639f1771b513ac8cc6410461d7ea9a4d55ddc397205dd3bcdbd7006ee6b9df1635b2ba7ea3c77536993cd1201e059abe95d06c40807"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/ata/pata_acpi.ko",
+	.hash="1e861fc1f2987e7612ef444505c3db96f32d452d8e362fcc695d2a7942746ee80f74966a3ade4886d7e94d23f0cdfd669eb29386670a1faa74daa04dc3a764a1"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/drivers/acpi/video.ko",
-	.hash="4964b5030104e342e0a9d2c5f0d4cece76b37d6bac1470bf6c4c8e349354cd2084b17849248ea57745ffb5424cd2a032cb9b4098d7153beb07b0f6fb28f176ed"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/ata/ata_generic.ko",
+	.hash="2078202c1b3e889ba89be51975119d2f86abe8bda8375b5f43409b8239629dc217c6d2c6b9464d240cdd01ddd4ac6eb42e3b7f64ea2903f7e58adc6703180a8b"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/zstd.ko",
-	.hash="bccee29200be7e7e4763059a7bf2cfd33250d0abb59262a64a966442987667834b52dcf227f463d4eb79140144f509a826dda8890dab8db52ac96ad6ac274aa8"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/acpi/video.ko",
+	.hash="ef2f268d8fa6560f87647d4627e97f88be6f5ce1c0d0330e9d4d720ad0df672d3b8c621aa10ee631fa3141a798715afd31f9578ec096211db0c620b5f73bdf84"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/xcbc.ko",
-	.hash="fd28d5d38b9b82481c2e995aced9a927ac30af00be1db328f06c03917eed3502d3f990e95bab55a3d464946c65e7a7985fc8e4616e63696fe115272712bed909"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/drivers/acpi/platform_profile.ko",
+	.hash="fb04e798993c87a4fbdefb8e361e15921e56f3cabcdeaefaba76e4c6bc008ddde2dba49f59ad26c46f36c0ee10fa4f8256974907ae4e35160fe7a0c3ee9576e8"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/wp512.ko",
-	.hash="f548e213ee20695071c6e65688d8afbb6fd2832562ddd8e6b2f15be07aa4ae1d5806a6842d64cf7c5845bbf5eb3c6e6681b21b3b19e56a1b866ee10db0c25776"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/zstd.ko",
+	.hash="2f33424a231400c8ee8e6035ad7a28385a29646f6e817865d2f6f9a03e73a4d35684c0ba36c9645a62009e117993b53708b3e80ce4882b0badd40d672862c313"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/vmac.ko",
-	.hash="13ceaee2932b7d5db493f1147de81c3d0984eb7955edf61ac31887b2a64648feb9c068c56dcb4c57346ce444e024021b7b7d45208a99ba10b42429fe67812f99"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/xcbc.ko",
+	.hash="8d0d6d64904de6a4913afdeec14e5cfe5066d19c093fca30cb57220120f874fc12fa22ef8718c77f80bbd3e3aa1e5fb034669252c23412132795117c2974477b"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/twofish_generic.ko",
-	.hash="470c87208e374cd608c0701b4c3cb8030765df64bef1e267b5e7a38082dd6da92fd71fc303e2dcd08c885dca46dd032af202f71a059a4e8581e09e56302cf89d"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/wp512.ko",
+	.hash="52c05eb9c09440de27bd2071bfa6805b29668897d2e5dd34457fe23ca19f9a0e81aa91e1b2ea303fdb7af4012622d3c39abd1d51d4213ea1844f9032f8c05a5a"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/twofish_common.ko",
-	.hash="e2b50752ec580214300d278a5aa1cb4c20875d8a00642dd4065085d5af890335ff7d4778e969c0ecf31bf352c4767c1dfc0dad14d6ce914af753ae4234c5b8fa"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/vmac.ko",
+	.hash="ac3a19c97a41f100215cf2e8a4f5df166da31bab79eed8ce8dc058c227deb22369899d8683a3e7c030bd8f95e82d9448184a389c2c152bd5cd15832d02d6ecdc"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/tcrypt.ko",
-	.hash="49afc4d1a2af8ed374bfabb2e23d8c88b33e31e15a5e816b0c560239930f597326ea523e511e0676898097e92b4b48d6ca0c235cd2e82d5994c841394797f5a1"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/twofish_generic.ko",
+	.hash="c79a4f4840881d07f6df51a576304248ac2b820fdada72d025ec2adeb7d27ef87e8250d198bed23131b40823798efd9a2899d7d95cdb40349f81e30bb980af11"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/streebog_generic.ko",
-	.hash="eead36f9a8dbb3f4600860aec3be8467cabf86b2aafc255bc1262ed9d3729bbaf4411b12e510d1591027e69e3428ecd6c1fd53bc6e4e5cee7fe3141433b9458a"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/twofish_common.ko",
+	.hash="10e9286bb9fc3e406fff50f04c1f72bd9ddc82f083f23e3eb404bd78ac7564afcdc6893b1929dc640f48ea8ca89ecab970429058e24204dd2898e7ee7a59d5c5"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/serpent_generic.ko",
-	.hash="c6cdb9acdc80aa0bb8306d6577ca125e1a9fa467ec63617e18b23cf6db17ab165604047e53a2a23299d2996ff160e5a07169bd5ee4f1f20e228c42a461f07ae7"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/tcrypt.ko",
+	.hash="3c6a43e72455cdaa2e66652b01dab559418a9dff28297a38d1a9e366cc33c8803b25e9982f70d95cb823d004d1ed47bf438753b6518c58b533f0d8115f1bafb7"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/rmd160.ko",
-	.hash="e96fadd43067f9729b38933624797a5da2b762161841086e38803ee358abe8052507e8fe5aa5f3bef10306c22a6656672304fb56cc11e2d88cf53581aacd992d"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/streebog_generic.ko",
+	.hash="12a2537a1352b785f8b0661ee28a0f825694cebac8b6db75516b18af55070c487202a7c54db1befaf5be921e1e89b5c3e1369d58a9fb45adf3319f6d69ac9f5c"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/poly1305_generic.ko",
-	.hash="fbb13f1a00e70df210b029310af7528689ab5cb1b0c3012c104bfce8a6def546734832610ad40621b0dbbf9cb5a0b1365b5dd7bc25df01a29ef2e59c49aa3f7d"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/serpent_generic.ko",
+	.hash="ce2d41bb9ee39d0b12b68ea280fcb25d50698230cae8d7ead47ed69fd95d0aec2f26311ddb50190223cc965a41713cf9949b4e7200ded0dd99db4887e36545c3"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/pcrypt.ko",
-	.hash="3751e89ef14acc195131eb1673b7dac5b230bb0da32624371ef9dd45476be8523c9e98197811c7951a07b04a3cf7f1d6e9ebef21f0506eec37ece6cca6511476"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/rmd160.ko",
+	.hash="5985cd0c7bd3aad4be60d398e481d664fd7177112ecb22073bfceb4bd68431bc960bbd90793790288be10b1de6fcc25436fc24789333907b5436c7a66247c8ce"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/pcbc.ko",
-	.hash="62daa18b8df91d1ff77809220c31b6feda5f58e37f8cd11782879f08d20a8541e190e1fd69db3306ca03ec0d24ffa3240ad6dbdf1dcd32eaa68e9009ec01b753"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/poly1305_generic.ko",
+	.hash="7ca0fb5f32a190c3a8f7ed6716a1584f779ce5871495ec62c9f234d5c7e0b1aa860a5489fadb02ce1d31dfccbb5254510b6a22632267d04e70751d929d6bf17f"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/nhpoly1305.ko",
-	.hash="66aaec1786ce7f4504638ca65c712b2e5a8766ff550af482252498c3032db8d4c0d726870c6d415fa8409e414ba2e85ae152ed5628231388a39105a5926df2a8"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/pcrypt.ko",
+	.hash="f530c440eb83a4392a9217a746c1dd361f4b27e938105b64c2710c0ac053c6071fd3556d7952f821c37e56af45abdaf2d66c7bc5590977ec2220f1f0a0aff28b"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/michael_mic.ko",
-	.hash="07c73808ffc8ab3d6cc577bca70870575b004a1c054932e0a78a313f3dd3814103edf66cf304b22703eb117bfc219ac5478f851d187050ba510d2c343354ad62"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/pcbc.ko",
+	.hash="6a7a43e3e74d3082364583102e3cb79ee451bfe10b91d9560580fe42937fbac155cb4f90f0eded5efd9323c9af0db32aaec8f817043bf4abd8a1d2737e351e31"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/md4.ko",
-	.hash="34bfaae3fbbbde36f134e780425c9e76909fd7d349d02d8c63f7506b066ce3772ff3b1ec38f9a1e558667d53a237ed453f7dbde2e87e0788830f9220d5dc7b5e"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/nhpoly1305.ko",
+	.hash="9e8c3620901669f8ac4c52f2e1adf42d37ec66923b087ef4ce4572d184dc75d11554d04a1141cdb772b6180b762c215de634599dfacc088602f9a75cc654f311"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/lz4hc.ko",
-	.hash="821344098d7ab72bcde62296520bf190d95c975623a583a205331f3341091dbd328f0d4ce04b63566bb15cc2623e5058906eeb53ab34bed5a86d360c7a4e1cc0"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/michael_mic.ko",
+	.hash="5dd17cb1b7ca9dc4f961ab928f3ff7962fd477f6a64f344d777b6edb492b826cf6a43d39778d786d21ddad63dab1b402e3d64818f559b41c5454e2115948ddbd"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/lz4.ko",
-	.hash="f3768cb6381afaaa3b5218dad8718ac683b37eec62019186cc70b2d8af60f1f0f05cc194f469e7a478268d6da30bf8a08be986324c69c1f94c3ec807fbf7b869"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/md4.ko",
+	.hash="0cc39c7556652219a5d255f6a249bb6b01289b9a890b6d732d4d474bb060338ffb607481affe520e88ef09c3e6a4e3f39f14cafa7ec86459b3ed2f56dfaf2519"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/keywrap.ko",
-	.hash="272190ec76ac1fdecb588a491fb82f99c816ce3acb0b2f1cc62652f91ac42ad2d9a5126b31d09b51743cbd8bfd1e9b5066de3a603afa19e362b6d3e094b5b647"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/lz4hc.ko",
+	.hash="b8a55ae5f8f6b9ca9a612f2ef10f7cb82e1765a6ee5f880645b9474f3d2ef2218a87319737ef2da74bd5e313e615d13ccd959f48d4bf17f99e5629d85eb16a36"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/fcrypt.ko",
-	.hash="d81f9004c5185c79e6ececc9820241d5a6d0ffad867a37653f1e08ebc3ccd3861f73f1ae94764e39df755317d5e3dca4d3441322821a97e56a260dd1a6195235"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/lz4.ko",
+	.hash="bd5abd31cb6cc5245782a8b0d34ea899fb48adee331831bfeaf0188b1e2fd49b68c7534613f15ec66b5b40f78efdf8b2a64d34832ec90763c5f3ee6e8635f722"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/essiv.ko",
-	.hash="9644a4ae8dbee85bc868279d515c4b3aea686662838969dd395e747dfc1e06f5407380d590ca67e37094c70385909864769c9b35d8dcc7878b5ec70ffacd5200"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/keywrap.ko",
+	.hash="ae0cc212cf5507c4ac53daef6c2be9843255e72712de71432fec35ec0426edb49619428ecc0ab9a5c7ca25f7c7b63b87347922c889db96cec4f566657ac1a684"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/ecrdsa_generic.ko",
-	.hash="930c7dcbf758e84e8006b7b8cff48e13672840557afb7c15c634640d51bd17d7b7cf88b4efb457eae796a6d42697426bf815ab3475268f2326f941ca08cc6599"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/fcrypt.ko",
+	.hash="967f428475a6107a555e2f494100cd57b4a9c673c54e08e9006b2965d6daf08f0ead0c4f1497d89e6f20ed213f4dafc0cefce88f1b645529c8744cd970a05e3c"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/echainiv.ko",
-	.hash="f221f0a9218c5317f5a9f1d797852f9168575770e0e34c6662a87fc354e0264f90226e24e365be6719d8c8a358c263319ea6f6f78b6dccc36bf4810e2d5d587c"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/essiv.ko",
+	.hash="3a4f14ac842c45a3ec5ff62ed5a17f62c90e94f7329ba09d0ad14244a4c91684c0a2a50dfcf0d51033cc0756b101559c48ba71aed2a4ca245aa0367f6caa4322"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/ecdh_generic.ko",
-	.hash="43ecc1c9c1615c29f5636d4b9e4c2916dc01e3d8775e7efe38629fcc440c079d4c21d61806dc9e34454e02f3e20599c397d1237a4d36931604df10a9b157b362"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/ecrdsa_generic.ko",
+	.hash="602f0a3b41cad9d508f92c29f6a5166db121837cae1be29b6812e84ac928b2ed44fb7c9c0a0f349db248172da1141e43f80e8e37d88adc7678badcacfad59bd7"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/des_generic.ko",
-	.hash="26a0b8cf4b036b2ca7bc63c67fc18337619ceadbd7a83c30ed945fd17b7cb57a78390db10e7244c7cfbbd47051eca3dc382196344496b2ec03c9ae07535d69c1"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/echainiv.ko",
+	.hash="7e05411033fc4750858b8036d2ac2a99d9415fdfc6ca551ba06d6b40b75a87faeb151c3ef7c2ea7d25116387fc1ebf9873df3a8a14f913cb61d16b34c223a3fe"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/curve25519-generic.ko",
-	.hash="a456de7366d4259c79d2d8f8716d6d9a98bacd706baf5b6bb34f95a8e737b507b0645cebb03748a4a4d71d273b6d6e338cb843c83129e7856ed0e3f1d500063f"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/ecdh_generic.ko",
+	.hash="a9b7e8f6c0cf0b384570304f67d4f7b378e5892190fdd0dd24976e1fbbc4ce7772a2b3582b106ec76fc567f127a0890d9c5bb003256a8996b91bd134209251c4"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/crypto_user.ko",
-	.hash="74c1ca706a6fdec69ca4f9854a85ceb2332a264798365d4b9ef9714f22b732301435281311a0dcaba7891f4639a240653445caae638d26511234b3798e7b544a"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/des_generic.ko",
+	.hash="c7bee880c1a4ce829c48237fb4fcc435bb0be342bd40aac4058c17a1d796c9cff8f7bbe71aa289da8bdc49e68621b5df480310687841b2ea829c87350f46b10d"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/crypto_engine.ko",
-	.hash="14f38ce9e43fac259e5dccb69f0561a7ecf638ae443da41d09a715ae64873d50ead377f07bae3d18886f18910e83dae34e4b04ca9e0245a0b53a89e1ce5ad740"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/curve25519-generic.ko",
+	.hash="0ea55a2814cf8d9427f5c3f5c2660e6524b1d6487ae0ed15c82a6959c5c922070d9a15eec3c0dfd20cef386eed1f2bb95be2d4bb9d12d0241edd679f051e2b73"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/crc32_generic.ko",
-	.hash="09c9497f466a42c80064af183ac79156412f5d492cc964e13c85d140a984826b18c370c27a143b1f44f551f08070e88d58bef8a68fd97e050d982f1f18b982fd"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/crypto_user.ko",
+	.hash="ed7c8fcca8d9dbe80e3b3f43c1e91fec7706e9c934e1b52bcd00d70b7b458638edc73301168ae396dd7b63c85dc8a88ef07ef34618591139d058832c5f47d882"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/chacha_generic.ko",
-	.hash="160e079c85131d1afe76dd0c6c21e13afee6d9264d78223498531a20fb51997efd0cba7063a95335f39a1e0b51f8f4eef998aff8421a1c1d228d8800d8f93553"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/crypto_engine.ko",
+	.hash="52c83b23a8c4960c06b98e8b3df85aebd0fda41fcf8ce4bd27ab542c95b60c089854d070e5687ce9944fadf30ca7edd6f87bc7e3477ee1509110b69949903bf3"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/chacha20poly1305.ko",
-	.hash="a34b66464cfa272a86aab9520f8355d2df9ee8dabecc4098005b38d8988f0706b5cc03267652bc655cff996683705f58f17a981d7062b80e2bb8ce0f5d2b0d2b"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/crc32_generic.ko",
+	.hash="22add30b960cf78e6aaed03347d85baf9181c75c30c5329fa1afd1662067dd2468a216c609b883a51e02f7070ea99cff221a0cb2bd050eab82efecd5db77be08"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/cast_common.ko",
-	.hash="daa686b440f91985f59f82e90d9bebf539ce562536fcb3e1a569f4ad0bfd2be236e999d059d15dd85ef531be1578baaf217733f1b9c087ad5e57b6635ff40a40"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/chacha_generic.ko",
+	.hash="54e6546651514cd61a1792ee1d299187be17c5cfb18862af90bd0aa82d3cffd54fba2a96ff16aa9013ea3d76f83f819abc975a0ca143b6d0abb64600c3748c80"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/cast6_generic.ko",
-	.hash="3df646d2d9c16f11aa9cf0332382817c0157ff5d0682dd43068f130954c83f1566923ff422559ba88cf4caa5cf31b9a244e290ba56c2f9b9ac129fe2f2f477a7"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/chacha20poly1305.ko",
+	.hash="86c241abac283906dee4eb1e8f2ee26c012789e93e544c6744360f9d29f42f4fd29c7cf4de1c747c22c3c79a56823a5e122fff7fdecf7e04526940e0feee9a0e"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/cast5_generic.ko",
-	.hash="200d62cad062771a92f4a9e22c2197c53f0cae197c1837a01f0409ba60db96680230aa53c69dacd3ed9e03c60ad38970a6defa0c744428202b6c8fa7d9ece1f0"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/cast_common.ko",
+	.hash="e24df5e6070c6b54a78e2602c250b17b7796da9a23e834cfeec3aba86aadabf7ba37c43daf20e7ee8d2f01806b48c6d6f39fd01867e5648fc1491cfb01764d87"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/camellia_generic.ko",
-	.hash="435a6c76b3e75baeaa6f961d92be18b64ad889e0ef1982ed38cb7289bad365c128024d2414839af95b63620e5fad5432639d29f8503cfe72a321c916999db47e"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/cast6_generic.ko",
+	.hash="681cf634014e587cc71e0c6be53f95989f0cd4415fa7ac801037bbbec7f4c99b2680c3d98082c6bc20f575e0e5921afcc6631522e637b78a608058ad2127e8b4"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/blowfish_generic.ko",
-	.hash="1d11eedb984e4bee42a2a701c0c1a9d103a6a8cd6e03568a55be55ef00ffaf15a919899de24d563c8ff445a67c500fda47455a317eba588058eb436f3d5c4988"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/cast5_generic.ko",
+	.hash="b8076efe4b107d76e976bc11e9e198de68ccede9dbb0d2056e56f25e1a810166312fd515011e9d6cdd19e075914948c8ecf4125a39f1f74b04b24f1936b97687"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/blowfish_common.ko",
-	.hash="ff780936e77ec1214c0eb11f06e80e527b41a833971b26b4240b10cc674635131739da24ef081a8fb871b5b4edbbd18f19ed5d67a610b68cbd96bd7349c8e8c6"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/camellia_generic.ko",
+	.hash="d11efef4a709ce2ca470fedcb457df2c29f407ce16dbc627ce513cb2d8437899a27eca138fed01434d0bbce40fbf4364e61ef96932cc8d5a2103576e84cef8c5"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/blake2s_generic.ko",
-	.hash="f4a953c011b7d0d0112d9a01a64a7f2f1a75c913f39b6c14abb0949d0e3e51c8ae00bc4c616f2430e1aa255e2d2734639eceda0e1b2226ad2a054c40f087dce6"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/blowfish_generic.ko",
+	.hash="a8eb1c91f298c88d2edad069e07229c49bddda59416360efea0d2daede5c3f47b34dbdfcf6f81b31a060c6e5b87614515a93adb65b4e8257ecbebe6be218cf1a"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/async_tx/raid6test.ko",
-	.hash="2e0f427cb7fee1ce729fdd64f64b7f0fa04b7505f2d477730a555860d06efb2c7f3f7895ba7bf8c3d0ac15ba43221d433c9d9f743f4a5958360287a1ee3036b2"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/blowfish_common.ko",
+	.hash="8a5fa1f4d395066b2ef2542c10d61bbc595c48d693afe594ba8e334f8744dd378a92c3e41f2b9b7d560b08f878d6a5ed4b36ba5ffb5766cdd2b1bb9005862671"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/async_tx/async_xor.ko",
-	.hash="bc0c6926824a0fd5db336bfaeeb4a11c858a91f28f521312eab0c1dbf84ca348c12999ab93d514edda585acdfe11dab83b9df308178764d87d0f7905ca3f98aa"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/blake2s_generic.ko",
+	.hash="d33f3fefca6a826450789d42d119078c9e17ffc8ebba55ec067ae6d2817e6c24208a79833726bc11d9d822c60ae9138588ba6b5b84128490bb67a1d420a183dc"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/async_tx/async_tx.ko",
-	.hash="629190469591c4fae3fbba65000b093580eae9ce6480dd5af4d0ddee76bb5128f6778a74888ba6c5832b32250e191ce8fffed8524ab40ec8acdaa9cf5ce255ba"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/async_tx/raid6test.ko",
+	.hash="23184e21331d94b141e0eca22331110ca84f540c196ad9e9c7836dc6e163a6e24e4e6beb76e8f590626b7951073a6a5d1bf8b0c3f7bc53b5b533190983d9ab32"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/async_tx/async_raid6_recov.ko",
-	.hash="008b833b7bbd9cb23b9a2bbeec6a32da233a48d6d96bef327aa1f47fd4e1fab09962c712954188a18de22cde5e9a661ca683c3e565f260687e4e039040bd4d22"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/async_tx/async_xor.ko",
+	.hash="4ae5b0ecda93e466ee2a6d8383425f1d99f52112ec73a4c7f3ca60ff776e13ea00ca0154918f152186693a297511d9eaf14068970a0444ec145af943d9d7dc90"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/async_tx/async_pq.ko",
-	.hash="c1d80f30ec86e748e4d10f18a3b7de75564cd809de1aaf8bd00ee70d28fe85dc6618f0f4d3f81d2335320658524ba67c3ec4ee29a96fb303cc7929521bcb6a49"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/async_tx/async_tx.ko",
+	.hash="70fa16ab931598814ee346372508ecc17f9ae9804a8d960dc45220e1fde2ec07194301f86febe69973eb08817203ceb5ad76aff9612a7d7fef4ec52c9b4db8eb"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/async_tx/async_memcpy.ko",
-	.hash="e14bc27f3a97fa619c4f44b9e2b4a548316c72476214d4ad4a4e1cb6c2732893578c6c109de3513598b794c5f3606972474f514922213b39a8cef8d3f51fb850"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/async_tx/async_raid6_recov.ko",
+	.hash="b410e8254ff57cf09ded5bddce8f6a8270a63ac0dc53987a49d1af42590eefcffe565ae936fb63e174ccddc57a9d1c6c339af071dbc778a28b27e44ced658e98"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/asymmetric_keys/tpm_key_parser.ko",
-	.hash="0618024ed9577a5b0dbbba12cba9402ea72cf3af257df4e5744e63c35099a0384c8248978f0618f94ad40d601d52764c7a66ae732961b8f5f735b872efcee7a2"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/async_tx/async_pq.ko",
+	.hash="b4533f48c1eb4185c85286e75684582363c2af2e49274cb8195026bc52599b270a65d35e9e3b0d04478d4fff67dc63e318f9096260fc63d687f58d951a811967"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/asymmetric_keys/pkcs8_key_parser.ko",
-	.hash="8f49d4f2857f90a26db528117099823ac7e660e6fb303ff7127cf6452c5ccd1d36ed9a9d412d37a90286d3acca7a6d9d60bfe037e159aea8beeb9b7361f78616"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/async_tx/async_memcpy.ko",
+	.hash="f8426d51b3c3e6f6cd0289774d00e17e7eb8a224e7518b41103453fd036a512a1aed99dfc56567578571d480070a6ce15679445709e96212b41e742d17a5cb0b"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/asymmetric_keys/asym_tpm.ko",
-	.hash="9e1dfb67ffafc03ad835aeccbe44da04e761a9b768c4e2e1a7b5cc08fdbcf59d054136df909c5ba6ce2eed01f497c8e89344a1ce1bde3f4d9dfa7e4a8943345a"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/asymmetric_keys/tpm_key_parser.ko",
+	.hash="da85c58b7a26b9f1b51d625da0be8426937db64f363befacb9632c2cf141982bac10144a38e550ff6c273dde14b032e3b5d6b6caa0826f03ed6db05fb2b94972"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/ansi_cprng.ko",
-	.hash="ea9b1b595829bfdee50712f01392ad8e05fc148417e9df0c4d4efd83c6d5ec309cf105b21a1bb0665c340691745ee37106577e0a01c68c1e6a802b1e657acb3e"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/asymmetric_keys/pkcs8_key_parser.ko",
+	.hash="e4b297e64f63df5bf9a5077330f486b3896b3450fefcfaf1acdbf9837fdfcc3fcb7acbfe6ff6d4abccaaf4bd6c14e92cd58f657d049f59a74ac1740ebb2948e0"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/aes_ti.ko",
-	.hash="f2e82445dc4111c3277bd957060488c2b61ff0990f18a5a3156ad432513ce504ee438bff4c6b0a7e532af771eefa8a1b28bcdf588a299d1920ca8e42a2955990"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/asymmetric_keys/asym_tpm.ko",
+	.hash="d076271d34da438f16c939ce4d2b2e9d3a8a177b4dc9518ec30cd8312bad5728bcc515e1bf3ff1cedcbf9672a299a4a145eafe070fe539393f818a6a540d250b"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/aegis128.ko",
-	.hash="fd996460a7ab848a8f451129cf831a963a8ed868008bd71d8ac9b4fd637686d8ce7fea04b0531c38d88313a10d151f04f16a9be76a3c985c240499ebe847b13d"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/ansi_cprng.ko",
+	.hash="27072b983ea949609d73a5a69c0046c050587d2bcc194041d86d5057720aed3ccd6e6cf8da29282f671c7a118159556d40dca70115db2876de51af43b6e2f8f6"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/crypto/adiantum.ko",
-	.hash="05f54e9b930267523f5f358c9a3fd695af6bd9339267d913fca6541ef2da5e98c14c7e06675c5e3199d23ed6fbb2192fd0f483f5bc23a107d69e5fc8bea1f502"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/aes_ti.ko",
+	.hash="30a14d3a3777510e0f773758bb69e3456d83ecfcd35c0b263683c8171ac98b476393cfacde8377c8b1df275c9ab4d188d92558ef9e9c0c9a9b9861f334842900"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/arch/x86/crypto/sha256-ssse3.ko",
-	.hash="8b5b70998579eb0a923f5ea7bba9413c7c1f7c7697ee5c476f6e6562c8b0d3219ebfeed0f47e6734072f30c58a8552d51c8509ce71d8cd037eb7f3476ecb9bb2"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/aegis128.ko",
+	.hash="27b895d502eac5bb1d32ddb569b01fd5d6a094f57f3934a8b193bb5ac616c5843932a3e750557791469c99153e94f47847fd4d1d7fc50b5307843bf0d993632a"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/arch/x86/crypto/ghash-clmulni-intel.ko",
-	.hash="2a99557f9a7a0bd51ff79dbdb60a076ddf7356f6d5edea183d015c6775cff50d5b748d8d2503f0f42c878e1347ae4ff0c693d21d1d132655d722d16fb79cbdb4"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/crypto/adiantum.ko",
+	.hash="361c8de23ddc1cac1ceecc1b7f0c9ca534d1abf9c659e76d1eab2f035caab3b34b183f5477fc02aed3497d3c24929a31374cd633bd04536a09adbef4b209f918"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/arch/x86/crypto/crct10dif-pclmul.ko",
-	.hash="1a49f747cca5f40264d66bc6c4c15aca6538bf764aaec9793b83930509fef43dd58e18881e2bbc288d1b7c3cfbad691842cbbf3f3e68fd008cc974650fa0f03c"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/arch/x86/crypto/sha256-ssse3.ko",
+	.hash="9407af04dd787bf5e0a711f5aa966568f1c90c1fc33cbd5024a1086bc97d195eace3a93818c9d7d0f1c0c26802a91836884622d6cdf93c5930739bee7f7b4e4d"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/arch/x86/crypto/crc32c-intel.ko",
-	.hash="8a7c138ffb71c94cf8021c554fe5078be7299fae961fe24c7ed78e1a13437af3816d1e07664c3439e0075382d656955c21b18dbf589e6d9ba733ab01e799743e"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/arch/x86/crypto/ghash-clmulni-intel.ko",
+	.hash="0031b2507f9c16e16d8980f726b443a1446e324b826a6366943f9cfd260e38b5976a1d5bc2c39a5fc9903b738cd6aaa5e21e7deec992df356b556d0d7bd81b12"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/kernel/arch/x86/crypto/crc32-pclmul.ko",
-	.hash="ccf60f53c9a9fa77999f400870ed89f6a41677ae69c2d5b16a2eb4fbfec80761f4ae4b29baf6ffce96eaf3e7ce1c52c230c7d754cfd29c3aea205564764cb7ce"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/arch/x86/crypto/crct10dif-pclmul.ko",
+	.hash="8cdbc758e2d8a55903f820d0051ebc2540570e801dcbabe74c2d34685ed6b9de984367d571dc924c54325501ab13a0e0c7d42aa66ae53af4129bb3b1616e7a81"
 },
 {
-	.path="/usr/lib/modules/5.14.13-tinfoil+/extra/slowboot.ko",
-	.hash="a8716ea13c7430bf9b46f42498e2e16b02a2520eaef05dac388931e265ed3c58005bb67316052e169ec8d7b1e455334b28444648bebc888a58e83a30cadfb711"
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/arch/x86/crypto/crc32c-intel.ko",
+	.hash="cfd8159e1fb469f19596b533853cc32a9a23611d87ee5162309d65e0506b8cbdaf3e89fdc857148d84928f2e9c350a2f643df0a2c3d1e1df492ee469434a1742"
+},
+{
+	.path="/usr/lib/modules/5.16.0-rc1+/kernel/arch/x86/crypto/crc32-pclmul.ko",
+	.hash="7bb08fdc9dd61eff5f7fa2d44ced3ef73b780c0df74a939a443a832cc809b409c83c0451a7404dc111810d09ecb706e285234af42b16f47e5d77cf33ecce7c97"
+},
+{
+	.path="/usr/lib/modules/5.16.0-rc1+/extra/slowboot.ko",
+	.hash="d65d6d710d5945fa7897c2336abc35bbc528abe31740d077a41caed4313b844f2ad41a00aa513d1275bbdc7219a868fdb5a681d8739ab16507348d6094af85d2"
 }
