@@ -65,6 +65,7 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
 			       const struct public_key *pkey)
 {
 	struct pbit pc;
+
 	sv->tfm = crypto_alloc_akcipher(sv->alg_name, 0, 0);
 	if (IS_ERR(sv->tfm)) {
 		PBIT_Y(pc, (int)(long)sv->tfm);
@@ -180,6 +181,7 @@ out:
 static int tinfoil_open(struct slowboot_validation_item *item)
 {
 	struct pbit pc;
+
 	item->fp = filp_open(item->path, O_RDONLY, 0);
 	if (IS_ERR(item->fp) || item->fp == NULL) {
 		PBIT_N(pc, (int)(long)item->fp);
@@ -247,9 +249,6 @@ static int tinfoil_read(struct slowboot_tinfoil *tinfoil,
 
 	item->buf = vmalloc(item->buf_len+1);
 	if (!item->buf) {
-		pr_err("GS TFSB Fail: No memory:%s @ %s.vmalloc\n",
-		       item->path,
-		       __func__);
 		PBIT_N(pc, -ENOMEM);
 		goto fail;
 	}
@@ -309,6 +308,7 @@ static int tinfoil_check_allocate(struct tinfoil_check *c,
 				  int XCFG_TINFOIL_DGLEN)
 {
 	struct pbit pc;
+
 	c->alg = crypto_alloc_shash(XCFG_TINFOIL_HSALGO, 0, 0);
 	if (IS_ERR(c->alg)) {
 		PBIT_N(pc, (int)(long)c->alg);
@@ -343,6 +343,7 @@ static void tinfoil_check_validate(struct tinfoil_check *c,
 				   int XCFG_TINFOIL_DGLEN)
 {
 	int i;
+
 	crypto_shash_digest(&(c->sd->shash), c->item->buf, c->item->buf_len,
 			    c->digest);
 
@@ -541,7 +542,7 @@ static int slowboot_init_setup_keys(struct slowboot_init_container *sic,
 
 	sic->kernel_key = (unsigned char *)
 			  kmalloc(sic->kernel_key_len+1, GFP_KERNEL);
-	if(!sic->kernel_key)
+	if (!sic->kernel_key)
 		return -ENOMEM;
 
 	if (hex2bin(sic->kernel_key, config_pkey, sic->kernel_key_len) == 0)
@@ -623,6 +624,7 @@ static int slowboot_init_digest(struct slowboot_init_container *sic,
 				const char *XCFG_TINFOIL_HSALGO)
 {
 	struct pbit pc;
+
 	sic->halg = crypto_alloc_shash(XCFG_TINFOIL_HSALGO,0,0);
 	if (IS_ERR(sic->halg)) {
 		PBIT_N(pc, (int)(long)sic->halg);
@@ -638,7 +640,7 @@ static int slowboot_init_digest(struct slowboot_init_container *sic,
 
 	memset(sic->digest,0,XCFG_TINFOIL_DGLEN+1);
 
-	if(!(sic->hsd = __gs_init_sdesc(sic->halg))) {
+	if (!(sic->hsd = __gs_init_sdesc(sic->halg))) {
 		GLOW(-EINVAL, __func__, "__gs_init_sdesc");
 		return -EINVAL;
 	}
@@ -752,6 +754,7 @@ static int slowboot_init(struct slowboot_tinfoil *tinfoil,
 {
 	struct slowboot_init_container sic;
 	struct pbit pc;
+
 	PBIT_N(pc, -EINVAL);
 
 	slowboot_init_setup(&sic,
@@ -761,16 +764,16 @@ static int slowboot_init(struct slowboot_tinfoil *tinfoil,
 			    XCFG_TINFOIL_HSALGO,
 			    XCFG_TINFOIL_PKLEN);
 
-	if(slowboot_init_setup_keys(&sic, tinfoil->config_pkey))
+	if (slowboot_init_setup_keys(&sic, tinfoil->config_pkey))
 		goto fail;
 
-	if(slowboot_init_open_files(&sic, tinfoil->config_file,
-				    tinfoil->config_file_signature))
+	if (slowboot_init_open_files(&sic, tinfoil->config_file,
+				     tinfoil->config_file_signature))
 		goto fail;
 
-	if(slowboot_init_digest(&sic,
-				XCFG_TINFOIL_DGLEN,
-				XCFG_TINFOIL_HSALGO))
+	if (slowboot_init_digest(&sic,
+				 XCFG_TINFOIL_DGLEN,
+				 XCFG_TINFOIL_HSALGO))
 		goto fail;
 
 	if (local_public_key_verify_signature(&sic.rsa_pub_key,
@@ -778,10 +781,10 @@ static int slowboot_init(struct slowboot_tinfoil *tinfoil,
 					      XCFG_TINFOIL_PKALGOPD))
 		goto fail;
 
-	if(slowboot_init_process(&sic, &tinfoil->validation_items,
-				 &tinfoil->slwbt_ct,
-				 XCFG_TINFOIL_NEW_LINE,
-				 XCFG_TINFOIL_HSLEN))
+	if (slowboot_init_process(&sic, &tinfoil->validation_items,
+				  &tinfoil->slwbt_ct,
+				  XCFG_TINFOIL_NEW_LINE,
+				  XCFG_TINFOIL_HSLEN))
 		goto fail;
 
 	PBIT_Y(pc, 0);
@@ -833,9 +836,9 @@ static int slowboot_enabled(const char *XCFG_TINFOIL_OVERRIDE)
 		goto out;
 	}
 
-	if(__gs_memmem_sp(buf, file_size,
-			  XCFG_TINFOIL_OVERRIDE,
-			  strlen(XCFG_TINFOIL_OVERRIDE)) == 0)
+	if (__gs_memmem_sp(buf, file_size,
+			   XCFG_TINFOIL_OVERRIDE,
+			   strlen(XCFG_TINFOIL_OVERRIDE)) == 0)
 		PBIT_Y(pc, 0);
 
 out:
@@ -1136,7 +1139,7 @@ int __gs_tfsb_go(const char *config_tinfoil_cf,
 	}
 
 
-	if(slowboot_tinfoil_init(tinfoil,
+	if (slowboot_tinfoil_init(tinfoil,
 				 config_tinfoil_cf,
 				 config_tinfoil_cfs,
 				 config_tinfoil_pk,
