@@ -39,7 +39,7 @@ struct slowboot_validation_item {
 	char *buf;
 	size_t buf_len;
 	struct file *fp;
-	long long int pos;
+	long long pos;
 };
 
 /* Container Struct for the entire process */
@@ -83,7 +83,7 @@ struct slowboot_init_container {
 	loff_t sfp_pos;
 	int num_read;
 	int sfp_num_read;
-	long int num_items;
+	long num_items;
 	char *buf;
 	char *sfp_buf;
 	unsigned char *kernel_key;

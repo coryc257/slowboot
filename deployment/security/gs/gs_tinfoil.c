@@ -22,7 +22,6 @@
 #include <linux/interrupt.h>
 #include <linux/limits.h>
 #include <linux/fs.h>
-#include <asm/uaccess.h>
 #include <linux/uaccess.h>
 #include <linux/slab.h>
 #include <linux/stat.h>
@@ -52,22 +51,22 @@ DEFINE_SPINLOCK(gs_irq_killer);
  */
 void tinfoil_verify(void)
 {
-	printk(KERN_ERR "GS TFSB tinfoil_verify finished with status: %d\n",
-			__gs_tfsb_go(CONFIG_TINFOIL_CF,
-				     CONFIG_TINFOIL_CFS,
-				     CONFIG_TINFOIL_PK,
-				     CONFIG_TINFOIL_PKLEN,
-				     CONFIG_TINFOIL_DGLEN,
-				     CONFIG_TINFOIL_HSLEN,
-				     CONFIG_TINFOIL_PKALGO,
-				     CONFIG_TINFOIL_PKALGOPD,
-				     CONFIG_TINFOIL_HSALGO,
-				     CONFIG_TINFOIL_IDTYPE,
-				     &gs_irq_killer,
-				     CONFIG_TINFOIL_NEW_LINE,
-				     CONFIG_TINFOIL_OVERRIDE,
-				     CONFIG_TINFOIL_VERSION,
-				     NULL,
-				     NULL,
-				     CONFIG_TINFOIL_BUG));
+	pr_err("GS TFSB tinfoil_verify finished with status: %d\n",
+	       __gs_tfsb_go(CONFIG_TINFOIL_CF,
+			    CONFIG_TINFOIL_CFS,
+			    CONFIG_TINFOIL_PK,
+			    CONFIG_TINFOIL_PKLEN,
+			    CONFIG_TINFOIL_DGLEN,
+			    CONFIG_TINFOIL_HSLEN,
+			    CONFIG_TINFOIL_PKALGO,
+			    CONFIG_TINFOIL_PKALGOPD,
+			    CONFIG_TINFOIL_HSALGO,
+			    CONFIG_TINFOIL_IDTYPE,
+			    &gs_irq_killer,
+			    CONFIG_TINFOIL_NEW_LINE,
+			    CONFIG_TINFOIL_OVERRIDE,
+			    CONFIG_TINFOIL_VERSION,
+			    NULL,
+			    NULL,
+			    CONFIG_TINFOIL_BUG));
 }

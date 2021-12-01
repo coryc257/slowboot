@@ -5,7 +5,7 @@ config GS_BASE
 	default n
 	help
 	  This enables GS Security Enhancements for cryptographic checks of files
-	  at times when the check is useful to create a form of explicit acess
+	  at times when the check is useful to create a form of explicit access
 	  control. Tinfoil is Pre-Init. Slowboot is Post-Init and controlled by
 	  the init process
 menu "Tinfoil Cryptographic Init Verification"

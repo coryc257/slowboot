@@ -22,7 +22,6 @@
 #include <linux/interrupt.h>
 #include <linux/limits.h>
 #include <linux/fs.h>
-#include <asm/uaccess.h>
 #include <linux/uaccess.h>
 #include <linux/slab.h>
 #include <linux/stat.h>
@@ -70,7 +69,6 @@ static int __init slowboot_mod_init(void)
 			    NULL,
 			    NULL,
 			    CONFIG_SLOWBOOT_BUG);
-	
 }
 
 static void __exit slowboot_mod_exit(void) { }

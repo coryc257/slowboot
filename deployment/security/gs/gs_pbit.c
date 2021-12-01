@@ -56,7 +56,7 @@ void pbit_check_yes(struct pbit *pc, int ev, const int *rv)
 {
 	if (!pc)
 		return;
-	if(rv)
+	if (rv)
 		pc->dead = *rv;
 	else
 		pc->dead = PBIT_MGK;
@@ -77,6 +77,7 @@ void pbit_check_yes(struct pbit *pc, int ev, const int *rv)
 int pbit_check(struct pbit *pc)
 {
 	struct pbit pc_copy;
+
 	if (!pc)
 		return PBIT_ERR;
 	pc_copy = *pc;
@@ -86,11 +87,10 @@ int pbit_check(struct pbit *pc)
 	    && pc_copy.ev1 == pc_copy.ev3) {
 		*pc = pc_copy;
 		return PBIT_YES;
-	}
-	else if (pc_copy.status == PBIT_DST && pc_copy.dead == PBIT_DED
-		 && pc_copy.ls == PBIT_NO && pc_copy.ms == PBIT_NO
-		 && pc_copy.rs == PBIT_NO && pc_copy.ev1 == pc_copy.ev2
-		 && pc_copy.ev1 == pc_copy.ev3) {
+	} else if (pc_copy.status == PBIT_DST && pc_copy.dead == PBIT_DED
+		   && pc_copy.ls == PBIT_NO && pc_copy.ms == PBIT_NO
+		   && pc_copy.rs == PBIT_NO && pc_copy.ev1 == pc_copy.ev2
+		   && pc_copy.ev1 == pc_copy.ev3) {
 		*pc = pc_copy;
 		return PBIT_NO;
 	}
@@ -105,15 +105,14 @@ int pbit_check(struct pbit *pc)
 int pbit_infer(struct pbit *pc)
 {
 	struct pbit pc_copy;
+
 	pc_copy = *pc;
-	switch(pbit_check(&pc_copy)) {
+	switch (pbit_check(&pc_copy)) {
 	case PBIT_ERR:
 		return PBIT_ERR;
-		break;
 	default:
 		*pc = pc_copy;
 		return pc_copy.ev2;
-		break;
 	}
 }
 
@@ -124,6 +123,7 @@ int pbit_infer(struct pbit *pc)
 void pbit_check_recover(struct pbit *pc)
 {
 	struct pbit pc_copy;
+
 	pc_copy = *pc;
 	if (pc_copy.ev1 == pc_copy.ev2 && pc_copy.ev3 == pc_copy.ev1)
 		pbit_check_setup(&pc_copy, pc_copy.ev1);
