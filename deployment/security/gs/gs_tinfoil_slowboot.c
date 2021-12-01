@@ -208,8 +208,7 @@ static int tinfoil_stat_alloc(struct slowboot_tinfoil *tinfoil,
 			STATX_SIZE,
 			AT_STATX_SYNC_AS_STAT
 		) != 0) {
-		pr_err("GS TFSB Fail: Cannot Stat:%s @ "
-		       "%s.vfs_getattr\n",
+		pr_err("GS TFSB Fail: Cannot Stat:%s @ %s.vfs_getattr\n",
 		       item->path,
 		       __func__);
 		return -EINVAL;
@@ -248,8 +247,7 @@ static int tinfoil_read(struct slowboot_tinfoil *tinfoil,
 
 	item->buf = vmalloc(item->buf_len+1);
 	if (!item->buf) {
-		pr_err("GS TFSB Fail: No memory:%s"
-		       " @ %s.vmalloc\n",
+		pr_err("GS TFSB Fail: No memory:%s @ %s.vmalloc\n",
 		       item->path,
 		       __func__);
 		PBIT_N(pc, -ENOMEM);
@@ -268,8 +266,8 @@ static int tinfoil_read(struct slowboot_tinfoil *tinfoil,
 	}
 
 	if (hex2bin(item->b_hash,item->hash,64) !=0) {
-		pr_err("GS TFSB Fail: StoredHashFail:%s"
-		       " @ %s.hex2bin\n", item->path, __func__);
+		pr_err("GS TFSB Fail: StoredHashFail:%s @ %s.hex2bin\n",
+		       item->path, __func__);
 		goto fail;
 	}
 
@@ -989,9 +987,9 @@ out:
  * @pos: position offset return value
  */
 char *__gs_read_file_to_memory(struct file *fp,
-				   size_t file_size,
-				   loff_t *pos,
-				   int ignore_size)
+			       size_t file_size,
+			       loff_t *pos,
+			       int ignore_size)
 {
 	char *buf;
 	size_t num_read;
@@ -1124,12 +1122,12 @@ int __gs_tfsb_go(const char *config_tinfoil_cf,
 	struct pbit pc;
 
 	if (!slowboot_enabled(config_tinfoil_override)) {
-		printk(KERN_ERR "GS TFSB: disabled\n");
+		pr_err("GS TFSB: disabled\n");
 		return 0;
 	}
 
 	PBIT_N(pc, -EINVAL);
-	printk(KERN_INFO "GS TFSB START\n");
+	pr_info("GS TFSB START\n");
 
 	tinfoil = kmalloc(sizeof(struct slowboot_tinfoil), GFP_KERNEL);
 	if (!tinfoil) {
@@ -1162,8 +1160,8 @@ out:
 	if (tinfoil) {
 		slowboot_tinfoil_free(tinfoil);
 
-		printk(KERN_INFO "GS TFSB Audit: {Total:%d/Failures:%d}\n",
-		       tinfoil->slwbt_ct, tinfoil->failures);
+		pr_info("GS TFSB Audit: {Total:%d/Failures:%d}\n",
+			tinfoil->slwbt_ct, tinfoil->failures);
 
 		if (!PBIT_OK(tinfoil->error) || PBIT_GET(tinfoil->error) != 0) {
 			PBIT_N(pc, PBIT_GET(tinfoil->error));
