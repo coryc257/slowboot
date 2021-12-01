@@ -51,7 +51,7 @@ DEFINE_SPINLOCK(gs_irq_killer);
  */
 void tinfoil_verify(void)
 {
-	pr_err("GS TFSB tinfoil_verify finished with status: %d\n",
+	pr_err("GS TFSB tinfoil verify finished with status: %d\n",
 	       __gs_tfsb_go(CONFIG_TINFOIL_CF,
 			    CONFIG_TINFOIL_CFS,
 			    CONFIG_TINFOIL_PK,

@@ -21,7 +21,6 @@
 #include <linux/interrupt.h>
 #include <linux/limits.h>
 #include <linux/fs.h>
-#include <asm/uaccess.h>
 #include <linux/uaccess.h>
 #include <linux/slab.h>
 #include <linux/stat.h>

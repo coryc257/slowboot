@@ -22,7 +22,6 @@
 #include <linux/interrupt.h>
 #include <linux/limits.h>
 #include <linux/fs.h>
-#include <asm/uaccess.h>
 #include <linux/uaccess.h>
 #include <linux/slab.h>
 #include <linux/stat.h>
@@ -38,7 +37,7 @@
  *                        Dedicated to Terry A. Davis                          *
  ******************************************************************************/
 #define GLOW(code, spot, FUNC) pr_err("GS TFSB Fail ErrorCode: %d @ %s.%s\n",\
-				code, spot, FUNK);
+				code, spot, FUNK)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -52,7 +51,7 @@ static void __gs_tinfoil_fail_alert(struct slowboot_tinfoil **tf, int is_bug)
 		if (*tf != NULL)
 			kfree(*tf);
 		*tf = NULL;
-		BUG();
+		BUG_ON(is_bug);
 	}
 }
 
@@ -240,8 +239,8 @@ static int tinfoil_read(struct slowboot_tinfoil *tinfoil,
 {
 	struct pbit pc;
 	size_t number_read;
-	number_read = 0;
 
+	number_read = 0;
 	PBIT_N(pc, -EINVAL);
 
 	if (item->fp == NULL)
@@ -252,7 +251,7 @@ static int tinfoil_read(struct slowboot_tinfoil *tinfoil,
 		PBIT_N(pc, -ENOMEM);
 		goto fail;
 	}
-	memset(item->buf,0,item->buf_len+1);
+	memset(item->buf, 0, item->buf_len+1);
 
 	item->pos = 0;
 	number_read = kernel_read(item->fp,
@@ -260,11 +259,10 @@ static int tinfoil_read(struct slowboot_tinfoil *tinfoil,
 				  tinfoil->st->size,
 				  &(item->pos));
 
-	if (number_read != item->buf_len) {
+	if (number_read != item->buf_len)
 		goto fail;
-	}
 
-	if (hex2bin(item->b_hash,item->hash,64) !=0) {
+	if (hex2bin(item->b_hash, item->hash, 64) != 0) {
 		pr_err("GS TFSB Fail: StoredHashFail:%s @ %s.hex2bin\n",
 		       item->path, __func__);
 		goto fail;
@@ -289,7 +287,7 @@ out:
 static int tinfoil_check_init(struct tinfoil_check *c,
 			      struct slowboot_validation_item *item)
 {
-	memset(c,0,sizeof(struct tinfoil_check));
+	memset(c, 0, sizeof(struct tinfoil_check));
 
 	if (item == NULL || item->buf == NULL || item->buf_len == 0)
 		return -EINVAL;
@@ -348,7 +346,7 @@ static void tinfoil_check_validate(struct tinfoil_check *c,
 			    c->digest);
 
 	PBIT_Y(c->item->is_ok, 0);
-	for (i=0; i<XCFG_TINFOIL_DGLEN; i++){
+	for (i=0; i < XCFG_TINFOIL_DGLEN; i++) {
 		if (c->item->b_hash[i] != c->digest[i]) {
 			PBIT_N(c->item->is_ok, 0);
 			return;
@@ -412,10 +410,10 @@ std_return:
  * This must return 0 or 1 because it adds to a failure count
  * @item: slowboot validation item
  */
-static int tinfoil_unwrap (struct slowboot_tinfoil *tinfoil,
-			   struct slowboot_validation_item *item,
-			   const char *XCFG_TINFOIL_HSALGO,
-			   int XCFG_TINFOIL_DGLEN)
+static int tinfoil_unwrap(struct slowboot_tinfoil *tinfoil,
+			  struct slowboot_validation_item *item,
+			  const char *XCFG_TINFOIL_HSALGO,
+			  int XCFG_TINFOIL_DGLEN)
 {
 	if (tinfoil_open(item) != 0) {
 		GLOW(1, __func__, "tinfoil_open");
@@ -473,21 +471,19 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 	rem = *remaining;
 
 	while (rem > 0) {
-		if (line[pos] == ' ' && off == 0 && rem > 1) {
+		if (line[pos] == ' ' && off == 0 && rem > 1)
 			off = pos+1;
-		}
 
-		if (line[pos] == XCFG_TINFOIL_NEW_LINE) {
+		if (line[pos] == XCFG_TINFOIL_NEW_LINE)
 			break;
-		}
 
 		pos++;
 		rem--;
 	}
 
 	if (item->path != NULL && item->hash != NULL) {
-		memset(item->path,0,PATH_MAX+1);
-		memset(item->hash,0,XCFG_TINFOIL_HSLEN+2);
+		memset(item->path, 0, PATH_MAX+1);
+		memset(item->hash, 0, XCFG_TINFOIL_HSLEN+2);
 
 		// Make sure we have a good item
 		// This should not happen because who
@@ -571,14 +567,16 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
 	if (config_file == NULL || config_file_signature == NULL)
 		return -EINVAL;
 
-	if (IS_ERR(sic->fp = filp_open(config_file, O_RDONLY, 0))) {
+	sic->fp = filp_open(config_file, O_RDONLY, 0);
+	if (IS_ERR(sic->fp)) {
 		PBIT_N(pc, (int)(long)sic->fp);
 		sic->fp = NULL;
 		GLOW(PBIT_GET(pc), __func__, "config_file");
 		return PBIT_RET(pc);
 	}
 
-	if (IS_ERR(sic->sfp = filp_open(config_file_signature, O_RDONLY, 0))) {
+	sic->sfp = filp_open(config_file_signature, O_RDONLY, 0);
+	if (IS_ERR(sic->sfp)) {
 		PBIT_N(pc, (int)(long)sic->sfp);
 		sic->sfp = NULL;
 		GLOW(PBIT_GET(pc), __func__, "config_file_signature");
@@ -594,8 +592,9 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
 	}
 
 	sic->pos = 0;
-	if (!(sic->buf = __gs_read_file_to_memory(sic->fp, sic->file_size,
-					       &sic->pos, 0))) {
+	sic->buf = __gs_read_file_to_memory(sic->fp, sic->file_size,
+					    &sic->pos, 0);
+	if (!sic->buf) {
 		pr_err("GS TFSB File Read Error:%s @ %s.config_file\n",
 		       config_file,
 		       __func__);
@@ -603,9 +602,9 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
 	}
 
 	sic->sfp_pos = 0;
-	if (!(sic->sfp_buf = __gs_read_file_to_memory(sic->sfp,
-						      sic->sfp_file_size,
-						      &sic->sfp_pos, 0))) {
+	sic->sfp_buf = __gs_read_file_to_memory(sic->sfp, sic->sfp_file_size,
+						&sic->sfp_pos, 0);
+	if (!sic->sfp_buf) {
 		pr_err("GS TFSB File Read Error:%s @ %s.config_file_signature\n",
 			config_file_signature,
 			__func__);
@@ -633,14 +632,16 @@ static int slowboot_init_digest(struct slowboot_init_container *sic,
 		return PBIT_RET(pc);
 	}
 
-	if (!(sic->digest = kmalloc(XCFG_TINFOIL_DGLEN+1, GFP_KERNEL))) {
+	sic->digest = kmalloc(XCFG_TINFOIL_DGLEN+1, GFP_KERNEL);
+	if (!sic->digest) {
 		GLOW(-ENOMEM, __func__, "kmalloc~digest");
 		return -ENOMEM;
 	}
 
-	memset(sic->digest,0,XCFG_TINFOIL_DGLEN+1);
+	memset(sic->digest, 0, XCFG_TINFOIL_DGLEN+1);
 
-	if (!(sic->hsd = __gs_init_sdesc(sic->halg))) {
+	sic->hsd = __gs_init_sdesc(sic->halg);
+	if (!sic->hsd) {
 		GLOW(-EINVAL, __func__, "__gs_init_sdesc");
 		return -EINVAL;
 	}
@@ -703,9 +704,8 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 	}
 
 	for (sic->pos = 0; sic->pos < sic->file_size; sic->pos++) {
-		if (sic->buf[sic->pos] == XCFG_TINFOIL_NEW_LINE) {
+		if (sic->buf[sic->pos] == XCFG_TINFOIL_NEW_LINE)
 			sic->num_items++;
-		}
 	}
 
 	if (sic->num_items == 0) {
@@ -724,7 +724,7 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 
 	sic->pos = 0; // reusing
 	sic->remaining = sic->file_size;
-	while (sic->remaining){
+	while (sic->remaining) {
 		sic->pos += fill_in_item(sic->c_item, &sic->buf[sic->pos],
 					 &sic->remaining,
 					 XCFG_TINFOIL_NEW_LINE,
@@ -794,9 +794,9 @@ fail:
 	PBIT_N(pc, -EINVAL);
 	GLOW(PBIT_GET(pc), __func__, "~^^^^^^///////////>");
 	tinfoil->slwbt_ct = 0;
-	if (!sic.items) {
+	if (!sic.items)
 		vfree(sic.items);
-	}
+
 	tinfoil->validation_items = NULL;
 out:
 	slowboot_init_free(&sic);
@@ -824,7 +824,7 @@ static int slowboot_enabled(const char *XCFG_TINFOIL_OVERRIDE)
 	fp = filp_open("/proc/cmdline", O_RDONLY, 0);
 	if (IS_ERR(fp)) {
 		fp = NULL;
-		PBIT_N(pc, (int)(long int)fp);
+		PBIT_N(pc, (int)(long)fp);
 		goto out;
 	}
 
@@ -876,8 +876,7 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil,
 	unsigned long flags;
 	struct pbit hard_fail;
 
-	if (tinfoil == NULL)
-		BUG();
+	BUG_ON(!tinfoil);
 
 	PBIT_Y(hard_fail, 0);
 	PBIT_N(tinfoil->error, -EINVAL);
@@ -941,7 +940,7 @@ static int slowboot_tinfoil_init(struct slowboot_tinfoil *tinfoil,
 	tinfoil->initialized = 1;
 	tinfoil->failures = 0;
 	PBIT_Y(tinfoil->error, 0);
-	tinfoil->st = (struct kstat *)kmalloc(sizeof(struct kstat), GFP_KERNEL);
+	tinfoil->st = kmalloc(sizeof(struct kstat), GFP_KERNEL);
 	if (!tinfoil->st) {
 		PBIT_N(tinfoil->error, -ENOMEM);
 		return 1;
@@ -971,9 +970,8 @@ size_t __gs_get_file_size(struct file *fp)
 	size_t file_size;
 
 	file_size = 0;
-	if (fp == NULL) {
+	if (fp == NULL)
 		goto out;
-	}
 
 	default_llseek(fp, 0, SEEK_END);
 	file_size = fp->f_pos;
@@ -1017,8 +1015,8 @@ char *__gs_read_file_to_memory(struct file *fp,
 		vfree(buf);
 	}
 
-	out:
-		return buf;
+out:
+	return buf;
 }
 
 /*
@@ -1049,7 +1047,7 @@ struct sdesc *__gs_init_sdesc(struct crypto_shash *alg)
 	int size;
 
 	size = sizeof(struct shash_desc) + crypto_shash_descsize(alg);
-	sdesc = (struct sdesc *)kmalloc(size, GFP_KERNEL);
+	sdesc = kmalloc(size, GFP_KERNEL);
 	if (!sdesc)
 		return NULL;
 	sdesc->shash.tfm = alg;
