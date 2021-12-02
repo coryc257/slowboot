@@ -16,7 +16,7 @@ Signed-off-by: Cory Craig <gs.cory.craig@gmail.com>
 There should be a LSM hook to call tinfoil_verify ideally
 This could prevent a physical access backdoor from being trivally
 exploited via a poisoned init program placed by the attacker
-This also helps	prevent	a successful hack of a computer	while     
+This also helps prevent a successful hack of a computer while
 running	from putting a poisoned init causing LUKS encryption
 password from being disclosed to the adversary
 

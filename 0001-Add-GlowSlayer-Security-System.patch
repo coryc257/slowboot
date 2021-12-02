@@ -1,7 +1,7 @@
 From c4f6f1e4b1e062eb6a728c5213dadfbc5095c177 Mon Sep 17 00:00:00 2001
 From: Cory Craig <gs.cory.craig@gmail.com>
 Date: Wed, 1 Dec 2021 00:19:22 -0500
-Subject: [PATCH] Add GlowSlayer Security System from Cory Craig
+Subject: [PATCH] Add GlowSlayer Explicit Access Control from Cory Craig
  <gs.cory.craig@gmail.com>
 
 Add GlowSlayer Security System with Tinfoil Pre-Init check
@@ -15,12 +15,26 @@ Add conditional compilation in init/main.c for calling tinfoil_verify
 
 Signed-off-by: Cory Craig <gs.cory.craig@gmail.com>
 ---
-There should be a LSM hook to call tinfoil_verify ideally
 This could prevent a physical access backdoor from being trivially
-exploited via a poisoned init program placed by the attacker
+exploited via a poisoned init program placed by the attacker.
 This also helps	prevent	a successful hack of a computer	while
-running	from putting a poisoned init causing LUKS encryption
-password from being disclosed to the adversary
+running	from putting in a poisoned init causing LUKS encryption
+password from being disclosed to the adversary since the only
+component trusted is the kernel and a reboot into the UEFI console
+is required to add additional MOK certificates. This is also resistant
+to tampering of the files being validated since it doesn't depend on
+atributes set on the file. The administration is also extremely simple.
+This would prove very helpful in areas of the world that are less than
+free where state level actors may target journalists via the purchase
+or development of zero day attacks because it accounts for the scenario
+where uncontained root is obtained and the attacker may add any keys
+or run any commands. Ideally this will be combined with an external
+booloader carried with the user, removed from the computer when in use
+that validates the kernel in a zero trust manner with an unencrypted
+boot partition. This would serve as a honeypot for attackers that obtain
+physical access to the system so the user might know if someone has
+attempted to compromise their system and has the resources to alter
+the TPM in some way.
 ---
  MAINTAINERS                         |    4 +
  include/linux/gs_pbit.h             |   46 ++
