@@ -1,53 +1,44 @@
-GlowSlayer defines a simple one liner api to perform a file(s) integrity
-check based upon a signed configuration file that contains hash/path
-records. All Internal details are abstracted away from the caller.
-This was not the intention but it defines and API module/kernel developers
-can easily add integrity checks to that survive pretty much any
-decisions made by developers of a distribution or device.
+GlowSlayer defines a simple one line api to perform a file(s) integrity check
+based upon a signed configuration file that contains hash/path recordset. All
+internal details are abstracted away from the caller. This defines an API
+module/kernel developers can easily add integrity checks to their code that will
+survive pretty much any decisions made by developers of a distribution or
+device.
 
-GlowSlayer also defines a Pre-Init hook dubbed Tinfoil. Tinfoil will
-be called immediately before the kernel transitions to the desired
-init program. It will optionaly bug the kernel but that is not the
-default behavior. User are given the freedom to chose that when they
-compile the kernel in the event disregarding the error messages and
-typing in the LUKS password could prove literally fatal if the password
-is sent off or stored in plaintext somewhere due to a poisoned init
-program.
+GlowSlayer also defines a Pre-Init hook dubbed Tinfoil. Tinfoil will be called
+immediately before the kernel transitions to the desired init program. It will
+optionaly bug the kernel but that is not the default behavior. Users are given
+the freedom to chose that when they compile the kernel. When accidentally
+disregarding the error messages could prove fatal if the LUKS password was
+divulged a BUG(); could save a life.
 
-The final piece GlowSlayer defines in this initial release it a Slowboot
-module that if the init program is configured to load it does the opposite
-of "fastboot" essentially. Given the config file it will validate the
-config file. It will then validate any files in the config file and print
-error messages and fail module insertion via return code. This can be used
-to verify any file visible to the system after LUKS decryption so it could
-detect changes in config files, etc.
+The final piece GlowSlayer defines in this initial release is a Slowboot module
+that if the init program is configured to load it does the opposite of
+"fastboot" essentially. Given the config file it will validate the config file.
+It will then validate any files in the config file and print error messages and
+fail module insertion via return code. This can be used to verify any file
+visible to the system after LUKS decryption so it could detect changes in config
+files, etc.
 
-GlowSlayer does this in a completely agnostic manner. It does not depend
-on filesystem attributes or TPM existence. It also does this in a manner
-that could be considered "Explicit Access Control". That fact is why it
-should be included in the base kernel tree since it performs a similar
-function to dm-verity or integrity but it does so in a manner with a
-radically different approach. The goal is to allow the user to remove
-administration of the computer from the running system. This is an attempt
-to mitigate 0-day vulnerabilities that might attempt to poison files where
-root access or physical access allows such a thing to work. This will be
-ideally accompanied by an enhanced version of GRUB I have yet to start
-that will replace the need for a TPM. Security hardware is inherrently
-flawed so relying on it for the only assertion of trusted boot is faulty.
-
-Two additional pieces that have not yet been developed but are in the
-works is a pre-execve check. This could be used to stop unwanted programs
-such as netcat from opening up a reverse shell on compromised system since
-root will not be able to change the configuration even if MAC fails. The
-last not done piece will be a generic pre-open check that could be used to
-validate .so files. This will also work in a root is not the admin manner.
+GlowSlayer does this in a completely agnostic manner. It does not depend on any
+filesystem attributes or TPM existence. It also does this in a manner that could
+be considered "Explicit Access Control". That fact is why it should be included
+in the base kernel tree since it performs a similar function to dm-verity or
+integrity but it does so in a manner with a radically different approach. The
+goal is to allow the user to remove administration of the computer from the
+running system. This is an attempt to mitigate 0-day vulnerabilities that might
+attempt to poison files where root access or physical access allows such a thing
+to work. This will be ideally accompanied by an enhanced version of GRUB I have
+yet to start that will replace the need for a TPM. Security hardware is
+inherrently flawed so relying on it for the only assertion of trusted boot is
+faulty.
 
 GlowSlayer also includes a special container struct that can hold a value.
-It should be resistant to a rowhammer attack or accidentally destruction
-of the intended value via a bug in the code doing a string operation where
-a string operation should not be performed. This is used to hold all the
-return values that "stay around for a while" while cleanup happens.
+It should be resistant to a rowhammer attack or accidental destruction of the
+intended value via a bug in the code doing a string operation where a string
+operation should not be performed. This is used to hold all the return values
+that "stay around for a while" while cleanup happens.
 
 One added benefit of having this code in the source tree is that it allows
-the user to take control of their system in a manner they can assert it
-to be true via compilation and setup of the system.
+the user to take control of their system in a manner they can assert it to be
+true via compilation and setup of the system.

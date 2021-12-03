@@ -118,6 +118,7 @@ int __gs_pk_sig_verify_init(struct sig_verify *sv,
 			    const struct public_key *pkey,
 			    const struct public_key_signature *sig,
 			    const char *pkalgopd);
+int __gs_tinfoil_verify(void);
 /*
  * Perform entire test
  * @config_tinfoil_cf: path for the configuration file

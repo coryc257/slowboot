@@ -75,12 +75,11 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
 
 	sv->req = akcipher_request_alloc(sv->tfm, GFP_KERNEL);
 	if (!sv->req) {
-		GLOW(-ENOMEM, __func__, "akcipher_request_alloc");
 		return -ENOMEM;
 	}
 
 	if (crypto_akcipher_set_pub_key(sv->tfm, pkey->key, pkey->keylen)) {
-		GLOW(-ENOMEM,
+		GLOW(-EINVAL,
 		     __func__, "crypto_akcipher_set_pub_key");
 		return -EINVAL;
 	}
@@ -88,7 +87,6 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
 	sv->outlen = crypto_akcipher_maxsize(sv->tfm);
 	sv->output = kmalloc(sv->outlen, GFP_KERNEL);
 	if (!sv->output) {
-		GLOW(-ENOMEM, __func__, "kmalloc(sv->output)");
 		return -ENOMEM;
 	}
 
@@ -1069,9 +1067,14 @@ int __gs_pk_sig_verify_init(struct sig_verify *sv,
 			    const struct public_key_signature *sig,
 			    const char *pkalgopd)
 {
+	size_t s;
 	memset(sv, 0, sizeof(struct sig_verify));
+	if (pkalgopd != NULL)
+		s = strlen(pkalgopd);
+	else
+		s = 0;
 
-	if (pkalgopd != NULL && strlen(pkalgopd) > 0) {
+	if (s > 0 && s <= CRYPTO_MAX_ALG_NAME) {
 		snprintf(sv->alg_name_buf, CRYPTO_MAX_ALG_NAME,
 				pkalgopd);
 		sv->alg_name = sv->alg_name_buf;

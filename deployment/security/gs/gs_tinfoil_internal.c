@@ -27,7 +27,6 @@
 #include <linux/random.h>
 #include <linux/gs_pbit.h>
 #include <linux/gs_tinfoil_slowboot.h>
-#include <linux/gs_tinfoil.h>
 
 #ifndef CONFIG_TINFOIL_NEW_LINE
 #define CONFIG_TINFOIL_NEW_LINE '\n'
@@ -45,8 +44,8 @@ DEFINE_SPINLOCK(gs_irq_killer);
 
 int __gs_tinfoil_verify(void)
 {
-	struct pbit p;
-	PBIT_Y(p, __gs_tfsb_go(CONFIG_TINFOIL_CF,
+	struct pbit pc;
+	PBIT_Y(pc, __gs_tfsb_go(CONFIG_TINFOIL_CF,
 				CONFIG_TINFOIL_CFS,
 				CONFIG_TINFOIL_PK,
 				CONFIG_TINFOIL_PKLEN,
@@ -65,5 +64,5 @@ int __gs_tinfoil_verify(void)
 				CONFIG_TINFOIL_BUG));
 	pr_err("GS TFSB tinfoil verify finished with status: %d\n",
 		PBIT_GET(pc));
-	return PBIT_RET(pc)
+	return PBIT_RET(pc);
 }

@@ -99,9 +99,7 @@
 #include <linux/kcsan.h>
 #include <linux/init_syscalls.h>
 #include <linux/stackdepot.h>
-#ifdef CONFIG_TINFOIL
 #include <linux/gs_tinfoil.h>
-#endif
 
 #include <asm/io.h>
 #include <asm/bugs.h>
@@ -1524,9 +1522,7 @@ static int __ref kernel_init(void *unused)
 
 	do_sysctl_args();
 
-#ifdef CONFIG_TINFOIL
 	tinfoil_verify();
-#endif
 
 	if (ramdisk_execute_command) {
 		ret = run_init_process(ramdisk_execute_command);
