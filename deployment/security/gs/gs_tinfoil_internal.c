@@ -25,6 +25,7 @@
 #include <linux/slab.h>
 #include <linux/stat.h>
 #include <linux/random.h>
+#include <linux/lsm_hooks.h>
 #include <linux/gs_pbit.h>
 #include <linux/gs_tinfoil_slowboot.h>
 
@@ -41,6 +42,11 @@
 #endif
 
 DEFINE_SPINLOCK(gs_irq_killer);
+
+static struct security_hook_list lsm_gs_hooks[] = {
+	LSM_HOOK_INIT()
+};
+
 
 int __gs_tinfoil_verify(void)
 {
@@ -66,3 +72,12 @@ int __gs_tinfoil_verify(void)
 		PBIT_GET(pc));
 	return PBIT_RET(pc);
 }
+
+/*
+static __init int gs_tinfoil_init(void)
+{
+
+}
+
+security_initcall(gs_tinfoil_init);
+*/
