@@ -2642,5 +2642,6 @@ int security_uring_sqpoll(void)
 int security_pre_init_kexecve(const char *init_program, const char **args_i,
 			      const char **envs_i)
 {
+	pr_info("!!!security_pre_init_kexecve!!!\n");
 	return call_int_hook(pre_init_kexecve, 0, init_program, args_i, envs_i);
 }

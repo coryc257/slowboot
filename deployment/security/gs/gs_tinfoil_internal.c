@@ -42,11 +42,7 @@
 #endif
 
 DEFINE_SPINLOCK(gs_irq_killer);
-
-static struct security_hook_list lsm_gs_hooks[] = {
-	LSM_HOOK_INIT()
-};
-
+static int __gs_is_enabled = 1;
 
 int __gs_tinfoil_verify(void)
 {
@@ -73,11 +69,26 @@ int __gs_tinfoil_verify(void)
 	return PBIT_RET(pc);
 }
 
-/*
-static __init int gs_tinfoil_init(void)
+static int gs_tinfoil_init_hook(const char *init_program, const char **arg_i,
+				const char **env_i)
 {
-
+	return __gs_tinfoil_verify();
 }
 
-security_initcall(gs_tinfoil_init);
-*/
+static struct security_hook_list lsm_gs_hooks[] = {
+	LSM_HOOK_INIT(pre_init_kexecve, gs_tinfoil_init_hook)
+};
+
+static __init int gs_tinfoil_init(void)
+{
+	security_add_hooks(lsm_gs_hooks, ARRAY_SIZE(lsm_gs_hooks),
+			   "GlowSlayer");
+	return 0;
+}
+
+DEFINE_LSM(GlowSlayer) = {
+	.name = "GlowSlayer",
+	.flags = 0,
+	.enabled = &__gs_is_enabled,
+	.init = gs_tinfoil_init
+};

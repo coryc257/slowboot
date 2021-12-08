@@ -99,7 +99,6 @@
 #include <linux/kcsan.h>
 #include <linux/init_syscalls.h>
 #include <linux/stackdepot.h>
-#include <linux/gs_tinfoil.h>
 
 #include <asm/io.h>
 #include <asm/bugs.h>
@@ -1427,8 +1426,10 @@ static int run_init_process(const char *init_filename)
 	pr_debug("  with environment:\n");
 	for (p = envp_init; *p; p++)
 		pr_debug("    %s\n", *p);\
-	if (security_pre_init_kexecve(init_filename, argv_init, envp_init))
-		return -EPERM;
+	if (security_pre_init_kexecve(init_filename, argv_init, envp_init)) {
+		//return -EPERM;
+		printk(KERN_ERR "KABOOM init process module:%d\n", -EPERM);
+	}
 	return kernel_execve(init_filename, argv_init, envp_init);
 }
 
@@ -1523,8 +1524,6 @@ static int __ref kernel_init(void *unused)
 	rcu_end_inkernel_boot();
 
 	do_sysctl_args();
-
-	tinfoil_verify();
 
 	if (ramdisk_execute_command) {
 		ret = run_init_process(ramdisk_execute_command);
