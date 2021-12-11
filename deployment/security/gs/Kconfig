@@ -64,16 +64,6 @@ menu "Tinfoil Cryptographic Init Verification"
 		string
 		default "X509" if TINFOIL
 		depends on TINFOIL
-	config TINFOIL_BUG
-		prompt "Bug on Fail"
-		int
-		default 0 if TINFOIL
-		depends on TINFOIL
-	config TINFOIL_OVERRIDE
-		prompt "Override Parameter"
-		string
-		default "tinfoil_override" if TINFOIL
-		depends on TINFOIL
 endmenu
 menu "Slowboot Cryptographic PostInit Verification"
 	config SLOWBOOT
@@ -130,10 +120,5 @@ menu "Slowboot Cryptographic PostInit Verification"
 		prompt "Signature ID Type <X509>"
 		string
 		default "X509" if SLOWBOOT
-		depends on SLOWBOOT
-	config SLOWBOOT_BUG
-		prompt "Bug on Fail"
-		int
-		default 0 if SLOWBOOT
 		depends on SLOWBOOT
 endmenu

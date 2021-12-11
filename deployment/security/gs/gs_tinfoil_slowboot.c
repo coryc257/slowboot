@@ -44,15 +44,9 @@
  * Failure Option to simply alert
  * @tf: slowboot_tinfoil struct
  */
-static void __gs_tinfoil_fail_alert(struct slowboot_tinfoil **tf, int is_bug)
+static void __gs_tinfoil_fail_alert(struct slowboot_tinfoil **tf)
 {
 	pr_err("GS TFSB FAIL\n");
-	if (is_bug) {
-		if (*tf != NULL)
-			kfree(*tf);
-		*tf = NULL;
-		BUG_ON(is_bug);
-	}
 }
 
 /*
@@ -804,6 +798,7 @@ out:
 /*
  * Check for /proc/cmdlin override
  */
+/*
 static int slowboot_enabled(const char *XCFG_TINFOIL_OVERRIDE)
 {
 	struct file *fp;
@@ -854,6 +849,7 @@ out:
 		return 1;
 
 }
+*/
 
 /*
  * Run validation test
@@ -1119,19 +1115,17 @@ int __gs_tfsb_go(const char *config_tinfoil_cf,
 		 const char *config_tinfoil_idtype,
 		 spinlock_t *gs_irq_killer,
 		 char config_tinfoil_new_line,
-		 const char *config_tinfoil_override,
 		 int config_tinfoil_version,
-		 const char *config_tinfoil_reserved,
-		 const void *config_tinfoil_unused,
-		 int config_bug_on_fail)
+		 const void *config_tinfoil_reserved,
+		 const void *config_tinfoil_unused)
 {
 	struct slowboot_tinfoil *tinfoil;
 	struct pbit pc;
 
-	if (!slowboot_enabled(config_tinfoil_override)) {
+	/*if (!slowboot_enabled(config_tinfoil_override)) {
 		pr_err("GS TFSB: disabled\n");
 		return 0;
-	}
+	}*/
 
 	PBIT_N(pc, -EINVAL);
 	pr_info("GS TFSB START\n");
@@ -1183,7 +1177,7 @@ out:
 
 
 	if (PBIT_GET(pc) != 0 || !PBIT_OK(pc)) {
-		__gs_tinfoil_fail_alert(&tinfoil, config_bug_on_fail);
+		__gs_tinfoil_fail_alert(&tinfoil);
 		if (tinfoil != NULL) {
 			kfree(tinfoil);
 			tinfoil = NULL;

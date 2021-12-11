@@ -35,16 +35,8 @@ DEFINE_SPINLOCK(gs_s_irq_killer);
 #define CONFIG_SLOWBOOT_NEW_LINE '\n'
 #endif
 
-#ifndef CONFIG_SLOWBOOT_OVERRIDE
-#define CONFIG_SLOWBOOT_OVERRIDE "not_applicable_no_gssb_override"
-#endif
-
 #ifndef CONFIG_SLOWBOOT_VERSION
 #define CONFIG_SLOWBOOT_VERSION 1
-#endif
-
-#ifndef CONFIG_SLOWBOOT_BUG
-#define CONFIG_SLOWBOOT_BUG 0
 #endif
 
 /*
@@ -64,11 +56,9 @@ static int __init slowboot_mod_init(void)
 			    CONFIG_SLOWBOOT_IDTYPE,
 			    &gs_s_irq_killer,
 			    CONFIG_SLOWBOOT_NEW_LINE,
-			    CONFIG_SLOWBOOT_OVERRIDE,
 			    CONFIG_SLOWBOOT_VERSION,
 			    NULL,
-			    NULL,
-			    CONFIG_SLOWBOOT_BUG);
+			    NULL);
 }
 
 static void __exit slowboot_mod_exit(void) { }

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 /*
  * GS Tinfoil Pre Init Integrity Check
  * Copyright (C) 2021 Cory Craig
@@ -37,10 +38,6 @@
 #define CONFIG_TINFOIL_VERSION 1
 #endif
 
-#ifndef CONFIG_TINFOIL_BUG
-#define CONFIG_TINFOIL_BUG 0
-#endif
-
 DEFINE_SPINLOCK(gs_irq_killer);
 static int __gs_is_enabled = 1;
 
@@ -59,11 +56,9 @@ int __gs_tinfoil_verify(void)
 				CONFIG_TINFOIL_IDTYPE,
 				&gs_irq_killer,
 				CONFIG_TINFOIL_NEW_LINE,
-				CONFIG_TINFOIL_OVERRIDE,
 				CONFIG_TINFOIL_VERSION,
 				NULL,
-				NULL,
-				CONFIG_TINFOIL_BUG));
+				NULL));
 	pr_err("GS TFSB tinfoil verify finished with status: %d\n",
 		PBIT_GET(pc));
 	return PBIT_RET(pc);

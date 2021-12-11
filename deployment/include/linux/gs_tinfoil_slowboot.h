@@ -133,11 +133,9 @@ int __gs_tinfoil_verify(void);
  * @config_tinfoil_idtype: public_key.id_type likely "X509"
  * @gs_irq_killer: Nullable spinlock_t to block IRQ during test
  * @config_tinfoil_new_line: char for new line '\n'
- * @config_tinfoil_override: magic cmdline value to bypass test
  * @config_tinfoil_version: logic version to use likely 1
  * @config_tinfoil_reserved: future use
  * @config_tinfoil_unused: future use
- * @config_bug_on_fail: BUG(); if errors occur
  */
 int __gs_tfsb_go(const char *config_tinfoil_cf,
 		 const char *config_tinfoil_cfs,
@@ -151,10 +149,8 @@ int __gs_tfsb_go(const char *config_tinfoil_cf,
 		 const char *config_tinfoil_idtype,
 		 spinlock_t *gs_irq_killer,
 		 char config_tinfoil_new_line,
-		 const char *config_tinfoil_override,
 		 int config_tinfoil_version,
-		 const char *config_tinfoil_reserved,
-		 const void *config_tinfoil_unused,
-		 int config_bug_on_fail);
+		 const void *config_tinfoil_reserved,
+		 const void *config_tinfoil_unused);
 
 #endif
