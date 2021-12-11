@@ -1357,6 +1357,13 @@ static inline int security_locked_down(enum lockdown_reason what)
 {
 	return 0;
 }
+
+static inline int security_pre_init_kexecve(const char *init_program,
+					    const char **args_i,
+					    const char **envs_i)
+{
+	return 0;
+}
 #endif	/* CONFIG_SECURITY */
 
 #if defined(CONFIG_SECURITY) && defined(CONFIG_WATCH_QUEUE)
@@ -1958,13 +1965,6 @@ static inline struct dentry *securityfs_create_symlink(const char *name,
 
 static inline void securityfs_remove(struct dentry *dentry)
 {}
-
-static inline int security_pre_init_kexecve(const char *init_program,
-					    const char **args_i,
-					    const char **envs_i)
-{
-	return 0;
-}
 
 #endif
 
