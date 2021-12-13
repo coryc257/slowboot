@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
- * GS Tinfoil Pre Init Integrity Check
+ * GlowSlayer Tinfoil Pre Init Integrity Check
  * Copyright (C) 2021 Cory Craig
  */
 #include <linux/init.h>

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
- * GS Slowboot PostInit Integrity Check
+ * GlowSlayer Slowboot PostInit Integrity Check
  * Copyright (C) 2021 Cory Craig
  */
 #include <linux/init.h>

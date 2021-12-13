@@ -4,6 +4,7 @@
 
 #include <linux/random.h>
 /*
+ * GlowSlayer
  * Tamper Resistant "Paranoid Bit"
  */
 

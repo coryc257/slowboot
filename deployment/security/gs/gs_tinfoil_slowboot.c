@@ -796,62 +796,6 @@ out:
 }
 
 /*
- * Check for /proc/cmdlin override
- */
-/*
-static int slowboot_enabled(const char *XCFG_TINFOIL_OVERRIDE)
-{
-	struct file *fp;
-	size_t file_size;
-	char *buf;
-	loff_t pos;
-	struct pbit pc;
-
-	fp = NULL;
-	file_size = 0;
-	buf = NULL;
-	pos = 0;
-
-	PBIT_N(pc, 0);
-
-	fp = filp_open("/proc/cmdline", O_RDONLY, 0);
-	if (IS_ERR(fp)) {
-		fp = NULL;
-		PBIT_N(pc, (int)(long)fp);
-		goto out;
-	}
-
-	file_size = PAGE_SIZE;
-	buf = __gs_read_file_to_memory(fp, file_size, &pos, 1);
-
-	if (!buf) {
-		PBIT_N(pc, -ENOMEM);
-		goto out;
-	}
-
-	if (__gs_memmem_sp(buf, file_size,
-			   XCFG_TINFOIL_OVERRIDE,
-			   strlen(XCFG_TINFOIL_OVERRIDE)) == 0)
-		PBIT_Y(pc, 0);
-
-out:
-	if (fp != NULL)
-		filp_close(fp, NULL);
-	if (buf != NULL)
-		vfree(buf);
-
-	if (!PBIT_FAIL(pc) || PBIT_GET(pc) != 0)
-		GLOW(PBIT_GET(pc), __func__, "~???");
-
-	if (PBIT_OK(pc) && PBIT_GET(pc) == 0)
-		return 0;
-	else
-		return 1;
-
-}
-*/
-
-/*
  * Run validation test
  * @tinfoil: slowboot tinfoil struct
  */
@@ -1121,11 +1065,6 @@ int __gs_tfsb_go(const char *config_tinfoil_cf,
 {
 	struct slowboot_tinfoil *tinfoil;
 	struct pbit pc;
-
-	/*if (!slowboot_enabled(config_tinfoil_override)) {
-		pr_err("GS TFSB: disabled\n");
-		return 0;
-	}*/
 
 	PBIT_N(pc, -EINVAL);
 	pr_info("GS TFSB START\n");

@@ -2,9 +2,9 @@
 #include <linux/gs_pbit.h>
 
 /*
+ * GlowSlayer Paranoid Bit Container
  * Copyright Cory Craig <gs.cory.craig@gmail.com> 2021
  *
- * 'Paranoid Bit'
  *
  * The pbit data type should provide a mitigation for rowhammer as well
  * as other situations where the processor/memory cannot be trusted completely

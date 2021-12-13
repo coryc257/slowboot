@@ -5,12 +5,11 @@ module/kernel developers can easily add integrity checks to their code that will
 survive pretty much any decisions made by developers of a distribution or
 device.
 
-GlowSlayer also defines a Pre-Init hook dubbed Tinfoil. Tinfoil will be called
+GlowSlayer also defines a new LSM hook pre_init_kexecve. Tinfoil will be called
 immediately before the kernel transitions to the desired init program. It will
-optionaly bug the kernel but that is not the default behavior. Users are given
-the freedom to chose that when they compile the kernel. When accidentally
-disregarding the error messages could prove fatal if the LUKS password was
-divulged a BUG(); could save a life.
+fail the call to init if it detects failure. This will prevent zero days from
+being able to alter files in the initramfs that might allow compromise of
+encryption passwords upon reboot.
 
 The final piece GlowSlayer defines in this initial release is a Slowboot module
 that if the init program is configured to load it does the opposite of
@@ -26,12 +25,9 @@ be considered "Explicit Access Control". That fact is why it should be included
 in the base kernel tree since it performs a similar function to dm-verity or
 integrity but it does so in a manner with a radically different approach. The
 goal is to allow the user to remove administration of the computer from the
-running system. This is an attempt to mitigate 0-day vulnerabilities that might
-attempt to poison files where root access or physical access allows such a thing
-to work. This will be ideally accompanied by an enhanced version of GRUB I have
-yet to start that will replace the need for a TPM. Security hardware is
-inherrently flawed so relying on it for the only assertion of trusted boot is
-faulty.
+running system. It is also done in a manner that is easy for the end user to
+configure where the other methods typically require much greated administration
+thought.
 
 GlowSlayer also includes a special container struct that can hold a value.
 It should be resistant to a rowhammer attack or accidental destruction of the

@@ -1,6 +1,9 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 #ifndef _X_GS_TINFOIL_SLOWBOOT_H
 #define _X_GS_TINFOIL_SLOWBOOT_H
+/*
+ * GlowSlayer General Functionality
+ */
 
 #include <linux/init.h>
 #include <linux/kernel.h>
