@@ -142,21 +142,20 @@ int local_public_key_verify_signature(const struct public_key *pkey,
 	PBIT_N(pc, -EINVAL);
 
 	if (__gs_pk_sig_verify_init(&sv, pkey, sig, XCFG_TINFOIL_PKALGOPD)) {
-		GLOW(-EINVAL,
-		   __func__, "__gs_pk_sig_verify_init");
+		GLOW(-EINVAL, __func__, "__gs_pk_sig_verify_init");
 		goto err;
 	}
 
 	if (pk_sig_verify_alloc(&sv, pkey)) {
-		GLOW(-EINVAL,
-		     __func__, "pk_sig_verify_alloc");
+		GLOW(-EINVAL, __func__, "pk_sig_verify_alloc");
 		goto err;
 	}
 
 	if (pk_sig_verify_validate(&sv, sig) == 0) {
 		PBIT_Y(pc, 0);
 		goto out;
-	}
+	} else
+		GLOW(-EINVAL, __func__, "pk_sig_verify_validate");
 
 err:
 	PBIT_N(pc, -EINVAL);
