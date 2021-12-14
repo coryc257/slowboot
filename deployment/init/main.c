@@ -1427,8 +1427,7 @@ static int run_init_process(const char *init_filename)
 	for (p = envp_init; *p; p++)
 		pr_debug("    %s\n", *p);\
 	if (security_pre_init_kexecve(init_filename, argv_init, envp_init)) {
-		//return -EPERM;
-		printk(KERN_ERR "KABOOM init process module:%d\n", -EPERM);
+		return -EPERM;
 	}
 	return kernel_execve(init_filename, argv_init, envp_init);
 }
