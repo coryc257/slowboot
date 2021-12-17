@@ -1059,6 +1059,7 @@ int __gs_tfsb_go(const char *config_tinfoil_cf,
 		 spinlock_t *gs_irq_killer,
 		 char config_tinfoil_new_line,
 		 int config_tinfoil_version,
+		 const char *config_tinfoil_override,
 		 const void *config_tinfoil_reserved,
 		 const void *config_tinfoil_unused)
 {

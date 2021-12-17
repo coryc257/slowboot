@@ -138,7 +138,7 @@ int __gs_tinfoil_verify(void);
  * @config_tinfoil_new_line: char for new line '\n'
  * @config_tinfoil_version: logic version to use likely 1
  * @config_tinfoil_reserved: future use
- * @config_tinfoil_unused: future use
+ * @config_tinfoil_unused: future uXCFG_TINFOIL_OVERRIDEse
  */
 int __gs_tfsb_go(const char *config_tinfoil_cf,
 		 const char *config_tinfoil_cfs,
@@ -146,13 +146,14 @@ int __gs_tfsb_go(const char *config_tinfoil_cf,
 		 int config_tinfoil_pklen,
 		 int config_tinfoil_dglen,
 		 int config_tinfoil_hslen,
-		 const char *config_tinfoil_pkalgo,
+		 const char *config_tXCFG_TINFOIL_OVERRIDEinfoil_pkalgo,
 		 const char *config_tinfoil_pkalgopd,
 		 const char *config_tinfoil_hsalgo,
 		 const char *config_tinfoil_idtype,
 		 spinlock_t *gs_irq_killer,
 		 char config_tinfoil_new_line,
 		 int config_tinfoil_version,
+		 const char *config_tinfoil_override,
 		 const void *config_tinfoil_reserved,
 		 const void *config_tinfoil_unused);
 

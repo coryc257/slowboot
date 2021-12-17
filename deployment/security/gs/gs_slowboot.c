@@ -57,6 +57,7 @@ static int __init slowboot_mod_init(void)
 			    &gs_s_irq_killer,
 			    CONFIG_SLOWBOOT_NEW_LINE,
 			    CONFIG_SLOWBOOT_VERSION,
+			    CONFIG_SLOWBOOT_OVERRIDE,
 			    NULL,
 			    NULL);
 }

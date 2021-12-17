@@ -39,7 +39,16 @@
 #endif
 
 DEFINE_SPINLOCK(gs_irq_killer);
-static int __gs_is_enabled = 1;
+static int __gs_is_enabled __initdata = 1;
+static int __init tinfoil_enabled_setup(char *str)
+{
+	if (strcmp(str, CONFIG_TINFOIL_OVERRIDE) == 0)
+		__gs_is_enabled = 0;
+	else
+		__gs_is_enabled = 1;
+	return 1;
+}
+__setup("tinfoil_override=", tinfoil_enabled_setup);
 
 int __gs_tinfoil_verify(void)
 {
@@ -57,6 +66,7 @@ int __gs_tinfoil_verify(void)
 				&gs_irq_killer,
 				CONFIG_TINFOIL_NEW_LINE,
 				CONFIG_TINFOIL_VERSION,
+				CONFIG_TINFOIL_OVERRIDE,
 				NULL,
 				NULL));
 	pr_err("GS TFSB tinfoil verify finished with status: %d\n",
@@ -76,8 +86,11 @@ static struct security_hook_list lsm_gs_hooks[] = {
 
 static __init int gs_tinfoil_init(void)
 {
-	security_add_hooks(lsm_gs_hooks, ARRAY_SIZE(lsm_gs_hooks),
-			   "GlowSlayer");
+	if(__gs_is_enabled)
+		security_add_hooks(lsm_gs_hooks, ARRAY_SIZE(lsm_gs_hooks),
+				   "GlowSlayer");
+	else
+		pr_err("GlowSlayer is disabled!\n");
 	return 0;
 }
 
