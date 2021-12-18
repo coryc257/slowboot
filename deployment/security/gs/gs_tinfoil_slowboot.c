@@ -59,6 +59,11 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
 {
 	struct pbit pc;
 
+	if (sv == NULL || sv->alg_name == NULL) {
+		GLOW(-EINVAL, __func__, "Null Parameters Passed");
+		return -EINVAL;
+	}
+
 	sv->tfm = crypto_alloc_akcipher(sv->alg_name, 0, 0);
 	if (IS_ERR(sv->tfm)) {
 		PBIT_Y(pc, (int)(long)sv->tfm);
@@ -70,6 +75,11 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
 	sv->req = akcipher_request_alloc(sv->tfm, GFP_KERNEL);
 	if (!sv->req) {
 		return -ENOMEM;
+	}
+
+	if (pkey == NULL || pkey->key == NULL || pkey->keylen <= 0) {
+		GLOW(-EINVAL, __func__, "Invalid Public Key Parameters");
+		return -EINVAL;
 	}
 
 	if (crypto_akcipher_set_pub_key(sv->tfm, pkey->key, pkey->keylen)) {
@@ -95,6 +105,11 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
 static int pk_sig_verify_validate(struct sig_verify *sv,
 				  const struct public_key_signature *sig)
 {
+	if (sv == NULL || sig == NULL || sv->req == NULL) {
+		GLOW(-EINVAL, __func__, "Invalid Parameters Passed");
+		return -EINVAL;
+	}
+
 	akcipher_request_set_crypt(sv->req, sv->src_tab, NULL, sig->s_size,
 				   sig->digest_size);
 
@@ -223,6 +238,7 @@ static void tinfoil_close(struct slowboot_validation_item *item)
 
 /*
  * read file into buffer
+ * @tinfoil: slowboot_tinfoil
  * @item: slowboot validation item
  */
 static int tinfoil_read(struct slowboot_tinfoil *tinfoil,
@@ -291,6 +307,8 @@ static int tinfoil_check_init(struct tinfoil_check *c,
 /*
  * Allocate everyting needed to check one item
  * @c: tinfoil check
+ * @XCFG_TINFOIL_HSALGO: hash algorithm
+ * @XCFG_TINFOIL_DGLEN: digest length
  */
 static int tinfoil_check_allocate(struct tinfoil_check *c,
 				  const char *XCFG_TINFOIL_HSALGO,
@@ -327,6 +345,7 @@ static int tinfoil_check_allocate(struct tinfoil_check *c,
 /*
  * Hash and validate the hash
  * @c: tinfoil check
+ * @XCFG_TINFOIL_DGLEN: digest length
  */
 static void tinfoil_check_validate(struct tinfoil_check *c,
 				   int XCFG_TINFOIL_DGLEN)
@@ -366,6 +385,8 @@ static void tinfoil_check_free(struct tinfoil_check *c)
 /*
  * Check a single item for validity
  * @item: slowboot validation item
+ * @XCFG_TINFOIL_HSALGO: hash algorithm
+ * @XCFG_TINFOIL_DGLEN: digest length
  * consumes item->buf
  */
 static void tinfoil_check(struct slowboot_validation_item *item,
@@ -399,7 +420,10 @@ std_return:
  * Validate an item (file against it's hash)
  * The functions will log the failure
  * This must return 0 or 1 because it adds to a failure count
+ * @tinfoil: slowboot_tinfoil
  * @item: slowboot validation item
+ * @XCFG_TINFOIL_HSALGO: hash algorithm
+ * @XCFG_TINFOIL_DGLEN: digest length
  */
 static int tinfoil_unwrap(struct slowboot_tinfoil *tinfoil,
 			  struct slowboot_validation_item *item,
@@ -443,6 +467,8 @@ static int tinfoil_unwrap(struct slowboot_tinfoil *tinfoil,
  * @item: slowboot validation item
  * @line: start of current line
  * @remaining: remaining bytes
+ * @XCFG_TINFOIL_NEW_LINE: new line character in the config file
+ * @XCFG_TINFOIL_HSLEN: hash length in hex encoding (output of sha512sum CLI)
  */
 static loff_t fill_in_item(struct slowboot_validation_item *item,
 			   char *line, loff_t *remaining,
@@ -496,6 +522,11 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 /*
  * initialize slowboot init container items
  * @sic: slowboot init container
+ * @XCFG_TINFOIL_PKALGO: public key algorithm
+ * @XCFG_TINFOIL_IDTYPE: ID TYPE
+ * @XCFG_TINFOIL_DGLEN: digest length
+ * @XCFG_TINFOIL_HSALGO: hash algorithm
+ * @XCFG_TINFOIL_PKLEN: public key length
  */
 static void slowboot_init_setup(struct slowboot_init_container *sic,
 				const char *XCFG_TINFOIL_PKALGO,
@@ -527,8 +558,7 @@ static int slowboot_init_setup_keys(struct slowboot_init_container *sic,
 	if (sic->kernel_key_len <= 0 || config_pkey == NULL)
 		return -EINVAL;
 
-	sic->kernel_key = (unsigned char *)
-			  kmalloc(sic->kernel_key_len+1, GFP_KERNEL);
+	sic->kernel_key = kmalloc(sic->kernel_key_len+1, GFP_KERNEL);
 	if (!sic->kernel_key)
 		return -ENOMEM;
 
@@ -608,6 +638,8 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
 /*
  * Intiatilize and perform hash digest of the config file
  * @sic: slowboot init container
+ * @XCFG_TINFOIL_DGLEN: digest length
+ * @XCFG_TINFOIL_HSALGO: hash algorithm
  */
 static int slowboot_init_digest(struct slowboot_init_container *sic,
 				int XCFG_TINFOIL_DGLEN,
@@ -680,7 +712,9 @@ static void slowboot_init_free(struct slowboot_init_container *sic)
  * parse all the lines, update values to reflect
  * @sic: slowboot init container
  * @item_ref: ** to array of items, set to not null by function on success
- * @item-ct: * to item count, updated by function
+ * @item_ct: * to item count, updated by function
+ * @XCFG_TINFOIL_NEW_LINE: new line character in config file
+ * @XCFG_TINFOIL_HSLEN: hash length in hex (sha512sum CLI)
  */
 static int slowboot_init_process(struct slowboot_init_container *sic,
 				 struct slowboot_validation_item **item_ref,
@@ -732,6 +766,14 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
  * Signature check the config file and initialize all the data
  * The functions called will log the error so no need to store/check
  * @tinfoil: slowboot tinfoil
+ * @XCFG_TINFOIL_PKALGOPD: padding type
+ * @XCFG_TINFOIL_PKALGO: public key algorithm
+ * @XCFG_TINFOIL_IDTYPE: ID TYPE
+ * @XCFG_TINFOIL_DGLEN: digest length
+ * @XCFG_TINFOIL_HSALGO: hash algorithm
+ * @XCFG_TINFOIL_PKLEN: public key length
+ * @XCFG_TINFOIL_NEW_LINE: new line character
+ * @XCFG_TINFOIL_HSLEN: hash length
  */
 static int slowboot_init(struct slowboot_tinfoil *tinfoil,
 			 const char *XCFG_TINFOIL_PKALGOPD,
@@ -797,6 +839,15 @@ out:
 /*
  * Run validation test
  * @tinfoil: slowboot tinfoil struct
+ * @XCFG_TINFOIL_PKALGOPD: padding type
+ * @XCFG_TINFOIL_PKALGO: public key algorithm
+ * @XCFG_TINFOIL_IDTYPE: ID TYPE
+ * @XCFG_TINFOIL_DGLEN: digest length
+ * @XCFG_TINFOIL_HSALGO: hash algorithm
+ * @XCFG_TINFOIL_PKLEN: public key length
+ * @XCFG_TINFOIL_NEW_LINE: new line character
+ * @XCFG_TINFOIL_HSLEN: hash length
+ * @gs_irq_killer: spinlock to block IRQ with
  */
 static void slowboot_run_test(struct slowboot_tinfoil *tinfoil,
 			      const char *XCFG_TINFOIL_PKALGOPD,
@@ -862,6 +913,9 @@ out:
 /*
  * Initialize data for verification process
  * @tinfoil: slowboot tinfoil struct
+ * @XCFG_TINFOIL_CF: path to config file
+ * @XCFG_TINFOIL_CFS: path to signature config file
+ * @XCFG_TINFOIL_PK: hex encoded public key
  */
 static int slowboot_tinfoil_init(struct slowboot_tinfoil *tinfoil,
 				 const char *XCFG_TINFOIL_CF,
@@ -925,6 +979,7 @@ out:
  * @fp: file structure
  * @file_size: stated size of file
  * @pos: position offset return value
+ * @ignore_size: don't fail if the size of the file doesn't match
  */
 char *__gs_read_file_to_memory(struct file *fp,
 			       size_t file_size,

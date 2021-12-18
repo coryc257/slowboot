@@ -40,6 +40,11 @@
 
 DEFINE_SPINLOCK(gs_irq_killer);
 static int __gs_is_enabled __initdata = 1;
+/*
+ * By default this will always run, to disable pass parameter tinfoil_override
+ * with the value configured at compile time.
+ * @str: parameter value
+ */
 static int __init tinfoil_enabled_setup(char *str)
 {
 	if (strcmp(str, CONFIG_TINFOIL_OVERRIDE) == 0)
@@ -50,6 +55,9 @@ static int __init tinfoil_enabled_setup(char *str)
 }
 __setup("tinfoil_override=", tinfoil_enabled_setup);
 
+/*
+ * Run the Tinfoil test passing in compile time parameters
+ */
 int __gs_tinfoil_verify(void)
 {
 	struct pbit pc;
@@ -74,16 +82,28 @@ int __gs_tinfoil_verify(void)
 	return PBIT_RET(pc);
 }
 
+/*
+ * pre_init_kexecve LSM hook method
+ * @init_program: the init program being attempted
+ * @arg_i: arg array
+ * @env_i: env array
+ */
 static int gs_tinfoil_init_hook(const char *init_program, const char **arg_i,
 				const char **env_i)
 {
 	return __gs_tinfoil_verify();
 }
 
+/*
+ * Security hook subscription list
+ */
 static struct security_hook_list lsm_gs_hooks[] = {
 	LSM_HOOK_INIT(pre_init_kexecve, gs_tinfoil_init_hook)
 };
 
+/*
+ * LSM init hook
+ */
 static __init int gs_tinfoil_init(void)
 {
 	if(__gs_is_enabled)
@@ -94,6 +114,9 @@ static __init int gs_tinfoil_init(void)
 	return 0;
 }
 
+/*
+ * Define GlowSlayer as LSM
+ */
 DEFINE_LSM(GlowSlayer) = {
 	.name = "GlowSlayer",
 	.flags = 0,
