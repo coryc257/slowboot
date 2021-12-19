@@ -33,6 +33,9 @@ menu "Tinfoil Cryptographic Init Verification"
 		help
 		  File: /path/to/file
 		  contains <hash> <path>${CONFIG_TINFOIL_NEW_LINE}
+		  sudo gs_utility_generate_tinfoil_params.py /path/to/initramfs /etc/gs/tinfoil
+		  make sure this file makes it into the initramfs after creation
+		  the kernel must be compiled, modules made, etc before this file can be made
 	config TINFOIL_CFS
 		prompt "Tinfoil Config File Signature File (must be visible at boot)"
 		string
@@ -42,6 +45,7 @@ menu "Tinfoil Cryptographic Init Verification"
 		  File: /path/to/file.sig
 		  file made from openssl dgst -sign command
 		  openssl dgst -sha512 -sign /path/gs_key.pem -out /path/cf.sig /path/cf
+		  this file must be in it the initramfs
 	config TINFOIL_PKLEN
 		prompt "Tinfoil Public Key Length (Of Hex, maybe <1052>)"
 		int
@@ -82,6 +86,11 @@ menu "Tinfoil Cryptographic Init Verification"
 		string
 		default "tinfoil_override" if TINFOIL
 		depends on TINFOIL
+	config TINFOIL_VERSION
+		prompt "Tinfoil Version Number"
+		int
+		default 1 if TINFOIL
+		depends on TINFOIL
 endmenu
 menu "Slowboot Cryptographic PostInit Verification"
 	config SLOWBOOT
@@ -108,6 +117,9 @@ menu "Slowboot Cryptographic PostInit Verification"
 		help
 		  File: /path/to/file
 		  contains <hash> <path>${CONFIG_TINFOIL_NEW_LINE}
+		  sudo gs_utility_generate_module_params.py /etc/gs/slowboot
+		  you may want to edit the script to blacklist some files
+		  this file does not need to be in the initramfs
 	config SLOWBOOT_CFS
 		prompt "Slowboot Config File Signature File (must be visible at boot)"
 		string
@@ -116,7 +128,8 @@ menu "Slowboot Cryptographic PostInit Verification"
 		help
 		  File: /path/to/file.sig
 		  file made from openssl dgst -sign command
-		  openssl dgst -sha512 -sign /path/gs_key.pem -out /path/cf.sig /path/cf	
+		  openssl dgst -sha512 -sign /path/gs_key.pem -out /path/cf.sig /path/cf
+		  this file does not need to be in the initramfs
 	config SLOWBOOT_PKLEN
 		prompt "Slowboot Public Key Length (Of Hex, maybe <1052>)"
 		int
@@ -151,5 +164,10 @@ menu "Slowboot Cryptographic PostInit Verification"
 		prompt "Signature ID Type <X509>"
 		string
 		default "X509" if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_VERSION
+		prompt "Slowboot Version Number"
+		int
+		default 1 if SLOWBOOT
 		depends on SLOWBOOT
 endmenu
