@@ -203,5 +203,8 @@ int __gs_tfsb_go(const char *config_tinfoil_cf,
  *
  * You should be able to infer what to put into the menuconfig/.config file for
  * the kernel. Don't surround strings with "" obviously
+ * Don't forget to add GlowSlayer to the list of LSM modules
+ * You can disable the check by passing tinfoil_override=${CONFIG_TINFOIL_OVERRIDE}
+ * to the kernel boot params
  */
 #endif
