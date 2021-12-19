@@ -14,21 +14,34 @@ menu "Tinfoil Cryptographic Init Verification"
 		bool
 		default n
 		depends on GS_BASE
-	config TINFOIL_CF
-		prompt "Tinfoil Config File(must be visible at boot)"
-		string
-		default "/etc/gs/tinfoil" if TINFOIL
-		depends on TINFOIL
-	config TINFOIL_CFS
-		prompt "Tinfoil Config File Signature File (must be visible at boot)"
-		string
-		default "/etc/gs/tinfoil.sig" if TINFOIL
-		depends on TINFOIL
 	config TINFOIL_PK
 		prompt "Tinfoil Public Key (Hex String Literal)"
 		string
 		default "" if TINFOIL
 		depends on TINFOIL
+		help
+		  hex encoded public key
+		  openssl genrsa -aes256 -out gs_key.pem 4096
+		  openssl rsa -in gs_key.pem -pubout -out gs_pub.pem
+		  openssl asn1parse -inform PEM -in gs_pub.pem -strparse 19 -out gs_kernel.key
+		  xxd -c 99999999 -p gs_kernel.key
+	config TINFOIL_CF
+		prompt "Tinfoil Config File(must be visible at boot)"
+		string
+		default "/etc/gs/tinfoil" if TINFOIL
+		depends on TINFOIL
+		help
+		  File: /path/to/file
+		  contains <hash> <path>${CONFIG_TINFOIL_NEW_LINE}
+	config TINFOIL_CFS
+		prompt "Tinfoil Config File Signature File (must be visible at boot)"
+		string
+		default "/etc/gs/tinfoil.sig" if TINFOIL
+		depends on TINFOIL
+		help
+		  File: /path/to/file.sig
+		  file made from openssl dgst -sign command
+		  openssl dgst -sha512 -sign /path/gs_key.pem -out /path/cf.sig /path/cf
 	config TINFOIL_PKLEN
 		prompt "Tinfoil Public Key Length (Of Hex, maybe <1052>)"
 		int
@@ -76,21 +89,34 @@ menu "Slowboot Cryptographic PostInit Verification"
 		bool
 		default n
 		depends on GS_BASE
-	config SLOWBOOT_CF
-		prompt "Slowboot Config File(must be visible at boot)"
-		string
-		default "/etc/gs/slowboot" if SLOWBOOT
-		depends on SLOWBOOT
-	config SLOWBOOT_CFS
-		prompt "Slowboot Config File Signature File (must be visible at boot)"
-		string
-		default "/etc/gs/slowboot.sig" if SLOWBOOT
-		depends on SLOWBOOT
 	config SLOWBOOT_PK
 		prompt "Slowboot Public Key (Hex String Literal)"
 		string
 		default "" if SLOWBOOT
 		depends on SLOWBOOT
+		help
+		  hex encoded public key
+		  openssl genrsa -aes256 -out gs_key.pem 4096
+		  openssl rsa -in gs_key.pem -pubout -out gs_pub.pem
+		  openssl asn1parse -inform PEM -in gs_pub.pem -strparse 19 -out gs_kernel.key
+		  xxd -c 99999999 -p gs_kernel.key
+	config SLOWBOOT_CF
+		prompt "Slowboot Config File(must be visible at boot)"
+		string
+		default "/etc/gs/slowboot" if SLOWBOOT
+		depends on SLOWBOOT
+		help
+		  File: /path/to/file
+		  contains <hash> <path>${CONFIG_TINFOIL_NEW_LINE}
+	config SLOWBOOT_CFS
+		prompt "Slowboot Config File Signature File (must be visible at boot)"
+		string
+		default "/etc/gs/slowboot.sig" if SLOWBOOT
+		depends on SLOWBOOT
+		help
+		  File: /path/to/file.sig
+		  file made from openssl dgst -sign command
+		  openssl dgst -sha512 -sign /path/gs_key.pem -out /path/cf.sig /path/cf	
 	config SLOWBOOT_PKLEN
 		prompt "Slowboot Public Key Length (Of Hex, maybe <1052>)"
 		int
@@ -125,10 +151,5 @@ menu "Slowboot Cryptographic PostInit Verification"
 		prompt "Signature ID Type <X509>"
 		string
 		default "X509" if SLOWBOOT
-		depends on SLOWBOOT
-	config SLOWBOOT_OVERRIDE
-		prompt "Bypass cmdline parameter"
-		string
-		default "slowboot_override" if SLOWBOOT
 		depends on SLOWBOOT
 endmenu

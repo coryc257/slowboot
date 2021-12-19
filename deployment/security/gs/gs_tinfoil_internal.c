@@ -74,7 +74,6 @@ int __gs_tinfoil_verify(void)
 				&gs_irq_killer,
 				CONFIG_TINFOIL_NEW_LINE,
 				CONFIG_TINFOIL_VERSION,
-				CONFIG_TINFOIL_OVERRIDE,
 				NULL,
 				NULL));
 	pr_err("GS TFSB tinfoil verify finished with status: %d\n",

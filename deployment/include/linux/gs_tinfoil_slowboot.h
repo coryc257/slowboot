@@ -122,6 +122,7 @@ int __gs_pk_sig_verify_init(struct sig_verify *sv,
 			    const struct public_key_signature *sig,
 			    const char *pkalgopd);
 int __gs_tinfoil_verify(void);
+
 /*
  * Perform entire test
  * @config_tinfoil_cf: path for the configuration file
@@ -134,7 +135,7 @@ int __gs_tinfoil_verify(void);
  * @tinfoil_pkalgopd: algorithm padding, likely "pkcs1pad(rsa,sha512)" can be ""
  * @tinfoil_hsalgo: digest used, likely "sha512"
  * @config_tinfoil_idtype: public_key.id_type likely "X509"
- * @gs_irq_killer: Nullable spinlock_t to block IRQ during test
+ * @gs_irq_killer: spinlock_t to block IRQ during test
  * @config_tinfoil_new_line: char for new line '\n'
  * @config_tinfoil_version: logic version to use likely 1
  * @config_tinfoil_reserved: future use
@@ -146,15 +147,61 @@ int __gs_tfsb_go(const char *config_tinfoil_cf,
 		 int config_tinfoil_pklen,
 		 int config_tinfoil_dglen,
 		 int config_tinfoil_hslen,
-		 const char *config_tXCFG_TINFOIL_OVERRIDEinfoil_pkalgo,
+		 const char *config_tinfoil_pkalgo,
 		 const char *config_tinfoil_pkalgopd,
 		 const char *config_tinfoil_hsalgo,
 		 const char *config_tinfoil_idtype,
 		 spinlock_t *gs_irq_killer,
 		 char config_tinfoil_new_line,
 		 int config_tinfoil_version,
-		 const char *config_tinfoil_override,
 		 const void *config_tinfoil_reserved,
 		 const void *config_tinfoil_unused);
 
+/*
+ * In Depth Documentation of Parameters and Setup
+ * This assumes rsa, X509, sha512, pkcs1pad
+ *
+ * First we need a key pair:
+ *
+ * DO: openssl genrsa -aes256 -out gs_key.pem 4096
+ * ~this makes the private key\
+ *
+ * DO: openssl rsa -in gs_key.pem -pubout -out gs_pub.pem
+ * ~this makes the public key
+ *
+ * DO: openssl asn1parse -inform PEM -in gs_pub.pem -strparse 19 -out gs_kernel.key
+ * ~this makes a key in the format the kernel api can use
+ *
+ * Now we need to generate a config file. The config file will contain:
+ * <hex encoded hash> <path to file>${config_tinfoil_new_line}
+ * ...
+ * ~this is the output of this program: sha512sum <file> for each file
+ * ~gs_utility_generate_tinfoil_params.py
+ * ~gs_utility_generate_modules_params.py
+ * ~this file will be referred to as /path/cf
+ *
+ * Once you have the file you need to sign the file
+ * DO: openssl dgst -sha512 -sign /path/gs_key.pem -out /path/cf.sig /path/cf
+ * (...) means the output of a command
+ * [...] means use your intelligence to understand what I am saying
+ *
+ * @config_tinfoil_cf := "/path/cf"
+ * @config_tinfoil_cfs := "/path/cf.sig"
+ * @config_tinfoil_pk := "(xxd -c 99999999 -p gs_kernel.key)"
+ * @config_tinfoil_pklen := [how many characters is the above key? likely 1052]
+ * @config_tinfoil_dglen := [how many characters is your hash digest? 64 for sha512]
+ * @config_tinfoil_hslen := [how many characters is in the hex output of your hashing program? sha512sum is 128]
+ * @config_tinfoil_pkalgo := "rsa" or something else?
+ * @config_tinfoil_pkalgopd := "pkcs1pad(rsa,sha512)"
+ * @config_tinfoil_hsalgo := "sha512"
+ * @config_tinfoil_idtype := "X509" or something else?
+ * @gs_irq_killer := [just a pointer to a defined spinlock_t]
+ * @config_tinfoil_newline := '\n' or something else?
+ * @config_tinfoil_version := [1 unless you are targeting a different version that uses different logic]
+ * @config_tinfoil_reserved := NULL
+ * @config_tinfoil_unused := NULL
+ *
+ * You should be able to infer what to put into the menuconfig/.config file for
+ * the kernel. Don't surround strings with "" obviously
+ */
 #endif

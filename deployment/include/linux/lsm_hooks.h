@@ -1575,8 +1575,7 @@
  *
  * Security hooks for init
  * @init_pre_kexecve:
- *      Check whether the current init program should be allowed to run
- *
+ *      Check whether the current init program should be allowed to run*
  *      @init_program: path of the init program
  *      @args: arguments
  *      @envs: environments
