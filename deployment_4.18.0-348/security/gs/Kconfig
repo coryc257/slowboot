@@ -1,0 +1,173 @@
+# SPDX-License-Identifier: GPL-2.0-only
+config GS_BASE
+	prompt "GlowSlayer Base Code"
+	bool
+	default n
+	help
+	  This enables GS Security Enhancements for cryptographic checks of files
+	  at times when the check is useful to create a form of explicit access
+	  control. Tinfoil is Pre-Init. Slowboot is Post-Init and controlled by
+	  the init process
+menu "Tinfoil Cryptographic Init Verification"
+	config TINFOIL
+		prompt "Enable Tinfoil Init Verification"
+		bool
+		default n
+		depends on GS_BASE
+	config TINFOIL_PK
+		prompt "Tinfoil Public Key (Hex String Literal)"
+		string
+		default "" if TINFOIL
+		depends on TINFOIL
+		help
+		  hex encoded public key
+		  openssl genrsa -aes256 -out gs_key.pem 4096
+		  openssl rsa -in gs_key.pem -pubout -out gs_pub.pem
+		  openssl asn1parse -inform PEM -in gs_pub.pem -strparse 19 -out gs_kernel.key
+		  xxd -c 99999999 -p gs_kernel.key
+	config TINFOIL_CF
+		prompt "Tinfoil Config File(must be visible at boot)"
+		string
+		default "/etc/gs/tinfoil" if TINFOIL
+		depends on TINFOIL
+		help
+		  File: /path/to/file
+		  contains <hash> <path>${CONFIG_TINFOIL_NEW_LINE}
+		  sudo gs_utility_generate_tinfoil_params.py /path/to/initramfs /etc/gs/tinfoil
+		  make sure this file makes it into the initramfs after creation
+		  the kernel must be compiled, modules made, etc before this file can be made
+	config TINFOIL_CFS
+		prompt "Tinfoil Config File Signature File (must be visible at boot)"
+		string
+		default "/etc/gs/tinfoil.sig" if TINFOIL
+		depends on TINFOIL
+		help
+		  File: /path/to/file.sig
+		  file made from openssl dgst -sign command
+		  openssl dgst -sha512 -sign /path/gs_key.pem -out /path/cf.sig /path/cf
+		  this file must be in it the initramfs
+	config TINFOIL_PKLEN
+		prompt "Tinfoil Public Key Length (Of Hex, maybe <1052>)"
+		int
+		default 1052 if TINFOIL
+		depends on TINFOIL
+	config TINFOIL_DGLEN
+		prompt "Digest Length for validation (sha512 is <64>)"
+		int
+		default 64 if TINFOIL
+		depends on TINFOIL
+	config TINFOIL_HSLEN
+		prompt "Digest Has Length in Hex (sha512 is <128>)"
+		int
+		default 128 if TINFOIL
+		depends on TINFOIL
+	config TINFOIL_PKALGO
+		prompt "Algorithm used for verification <rsa>"
+		string
+		default "rsa" if TINFOIL
+		depends on TINFOIL
+	config TINFOIL_PKALGOPD
+		prompt "Algorithm with padding <pkcs1pad(rsa,sha512)>"
+		string
+		default "pkcs1pad(rsa,sha512)" if TINFOIL
+		depends on TINFOIL
+	config TINFOIL_HSALGO
+		prompt "Hash Algorithm <sha512>"
+		string
+		default "sha512" if TINFOIL
+		depends on TINFOIL
+	config TINFOIL_IDTYPE
+		prompt "Signature ID Type <X509>"
+		string
+		default "X509" if TINFOIL
+		depends on TINFOIL
+	config TINFOIL_OVERRIDE
+		prompt "Bypass cmdline parameter"
+		string
+		default "tinfoil_override" if TINFOIL
+		depends on TINFOIL
+	config TINFOIL_VERSION
+		prompt "Tinfoil Version Number"
+		int
+		default 1 if TINFOIL
+		depends on TINFOIL
+endmenu
+menu "Slowboot Cryptographic PostInit Verification"
+	config SLOWBOOT
+		prompt "Enable Slowboot PostInit Verification"
+		bool
+		default n
+		depends on GS_BASE
+	config SLOWBOOT_PK
+		prompt "Slowboot Public Key (Hex String Literal)"
+		string
+		default "" if SLOWBOOT
+		depends on SLOWBOOT
+		help
+		  hex encoded public key
+		  openssl genrsa -aes256 -out gs_key.pem 4096
+		  openssl rsa -in gs_key.pem -pubout -out gs_pub.pem
+		  openssl asn1parse -inform PEM -in gs_pub.pem -strparse 19 -out gs_kernel.key
+		  xxd -c 99999999 -p gs_kernel.key
+	config SLOWBOOT_CF
+		prompt "Slowboot Config File(must be visible at boot)"
+		string
+		default "/etc/gs/slowboot" if SLOWBOOT
+		depends on SLOWBOOT
+		help
+		  File: /path/to/file
+		  contains <hash> <path>${CONFIG_TINFOIL_NEW_LINE}
+		  sudo gs_utility_generate_module_params.py /etc/gs/slowboot
+		  you may want to edit the script to blacklist some files
+		  this file does not need to be in the initramfs
+	config SLOWBOOT_CFS
+		prompt "Slowboot Config File Signature File (must be visible at boot)"
+		string
+		default "/etc/gs/slowboot.sig" if SLOWBOOT
+		depends on SLOWBOOT
+		help
+		  File: /path/to/file.sig
+		  file made from openssl dgst -sign command
+		  openssl dgst -sha512 -sign /path/gs_key.pem -out /path/cf.sig /path/cf
+		  this file does not need to be in the initramfs
+	config SLOWBOOT_PKLEN
+		prompt "Slowboot Public Key Length (Of Hex, maybe <1052>)"
+		int
+		default 1052 if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_DGLEN
+		prompt "Digest Length for validation (sha512 is <64>)"
+		int
+		default 64 if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_HSLEN
+		prompt "Digest Has Length in Hex (sha512 is <128>)"
+		int
+		default 128 if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_PKALGO
+		prompt "Algorithm used for verification <rsa>"
+		string
+		default "rsa" if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_PKALGOPD
+		prompt "Algorithm with padding <pkcs1pad(rsa,sha512)>"
+		string
+		default "pkcs1pad(rsa,sha512)" if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_HSALGO
+		prompt "Hash Algorithm <sha512>"
+		string
+		default "sha512" if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_IDTYPE
+		prompt "Signature ID Type <X509>"
+		string
+		default "X509" if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_VERSION
+		prompt "Slowboot Version Number"
+		int
+		default 1 if SLOWBOOT
+		depends on SLOWBOOT
+endmenu
