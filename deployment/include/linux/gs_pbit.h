@@ -29,6 +29,7 @@ struct pbit {
 void pbit_check_no(struct pbit *pc, int ev);
 void pbit_check_setup(struct pbit *pc, int ev);
 void pbit_check_yes(struct pbit *pc, int ev, const int *rv);
+void pbit_check_recover(struct pbit *pc);
 int pbit_check(struct pbit *pc);
 int pbit_infer(struct pbit *pc);
 
@@ -63,11 +64,14 @@ static void __always_inline pbit_y(struct pbit *pc, int x)
 	get_random_bytes(&__PBIT_RV_VAL, sizeof(int));
 	pbit_check_yes(pc, x, &__PBIT_RV_VAL);
 }
-#define PBIT_Y(pc, x) do {\
-	int __PBIT_RV_VAL;\
-	get_random_bytes(&__PBIT_RV_VAL, sizeof(int));\
-	pbit_check_yes(&(pc), (x), &__PBIT_RV_VAL);\
-} while (0)
-#define PBIT_N(pc, x) pbit_check_no(&(pc), (x))
-#define PBIT_RECOVER(pc) pbit_check_recover(&(pc))
+
+static void __always_inline pbit_n(struct pbit *pc, int x)
+{
+	pbit_check_no(pc, x);
+}
+
+static void __always_inline pbit_recover(struct pbit *pc)
+{
+	pbit_check_recover(pc);
+}
 #endif
