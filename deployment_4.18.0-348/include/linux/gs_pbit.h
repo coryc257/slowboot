@@ -29,19 +29,49 @@ struct pbit {
 void pbit_check_no(struct pbit *pc, int ev);
 void pbit_check_setup(struct pbit *pc, int ev);
 void pbit_check_yes(struct pbit *pc, int ev, const int *rv);
+void pbit_check_recover(struct pbit *pc);
 int pbit_check(struct pbit *pc);
 int pbit_infer(struct pbit *pc);
 
-#define PBIT_OK(pc) (pbit_check(&(pc)) == PBIT_YES ? 1 : 0)
-#define PBIT_FAIL(pc) (pbit_check(&(pc)) == PBIT_NO ? 1 : 0)
-#define PBIT_DEAD(pc) (pbit_check(&(pc)) == PBIT_ERR ? 1 : 0)
-#define PBIT_GET(pc) (pbit_infer(&(pc)))
-#define PBIT_RET(pc) (pbit_infer(&(pc)))
-#define PBIT_Y(pc, x) do {\
-	int __PBIT_RV_VAL;\
-	get_random_bytes(&__PBIT_RV_VAL, sizeof(int));\
-	pbit_check_yes(&(pc), (x), &__PBIT_RV_VAL);\
-} while (0)
-#define PBIT_N(pc, x) pbit_check_no(&(pc), (x))
-#define PBIT_RECOVER(pc) pbit_check_recover(&(pc))
+static int __always_inline pbit_ok(struct pbit *pc)
+{
+	return (pbit_check(pc) == PBIT_YES ? 1 : 0);
+}
+
+static int __always_inline pbit_fail(struct pbit *pc)
+{
+	return (pbit_check(pc) == PBIT_NO ? 1 : 0);
+}
+
+static int __always_inline pbit_dead(struct pbit *pc)
+{
+	return (pbit_check(pc) == PBIT_ERR ? 1 : 0);
+}
+
+static int __always_inline pbit_get(struct pbit *pc)
+{
+	return pbit_infer(pc);
+}
+
+static int __always_inline pbit_ret(struct pbit *pc)
+{
+	return pbit_infer(pc);
+}
+
+static void __always_inline pbit_y(struct pbit *pc, int x)
+{
+	int __PBIT_RV_VAL;
+	get_random_bytes(&__PBIT_RV_VAL, sizeof(int));
+	pbit_check_yes(pc, x, &__PBIT_RV_VAL);
+}
+
+static void __always_inline pbit_n(struct pbit *pc, int x)
+{
+	pbit_check_no(pc, x);
+}
+
+static void __always_inline pbit_recover(struct pbit *pc)
+{
+	pbit_check_recover(pc);
+}
 #endif

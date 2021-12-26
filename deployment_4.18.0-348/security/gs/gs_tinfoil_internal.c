@@ -77,8 +77,8 @@ int __gs_tinfoil_verify(void)
 				NULL,
 				NULL));
 	pr_err("GS TFSB tinfoil verify finished with status: %d\n",
-		PBIT_GET(pc));
-	return PBIT_RET(pc);
+		pbit_get(&pc));
+	return pbit_ret(&pc);
 }
 
 /*
