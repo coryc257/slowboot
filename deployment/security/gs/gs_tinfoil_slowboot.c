@@ -1039,10 +1039,11 @@ int __gs_memmem_sp(const char *s1, size_t s1_len, const char *s2, size_t s2_len)
 struct sdesc *__gs_init_sdesc(struct crypto_shash *alg)
 {
 	struct sdesc *sdesc;
-	int size;
+	size_t size;
 
 	size = sizeof(struct shash_desc) + crypto_shash_descsize(alg);
 	sdesc = kmalloc(size, GFP_KERNEL);
+	memset(sdesc, 0, size);
 	if (!sdesc)
 		return NULL;
 	sdesc->shash.tfm = alg;

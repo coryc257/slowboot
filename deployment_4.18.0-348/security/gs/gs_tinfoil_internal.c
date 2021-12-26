@@ -61,7 +61,7 @@ __setup("tinfoil_override=", tinfoil_enabled_setup);
 int __gs_tinfoil_verify(void)
 {
 	struct pbit pc;
-	PBIT_Y(pc, __gs_tfsb_go(CONFIG_TINFOIL_CF,
+	pbit_y(pc, __gs_tfsb_go(CONFIG_TINFOIL_CF,
 				CONFIG_TINFOIL_CFS,
 				CONFIG_TINFOIL_PK,
 				CONFIG_TINFOIL_PKLEN,
