@@ -475,7 +475,9 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 			   const char XCFG_TINFOIL_NEW_LINE,
 			   int XCFG_TINFOIL_HSLEN)
 {
-	loff_t pos, off, rem;
+	loff_t pos;
+	loff_t off;
+	loff_t rem;
 
 	if (line == NULL) {
 		if (remaining != NULL)
@@ -986,8 +988,8 @@ char *__gs_read_file_to_memory(struct file *fp,
 			       loff_t *pos,
 			       int ignore_size)
 {
-	char *buf;
 	size_t num_read;
+	char *buf;
 
 	buf = NULL;
 
