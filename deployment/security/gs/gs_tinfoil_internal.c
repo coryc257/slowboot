@@ -39,7 +39,7 @@
 #endif
 
 DEFINE_SPINLOCK(gs_irq_killer);
-static int __gs_is_enabled __initdata = 1;
+static int __gs_is_enabled __initdata = GS_TRUE;
 /*
  * By default this will always run, to disable pass parameter tinfoil_override
  * with the value configured at compile time.
@@ -47,11 +47,11 @@ static int __gs_is_enabled __initdata = 1;
  */
 static int __init tinfoil_enabled_setup(char *str)
 {
-	if (strcmp(str, CONFIG_TINFOIL_OVERRIDE) == 0)
-		__gs_is_enabled = 0;
+	if (strcmp(str, CONFIG_TINFOIL_OVERRIDE) == GS_STRING_MATCH)
+		__gs_is_enabled = GS_FALSE;
 	else
-		__gs_is_enabled = 1;
-	return 1;
+		__gs_is_enabled = GS_TRUE;
+	return GS_TRUE;
 }
 __setup("tinfoil_override=", tinfoil_enabled_setup);
 
@@ -107,18 +107,18 @@ static __init int gs_tinfoil_init(void)
 {
 	if(__gs_is_enabled)
 		security_add_hooks(lsm_gs_hooks, ARRAY_SIZE(lsm_gs_hooks),
-				   "GlowSlayer");
+				GS_LSM_NAME);
 	else
 		pr_err("GlowSlayer is disabled!\n");
-	return 0;
+	return GS_SUCCESS;
 }
 
 /*
  * Define GlowSlayer as LSM
  */
 DEFINE_LSM(GlowSlayer) = {
-	.name = "GlowSlayer",
-	.flags = 0,
+	.name = GS_LSM_NAME,
+	.flags = GS_LSM_FLAGS,
 	.enabled = &__gs_is_enabled,
 	.init = gs_tinfoil_init
 };

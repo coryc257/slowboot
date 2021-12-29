@@ -25,6 +25,8 @@ struct pbit {
 #define PBIT_NO 0x81083C1
 #define PBIT_ERR 0xFFFFFFFF
 #define PBIT_MGK 0xCF0850F1
+#define PBIT_TRUE 1;
+#define PBIT_FALSE 0
 
 void pbit_check_no(struct pbit *pc, int ev);
 void pbit_check_setup(struct pbit *pc, int ev);
@@ -35,17 +37,17 @@ int pbit_infer(struct pbit *pc);
 
 static int __always_inline pbit_ok(struct pbit *pc)
 {
-	return (pbit_check(pc) == PBIT_YES ? 1 : 0);
+	return (pbit_check(pc) == PBIT_YES ? PBIT_TRUE : PBIT_FALSE);
 }
 
 static int __always_inline pbit_fail(struct pbit *pc)
 {
-	return (pbit_check(pc) == PBIT_NO ? 1 : 0);
+	return (pbit_check(pc) == PBIT_NO ? PBIT_TRUE : PBIT_FALSE);
 }
 
 static int __always_inline pbit_dead(struct pbit *pc)
 {
-	return (pbit_check(pc) == PBIT_ERR ? 1 : 0);
+	return (pbit_check(pc) == PBIT_ERR ? PBIT_TRUE : PBIT_FALSE);
 }
 
 static int __always_inline pbit_get(struct pbit *pc)

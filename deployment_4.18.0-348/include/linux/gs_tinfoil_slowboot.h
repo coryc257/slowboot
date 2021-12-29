@@ -31,12 +31,28 @@
 #include <linux/gs_pbit.h>
 
 #define GS_STRING_BASE 4096
+#define GS_STRING_PAD 1
+#define GS_SCATTER_LIST_SIZE 3
+#define GS_TRUE 1
+#define GS_FALSE 0
+#define GS_STRING_MATCH 0
+#define GS_SUCCESS 0
+#define GS_FAIL 1
+#define GS_LSM_FLAGS 0
+#define GS_LSM_NAME "GlowSlayer"
+#define GS_TINFOIL_FAIL 1
+#define GS_TINFOIL_SUCCESS 0
+#define GS_STRING_GUARD 5
+#define GS_KEYLEN_INIT -1
+#define GS_SCATTER_LIST_T_DIGEST 1
+#define GS_SCATTER_LIST_T_SIZE 0
+#define GS_IRRELEVANT 0
 
 /* File Validation item */
 struct slowboot_validation_item {
-	char hash[GS_STRING_BASE+2];
-	u8 b_hash[GS_STRING_BASE+1];
-	char path[PATH_MAX+1];
+	char hash[GS_STRING_BASE+GS_STRING_PAD+GS_STRING_PAD];
+	u8 b_hash[GS_STRING_BASE+GS_STRING_PAD];
+	char path[PATH_MAX+GS_STRING_PAD];
 	struct pbit is_ok;
 	char *buf;
 	size_t buf_len;
@@ -53,7 +69,7 @@ struct slowboot_tinfoil {
 	int slwbt_ct;
 	char config_file[PATH_MAX];
 	char config_file_signature[PATH_MAX];
-	char config_pkey[GS_STRING_BASE+1];
+	char config_pkey[GS_STRING_BASE+GS_STRING_PAD];
 	int error_code;
 	struct pbit error;
 };
@@ -102,7 +118,7 @@ struct sig_verify {
 	struct crypto_wait cwait;
 	struct crypto_akcipher *tfm;
 	struct akcipher_request *req;
-	struct scatterlist src_tab[3];
+	struct scatterlist src_tab[GS_SCATTER_LIST_SIZE];
 	const char *alg_name;
 	void *output;
 	unsigned int outlen;
