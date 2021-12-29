@@ -47,6 +47,9 @@
 #define GS_SCATTER_LIST_T_DIGEST 1
 #define GS_SCATTER_LIST_T_SIZE 0
 #define GS_IRRELEVANT 0
+#define GS_SEEK_TO_END 0
+#define GS_MEMSET_DEFAULT 0
+#define GS_START_OF_FILE 0
 
 /* File Validation item */
 struct slowboot_validation_item {
@@ -124,6 +127,11 @@ struct sig_verify {
 	unsigned int outlen;
 	char alg_name_buf[CRYPTO_MAX_ALG_NAME];
 };
+
+static loff_t __always_inline GS_SEEK_TO_START(loff_t current_position)
+{
+	return current_position * -1;
+}
 
 char *__gs_read_file_to_memory(struct file *fp,
 			       size_t file_size,

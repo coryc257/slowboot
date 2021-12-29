@@ -52,10 +52,14 @@ static void __gs_tinfoil_fail_alert(struct slowboot_tinfoil **tf)
 /*
  * Allocate data for public key signature validation
  * @sv: sig verify container
- * @pk: public key
+ * @pkey: public key
+ * @XCFG_TINFOIL_AK_CIPHER_TYPE: crypto_alloc_akcipher.type
+ * @XCFG_TINFOIL_AK_CIPHER_MASK: crypto_alloc_akcipher.mask
  */
 static int pk_sig_verify_alloc(struct sig_verify *sv,
-			       const struct public_key *pkey)
+			       const struct public_key *pkey,
+			       int XCFG_TINFOIL_AK_CIPHER_TYPE,
+			       int XCFG_TINFOIL_AK_CIPHER_MASK)
 {
 	struct pbit pc;
 
@@ -64,7 +68,9 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
 		return -EINVAL;
 	}
 
-	sv->tfm = crypto_alloc_akcipher(sv->alg_name, 0, 0);
+	sv->tfm = crypto_alloc_akcipher(sv->alg_name,
+					XCFG_TINFOIL_AK_CIPHER_TYPE,
+					XCFG_TINFOIL_AK_CIPHER_MASK);
 	if (IS_ERR(sv->tfm)) {
 		pbit_y(&pc, (int)(long)sv->tfm);
 		sv->tfm = NULL;
@@ -118,7 +124,8 @@ static int pk_sig_verify_validate(struct sig_verify *sv,
 		CRYPTO_TFM_REQ_MAY_BACKLOG|CRYPTO_TFM_REQ_MAY_SLEEP,
 				      crypto_req_done, &sv->cwait);
 
-	return crypto_wait_req(crypto_akcipher_verify(sv->req), &sv->cwait);
+	return (crypto_wait_req(crypto_akcipher_verify(sv->req), &sv->cwait)
+		== 0) ? GS_SUCCESS : GS_FAIL;
 }
 
 /*
@@ -143,10 +150,15 @@ static void pk_sig_verify_free(struct sig_verify *sv)
  * Perform signature verification
  * @pkey: public key struct
  * @sig: public key signature struct
+ * @XCFG_TINFOIL_PKALGOPD: public key algorithm padding
+ * @XCFG_TINFOIL_AK_CIPHER_TYPE: crypto_alloc_akcipher.type
+ * @XCFG_TINFOIL_AK_CIPHER_MASK: crypto_alloc_akcipher.mask
  */
 int local_public_key_verify_signature(const struct public_key *pkey,
 				      const struct public_key_signature *sig,
-				      const char *XCFG_TINFOIL_PKALGOPD)
+				      const char *XCFG_TINFOIL_PKALGOPD,
+				      int XCFG_TINFOIL_AK_CIPHER_TYPE,
+				      int XCFG_TINFOIL_AK_CIPHER_MASK)
 {
 	struct sig_verify sv;
 	struct pbit pc;
@@ -156,17 +168,19 @@ int local_public_key_verify_signature(const struct public_key *pkey,
 
 	pbit_n(&pc, -EINVAL);
 
-	if (__gs_pk_sig_verify_init(&sv, pkey, sig, XCFG_TINFOIL_PKALGOPD)) {
+	if (__gs_pk_sig_verify_init(&sv, pkey, sig, XCFG_TINFOIL_PKALGOPD)
+		!= GS_SUCCESS) {
 		GLOW(-EINVAL, __func__, "__gs_pk_sig_verify_init");
 		goto err;
 	}
 
-	if (pk_sig_verify_alloc(&sv, pkey)) {
+	if (pk_sig_verify_alloc(&sv, pkey, XCFG_TINFOIL_AK_CIPHER_TYPE,
+				XCFG_TINFOIL_AK_CIPHER_MASK) != GS_SUCCESS) {
 		GLOW(-EINVAL, __func__, "pk_sig_verify_alloc");
 		goto err;
 	}
 
-	if (pk_sig_verify_validate(&sv, sig) == 0) {
+	if (pk_sig_verify_validate(&sv, sig) == GS_SUCCESS) {
 		pbit_y(&pc, GS_SUCCESS);
 		goto out;
 	} else
@@ -198,12 +212,13 @@ static int tinfoil_open(struct slowboot_validation_item *item)
 		       __func__);
 		return pbit_ret(&pc);
 	}
-	item->pos = 0;
+	item->pos = GS_START_OF_FILE;
 	return GS_SUCCESS;
 }
 
 /*
  * Stat file to get size
+ * @tinfoil: slowboot tinfoil
  * @item: slow boot validation item
  */
 static int tinfoil_stat_alloc(struct slowboot_tinfoil *tinfoil,
@@ -240,9 +255,11 @@ static void tinfoil_close(struct slowboot_validation_item *item)
  * read file into buffer
  * @tinfoil: slowboot_tinfoil
  * @item: slowboot validation item
+ * @XCFG_TINFOIL_DGLEN: digest length
  */
 static int tinfoil_read(struct slowboot_tinfoil *tinfoil,
-			struct slowboot_validation_item *item)
+			struct slowboot_validation_item *item,
+			int XCFG_TINFOIL_DGLEN)
 {
 	struct pbit pc;
 	size_t number_read;
@@ -253,14 +270,14 @@ static int tinfoil_read(struct slowboot_tinfoil *tinfoil,
 	if (item->fp == NULL)
 		goto fail;
 
-	item->buf = vmalloc(item->buf_len+1);
+	item->buf = vmalloc(item->buf_len+GS_STRING_PAD);
 	if (!item->buf) {
 		pbit_n(&pc, -ENOMEM);
 		goto fail;
 	}
-	memset(item->buf, 0, item->buf_len+1);
+	memset(item->buf, GS_MEMSET_DEFAULT, item->buf_len+GS_STRING_PAD);
 
-	item->pos = 0;
+	item->pos = GS_START_OF_FILE;
 	number_read = kernel_read(item->fp,
 				  item->buf,
 				  tinfoil->st->size,
@@ -269,7 +286,7 @@ static int tinfoil_read(struct slowboot_tinfoil *tinfoil,
 	if (number_read != item->buf_len)
 		goto fail;
 
-	if (hex2bin(item->b_hash, item->hash, 64) != 0) {
+	if (hex2bin(item->b_hash, item->hash, XCFG_TINFOIL_DGLEN) != 0) {
 		pr_err("GS TFSB Fail: StoredHashFail:%s @ %s.hex2bin\n",
 		       item->path, __func__);
 		goto fail;
@@ -294,7 +311,7 @@ out:
 static int tinfoil_check_init(struct tinfoil_check *c,
 			      struct slowboot_validation_item *item)
 {
-	memset(c, 0, sizeof(struct tinfoil_check));
+	memset(c, GS_MEMSET_DEFAULT, sizeof(struct tinfoil_check));
 
 	if (item == NULL || item->buf == NULL || item->buf_len == 0)
 		return -EINVAL;
@@ -309,14 +326,20 @@ static int tinfoil_check_init(struct tinfoil_check *c,
  * @c: tinfoil check
  * @XCFG_TINFOIL_HSALGO: hash algorithm
  * @XCFG_TINFOIL_DGLEN: digest length
+ * @XCFG_TINFOIL_SHASH_TYPE: crypto_alloc_shash.type
+ * @XCFG_TINFOIL_SHASH_MASK: crypto_alloc_shash.mask
  */
 static int tinfoil_check_allocate(struct tinfoil_check *c,
 				  const char *XCFG_TINFOIL_HSALGO,
-				  int XCFG_TINFOIL_DGLEN)
+				  int XCFG_TINFOIL_DGLEN,
+				  int XCFG_TINFOIL_SHASH_TYPE,
+				  int XCFG_TINFOIL_SHASH_MASK)
 {
 	struct pbit pc;
 
-	c->alg = crypto_alloc_shash(XCFG_TINFOIL_HSALGO, 0, 0);
+	c->alg = crypto_alloc_shash(XCFG_TINFOIL_HSALGO,
+				    XCFG_TINFOIL_SHASH_TYPE,
+				    XCFG_TINFOIL_SHASH_MASK);
 	if (IS_ERR(c->alg)) {
 		pbit_n(&pc, (int)(long)c->alg);
 		c->alg = NULL;
@@ -324,14 +347,14 @@ static int tinfoil_check_allocate(struct tinfoil_check *c,
 		return pbit_ret(&pc);
 	}
 
-	c->digest = kmalloc(XCFG_TINFOIL_DGLEN+1, GFP_KERNEL);
+	c->digest = kmalloc(XCFG_TINFOIL_DGLEN+GS_STRING_PAD, GFP_KERNEL);
 	if (!c->digest) {
 		c->digest = NULL;
 		GLOW(pbit_get(&pc), __func__, "kmalloc");
 		return -ENOMEM;
 	}
 
-	memset(c->digest, 0, XCFG_TINFOIL_DGLEN+1);
+	memset(c->digest, GS_MEMSET_DEFAULT, XCFG_TINFOIL_DGLEN+GS_STRING_PAD);
 
 	c->sd = __gs_init_sdesc(c->alg);
 	if (!c->sd) {
@@ -387,11 +410,15 @@ static void tinfoil_check_free(struct tinfoil_check *c)
  * @item: slowboot validation item
  * @XCFG_TINFOIL_HSALGO: hash algorithm
  * @XCFG_TINFOIL_DGLEN: digest length
+ * @XCFG_TINFOIL_SHASH_TYPE: crypto_alloc_shash.type
+ * @XCFG_TINFOIL_SHASH_MASK: crypto_alloc_shash.mask
  * consumes item->buf
  */
 static void tinfoil_check(struct slowboot_validation_item *item,
 			  const char *XCFG_TINFOIL_HSALGO,
-			  int XCFG_TINFOIL_DGLEN)
+			  int XCFG_TINFOIL_DGLEN,
+			  int XCFG_TINFOIL_SHASH_TYPE,
+			  int XCFG_TINFOIL_SHASH_MASK)
 {
 
 	struct tinfoil_check check;
@@ -403,7 +430,9 @@ static void tinfoil_check(struct slowboot_validation_item *item,
 
 	if (tinfoil_check_allocate(&check,
 				   XCFG_TINFOIL_HSALGO,
-				   XCFG_TINFOIL_DGLEN)) {
+				   XCFG_TINFOIL_DGLEN,
+				   XCFG_TINFOIL_SHASH_TYPE,
+				   XCFG_TINFOIL_SHASH_MASK)) {
 		GLOW(-EINVAL, __func__, "tinfoil_check_allocate");
 		goto err;
 	}
@@ -424,11 +453,15 @@ std_return:
  * @item: slowboot validation item
  * @XCFG_TINFOIL_HSALGO: hash algorithm
  * @XCFG_TINFOIL_DGLEN: digest length
+ * @XCFG_TINFOIL_SHASH_TYPE: crypto_alloc_shash.type
+ * @XCFG_TINFOIL_SHASH_MASK: crypto_alloc_shash.mask
  */
 static int tinfoil_unwrap(struct slowboot_tinfoil *tinfoil,
 			  struct slowboot_validation_item *item,
 			  const char *XCFG_TINFOIL_HSALGO,
-			  int XCFG_TINFOIL_DGLEN)
+			  int XCFG_TINFOIL_DGLEN,
+			  int XCFG_TINFOIL_SHASH_TYPE,
+			  int XCFG_TINFOIL_SHASH_MASK)
 {
 	if (tinfoil_open(item) != GS_SUCCESS) {
 		GLOW(GS_TINFOIL_FAIL, __func__, "tinfoil_open");
@@ -442,13 +475,14 @@ static int tinfoil_unwrap(struct slowboot_tinfoil *tinfoil,
 	}
 
 	// Do not access item->buf after this
-	if (tinfoil_read(tinfoil, item) != GS_SUCCESS) {
+	if (tinfoil_read(tinfoil, item, XCFG_TINFOIL_DGLEN) != GS_SUCCESS) {
 		GLOW(GS_TINFOIL_FAIL, __func__, "tinfoil_read");
 		tinfoil_close(item);
 		return GS_TINFOIL_FAIL;
 	}
 
-	tinfoil_check(item, XCFG_TINFOIL_HSALGO, XCFG_TINFOIL_DGLEN);
+	tinfoil_check(item, XCFG_TINFOIL_HSALGO, XCFG_TINFOIL_DGLEN,
+		      XCFG_TINFOIL_SHASH_TYPE, XCFG_TINFOIL_SHASH_MASK);
 	if (!pbit_ok(&item->is_ok)) {
 		pr_err("GS TFSB Fail:%s:%s @ %s.tinfoil_check\n",
 		       item->path,
@@ -501,8 +535,9 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 	}
 
 	if (item->path != NULL && item->hash != NULL) {
-		memset(item->path, 0, PATH_MAX+GS_STRING_PAD);
-		memset(item->hash, 0, XCFG_TINFOIL_HSLEN+GS_STRING_PAD+GS_STRING_PAD));
+		memset(item->path, GS_MEMSET_DEFAULT, PATH_MAX+GS_STRING_PAD);
+		memset(item->hash, GS_MEMSET_DEFAULT,
+		       XCFG_TINFOIL_HSLEN+GS_STRING_PAD+GS_STRING_PAD));
 
 		// Make sure we have a good item
 		// This should not happen because who
@@ -537,7 +572,7 @@ static void slowboot_init_setup(struct slowboot_init_container *sic,
 				const char *XCFG_TINFOIL_HSALGO,
 				int XCFG_TINFOIL_PKLEN)
 {
-	memset(sic, 0, sizeof(struct slowboot_init_container));
+	memset(sic, GS_MEMSET_DEFAULT, sizeof(struct slowboot_init_container));
 
 	sic->rsa_pub_key.pkey_algo = XCFG_TINFOIL_PKALGO;
 	sic->rsa_pub_key.id_type = XCFG_TINFOIL_IDTYPE;
@@ -614,9 +649,9 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
 		return -EINVAL;
 	}
 
-	sic->pos = 0;
+	sic->pos = GS_START_OF_FILE;
 	sic->buf = __gs_read_file_to_memory(sic->fp, sic->file_size,
-					    &sic->pos, 0);
+					    &sic->pos, GS_FALSE);
 	if (!sic->buf) {
 		pr_err("GS TFSB File Read Error:%s @ %s.config_file\n",
 		       config_file,
@@ -624,9 +659,9 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
 		return -EINVAL;
 	}
 
-	sic->sfp_pos = 0;
+	sic->sfp_pos = GS_START_OF_FILE;
 	sic->sfp_buf = __gs_read_file_to_memory(sic->sfp, sic->sfp_file_size,
-						&sic->sfp_pos, 0);
+						&sic->sfp_pos, GS_FALSE);
 	if (!sic->sfp_buf) {
 		pr_err("GS TFSB File Read Error:%s @ %s.config_file_signature\n",
 			config_file_signature,
@@ -642,14 +677,20 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
  * @sic: slowboot init container
  * @XCFG_TINFOIL_DGLEN: digest length
  * @XCFG_TINFOIL_HSALGO: hash algorithm
+ * @XCFG_TINFOIL_SHASH_TYPE: crypto_alloc_shash.type
+ * @XCFG_TINFOIL_SHASH_MASK: crypto_alloc_shash.mask
  */
 static int slowboot_init_digest(struct slowboot_init_container *sic,
 				int XCFG_TINFOIL_DGLEN,
-				const char *XCFG_TINFOIL_HSALGO)
+				const char *XCFG_TINFOIL_HSALGO,
+				int XCFG_TINFOIL_SHASH_TYPE,
+				int XCFG_TINFOIL_SHASH_MASK)
 {
 	struct pbit pc;
 
-	sic->halg = crypto_alloc_shash(XCFG_TINFOIL_HSALGO, 0, 0);
+	sic->halg = crypto_alloc_shash(XCFG_TINFOIL_HSALGO,
+				       XCFG_TINFOIL_SHASH_TYPE,
+				       XCFG_TINFOIL_SHASH_MASK);
 	if (IS_ERR(sic->halg)) {
 		pbit_n(&pc, (int)(long)sic->halg);
 		GLOW(pbit_get(&pc), __func__, "crypto_alloc_shash");
@@ -776,6 +817,10 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
  * @XCFG_TINFOIL_PKLEN: public key length
  * @XCFG_TINFOIL_NEW_LINE: new line character
  * @XCFG_TINFOIL_HSLEN: hash length
+ * @XCFG_TINFOIL_AK_CIPHER_TYPE: crypto_alloc_akcipher.type
+ * @XCFG_TINFOIL_AK_CIPHER_MASK: crypto_alloc_akcipher.mask
+ * @XCFG_TINFOIL_SHASH_TYPE: crypto_alloc_shash.type
+ * @XCFG_TINFOIL_SHASH_MASK: crypto_alloc_shash.mask
  */
 static int slowboot_init(struct slowboot_tinfoil *tinfoil,
 			 const char *XCFG_TINFOIL_PKALGOPD,
@@ -785,7 +830,11 @@ static int slowboot_init(struct slowboot_tinfoil *tinfoil,
 			 const char *XCFG_TINFOIL_HSALGO,
 			 int XCFG_TINFOIL_PKLEN,
 			 const char XCFG_TINFOIL_NEW_LINE,
-			 int XCFG_TINFOIL_HSLEN)
+			 int XCFG_TINFOIL_HSLEN,
+			 int XCFG_TINFOIL_AK_CIPHER_TYPE,
+			 int XCFG_TINFOIL_AK_CIPHER_MASK,
+			 int XCFG_TINFOIL_SHASH_TYPE,
+			 int XCFG_TINFOIL_SHASH_MASK)
 {
 	struct slowboot_init_container sic;
 	struct pbit pc;
@@ -808,12 +857,16 @@ static int slowboot_init(struct slowboot_tinfoil *tinfoil,
 
 	if (slowboot_init_digest(&sic,
 				 XCFG_TINFOIL_DGLEN,
-				 XCFG_TINFOIL_HSALGO))
+				 XCFG_TINFOIL_HSALGO,
+				 XCFG_TINFOIL_SHASH_TYPE,
+				 XCFG_TINFOIL_SHASH_MASK))
 		goto fail;
 
 	if (local_public_key_verify_signature(&sic.rsa_pub_key,
 					      &sic.sig,
-					      XCFG_TINFOIL_PKALGOPD))
+					      XCFG_TINFOIL_PKALGOPD,
+					      XCFG_TINFOIL_AK_CIPHER_TYPE,
+					      XCFG_TINFOIL_AK_CIPHER_MASK))
 		goto fail;
 
 	if (slowboot_init_process(&sic, &tinfoil->validation_items,
@@ -850,6 +903,10 @@ out:
  * @XCFG_TINFOIL_NEW_LINE: new line character
  * @XCFG_TINFOIL_HSLEN: hash length
  * @gs_irq_killer: spinlock to block IRQ with
+ * @XCFG_TINFOIL_AK_CIPHER_TYPE: crypto_alloc_akcipher.type
+ * @XCFG_TINFOIL_AK_CIPHER_MASK: crypto_alloc_akcipher.mask
+ * @XCFG_TINFOIL_SHASH_TYPE: crypto_alloc_shash.type
+ * @XCFG_TINFOIL_SHASH_MASK: crypto_alloc_shash.mask
  */
 static void slowboot_run_test(struct slowboot_tinfoil *tinfoil,
 			      const char *XCFG_TINFOIL_PKALGOPD,
@@ -860,7 +917,11 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil,
 			      int XCFG_TINFOIL_PKLEN,
 			      const char XCFG_TINFOIL_NEW_LINE,
 			      int XCFG_TINFOIL_HSLEN,
-			      spinlock_t *gs_irq_killer)
+			      spinlock_t *gs_irq_killer,
+			      int XCFG_TINFOIL_AK_CIPHER_TYPE,
+			      int XCFG_TINFOIL_AK_CIPHER_MASK,
+			      int XCFG_TINFOIL_SHASH_TYPE,
+			      int XCFG_TINFOIL_SHASH_MASK)
 {
 	int j;
 	unsigned long flags;
@@ -874,8 +935,8 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil,
 	pbit_n(&tinfoil->error, -EINVAL);
 
 	spin_lock_irqsave(gs_irq_killer, flags); // Occupy all threads?
-	if (tinfoil->initialized != 0) {
-		tinfoil->initialized = 0;
+	if (tinfoil->initialized != GS_TRUE) {
+		tinfoil->initialized = GS_FALSE;
 		tinfoil->validation_items = NULL;
 		if (slowboot_init(tinfoil,
 				  XCFG_TINFOIL_PKALGOPD,
@@ -885,7 +946,11 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil,
 				  XCFG_TINFOIL_HSALGO,
 				  XCFG_TINFOIL_PKLEN,
 				  XCFG_TINFOIL_NEW_LINE,
-				  XCFG_TINFOIL_HSLEN) != GS_SUCCESS) {
+				  XCFG_TINFOIL_HSLEN,
+				  XCFG_TINFOIL_AK_CIPHER_TYPE,
+				  XCFG_TINFOIL_AK_CIPHER_MASK,
+				  XCFG_TINFOIL_SHASH_TYPE,
+				  XCFG_TINFOIL_SHASH_MASK) != GS_SUCCESS) {
 			pbit_n(&hard_fail, GS_IRRELEVANT);
 			goto out;
 		}
@@ -895,13 +960,15 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil,
 		tinfoil->failures += tinfoil_unwrap(tinfoil,
 					&(tinfoil->validation_items[j]),
 					XCFG_TINFOIL_HSALGO,
-					XCFG_TINFOIL_DGLEN);
+					XCFG_TINFOIL_DGLEN,
+					XCFG_TINFOIL_SHASH_TYPE,
+					XCFG_TINFOIL_SHASH_MASK);
 	}
 out:
 		if (tinfoil->validation_items != NULL) {
 			vfree(tinfoil->validation_items);
 			tinfoil->validation_items = NULL;
-			tinfoil->initialized = 1;
+			tinfoil->initialized = GS_TRUE;
 		}
 
 	if (tinfoil->failures != 0 || tinfoil->slwbt_ct == 0 ||
@@ -918,6 +985,7 @@ out:
  * @XCFG_TINFOIL_CF: path to config file
  * @XCFG_TINFOIL_CFS: path to signature config file
  * @XCFG_TINFOIL_PK: hex encoded public key
+ * @XCFG_TINFOIL_PKLEN: public key string length
  */
 static int slowboot_tinfoil_init(struct slowboot_tinfoil *tinfoil,
 				 const char *XCFG_TINFOIL_CF,
@@ -928,11 +996,11 @@ static int slowboot_tinfoil_init(struct slowboot_tinfoil *tinfoil,
 	if (tinfoil == NULL)
 		return -EINVAL;
 
-	memset(tinfoil, 0, sizeof(struct slowboot_tinfoil));
+	memset(tinfoil, GS_MEMSET_DEFAULT, sizeof(struct slowboot_tinfoil));
 	strncpy(tinfoil->config_file, XCFG_TINFOIL_CF, PATH_MAX);
 	strncpy(tinfoil->config_file_signature, XCFG_TINFOIL_CFS, PATH_MAX);
 	strncpy(tinfoil->config_pkey, XCFG_TINFOIL_PK, XCFG_TINFOIL_PKLEN);
-	tinfoil->initialized = 1;
+	tinfoil->initialized = GS_FALSE;
 	tinfoil->failures = 0;
 	pbit_y(&tinfoil->error, GS_SUCCESS);
 	tinfoil->st = kmalloc(sizeof(struct kstat), GFP_KERNEL);
@@ -968,9 +1036,9 @@ size_t __gs_get_file_size(struct file *fp)
 	if (fp == NULL)
 		goto out;
 
-	default_llseek(fp, 0, SEEK_END);
+	default_llseek(fp, GS_SEEK_TO_END, SEEK_END);
 	file_size = fp->f_pos;
-	default_llseek(fp, fp->f_pos * -1, SEEK_CUR);
+	default_llseek(fp, GS_SEEK_TO_START(fp->f_pos), SEEK_CUR);
 
 out:
 	return file_size;
@@ -1003,8 +1071,8 @@ char *__gs_read_file_to_memory(struct file *fp,
 
 	*pos = 0;
 
-	default_llseek(fp, 0, SEEK_END);
-	default_llseek(fp, fp->f_pos * -1, SEEK_CUR);
+	default_llseek(fp, GS_SEEK_TO_END, SEEK_END);
+	default_llseek(fp, GS_SEEK_TO_START(fp->f_pos), SEEK_CUR);
 	num_read = kernel_read(fp, buf, file_size, pos);
 
 	if (num_read != file_size && !ignore_size) {
@@ -1045,7 +1113,7 @@ struct sdesc *__gs_init_sdesc(struct crypto_shash *alg)
 
 	size = sizeof(struct shash_desc) + crypto_shash_descsize(alg);
 	sdesc = kmalloc(size, GFP_KERNEL);
-	memset(sdesc, 0, size);
+	memset(sdesc, GS_MEMSET_DEFAULT, size);
 	if (!sdesc)
 		return NULL;
 	sdesc->shash.tfm = alg;
@@ -1065,7 +1133,7 @@ int __gs_pk_sig_verify_init(struct sig_verify *sv,
 			    const char *pkalgopd)
 {
 	size_t s;
-	memset(sv, 0, sizeof(struct sig_verify));
+	memset(sv, GS_MEMSET_DEFAULT, sizeof(struct sig_verify));
 	if (pkalgopd != NULL)
 		s = strlen(pkalgopd);
 	else
@@ -1097,6 +1165,10 @@ int __gs_pk_sig_verify_init(struct sig_verify *sv,
  * @tinfoil_pkalgopd: algorithm padding, likely "pkcs1pad(rsa,sha512)" can be ""
  * @tinfoil_hsalgo: digest used, likely "sha512"
  * @config_tinfoil_idtype: public_key.id_type likely "X509"
+ * @config_tinfoil_ak_cipher_type: ak_cipher type likely 0
+ * @config_tinfoil_ak_cipher_mask: ak_mask likely 0
+ * @config_tinfoil_shash_type: shash type likely 0
+ * @config_tinfoil_shash_mask: shash likely 0
  * @gs_irq_killer: Nullable spinlock_t to block IRQ during test
  * @config_tinfoil_new_line: char for new line '\n'
  * @config_tinfoil_override: magic cmdline value to bypass test
@@ -1115,6 +1187,10 @@ int __gs_tfsb_go(const char *config_tinfoil_cf,
 		 const char *config_tinfoil_pkalgopd,
 		 const char *config_tinfoil_hsalgo,
 		 const char *config_tinfoil_idtype,
+		 int config_tinfoil_ak_cipher_type,
+		 int config_tinfoil_ak_cipher_mask,
+		 int config_tinfoil_shash_type,
+		 int config_tinfoil_shash_mask,
 		 spinlock_t *gs_irq_killer,
 		 char config_tinfoil_new_line,
 		 int config_tinfoil_version,
@@ -1152,7 +1228,11 @@ int __gs_tfsb_go(const char *config_tinfoil_cf,
 			  config_tinfoil_pklen,
 			  config_tinfoil_new_line,
 			  config_tinfoil_hslen,
-			  gs_irq_killer);
+			  gs_irq_killer,
+			  config_tinfoil_ak_cipher_type,
+			  config_tinfoil_ak_cipher_mask,
+			  config_tinfoil_shash_type,
+			  config_tinfoil_shash_mask);
 
 out:
 	if (tinfoil) {
@@ -1161,7 +1241,8 @@ out:
 		pr_info("GS TFSB Audit: {Total:%d/Failures:%d}\n",
 			tinfoil->slwbt_ct, tinfoil->failures);
 
-		if (!pbit_ok(&tinfoil->error) || pbit_get(&tinfoil->error) != 0) {
+		if (!pbit_ok(&tinfoil->error) ||
+		    pbit_get(&tinfoil->error) != GS_SUCCESS) {
 			pbit_n(&pc, pbit_get(&tinfoil->error));
 			if (pbit_get(&tinfoil->error) == GS_SUCCESS)
 				pbit_n(&pc, -EINVAL);
