@@ -201,7 +201,7 @@ static int tinfoil_open(struct slowboot_validation_item *item)
 {
 	struct pbit pc;
 
-	item->fp = filp_open(item->path, O_RDONLY, 0);
+	item->fp = filp_open(item->path, O_RDONLY, GS_FILP_FLAGS);
 	if (IS_ERR(item->fp) || item->fp == NULL) {
 		pbit_n(&pc, (int)(long)item->fp);
 		item->fp = NULL;
@@ -378,13 +378,14 @@ static void tinfoil_check_validate(struct tinfoil_check *c,
 	crypto_shash_digest(&(c->sd->shash), c->item->buf, c->item->buf_len,
 			    c->digest);
 
-	pbit_y(&c->item->is_ok, GS_IRRELEVANT);
+	pbit_n(&c->item->is_ok, GS_IRRELEVANT);
 	for (i = 0; i < XCFG_TINFOIL_DGLEN; i++) {
 		if (c->item->b_hash[i] != c->digest[i]) {
 			pbit_n(&c->item->is_ok, GS_IRRELEVANT);
 			return;
 		}
 	}
+	pbit_y(&c->item->is_ok, GS_IRRELEVANT);
 }
 
 /*
@@ -423,7 +424,9 @@ static void tinfoil_check(struct slowboot_validation_item *item,
 
 	struct tinfoil_check check;
 
-	if (tinfoil_check_init(&check, item)) {
+	pbit_n(&item->is_ok, GS_IRRELEVANT);
+
+	if (tinfoil_check_init(&check, item) != GS_SUCCESS) {
 		GLOW(-EINVAL, __func__, "tinfoil_check_init");
 		goto err;
 	}
@@ -432,7 +435,7 @@ static void tinfoil_check(struct slowboot_validation_item *item,
 				   XCFG_TINFOIL_HSALGO,
 				   XCFG_TINFOIL_DGLEN,
 				   XCFG_TINFOIL_SHASH_TYPE,
-				   XCFG_TINFOIL_SHASH_MASK)) {
+				   XCFG_TINFOIL_SHASH_MASK) != GS_SUCCESS) {
 		GLOW(-EINVAL, __func__, "tinfoil_check_allocate");
 		goto err;
 	}
@@ -580,7 +583,7 @@ static void slowboot_init_setup(struct slowboot_init_container *sic,
 	sic->sig.digest_size = XCFG_TINFOIL_DGLEN;
 	sic->sig.pkey_algo = XCFG_TINFOIL_PKALGO;
 	sic->sig.hash_algo = XCFG_TINFOIL_HSALGO;
-	sic->kernel_key_len = XCFG_TINFOIL_PKLEN/2; // Hex/2
+	sic->kernel_key_len = XCFG_TINFOIL_PKLEN/GS_HEX_DENOM; // Hex/2
 }
 
 /*
@@ -625,7 +628,7 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
 	if (config_file == NULL || config_file_signature == NULL)
 		return -EINVAL;
 
-	sic->fp = filp_open(config_file, O_RDONLY, 0);
+	sic->fp = filp_open(config_file, O_RDONLY, GS_FILP_FLAGS);
 	if (IS_ERR(sic->fp)) {
 		pbit_n(&pc, (int)(long)sic->fp);
 		sic->fp = NULL;
@@ -633,7 +636,7 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
 		return pbit_ret(&pc);
 	}
 
-	sic->sfp = filp_open(config_file_signature, O_RDONLY, 0);
+	sic->sfp = filp_open(config_file_signature, O_RDONLY, GS_FILP_FLAGS);
 	if (IS_ERR(sic->sfp)) {
 		pbit_n(&pc, (int)(long)sic->sfp);
 		sic->sfp = NULL;
@@ -704,7 +707,8 @@ static int slowboot_init_digest(struct slowboot_init_container *sic,
 		return -ENOMEM;
 	}
 
-	memset(sic->digest, 0, XCFG_TINFOIL_DGLEN+GS_STRING_PAD);
+	memset(sic->digest, GS_MEMSET_DEFAULT,
+	       XCFG_TINFOIL_DGLEN+GS_STRING_PAD);
 
 	sic->hsd = __gs_init_sdesc(sic->halg);
 	if (!sic->hsd) {
@@ -848,31 +852,33 @@ static int slowboot_init(struct slowboot_tinfoil *tinfoil,
 			    XCFG_TINFOIL_HSALGO,
 			    XCFG_TINFOIL_PKLEN);
 
-	if (slowboot_init_setup_keys(&sic, tinfoil->config_pkey))
+	if (slowboot_init_setup_keys(&sic, tinfoil->config_pkey) != GS_SUCCESS)
 		goto fail;
 
 	if (slowboot_init_open_files(&sic, tinfoil->config_file,
-				     tinfoil->config_file_signature))
+				     tinfoil->config_file_signature
+				     ) != GS_SUCCESS)
 		goto fail;
 
 	if (slowboot_init_digest(&sic,
 				 XCFG_TINFOIL_DGLEN,
 				 XCFG_TINFOIL_HSALGO,
 				 XCFG_TINFOIL_SHASH_TYPE,
-				 XCFG_TINFOIL_SHASH_MASK))
+				 XCFG_TINFOIL_SHASH_MASK) != GS_SUCCESS)
 		goto fail;
 
 	if (local_public_key_verify_signature(&sic.rsa_pub_key,
 					      &sic.sig,
 					      XCFG_TINFOIL_PKALGOPD,
 					      XCFG_TINFOIL_AK_CIPHER_TYPE,
-					      XCFG_TINFOIL_AK_CIPHER_MASK))
+					      XCFG_TINFOIL_AK_CIPHER_MASK
+					      ) != GS_SUCCESS)
 		goto fail;
 
 	if (slowboot_init_process(&sic, &tinfoil->validation_items,
 				  &tinfoil->slwbt_ct,
 				  XCFG_TINFOIL_NEW_LINE,
-				  XCFG_TINFOIL_HSLEN))
+				  XCFG_TINFOIL_HSLEN) != GS_SUCCESS)
 		goto fail;
 
 	pbit_y(&pc, GS_SUCCESS);
@@ -1133,6 +1139,10 @@ int __gs_pk_sig_verify_init(struct sig_verify *sv,
 			    const char *pkalgopd)
 {
 	size_t s;
+
+	if (!sv || !pkey || !sig)
+		return GS_FAIL;
+
 	memset(sv, GS_MEMSET_DEFAULT, sizeof(struct sig_verify));
 	if (pkalgopd != NULL)
 		s = strlen(pkalgopd);
@@ -1169,7 +1179,7 @@ int __gs_pk_sig_verify_init(struct sig_verify *sv,
  * @config_tinfoil_ak_cipher_mask: ak_mask likely 0
  * @config_tinfoil_shash_type: shash type likely 0
  * @config_tinfoil_shash_mask: shash likely 0
- * @gs_irq_killer: Nullable spinlock_t to block IRQ during test
+ * @gs_irq_killer: spinlock_t to block IRQ during test
  * @config_tinfoil_new_line: char for new line '\n'
  * @config_tinfoil_override: magic cmdline value to bypass test
  * @config_tinfoil_version: logic version to use likely 1

@@ -50,6 +50,8 @@
 #define GS_SEEK_TO_END 0
 #define GS_MEMSET_DEFAULT 0
 #define GS_START_OF_FILE 0
+#define GS_HEX_DENOM 2
+#define GS_FILP_FLAGS 0
 
 /* File Validation item */
 struct slowboot_validation_item {
@@ -159,6 +161,10 @@ int __gs_tinfoil_verify(void);
  * @tinfoil_pkalgopd: algorithm padding, likely "pkcs1pad(rsa,sha512)" can be ""
  * @tinfoil_hsalgo: digest used, likely "sha512"
  * @config_tinfoil_idtype: public_key.id_type likely "X509"
+ * @config_tinfoil_ak_cipher_type: ak_cipher type likely 0
+ * @config_tinfoil_ak_cipher_mask: ak_mask likely 0
+ * @config_tinfoil_shash_type: shash type likely 0
+ * @config_tinfoil_shash_mask: shash likely 0
  * @gs_irq_killer: spinlock_t to block IRQ during test
  * @config_tinfoil_new_line: char for new line '\n'
  * @config_tinfoil_version: logic version to use likely 1
@@ -175,6 +181,10 @@ int __gs_tfsb_go(const char *config_tinfoil_cf,
 		 const char *config_tinfoil_pkalgopd,
 		 const char *config_tinfoil_hsalgo,
 		 const char *config_tinfoil_idtype,
+		 int config_tinfoil_ak_cipher_type,
+		 int config_tinfoil_ak_cipher_mask,
+		 int config_tinfoil_shash_type,
+		 int config_tinfoil_shash_mask,
 		 spinlock_t *gs_irq_killer,
 		 char config_tinfoil_new_line,
 		 int config_tinfoil_version,
