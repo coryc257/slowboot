@@ -540,7 +540,7 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 	if (item->path != NULL && item->hash != NULL) {
 		memset(item->path, GS_MEMSET_DEFAULT, PATH_MAX+GS_STRING_PAD);
 		memset(item->hash, GS_MEMSET_DEFAULT,
-		       XCFG_TINFOIL_HSLEN+GS_STRING_PAD+GS_STRING_PAD));
+		       XCFG_TINFOIL_HSLEN+GS_STRING_PAD+GS_STRING_PAD);
 
 		// Make sure we have a good item
 		// This should not happen because who

@@ -25,7 +25,7 @@ struct pbit {
 #define PBIT_NO 0x81083C1
 #define PBIT_ERR 0xFFFFFFFF
 #define PBIT_MGK 0xCF0850F1
-#define PBIT_TRUE 1;
+#define PBIT_TRUE 1
 #define PBIT_FALSE 0
 
 void pbit_check_no(struct pbit *pc, int ev);

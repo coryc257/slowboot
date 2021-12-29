@@ -81,22 +81,22 @@ menu "Tinfoil Cryptographic Init Verification"
 		string
 		default "X509" if TINFOIL
 		depends on TINFOIL
-	config CONFIG_TINFOIL_AK_CIPHER_TYPE
+	config TINFOIL_AK_CIPHER_TYPE
 		prompt "AK Cipher Type <0>"
 		int
 		default 0 if TINFOIL
 		depends on TINFOIL
-	config CONFIG_TINFOIL_AK_CIPHER_MASK
+	config TINFOIL_AK_CIPHER_MASK
 		prompt "AK Cipher Mask <0>"
 		int
 		default 0 if TINFOIL
 		depends on TINFOIL
-	config CONFIG_TINFOIL_SHASH_TYPE
+	config TINFOIL_SHASH_TYPE
 		prompt "SHASH Type <0>"
 		int
 		default 0 if TINFOIL
 		depends on TINFOIL
-	config CONFIG_TINFOIL_SHASH_MASK
+	config TINFOIL_SHASH_MASK
 		prompt "SHASH Mask <0>"
 		int
 		default 0 if TINFOIL
@@ -185,26 +185,26 @@ menu "Slowboot Cryptographic PostInit Verification"
 		string
 		default "X509" if SLOWBOOT
 		depends on SLOWBOOT
-	config CONFIG_SLOWBOOT_AK_CIPHER_TYPE
+	config SLOWBOOT_AK_CIPHER_TYPE
 		prompt "AK Cipher Type <0>"
 		int
-		default 0 if TINFOIL
-		depends on TINFOIL
-	config CONFIG_SLOWBOOT_AK_CIPHER_MASK
+		default 0 if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_AK_CIPHER_MASK
 		prompt "AK Cipher Mask <0>"
 		int
-		default 0 if TINFOIL
-		depends on TINFOIL
-	config CONFIG_SLOWBOOT_SHASH_TYPE
+		default 0 if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_SHASH_TYPE
 		prompt "SHASH Type <0>"
 		int
-		default 0 if TINFOIL
-		depends on TINFOIL
-	config CONFIG_SLOWBOOT_SHASH_MASK
+		default 0 if SLOWBOOT
+		depends on SLOWBOOT
+	config SLOWBOOT_SHASH_MASK
 		prompt "SHASH Mask <0>"
 		int
-		default 0 if TINFOIL
-		depends on TINFOIL
+		default 0 if SLOWBOOT
+		depends on SLOWBOOT
 	config SLOWBOOT_VERSION
 		prompt "Slowboot Version Number"
 		int
