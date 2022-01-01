@@ -1100,8 +1100,8 @@ out:
  * @s2: little string
  * @s2_len: length of little string
  */
-int __gs_memmem_sp(const char restrict *s1, size_t s1_len,
-		   const char restrict *s2, size_t s2_len)
+int __gs_memmem_sp(const char *s1, size_t s1_len,
+		   const char *s2, size_t s2_len)
 {
 	while (s1_len >= s2_len) {
 		s1_len--;

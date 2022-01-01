@@ -45,7 +45,7 @@ static int __gs_is_enabled __initdata = GS_TRUE;
  * with the value configured at compile time.
  * @str: parameter value
  */
-static int __init tinfoil_enabled_setup(const char *str)
+static int __init tinfoil_enabled_setup(char *str)
 {
 	if (strcmp(str, CONFIG_TINFOIL_OVERRIDE) == GS_STRING_MATCH)
 		__gs_is_enabled = GS_FALSE;
