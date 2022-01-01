@@ -30,28 +30,30 @@
 #include <linux/random.h>
 #include <linux/gs_pbit.h>
 
+#define GS_LSM_NAME "GlowSlayer"
+#define GS_LSM_FLAGS 0
+#define GS_FILP_FLAGS 0
+
+#define GS_KEYLEN_INIT -1
+#define GS_HEX_DENOM 2
+
 #define GS_STRING_BASE 4096
 #define GS_STRING_PAD 1
-#define GS_SCATTER_LIST_SIZE 3
-#define GS_TRUE 1
-#define GS_FALSE 0
-#define GS_STRING_MATCH 0
-#define GS_SUCCESS 0
-#define GS_FAIL 1
-#define GS_LSM_FLAGS 0
-#define GS_LSM_NAME "GlowSlayer"
-#define GS_TINFOIL_FAIL 1
-#define GS_TINFOIL_SUCCESS 0
 #define GS_STRING_GUARD 5
-#define GS_KEYLEN_INIT -1
+#define GS_STRING_MATCH 0
+
+#define GS_SCATTER_LIST_SIZE 3
 #define GS_SCATTER_LIST_T_DIGEST 1
 #define GS_SCATTER_LIST_T_SIZE 0
+
 #define GS_IRRELEVANT 0
-#define GS_SEEK_TO_END 0
 #define GS_MEMSET_DEFAULT 0
+#define GS_SEEK_TO_END 0
 #define GS_START_OF_FILE 0
-#define GS_HEX_DENOM 2
-#define GS_FILP_FLAGS 0
+
+enum { GS_TRUE=1, GS_FALSE=0 };
+enum { GS_SUCCESS=0, GS_FAIL=1 };
+enum { GS_TINFOIL_FAIL=1, GS_TINFOIL_SUCCESS=0 };
 
 /* File Validation item */
 struct slowboot_validation_item {
