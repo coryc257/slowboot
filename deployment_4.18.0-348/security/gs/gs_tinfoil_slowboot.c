@@ -507,6 +507,7 @@ static int tinfoil_unwrap(struct slowboot_tinfoil *tinfoil,
  * @remaining: remaining bytes
  * @XCFG_TINFOIL_NEW_LINE: new line character in the config file
  * @XCFG_TINFOIL_HSLEN: hash length in hex encoding (output of sha512sum CLI)
+ * returns new position
  */
 static loff_t fill_in_item(struct slowboot_validation_item *item,
 			   char *line, loff_t *remaining,
@@ -528,9 +529,11 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 	rem = *remaining;
 
 	while (rem > 0) {
+		// Find space separator between @hash and @path
 		if (line[pos] == ' ' && off == 0 && rem > 1)
 			off = pos+1;
 
+		// Check for record separator
 		if (line[pos] == XCFG_TINFOIL_NEW_LINE)
 			break;
 
@@ -553,6 +556,7 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 		}
 	}
 
+	// Advance to next record since we should be pointing to separator
 	if (rem > 0) {
 		pos++;
 		rem--;
@@ -1228,7 +1232,7 @@ int __gs_tfsb_go(const char *config_tinfoil_cf,
 				 config_tinfoil_cf,
 				 config_tinfoil_cfs,
 				 config_tinfoil_pk,
-				 config_tinfoil_pklen)) {
+				 config_tinfoil_pklen) != GS_SUCCESS) {
 		pbit_n(&pc, -EINVAL);
 		goto out;
 	}
@@ -1261,7 +1265,7 @@ out:
 			if (pbit_get(&(tinfoil->error)) == GS_SUCCESS)
 				pbit_n(&pc, -EINVAL);
 		} else
-			pbit_y(&pc, GS_SUCCESS);
+			pbit_y(&pc, 0); // SUCCESS
 
 	} else {
 		pbit_n(&pc, -EINVAL);
