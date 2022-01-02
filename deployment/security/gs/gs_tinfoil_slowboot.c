@@ -72,7 +72,7 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
 					XCFG_TINFOIL_AK_CIPHER_TYPE,
 					XCFG_TINFOIL_AK_CIPHER_MASK);
 	if (IS_ERR(sv->tfm)) {
-		pbit_y(&pc, (int)(long)sv->tfm);
+		pbit_y(&pc, PTR_ERR_OR_ZERO(sv->tfm));
 		sv->tfm = NULL;
 		GLOW(pbit_get(&pc), __func__, "crypto_alloc_akcipher");
 		return pbit_ret(&pc);
@@ -203,7 +203,7 @@ static int tinfoil_open(struct slowboot_validation_item *item)
 
 	item->fp = filp_open(item->path, O_RDONLY, GS_FILP_FLAGS);
 	if (IS_ERR(item->fp) || item->fp == NULL) {
-		pbit_n(&pc, (int)(long)item->fp);
+		pbit_n(&pc, PTR_ERR_OR_ZERO(item->fp));
 		item->fp = NULL;
 		pr_err("GS TFSB Fail:%s:%s:%d @ %s.filp_open\n",
 		       item->hash,
@@ -341,7 +341,7 @@ static int tinfoil_check_allocate(struct tinfoil_check *c,
 				    XCFG_TINFOIL_SHASH_TYPE,
 				    XCFG_TINFOIL_SHASH_MASK);
 	if (IS_ERR(c->alg)) {
-		pbit_n(&pc, (int)(long)(c->alg));
+		pbit_n(&pc, PTR_ERR_OR_ZERO(c->alg));
 		c->alg = NULL;
 		GLOW(pbit_get(&pc), __func__, "crypto_alloc_shash");
 		return pbit_ret(&pc);
@@ -637,7 +637,7 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
 
 	sic->fp = filp_open(config_file, O_RDONLY, GS_FILP_FLAGS);
 	if (IS_ERR(sic->fp)) {
-		pbit_n(&pc, (int)(long)sic->fp);
+		pbit_n(&pc, PTR_ERR_OR_ZERO(sic->fp));
 		sic->fp = NULL;
 		GLOW(pbit_get(&pc), __func__, "config_file");
 		return pbit_ret(&pc);
@@ -645,7 +645,7 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
 
 	sic->sfp = filp_open(config_file_signature, O_RDONLY, GS_FILP_FLAGS);
 	if (IS_ERR(sic->sfp)) {
-		pbit_n(&pc, (int)(long)sic->sfp);
+		pbit_n(&pc, PTR_ERR_OR_ZERO(sic->sfp));
 		sic->sfp = NULL;
 		GLOW(pbit_get(&pc), __func__, "config_file_signature");
 		return pbit_ret(&pc);
@@ -702,7 +702,7 @@ static int slowboot_init_digest(struct slowboot_init_container *sic,
 				       XCFG_TINFOIL_SHASH_TYPE,
 				       XCFG_TINFOIL_SHASH_MASK);
 	if (IS_ERR(sic->halg)) {
-		pbit_n(&pc, (int)(long)(sic->halg));
+		pbit_n(&pc, PTR_ERR_OR_ZERO(sic->halg));
 		GLOW(pbit_get(&pc), __func__, "crypto_alloc_shash");
 		sic->halg = NULL;
 		return pbit_ret(&pc);
