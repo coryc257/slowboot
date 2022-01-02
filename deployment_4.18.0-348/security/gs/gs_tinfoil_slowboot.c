@@ -1019,7 +1019,7 @@ static int slowboot_tinfoil_init(struct slowboot_tinfoil *tinfoil,
 	tinfoil->st = kmalloc(sizeof(struct kstat), GFP_KERNEL);
 	if (!tinfoil->st) {
 		pbit_n(&(tinfoil->error), -ENOMEM);
-		return GS_TINFOIL_FAIL;
+		return -ENOMEM;
 	}
 	return GS_SUCCESS;
 }
@@ -1127,9 +1127,9 @@ struct sdesc *__gs_init_sdesc(struct crypto_shash *alg)
 
 	size = sizeof(struct shash_desc) + crypto_shash_descsize(alg);
 	sdesc = kmalloc(size, GFP_KERNEL);
-	memset(sdesc, GS_MEMSET_DEFAULT, size);
 	if (!sdesc)
 		return NULL;
+	memset(sdesc, GS_MEMSET_DEFAULT, size);
 	sdesc->shash.tfm = alg;
 	return sdesc;
 }
