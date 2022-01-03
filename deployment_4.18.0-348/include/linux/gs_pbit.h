@@ -63,7 +63,7 @@ static int __always_inline pbit_ret(struct pbit *pc)
 static void __always_inline pbit_y(struct pbit *pc, int x)
 {
 	int __PBIT_RV_VAL;
-	get_random_bytes(&__PBIT_RV_VAL, sizeof(int));
+	get_random_bytes(&__PBIT_RV_VAL, sizeof(__PBIT_RV_VAL));
 	pbit_check_yes(pc, x, &__PBIT_RV_VAL);
 }
 

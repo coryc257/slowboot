@@ -101,13 +101,11 @@ struct slowboot_init_container {
 	struct file *sfp;
 	struct crypto_shash *halg;
 	struct sdesc *hsd;
-	size_t file_size;
-	size_t sfp_file_size;
+	loff_t file_size;
+	loff_t sfp_file_size;
 	loff_t pos;
 	loff_t remaining;
 	loff_t sfp_pos;
-	int num_read;
-	int sfp_num_read;
 	long num_items;
 	char *buf;
 	char *sfp_buf;
@@ -115,7 +113,7 @@ struct slowboot_init_container {
 	unsigned char *digest;
 	struct slowboot_validation_item *items;
 	struct slowboot_validation_item *c_item;
-	int kernel_key_len;
+	size_t kernel_key_len;
 	struct public_key_signature sig;
 	struct public_key rsa_pub_key;
 };
@@ -128,7 +126,7 @@ struct sig_verify {
 	struct scatterlist src_tab[GS_SCATTER_LIST_SIZE];
 	const char *alg_name;
 	void *output;
-	unsigned int outlen;
+	unsigned int outlen; // int due to value returned by the api
 	char alg_name_buf[CRYPTO_MAX_ALG_NAME];
 };
 
@@ -138,10 +136,10 @@ static loff_t __always_inline GS_SEEK_TO_START(loff_t current_position)
 }
 
 char *__gs_read_file_to_memory(struct file *fp,
-			       size_t file_size,
+			       loff_t file_size,
 			       loff_t *pos,
 			       int ignore_size);
-size_t __gs_get_file_size(struct file *fp);
+loff_t __gs_get_file_size(struct file *fp);
 int __gs_memmem_sp(const char *s1, size_t s1_len,
 		   const char *s2, size_t s2_len);
 struct sdesc *__gs_init_sdesc(struct crypto_shash *alg);
@@ -176,9 +174,9 @@ int __gs_tinfoil_verify(void);
 int __gs_tfsb_go(const char *config_tinfoil_cf,
 		 const char *config_tinfoil_cfs,
 		 const char *config_tinfoil_pk,
-		 int config_tinfoil_pklen,
-		 int config_tinfoil_dglen,
-		 int config_tinfoil_hslen,
+		 size_t config_tinfoil_pklen,
+		 size_t config_tinfoil_dglen,
+		 size_t config_tinfoil_hslen,
 		 const char *config_tinfoil_pkalgo,
 		 const char *config_tinfoil_pkalgopd,
 		 const char *config_tinfoil_hsalgo,

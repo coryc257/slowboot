@@ -259,7 +259,7 @@ static void tinfoil_close(struct slowboot_validation_item *item)
  */
 static int tinfoil_read(struct slowboot_tinfoil *tinfoil,
 			struct slowboot_validation_item *item,
-			int XCFG_TINFOIL_DGLEN)
+			size_t XCFG_TINFOIL_DGLEN)
 {
 	struct pbit pc;
 	size_t number_read;
@@ -331,7 +331,7 @@ static int tinfoil_check_init(struct tinfoil_check *c,
  */
 static int tinfoil_check_allocate(struct tinfoil_check *c,
 				  const char *XCFG_TINFOIL_HSALGO,
-				  int XCFG_TINFOIL_DGLEN,
+				  size_t XCFG_TINFOIL_DGLEN,
 				  int XCFG_TINFOIL_SHASH_TYPE,
 				  int XCFG_TINFOIL_SHASH_MASK)
 {
@@ -372,9 +372,9 @@ static int tinfoil_check_allocate(struct tinfoil_check *c,
  * @XCFG_TINFOIL_DGLEN: digest length
  */
 static void tinfoil_check_validate(struct tinfoil_check *c,
-				   int XCFG_TINFOIL_DGLEN)
+				   size_t XCFG_TINFOIL_DGLEN)
 {
-	int i;
+	size_t i;
 
 	crypto_shash_digest(&(c->sd->shash), c->item->buf, c->item->buf_len,
 			    c->digest);
@@ -418,7 +418,7 @@ static void tinfoil_check_free(struct tinfoil_check *c)
  */
 static void tinfoil_check(struct slowboot_validation_item *item,
 			  const char *XCFG_TINFOIL_HSALGO,
-			  int XCFG_TINFOIL_DGLEN,
+			  size_t XCFG_TINFOIL_DGLEN,
 			  int XCFG_TINFOIL_SHASH_TYPE,
 			  int XCFG_TINFOIL_SHASH_MASK)
 {
@@ -463,7 +463,7 @@ std_return:
 static int tinfoil_unwrap(struct slowboot_tinfoil *tinfoil,
 			  struct slowboot_validation_item *item,
 			  const char *XCFG_TINFOIL_HSALGO,
-			  int XCFG_TINFOIL_DGLEN,
+			  size_t XCFG_TINFOIL_DGLEN,
 			  int XCFG_TINFOIL_SHASH_TYPE,
 			  int XCFG_TINFOIL_SHASH_MASK)
 {
@@ -512,7 +512,7 @@ static int tinfoil_unwrap(struct slowboot_tinfoil *tinfoil,
 static loff_t fill_in_item(struct slowboot_validation_item *item,
 			   char *line, loff_t *remaining,
 			   const char XCFG_TINFOIL_NEW_LINE,
-			   int XCFG_TINFOIL_HSLEN)
+			   size_t XCFG_TINFOIL_HSLEN)
 {
 	loff_t pos;
 	loff_t off;
@@ -577,9 +577,9 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 static void slowboot_init_setup(struct slowboot_init_container *sic,
 				const char *XCFG_TINFOIL_PKALGO,
 				const char *XCFG_TINFOIL_IDTYPE,
-				int XCFG_TINFOIL_DGLEN,
+				size_t XCFG_TINFOIL_DGLEN,
 				const char *XCFG_TINFOIL_HSALGO,
-				int XCFG_TINFOIL_PKLEN)
+				size_t XCFG_TINFOIL_PKLEN)
 {
 	memset(sic, GS_MEMSET_DEFAULT, sizeof(struct slowboot_init_container));
 
@@ -691,7 +691,7 @@ static int slowboot_init_open_files(struct slowboot_init_container *sic,
  * @XCFG_TINFOIL_SHASH_MASK: crypto_alloc_shash.mask
  */
 static int slowboot_init_digest(struct slowboot_init_container *sic,
-				int XCFG_TINFOIL_DGLEN,
+				size_t XCFG_TINFOIL_DGLEN,
 				const char *XCFG_TINFOIL_HSALGO,
 				int XCFG_TINFOIL_SHASH_TYPE,
 				int XCFG_TINFOIL_SHASH_MASK)
@@ -774,7 +774,7 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 				 struct slowboot_validation_item **item_ref,
 				 int *item_ct,
 				 const char XCFG_TINFOIL_NEW_LINE,
-				 int XCFG_TINFOIL_HSLEN)
+				 size_t XCFG_TINFOIL_HSLEN)
 {
 
 	if (sic->file_size <= 0) {
@@ -837,11 +837,11 @@ static int slowboot_init(struct slowboot_tinfoil *tinfoil,
 			 const char *XCFG_TINFOIL_PKALGOPD,
 			 const char *XCFG_TINFOIL_PKALGO,
 			 const char *XCFG_TINFOIL_IDTYPE,
-			 int XCFG_TINFOIL_DGLEN,
+			 size_t XCFG_TINFOIL_DGLEN,
 			 const char *XCFG_TINFOIL_HSALGO,
-			 int XCFG_TINFOIL_PKLEN,
+			 size_t XCFG_TINFOIL_PKLEN,
 			 const char XCFG_TINFOIL_NEW_LINE,
-			 int XCFG_TINFOIL_HSLEN,
+			 size_t XCFG_TINFOIL_HSLEN,
 			 int XCFG_TINFOIL_AK_CIPHER_TYPE,
 			 int XCFG_TINFOIL_AK_CIPHER_MASK,
 			 int XCFG_TINFOIL_SHASH_TYPE,
@@ -925,11 +925,11 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil,
 			      const char *XCFG_TINFOIL_PKALGOPD,
 			      const char *XCFG_TINFOIL_PKALGO,
 			      const char *XCFG_TINFOIL_IDTYPE,
-			      int XCFG_TINFOIL_DGLEN,
+			      size_t XCFG_TINFOIL_DGLEN,
 			      const char *XCFG_TINFOIL_HSALGO,
-			      int XCFG_TINFOIL_PKLEN,
+			      size_t XCFG_TINFOIL_PKLEN,
 			      const char XCFG_TINFOIL_NEW_LINE,
-			      int XCFG_TINFOIL_HSLEN,
+			      size_t XCFG_TINFOIL_HSLEN,
 			      spinlock_t *gs_irq_killer,
 			      int XCFG_TINFOIL_AK_CIPHER_TYPE,
 			      int XCFG_TINFOIL_AK_CIPHER_MASK,
@@ -1004,7 +1004,7 @@ static int slowboot_tinfoil_init(struct slowboot_tinfoil *tinfoil,
 				 const char *XCFG_TINFOIL_CF,
 				 const char *XCFG_TINFOIL_CFS,
 				 const char *XCFG_TINFOIL_PK,
-				 int XCFG_TINFOIL_PKLEN)
+				 size_t XCFG_TINFOIL_PKLEN)
 {
 	if (tinfoil == NULL)
 		return -EINVAL;
@@ -1041,9 +1041,9 @@ static void slowboot_tinfoil_free(struct slowboot_tinfoil *tinfoil)
  * Obtain size of file via seeking
  * @fp: struct file
  */
-size_t __gs_get_file_size(struct file *fp)
+loff_t __gs_get_file_size(struct file *fp)
 {
-	size_t file_size;
+	loff_t file_size;
 
 	file_size = 0;
 	if (fp == NULL)
@@ -1065,11 +1065,11 @@ out:
  * @ignore_size: don't fail if the size of the file doesn't match
  */
 char *__gs_read_file_to_memory(struct file *fp,
-			       size_t file_size,
+			       loff_t file_size,
 			       loff_t *pos,
 			       int ignore_size)
 {
-	size_t num_read;
+	loff_t num_read;
 	char *buf;
 
 	buf = NULL;
@@ -1198,9 +1198,9 @@ int __gs_pk_sig_verify_init(struct sig_verify *sv,
 int __gs_tfsb_go(const char *config_tinfoil_cf,
 		 const char *config_tinfoil_cfs,
 		 const char *config_tinfoil_pk,
-		 int config_tinfoil_pklen,
-		 int config_tinfoil_dglen,
-		 int config_tinfoil_hslen,
+		 size_t config_tinfoil_pklen,
+		 size_t config_tinfoil_dglen,
+		 size_t config_tinfoil_hslen,
 		 const char *config_tinfoil_pkalgo,
 		 const char *config_tinfoil_pkalgopd,
 		 const char *config_tinfoil_hsalgo,
