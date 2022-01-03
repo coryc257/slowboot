@@ -34,7 +34,7 @@
 #define GS_LSM_FLAGS 0
 #define GS_FILP_FLAGS 0
 
-#define GS_KEYLEN_INIT -1
+#define GS_KEYLEN_INIT 0
 #define GS_HEX_DENOM 2
 
 #define GS_STRING_BASE 4096

@@ -83,7 +83,7 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
 		return -ENOMEM;
 	}
 
-	if (pkey == NULL || pkey->key == NULL || pkey->keylen <= 0) {
+	if (pkey == NULL || pkey->key == NULL || pkey->keylen == 0) {
 		GLOW(-EINVAL, __func__, "Invalid Public Key Parameters");
 		return -EINVAL;
 	}
