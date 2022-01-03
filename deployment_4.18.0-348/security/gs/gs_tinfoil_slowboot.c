@@ -776,6 +776,9 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 				 const char XCFG_TINFOIL_NEW_LINE,
 				 size_t XCFG_TINFOIL_HSLEN)
 {
+	loff_t tmp;
+
+	tmp = 0;
 
 	if (sic->file_size <= 0) {
 		GLOW(-EINVAL, __func__, "~invalid file size");
@@ -804,10 +807,18 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 	sic->pos = 0; // reusing
 	sic->remaining = sic->file_size;
 	while (sic->remaining) {
-		sic->pos += fill_in_item(sic->c_item, &sic->buf[sic->pos],
-					 &(sic->remaining),
-					 XCFG_TINFOIL_NEW_LINE,
-					 XCFG_TINFOIL_HSLEN);
+//		sic->pos += fill_in_item(sic->c_item, &sic->buf[sic->pos],
+//					 &(sic->remaining),
+//					 XCFG_TINFOIL_NEW_LINE,
+//					 XCFG_TINFOIL_HSLEN);
+
+		tmp = fill_in_item(sic->c_item, &sic->buf[sic->pos],
+				   &(sic->remaining),
+				   XCFG_TINFOIL_NEW_LINE,
+				   XCFG_TINFOIL_HSLEN);
+		if (__gs_safe_loff_add(sic->pos, tmp,
+				       &(sic->pos)) != GS_SUCCESS)
+			return -EINVAL;
 		sic->c_item++;
 	}
 

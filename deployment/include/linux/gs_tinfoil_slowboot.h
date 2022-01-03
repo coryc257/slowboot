@@ -51,6 +51,8 @@
 #define GS_SEEK_TO_END 0
 #define GS_START_OF_FILE 0
 
+#define GS_LOFF_T_MAX (~(loff_t)0)
+
 enum { GS_TRUE=1, GS_FALSE=0 };
 enum { GS_SUCCESS=0, GS_FAIL=1 };
 enum { GS_TINFOIL_FAIL=1, GS_TINFOIL_SUCCESS=0 };
@@ -133,6 +135,20 @@ struct sig_verify {
 static loff_t __always_inline GS_SEEK_TO_START(loff_t current_position)
 {
 	return current_position * -1;
+}
+
+static int __always_inline __gs_safe_loff_add(loff_t current_value,
+					      loff_t requested_add,
+					      loff_t *result)
+{
+	if (current_value + requested_add < current_value)
+		goto __gs_safe_loff_adder_err;
+
+	*result = current_value + requested_add;
+	return GS_SUCCESS;
+
+__gs_safe_loff_adder_err:
+	return -EINVAL;
 }
 
 char *__gs_read_file_to_memory(struct file *fp,
