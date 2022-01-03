@@ -94,7 +94,7 @@ struct tinfoil_check {
 	struct slowboot_validation_item *item;
 	struct crypto_shash *alg;
 	struct sdesc *sd;
-	unsigned char *digest;
+	u8 *digest;
 };
 
 /* Initialization Container Holding initial signature verification items */
@@ -109,8 +109,8 @@ struct slowboot_init_container {
 	loff_t remaining;
 	loff_t sfp_pos;
 	long num_items;
-	char *buf;
-	char *sfp_buf;
+	u8 *buf;
+	u8 *sfp_buf;
 	unsigned char *kernel_key;
 	unsigned char *digest;
 	struct slowboot_validation_item *items;
