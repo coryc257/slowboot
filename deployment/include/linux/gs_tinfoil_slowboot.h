@@ -51,7 +51,7 @@
 #define GS_SEEK_TO_END 0
 #define GS_START_OF_FILE 0
 
-#define GS_LOFF_T_MAX (~(loff_t)0)
+#define GS_LOFF_T_MAX (~(loff_t)0U)
 
 enum { GS_TRUE=1, GS_FALSE=0 };
 enum { GS_SUCCESS=0, GS_FAIL=1 };
@@ -141,7 +141,7 @@ static int __always_inline __gs_safe_loff_add(loff_t current_value,
 					      loff_t requested_add,
 					      loff_t *result)
 {
-	if (current_value + requested_add < current_value)
+	if ((GS_LOFF_T_MAX - current_value) < requested_add)
 		goto __gs_safe_loff_adder_err;
 
 	*result = current_value + requested_add;
@@ -151,44 +151,32 @@ __gs_safe_loff_adder_err:
 	return -EINVAL;
 }
 
-static int __always__inline __gs_safe_int_add(int current_value,)
-					      int requested_add,
+static int __always__inline __gs_safe_int_add(int x,)
+					      int y,
 					      int *result)
 {
-	int tmp;
 
-	tmp = current_value + requested_add;
+	if (((x < 0) && (y < 0) && ((INT_MIN - x) > y))
+	    || ((x > 0) && (y > 0) && ((INT_MAX - x) < y)))
+		goto __gs_safe_int_adder_fail;
 
-	if (current_value < 0 && requested_add < 0)
-		if (tmp > current_value)
-			goto __gs_safe_int_adder_fail;
-	if (current_value > 0 && requested_add > 0)
-		if (tmp < current_value)
-			goto __gs_safe_int_adder_fail;
-
-	*result = tmp;
+	*result = x + y;
 	return GS_SUCCESS;
 
 __gs_safe_int_adder_fail:
 	return -EINVAL;
 }
 
-static int __always__inline __gs_safe_long_add(long current_value,)
-					       long requested_add,
+static int __always__inline __gs_safe_long_add(long x,)
+					       long y,
 					       long *result)
 {
-	long tmp;
 
-	tmp = current_value + requested_add;
+	if (((x < 0) && (y < 0) && ((LONG_MIN - x) > y))
+	    || ((x > 0) && (y > 0) && ((LONG_MAX - x) < y)))
+		goto __gs_safe_long_adder_fail;
 
-	if (current_value < 0 && requested_add < 0)
-		if (tmp > current_value)
-			goto __gs_safe_long_adder_fail;
-	if (current_value > 0 && requested_add > 0)
-		if (tmp < current_value)
-			goto __gs_safe_long_adder_fail;
-
-	*result = tmp;
+	*result = x + y;
 	return GS_SUCCESS;
 
 __gs_safe_long_adder_fail:
