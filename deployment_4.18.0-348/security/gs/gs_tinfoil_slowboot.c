@@ -799,6 +799,9 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 		return -EINVAL;
 	}
 
+	if (sic->num_items > (SIZE_MAX/sizeof(struct slowboot_validation_item)))
+		return -ENOMEM;
+
 	sic->c_item = sic->items = (struct slowboot_validation_item *)
 				vmalloc(sizeof(struct slowboot_validation_item)
 					*(sic->num_items));
