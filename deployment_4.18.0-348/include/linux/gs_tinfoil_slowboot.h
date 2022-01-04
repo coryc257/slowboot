@@ -151,6 +151,50 @@ __gs_safe_loff_adder_err:
 	return -EINVAL;
 }
 
+static int __always__inline __gs_safe_int_add(int current_value,)
+					      int requested_add,
+					      int *result)
+{
+	int tmp;
+
+	tmp = current_value + requested_add;
+
+	if (current_value < 0 && requested_add < 0)
+		if (tmp > current_value)
+			goto __gs_safe_int_adder_fail;
+	if (current_value > 0 && requested_add > 0)
+		if (tmp < current_value)
+			goto __gs_safe_int_adder_fail;
+
+	*result = tmp;
+	return GS_SUCCESS;
+
+__gs_safe_int_adder_fail:
+	return -EINVAL;
+}
+
+static int __always__inline __gs_safe_long_add(long current_value,)
+					       long requested_add,
+					       long *result)
+{
+	long tmp;
+
+	tmp = current_value + requested_add;
+
+	if (current_value < 0 && requested_add < 0)
+		if (tmp > current_value)
+			goto __gs_safe_long_adder_fail;
+	if (current_value > 0 && requested_add > 0)
+		if (tmp < current_value)
+			goto __gs_safe_long_adder_fail;
+
+	*result = tmp;
+	return GS_SUCCESS;
+
+__gs_safe_long_adder_fail:
+	return -EINVAL;
+}
+
 char *__gs_read_file_to_memory(struct file *fp,
 			       loff_t file_size,
 			       loff_t *pos,

@@ -777,6 +777,7 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 				 size_t XCFG_TINFOIL_HSLEN)
 {
 	loff_t tmp;
+	long items_remaining;
 
 	tmp = 0;
 
@@ -786,8 +787,11 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 	}
 
 	for (sic->pos = 0; sic->pos < sic->file_size; sic->pos++) {
-		if (sic->buf[sic->pos] == XCFG_TINFOIL_NEW_LINE)
-			sic->num_items++;
+		if (sic->buf[sic->pos] == XCFG_TINFOIL_NEW_LINE) {
+			if (__gs_safe_long_add(sic->num_items, 1,
+					       &(sic->num_items)) != GS_SUCCESS)
+				return -EINVAL
+		}
 	}
 
 	if (sic->num_items == 0) {
@@ -806,12 +810,9 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 
 	sic->pos = 0; // reusing
 	sic->remaining = sic->file_size;
-	while (sic->remaining) {
-//		sic->pos += fill_in_item(sic->c_item, &sic->buf[sic->pos],
-//					 &(sic->remaining),
-//					 XCFG_TINFOIL_NEW_LINE,
-//					 XCFG_TINFOIL_HSLEN);
+	items_remaining = sic->num_items;
 
+	while (sic->remaining && items_remaining) {
 		tmp = fill_in_item(sic->c_item, &sic->buf[sic->pos],
 				   &(sic->remaining),
 				   XCFG_TINFOIL_NEW_LINE,
@@ -819,7 +820,13 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 		if (__gs_safe_loff_add(sic->pos, tmp,
 				       &(sic->pos)) != GS_SUCCESS)
 			return -EINVAL;
-		sic->c_item++;
+
+		if (items_remaining)
+			sic->c_item++;
+		else
+			return -EINVAL;
+
+		items_remaining--;
 	}
 
 	*item_ref = sic->items;
