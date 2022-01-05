@@ -137,9 +137,9 @@ static loff_t __always_inline GS_SEEK_TO_START(loff_t current_position)
 	return current_position * -1;
 }
 
-static int __always_inline __gs_safe_loff_add(loff_t current_value,
-					      loff_t requested_add,
-					      loff_t *result)
+static inline int __must_check __gs_safe_loff_add(loff_t current_value,
+						  loff_t requested_add,
+						  loff_t *result)
 {
 	if ((GS_LOFF_T_MAX - current_value) < requested_add)
 		goto __gs_safe_loff_adder_err;
@@ -151,9 +151,9 @@ __gs_safe_loff_adder_err:
 	return -EINVAL;
 }
 
-static int __always__inline __gs_safe_int_add(int x,)
-					      int y,
-					      int *result)
+static inline int __must_check __gs_safe_int_add(int x,)
+						 int y,
+						 int *result)
 {
 
 	if (((x < 0) && (y < 0) && ((INT_MIN - x) > y))
@@ -167,9 +167,9 @@ __gs_safe_int_adder_fail:
 	return -EINVAL;
 }
 
-static int __always__inline __gs_safe_long_add(long x,)
-					       long y,
-					       long *result)
+static inline int __must_check __gs_safe_long_add(long x,
+						  long y,
+						  long *result)
 {
 
 	if (((x < 0) && (y < 0) && ((LONG_MIN - x) > y))
@@ -181,6 +181,17 @@ static int __always__inline __gs_safe_long_add(long x,)
 
 __gs_safe_long_adder_fail:
 	return -EINVAL;
+}
+
+static inline int __must_check GS_PTR_ERR_OR_ZERO(void *p)
+{
+	long long check;
+	if (!IS_ERR(p))
+		return 0;
+	check = (long long)p;
+	if (check > INT_MAX || check < INT_MIN)
+		return -EINVAL;
+	return (int)check;
 }
 
 char *__gs_read_file_to_memory(struct file *fp,
