@@ -523,6 +523,7 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 
 	if (line == NULL || item == NULL || remaining == NULL
 	    || XCFG_TINFOIL_NEW_LINE == ' ' || XCFG_TINFOIL_HSLEN == 0) {
+		GLOW(1, __func__, "~checks");
 		goto __fill_in_item_fail;
 	}
 
@@ -533,8 +534,10 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 	while (rem > 0) {
 		// Find space separator between @hash and @path
 		if (line[pos] == ' ' && off == 0 && rem > 1) {\
-			if (pos != XCFG_TINFOIL_HSLEN)
+			if (pos != XCFG_TINFOIL_HSLEN) {
+				GLOW(pos, __func__, "~pos");
 				goto __fill_in_item_fail;
+			}
 			off = pos+1;
 		}
 
@@ -555,12 +558,15 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 		// This should not happen because who
 		// would sign something malicous?
 		if (pos > (XCFG_TINFOIL_HSLEN+GS_STRING_GUARD)
+		    && pos > (off+1)
 		    && (pos-off-1) > 0
 		    && (pos-off) <= PATH_MAX) {
 			memcpy(item->hash, line, XCFG_TINFOIL_HSLEN);
 			memcpy(item->path, line+off, pos-off);
-		} else
+		} else {
+			pr_err("GS TFSB sets %llu,%llu", pos, off);
 			goto __fill_in_item_fail;
+		}
 	}
 
 	// Advance to next record since we should be pointing to separator

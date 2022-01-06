@@ -51,7 +51,8 @@
 #define GS_SEEK_TO_END 0
 #define GS_START_OF_FILE 0
 
-#define GS_LOFF_T_MAX (~(loff_t)0U)
+#define GS_LOFF_T_MAX ((loff_t)(~0ULL>>1))
+#define GS_LOFF_T_MIN (-GS_LOFF_T_MAX - 1)
 
 enum { GS_TRUE=1, GS_FALSE=0 };
 enum { GS_SUCCESS=0, GS_FAIL=1 };
@@ -137,18 +138,19 @@ static loff_t __always_inline GS_SEEK_TO_START(loff_t current_position)
 	return current_position * -1;
 }
 
-static inline int __must_check __gs_safe_loff_add(loff_t current_value,
-						  loff_t requested_add,
+static inline int __must_check __gs_safe_loff_add(loff_t x,
+						  loff_t y,
 						  loff_t *result)
 {
-	if ((GS_LOFF_T_MAX - current_value) < requested_add)
-		goto __gs_safe_loff_adder_err;
+	if (((x < 0) && (y < 0) && ((GS_LOFF_T_MIN - x) > y))
+		    || ((x > 0) && (y > 0) && ((GS_LOFF_T_MAX - x) < y)))
+			goto __gs_safe_loff_adder_fail;
 
-	*result = current_value + requested_add;
-	return GS_SUCCESS;
+		*result = x + y;
+		return GS_SUCCESS;
 
-__gs_safe_loff_adder_err:
-	return -EINVAL;
+__gs_safe_loff_adder_fail:
+		return -EINVAL;
 }
 
 static inline int __must_check __gs_safe_int_add(int x,
