@@ -171,7 +171,6 @@ static inline int __must_check __gs_safe_long_add(long x,
 						  long y,
 						  long *result)
 {
-
 	if (((x < 0) && (y < 0) && ((LONG_MIN - x) > y))
 	    || ((x > 0) && (y > 0) && ((LONG_MAX - x) < y)))
 		goto __gs_safe_long_adder_fail;

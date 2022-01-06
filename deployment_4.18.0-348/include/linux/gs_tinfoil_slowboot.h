@@ -151,7 +151,7 @@ __gs_safe_loff_adder_err:
 	return -EINVAL;
 }
 
-static inline int __must_check __gs_safe_int_add(int x,)
+static inline int __must_check __gs_safe_int_add(int x,
 						 int y,
 						 int *result)
 {
@@ -171,7 +171,6 @@ static inline int __must_check __gs_safe_long_add(long x,
 						  long y,
 						  long *result)
 {
-
 	if (((x < 0) && (y < 0) && ((LONG_MIN - x) > y))
 	    || ((x > 0) && (y > 0) && ((LONG_MAX - x) < y)))
 		goto __gs_safe_long_adder_fail;

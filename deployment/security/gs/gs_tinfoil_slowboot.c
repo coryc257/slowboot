@@ -512,16 +512,18 @@ static int tinfoil_unwrap(struct slowboot_tinfoil *tinfoil,
 static loff_t fill_in_item(struct slowboot_validation_item *item,
 			   char *line, loff_t *remaining,
 			   const char XCFG_TINFOIL_NEW_LINE,
-			   size_t XCFG_TINFOIL_HSLEN)
+			   size_t XCFG_TINFOIL_HSLEN,
+			   struct pbit *status)
 {
 	loff_t pos;
 	loff_t off;
 	loff_t rem;
 
-	if (line == NULL) {
-		if (remaining != NULL)
-			*remaining = 0;
-		return 0;
+	pbit_y(status, GS_SUCCESS);
+
+	if (line == NULL || item == NULL || remaining == NULL
+	    || XCFG_TINFOIL_NEW_LINE == ' ' || XCFG_TINFOIL_HSLEN == 0) {
+		goto __fill_in_item_fail;
 	}
 
 	pos = 0;
@@ -530,14 +532,17 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 
 	while (rem > 0) {
 		// Find space separator between @hash and @path
-		if (line[pos] == ' ' && off == 0 && rem > 1)
+		if (line[pos] == ' ' && off == 0 && rem > 1) {\
+			if (pos != XCFG_TINFOIL_HSLEN)
+				goto __fill_in_item_fail;
 			off = pos+1;
+		}
 
 		// Check for record separator
 		if (line[pos] == XCFG_TINFOIL_NEW_LINE)
 			break;
-
-		pos++;
+		if(__gs_safe_loff_add(pos, 1, &pos) != GS_SUCCESS)
+			goto __fill_in_item_fail;
 		rem--;
 	}
 
@@ -550,19 +555,28 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 		// This should not happen because who
 		// would sign something malicous?
 		if (pos > (XCFG_TINFOIL_HSLEN+GS_STRING_GUARD)
-		    && (pos-off-1) > 0) {
+		    && (pos-off-1) > 0
+		    && (pos-off) <= PATH_MAX) {
 			memcpy(item->hash, line, XCFG_TINFOIL_HSLEN);
 			memcpy(item->path, line+off, pos-off);
-		}
+		} else
+			goto __fill_in_item_fail;
 	}
 
 	// Advance to next record since we should be pointing to separator
 	if (rem > 0) {
-		pos++;
+		if(__gs_safe_loff_add(pos, 1, &pos) != GS_SUCCESS)
+			goto __fill_in_item_fail;
 		rem--;
 	}
 	*remaining = rem;
 	return pos;
+
+__fill_in_item_fail:
+	if (remaining != NULL)
+		*remaining = 0;
+	pbit_n(status, -EINVAL);
+	return 0;
 }
 
 /*
@@ -778,6 +792,7 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 {
 	loff_t tmp;
 	long items_remaining;
+	struct pbit status;
 
 	tmp = 0;
 
@@ -786,11 +801,18 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 		return -EINVAL;
 	}
 
+	if (!sic->buf) {
+		GLOW(-EINVAL, __func__, "~no buffer");
+		return -EINVAL;
+	}
+
 	for (sic->pos = 0; sic->pos < sic->file_size; sic->pos++) {
 		if (sic->buf[sic->pos] == XCFG_TINFOIL_NEW_LINE) {
 			if (__gs_safe_long_add(sic->num_items, 1,
-					       &(sic->num_items)) != GS_SUCCESS)
+					       &(sic->num_items)) != GS_SUCCESS){
+				GLOW(-EINVAL, __func__, "~overflow(1)");
 				return -EINVAL;
+			}
 		}
 	}
 
@@ -799,8 +821,10 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 		return -EINVAL;
 	}
 
-	if (sic->num_items > (SIZE_MAX/sizeof(struct slowboot_validation_item)))
+	if (sic->num_items > (SIZE_MAX/sizeof(struct slowboot_validation_item))){
+		GLOW(-ENOMEM, __func__, "~allocation would overflow");
 		return -ENOMEM;
+	}
 
 	sic->c_item = sic->items = (struct slowboot_validation_item *)
 				vmalloc(sizeof(struct slowboot_validation_item)
@@ -814,20 +838,32 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 	sic->pos = 0; // reusing
 	sic->remaining = sic->file_size;
 	items_remaining = sic->num_items;
+	pbit_y(&status, GS_SUCCESS);
 
 	while (sic->remaining && items_remaining) {
 		tmp = fill_in_item(sic->c_item, &sic->buf[sic->pos],
 				   &(sic->remaining),
 				   XCFG_TINFOIL_NEW_LINE,
-				   XCFG_TINFOIL_HSLEN);
-		if (__gs_safe_loff_add(sic->pos, tmp,
-				       &(sic->pos)) != GS_SUCCESS)
+				   XCFG_TINFOIL_HSLEN,
+				   &status);
+
+		if (pbit_fail(&status)) {
+			GLOW(pbit_get(&status), __func__, "fill_in_item");
 			return -EINVAL;
+		}
+
+		if (__gs_safe_loff_add(sic->pos, tmp,
+				       &(sic->pos)) != GS_SUCCESS) {
+			GLOW(-EINVAL, __func__, "~overflow(2)");
+			return -EINVAL;
+		}
 
 		if (items_remaining)
 			sic->c_item++;
-		else
+		else {
+			GLOW(-EINVAL, __func__, "~data remaining but no items");
 			return -EINVAL;
+		}
 
 		items_remaining--;
 	}
