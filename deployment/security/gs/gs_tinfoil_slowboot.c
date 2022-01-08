@@ -36,8 +36,8 @@
  *                                                   |__/                      *
  *                        Dedicated to Terry A. Davis                          *
  ******************************************************************************/
-#define GLOW(code, spot, FUNC) pr_err("GS TFSB Fail ErrorCode: %d @ %s.%s\n",\
-				(code), (spot), (FUNC))
+#define GLOW(code, spot, FUNC) pr_err("GS TFSB Fail ErrorCode: %lld @ %s.%s\n",\
+				(long long)(code), (spot), (FUNC))
 ////////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -64,7 +64,13 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
 	struct pbit pc;
 
 	if (sv == NULL || sv->alg_name == NULL) {
-		GLOW(-EINVAL, __func__, "Null Parameters Passed");
+		GLOW(-EINVAL, __func__, "~Null Parameters Passed");
+		return -EINVAL;
+	}
+
+	if (strlen(sv->alg_name) > CRYPTO_MAX_ALG_NAME) {
+		GLOW(-EINVAL, __func__, "~Algorithm name too long");
+		GLOW(-EINVAL, __func__, sv->alg_name);
 		return -EINVAL;
 	}
 
@@ -74,7 +80,7 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
 	if (IS_ERR(sv->tfm)) {
 		pbit_y(&pc, GS_PTR_ERR_OR_ZERO(sv->tfm));
 		sv->tfm = NULL;
-		GLOW(pbit_get(&pc), __func__, "crypto_alloc_akcipher");
+		GLOW(pbit_get(&pc), __func__, "~crypto_alloc_akcipher");
 		return pbit_ret(&pc);
 	}
 
@@ -84,7 +90,7 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
 	}
 
 	if (pkey == NULL || pkey->key == NULL || pkey->keylen == 0) {
-		GLOW(-EINVAL, __func__, "Invalid Public Key Parameters");
+		GLOW(-EINVAL, __func__, "~Invalid Public Key Parameters");
 		return -EINVAL;
 	}
 
@@ -112,7 +118,7 @@ static int pk_sig_verify_validate(struct sig_verify *sv,
 				  const struct public_key_signature *sig)
 {
 	if (sv == NULL || sig == NULL || sv->req == NULL) {
-		GLOW(-EINVAL, __func__, "Invalid Parameters Passed");
+		GLOW(-EINVAL, __func__, "~Invalid Parameters Passed");
 		return -EINVAL;
 	}
 
@@ -336,6 +342,12 @@ static int tinfoil_check_allocate(struct tinfoil_check *c,
 				  int XCFG_TINFOIL_SHASH_MASK)
 {
 	struct pbit pc;
+
+	if (strlen(XCFG_TINFOIL_HSALGO) > CRYPTO_MAX_ALG_NAME) {
+		GLOW(-EINVAL, __func__, "~Algorithm name too long");
+		GLOW(-EINVAL, __func__, XCFG_TINFOIL_HSALGO);
+		return -EINVAL;
+	}
 
 	c->alg = crypto_alloc_shash(XCFG_TINFOIL_HSALGO,
 				    XCFG_TINFOIL_SHASH_TYPE,
@@ -718,6 +730,12 @@ static int slowboot_init_digest(struct slowboot_init_container *sic,
 {
 	struct pbit pc;
 
+	if (strlen(XCFG_TINFOIL_HSALGO) > CRYPTO_MAX_ALG_NAME) {
+		GLOW(-EINVAL, __func__, "~Algorithm name too long");
+		GLOW(-EINVAL, __func__, XCFG_TINFOIL_HSALGO);
+		return -EINVAL;
+	}
+
 	sic->halg = crypto_alloc_shash(XCFG_TINFOIL_HSALGO,
 				       XCFG_TINFOIL_SHASH_TYPE,
 				       XCFG_TINFOIL_SHASH_MASK);
@@ -864,7 +882,7 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 			return -EINVAL;
 		}
 
-		if (items_remaining)
+		if (items_remaining && sic->pos < sic->file_size)
 			sic->c_item++;
 		else {
 			GLOW(-EINVAL, __func__, "~data remaining but no items");
@@ -1156,6 +1174,8 @@ char *__gs_read_file_to_memory(struct file *fp,
 		buf = NULL;
 	}
 
+	buf[file_size] = '\0';
+
 out:
 	return buf;
 }
@@ -1170,6 +1190,9 @@ out:
 int __gs_memmem_sp(const char *s1, size_t s1_len,
 		   const char *s2, size_t s2_len)
 {
+	if (s1_len < s2_len)
+		return GS_FAIL;
+
 	while (s1_len >= s2_len) {
 		s1_len--;
 		if (memcmp(s1, s2, s2_len) == GS_STRING_MATCH)
@@ -1235,6 +1258,77 @@ int __gs_pk_sig_verify_init(struct sig_verify *sv,
 }
 
 /*
+ * Validate parameters
+ * @config_tinfoil_cf: path for the configuration file
+ * @config_tinfoil_cfs: path for the configuration file checksum file
+ * @config_tinfoil_pk: correctly (DER for RSA) encoded public key in HEX
+ * @config_tinfoil_pklen: strlen of @tinfoil_pk
+ * @config_tinfoil_dglen: number of bytes in digest 64 for sha512
+ * @config_tinfoil_hslen: strlen of hex representation of digest, 128 for sha512
+ * @tinfoil_pkalgo: algorithm used, likely "rsa"
+ * @tinfoil_pkalgopd: algorithm padding, likely "pkcs1pad(rsa,sha512)" can be ""
+ * @tinfoil_hsalgo: digest used, likely "sha512"
+ * @config_tinfoil_idtype: public_key.id_type likely "X509"
+ * @config_tinfoil_ak_cipher_type: ak_cipher type likely 0
+ * @config_tinfoil_ak_cipher_mask: ak_mask likely 0
+ * @config_tinfoil_shash_type: shash type likely 0
+ * @config_tinfoil_shash_mask: shash likely 0
+ * @gs_irq_killer: spinlock_t to block IRQ during test
+ * @config_tinfoil_new_line: char for new line '\n'
+ * @config_tinfoil_override: magic cmdline value to bypass test
+ * @config_tinfoil_version: logic version to use likely 1
+ * @config_tinfoil_reserved: future use
+ * @config_tinfoil_unused: future use
+ */
+int __gs_tfsb_verify_params(const char *config_tinfoil_cf,
+			    const char *config_tinfoil_cfs,
+			    const char *config_tinfoil_pk,
+			    size_t config_tinfoil_pklen,
+			    size_t config_tinfoil_dglen,
+			    size_t config_tinfoil_hslen,
+			    const char *config_tinfoil_pkalgo,
+			    const char *config_tinfoil_pkalgopd,
+			    const char *config_tinfoil_hsalgo,
+			    const char *config_tinfoil_idtype,
+			    int config_tinfoil_ak_cipher_type,
+			    int config_tinfoil_ak_cipher_mask,
+			    int config_tinfoil_shash_type,
+			    int config_tinfoil_shash_mask,
+			    spinlock_t *gs_irq_killer,
+			    char config_tinfoil_new_line,
+			    int config_tinfoil_version)
+{
+	if (config_tinfoil_new_line == '\0')
+		return GS_FAIL;
+
+	if (strlen(config_tinfoil_cf) > PATH_MAX)
+		return GS_FAIL;
+
+	if (strlen(config_tinfoil_cfs) > PATH_MAX)
+		return GS_FAIL;
+
+	if (strlen(config_tinfoil_pkalgo) > CRYPTO_MAX_ALG_NAME)
+		return GS_FAIL;
+
+	if (strlen(config_tinfoil_pkalgopd) > CRYPTO_MAX_ALG_NAME)
+		return GS_FAIL;
+
+	if (strlen(config_tinfoil_hsalgo) > CRYPTO_MAX_ALG_NAME)
+		return GS_FAIL;
+
+	if (strlen(config_tinfoil_idtype) > CRYPTO_MAX_ALG_NAME)
+		return GS_FAIL;
+
+	if (strlen(config_tinfoil_pk) != config_tinfoil_pklen)
+		return GS_FAIL;
+
+	if (gs_irq_killer == NULL)
+		return GS_FAIL;
+
+	return GS_SUCCESS;
+}
+
+/*
  * Perform entire test
  * @config_tinfoil_cf: path for the configuration file
  * @config_tinfoil_cfs: path for the configuration file checksum file
@@ -1256,7 +1350,6 @@ int __gs_pk_sig_verify_init(struct sig_verify *sv,
  * @config_tinfoil_version: logic version to use likely 1
  * @config_tinfoil_reserved: future use
  * @config_tinfoil_unused: future use
- * @config_bug_on_fail: BUG(); if errors occur
  */
 int __gs_tfsb_go(const char *config_tinfoil_cf,
 		 const char *config_tinfoil_cfs,
@@ -1283,6 +1376,27 @@ int __gs_tfsb_go(const char *config_tinfoil_cf,
 
 	pbit_n(&pc, -EINVAL);
 	pr_info("GS TFSB START\n");
+
+	if (__gs_tfsb_verify_params(config_tinfoil_cf,
+				    config_tinfoil_cfs,
+				    config_tinfoil_pk,
+				    config_tinfoil_pklen,
+				    config_tinfoil_dglen,
+				    config_tinfoil_hslen,
+				    config_tinfoil_pkalgo,
+				    config_tinfoil_pkalgopd,
+				    config_tinfoil_hsalgo,
+				    config_tinfoil_idtype,
+				    config_tinfoil_ak_cipher_type,
+				    config_tinfoil_ak_cipher_mask,
+				    config_tinfoil_shash_type,
+				    config_tinfoil_shash_mask,
+				    gs_irq_killer,
+				    config_tinfoil_new_line,
+				    config_tinfoil_version) != GS_SUCCESS) {
+		GLOW(-EINVAL, __func__, "~Bad Parameters");
+		return -EINVAL;
+	}
 
 	tinfoil = kmalloc(sizeof(struct slowboot_tinfoil), GFP_KERNEL);
 	if (!tinfoil) {

@@ -143,7 +143,7 @@ static inline int __must_check __gs_safe_loff_add(loff_t x,
 						  loff_t *result)
 {
 	if (((x < 0) && (y < 0) && ((GS_LOFF_T_MIN - x) > y))
-		    || ((x > 0) && (y > 0) && ((GS_LOFF_T_MAX - x) < y)))
+	    || ((x > 0) && (y > 0) && ((GS_LOFF_T_MAX - x) < y)))
 			goto __gs_safe_loff_adder_fail;
 
 		*result = x + y;
