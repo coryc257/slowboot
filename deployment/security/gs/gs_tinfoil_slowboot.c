@@ -882,7 +882,7 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 			return -EINVAL;
 		}
 
-		if (items_remaining && sic->pos < sic->file_size)
+		if (items_remaining && sic->pos <= sic->file_size)
 			sic->c_item++;
 		else {
 			GLOW(-EINVAL, __func__, "~data remaining but no items");
