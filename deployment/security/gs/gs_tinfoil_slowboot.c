@@ -227,7 +227,7 @@ static int tinfoil_open(struct slowboot_validation_item *item)
  * @tinfoil: slowboot tinfoil
  * @item: slow boot validation item
  */
-static int tinfoil_stat_alloc(struct slowboot_tinfoil *tinfoil,
+static int tinfoil_stat_alloc(const struct slowboot_tinfoil *tinfoil,
 			      struct slowboot_validation_item *item)
 {
 	if (
@@ -263,7 +263,7 @@ static void tinfoil_close(struct slowboot_validation_item *item)
  * @item: slowboot validation item
  * @XCFG_TINFOIL_DGLEN: digest length
  */
-static int tinfoil_read(struct slowboot_tinfoil *tinfoil,
+static int tinfoil_read(const struct slowboot_tinfoil *tinfoil,
 			struct slowboot_validation_item *item,
 			size_t XCFG_TINFOIL_DGLEN)
 {
@@ -522,7 +522,7 @@ static int tinfoil_unwrap(struct slowboot_tinfoil *tinfoil,
  * returns new position
  */
 static loff_t fill_in_item(struct slowboot_validation_item *item,
-			   char *line, loff_t *remaining,
+			   const char *line, loff_t *remaining,
 			   const char XCFG_TINFOIL_NEW_LINE,
 			   size_t XCFG_TINFOIL_HSLEN,
 			   struct pbit *status)
@@ -1211,7 +1211,8 @@ struct sdesc *__gs_init_sdesc(struct crypto_shash *alg)
 	struct sdesc *sdesc;
 	size_t size;
 
-	size = sizeof(struct shash_desc) + crypto_shash_descsize(alg);
+	size = sizeof(struct shash_desc) +
+		crypto_shash_descsize(alg);
 	sdesc = kmalloc(size, GFP_KERNEL);
 	if (!sdesc)
 		return NULL;
