@@ -573,10 +573,10 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 		    && pos > (off+1)
 		    && (pos-off-1) > 0
 		    && (pos-off) <= PATH_MAX) {
-			memcpy(item->hash, line, XCFG_TINFOIL_HSLEN);
+			memcpy(item->hash, line, XCFG_TINFOIL_HSLEN); //549
 			memcpy(item->path, line+off, pos-off);
 		} else {
-			pr_err("GS TFSB sets %llu,%llu", pos, off);
+			pr_err("GS TFSB sets %llu,%llu", pos, off); //575
 			goto __fill_in_item_fail;
 		}
 	}
@@ -635,6 +635,11 @@ static int slowboot_init_setup_keys(struct slowboot_init_container *sic,
 
 	if (sic->kernel_key_len <= 0 || config_pkey == NULL)
 		return -EINVAL;
+
+	if ((strlen(config_pkey)/2) != sic->kernel_key_len) {
+		GLOW(-EINVAL, __func__, "~kernel key len mismatch");
+		return -EINVAL;
+	}
 
 	sic->kernel_key = kmalloc(sic->kernel_key_len + GS_STRING_PAD,
 				  GFP_KERNEL);

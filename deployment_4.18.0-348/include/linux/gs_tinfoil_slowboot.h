@@ -130,7 +130,7 @@ struct sig_verify {
 	const char *alg_name;
 	void *output;
 	unsigned int outlen; // int due to value returned by the api
-	char alg_name_buf[CRYPTO_MAX_ALG_NAME];
+	char alg_name_buf[CRYPTO_MAX_ALG_NAME+GS_STRING_PAD];
 };
 
 static loff_t __always_inline GS_SEEK_TO_START(loff_t current_position)
