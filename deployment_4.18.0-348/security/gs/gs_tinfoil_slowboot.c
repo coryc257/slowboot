@@ -101,6 +101,10 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
 	}
 
 	sv->outlen = crypto_akcipher_maxsize(sv->tfm);
+
+	if (sv->outlen == 0)
+		return -EINVAL;
+
 	sv->output = kmalloc(sv->outlen+GS_STRING_PAD, GFP_KERNEL);
 	if (!sv->output) {
 		return -ENOMEM;
@@ -118,7 +122,8 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
 static int pk_sig_verify_validate(struct sig_verify *sv,
 				  const struct public_key_signature *sig)
 {
-	if (sv == NULL || sig == NULL || sv->req == NULL) {
+	if (sv == NULL || sig == NULL || sv->req == NULL
+	    || sig->s_size == 0 || sig->digest_size == 0) {
 		GLOW(-EINVAL, __func__, "~Invalid Parameters Passed");
 		return -EINVAL;
 	}
@@ -208,6 +213,9 @@ static int tinfoil_open(struct slowboot_validation_item *item)
 {
 	struct pbit pc;
 
+	if (item == NULL)
+		return -EINVAL;
+
 	item->fp = filp_open(item->path, O_RDONLY, GS_FILP_FLAGS);
 	if (IS_ERR(item->fp) || item->fp == NULL) {
 		pbit_n(&pc, GS_PTR_ERR_OR_ZERO(item->fp));
@@ -231,6 +239,9 @@ static int tinfoil_open(struct slowboot_validation_item *item)
 static int tinfoil_stat_alloc(const struct slowboot_tinfoil *tinfoil,
 			      struct slowboot_validation_item *item)
 {
+	if (tinfoil == NULL || item == NULL)
+		return -EINVAL;
+
 	if (
 		vfs_getattr(&(item->fp->f_path),
 			tinfoil->st,
@@ -254,7 +265,7 @@ static int tinfoil_stat_alloc(const struct slowboot_tinfoil *tinfoil,
  */
 static void tinfoil_close(struct slowboot_validation_item *item)
 {
-	if (item->fp != NULL)
+	if (item != NULL && item->fp != NULL)
 		filp_close(item->fp, NULL);
 }
 
@@ -270,6 +281,9 @@ static int tinfoil_read(const struct slowboot_tinfoil *tinfoil,
 {
 	struct pbit pc;
 	size_t number_read;
+
+	if (tinfoil == NULL || item == NULL)
+		return -EINVAL;
 
 	number_read = 0;
 	pbit_n(&pc, -EINVAL);
@@ -318,11 +332,11 @@ out:
 static int tinfoil_check_init(struct tinfoil_check *c,
 			      struct slowboot_validation_item *item)
 {
-	memset(c, GS_MEMSET_DEFAULT, sizeof(struct tinfoil_check));
-
-	if (item == NULL || item->buf == NULL || item->buf_len == 0)
+	if (c == NULL || item == NULL || item->buf == NULL
+	    || item->buf_len == 0)
 		return -EINVAL;
 
+	memset(c, GS_MEMSET_DEFAULT, sizeof(struct tinfoil_check));
 	c->item = item;
 
 	return GS_SUCCESS;
@@ -343,6 +357,9 @@ static int tinfoil_check_allocate(struct tinfoil_check *c,
 				  int XCFG_TINFOIL_SHASH_MASK)
 {
 	struct pbit pc;
+
+	if (c == NULL)
+		return -EINVAL;
 
 	if (strlen(XCFG_TINFOIL_HSALGO) > CRYPTO_MAX_ALG_NAME) {
 		GLOW(-EINVAL, __func__, "~Algorithm name too long");
@@ -389,10 +406,10 @@ static void tinfoil_check_validate(struct tinfoil_check *c,
 {
 	size_t i;
 
+	pbit_n(&(c->item->is_ok), GS_IRRELEVANT);
 	crypto_shash_digest(&(c->sd->shash), c->item->buf, c->item->buf_len,
 			    c->digest);
 
-	pbit_n(&(c->item->is_ok), GS_IRRELEVANT);
 	for (i = 0; i < XCFG_TINFOIL_DGLEN; i++) {
 		if (c->item->b_hash[i] != c->digest[i]) {
 			pbit_n(&(c->item->is_ok), GS_IRRELEVANT);
@@ -408,16 +425,25 @@ static void tinfoil_check_validate(struct tinfoil_check *c,
  */
 static void tinfoil_check_free(struct tinfoil_check *c)
 {
+	if (c == NULL)
+		return;
+
 	if (c->item != NULL && c->item->buf != NULL) {
 		vfree(c->item->buf);
 		c->item->buf = NULL;
 	}
-	if (c->sd != NULL)
+	if (c->sd != NULL) {
 		kfree(c->sd);
-	if (c->digest != NULL)
+		c->sd = NULL;
+	}
+	if (c->digest != NULL) {
 		kfree(c->digest);
-	if (c->alg != NULL)
+		c->digest = NULL;
+	}
+	if (c->alg != NULL) {
 		crypto_free_shash(c->alg);
+		c->alg = NULL;
+	}
 }
 
 /*
@@ -480,6 +506,8 @@ static int tinfoil_unwrap(struct slowboot_tinfoil *tinfoil,
 			  int XCFG_TINFOIL_SHASH_TYPE,
 			  int XCFG_TINFOIL_SHASH_MASK)
 {
+	pbit_n(&(item->is_ok), GS_IRRELEVANT);
+
 	if (tinfoil_open(item) != GS_SUCCESS) {
 		GLOW(GS_TINFOIL_FAIL, __func__, "tinfoil_open");
 		return GS_TINFOIL_FAIL;
@@ -790,20 +818,33 @@ static int slowboot_init_digest(struct slowboot_init_container *sic,
  */
 static void slowboot_init_free(struct slowboot_init_container *sic)
 {
+	if (sic == NULL)
+		return;
+
 	if (sic->fp != NULL)
 		filp_close(sic->fp, NULL);
 	if (sic->sfp != NULL)
 		filp_close(sic->sfp, NULL);
-	if (sic->halg != NULL)
+	if (sic->halg != NULL) {
 		kfree(sic->halg);
-	if (sic->buf != NULL)
+		sic->halg = NULL;
+	}
+	if (sic->buf != NULL) {
 		vfree(sic->buf);
-	if (sic->sfp_buf != NULL)
+		sic->buf = NULL;
+	}
+	if (sic->sfp_buf != NULL) {
 		vfree(sic->sfp_buf);
-	if (sic->kernel_key != NULL)
+		sic->sfp_buf = NULL;
+	}
+	if (sic->kernel_key != NULL) {
 		kfree(sic->kernel_key);
-	if (sic->digest != NULL)
+		sic->kernel_key = NULL;
+	}
+	if (sic->digest != NULL) {
 		kfree(sic->digest);
+		sic->digest = NULL;
+	}
 	sic->c_item = NULL;
 }
 
@@ -827,6 +868,11 @@ static int slowboot_init_process(struct slowboot_init_container *sic,
 	struct pbit status;
 
 	tmp = 0;
+
+	if (sic == NULL || item_ct == NULL) {
+		GLOW(-EINVAL, __func__, "~invalid arguments");
+		return -EINVAL;
+	}
 
 	if (sic->file_size <= 0) {
 		GLOW(-EINVAL, __func__, "~invalid file size");
@@ -984,8 +1030,10 @@ fail:
 	pbit_n(&pc, -EINVAL);
 	GLOW(pbit_get(&pc), __func__, "~^^^^^^///////////>");
 	tinfoil->slwbt_ct = 0;
-	if (!sic.items)
+	if (sic.items) {
 		vfree(sic.items);
+		sic.items = NULL;
+	}
 
 	tinfoil->validation_items = NULL;
 out:
@@ -1180,6 +1228,7 @@ char *__gs_read_file_to_memory(struct file *fp,
 	if (num_read != file_size && !ignore_size) {
 		vfree(buf);
 		buf = NULL;
+		goto out;
 	}
 
 	buf[file_size] = '\0';
