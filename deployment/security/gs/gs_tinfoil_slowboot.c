@@ -101,10 +101,11 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
 	}
 
 	sv->outlen = crypto_akcipher_maxsize(sv->tfm);
-	sv->output = kmalloc(sv->outlen, GFP_KERNEL);
+	sv->output = kmalloc(sv->outlen+GS_STRING_PAD, GFP_KERNEL);
 	if (!sv->output) {
 		return -ENOMEM;
 	}
+	memset(sv->output, GS_MEMSET_DEFAULT, sv->outlen+GS_STRING_PAD);
 
 	return GS_SUCCESS;
 }
@@ -575,6 +576,8 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 		    && (pos-off) <= PATH_MAX) {
 			memcpy(item->hash, line, XCFG_TINFOIL_HSLEN); //549
 			memcpy(item->path, line+off, pos-off);
+			item->hash[XCFG_TINFOIL_HSLEN] = '\0';
+			item->path[pos-off] = '\0';
 		} else {
 			pr_err("GS TFSB sets %llu,%llu", pos, off); //575
 			goto __fill_in_item_fail;
@@ -1218,10 +1221,10 @@ struct sdesc *__gs_init_sdesc(struct crypto_shash *alg)
 
 	size = sizeof(struct shash_desc) +
 		crypto_shash_descsize(alg);
-	sdesc = kmalloc(size, GFP_KERNEL);
+	sdesc = kmalloc(size+GS_STRING_PAD, GFP_KERNEL);
 	if (!sdesc)
 		return NULL;
-	memset(sdesc, GS_MEMSET_DEFAULT, size);
+	memset(sdesc, GS_MEMSET_DEFAULT, size+GS_STRING_PAD);
 	sdesc->shash.tfm = alg;
 	return sdesc;
 }
