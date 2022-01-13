@@ -180,26 +180,30 @@ int local_public_key_verify_signature(const struct public_key *pkey,
 
 	pbit_n(&pc, -EINVAL);
 
-	if (__gs_pk_sig_verify_init(&sv, pkey, sig, XCFG_TINFOIL_PKALGOPD)
-		!= GS_SUCCESS) {
-		GLOW(-EINVAL, __func__, "__gs_pk_sig_verify_init");
+	pbit_n(&pc, __gs_pk_sig_verify_init(&sv, pkey, sig,
+					    XCFG_TINFOIL_PKALGOPD));
+	if (pbit_get(&pc) != GS_SUCCESS) {
+		GLOW(pbit_get(&pc), __func__, "__gs_pk_sig_verify_init");
 		goto err;
 	}
 
-	if (pk_sig_verify_alloc(&sv, pkey, XCFG_TINFOIL_AK_CIPHER_TYPE,
-				XCFG_TINFOIL_AK_CIPHER_MASK) != GS_SUCCESS) {
-		GLOW(-EINVAL, __func__, "pk_sig_verify_alloc");
+	pbit_n(&pc, pk_sig_verify_alloc(&sv, pkey, XCFG_TINFOIL_AK_CIPHER_TYPE,
+				XCFG_TINFOIL_AK_CIPHER_MASK));
+	if (pbit_get(&pc) != GS_SUCCESS) {
+		GLOW(pbit_get(&pc), __func__, "pk_sig_verify_alloc");
 		goto err;
 	}
 
-	if (pk_sig_verify_validate(&sv, sig) == GS_SUCCESS) {
+	pbit_n(&pc, pk_sig_verify_validate(&sv, sig))
+	if (pbit_get(&pc) == GS_SUCCESS) {
 		pbit_y(&pc, GS_SUCCESS);
 		goto out;
 	} else
-		GLOW(-EINVAL, __func__, "pk_sig_verify_validate");
+		GLOW(pbit_get(&pc), __func__, "pk_sig_verify_validate");
 
 err:
-	pbit_n(&pc, -EINVAL);
+	if (pbit_get(&pc) == GS_SUCCESS)
+		pbit_n(&pc, -EINVAL);
 out:
 	pk_sig_verify_free(&sv);
 	return pbit_ret(&pc);
@@ -645,7 +649,6 @@ static void slowboot_init_setup(struct slowboot_init_container *sic,
 				size_t XCFG_TINFOIL_PKLEN)
 {
 	memset(sic, GS_MEMSET_DEFAULT, sizeof(struct slowboot_init_container));
-
 	sic->rsa_pub_key.pkey_algo = XCFG_TINFOIL_PKALGO;
 	sic->rsa_pub_key.id_type = XCFG_TINFOIL_IDTYPE;
 	sic->rsa_pub_key.keylen = GS_KEYLEN_INIT;
@@ -994,48 +997,56 @@ static int slowboot_init(struct slowboot_tinfoil *tinfoil,
 			    XCFG_TINFOIL_HSALGO,
 			    XCFG_TINFOIL_PKLEN);
 
-	if (slowboot_init_setup_keys(&sic, tinfoil->config_pkey) != GS_SUCCESS)
+	pbit_n(&pc, slowboot_init_setup_keys(&sic, tinfoil->config_pkey));
+	if (pbit_get(&pc) != GS_SUCCESS)
 		goto fail;
+	else
+		pbit_n(&pc, -EINVAL);
 
-	if (slowboot_init_open_files(&sic, tinfoil->config_file,
+	pbit_n(&pc, slowboot_init_open_files(&sic, tinfoil->config_file,
 				     tinfoil->config_file_signature
-				     ) != GS_SUCCESS)
+				     ));
+	if (pbit_get(&pc) != GS_SUCCESS)
 		goto fail;
+	else
+		pbit_n(&pc, -EINVAL);
 
-	if (slowboot_init_digest(&sic,
-				 XCFG_TINFOIL_DGLEN,
-				 XCFG_TINFOIL_HSALGO,
-				 XCFG_TINFOIL_SHASH_TYPE,
-				 XCFG_TINFOIL_SHASH_MASK) != GS_SUCCESS)
+	pbit_n(&pc, slowboot_init_digest(&sic,
+					 XCFG_TINFOIL_DGLEN,
+					 XCFG_TINFOIL_HSALGO,
+					 XCFG_TINFOIL_SHASH_TYPE,
+					 XCFG_TINFOIL_SHASH_MASK));
+	if (pbit_get(&pc) != GS_SUCCESS)
 		goto fail;
+	else
+		pbit_n(&pc, -EINVAL);
 
-	if (local_public_key_verify_signature(&(sic.rsa_pub_key),
-					      &(sic.sig),
-					      XCFG_TINFOIL_PKALGOPD,
-					      XCFG_TINFOIL_AK_CIPHER_TYPE,
-					      XCFG_TINFOIL_AK_CIPHER_MASK
-					      ) != GS_SUCCESS)
+	pbit_n(&pc, local_public_key_verify_signature(&(sic.rsa_pub_key),
+						&(sic.sig),
+						XCFG_TINFOIL_PKALGOPD,
+						XCFG_TINFOIL_AK_CIPHER_TYPE,
+						XCFG_TINFOIL_AK_CIPHER_MASK));
+	if (pbit_get(&pc) != GS_SUCCESS)
 		goto fail;
+	else
+		pbit_n(&pc, -EINVAL);
 
-	if (slowboot_init_process(&sic, &tinfoil->validation_items,
+	pbit_n(&pc, slowboot_init_process(&sic, &tinfoil->validation_items,
 				  &(tinfoil->slwbt_ct),
 				  XCFG_TINFOIL_NEW_LINE,
-				  XCFG_TINFOIL_HSLEN) != GS_SUCCESS)
+				  XCFG_TINFOIL_HSLEN));
+	if (pbit_get(&pc) != GS_SUCCESS)
 		goto fail;
+	else
+		pbit_n(&pc, -EINVAL);
 
 	pbit_y(&pc, GS_SUCCESS);
 	goto out;
 
 fail:
-	pbit_n(&pc, -EINVAL);
+	if (pbit_get(&pc) == GS_SUCCESS)
+		pbit_n(&pc, -EINVAL);
 	GLOW(pbit_get(&pc), __func__, "~^^^^^^///////////>");
-	tinfoil->slwbt_ct = 0;
-	if (sic.items) {
-		vfree(sic.items);
-		sic.items = NULL;
-	}
-
-	tinfoil->validation_items = NULL;
 out:
 	slowboot_init_free(&sic);
 	return pbit_ret(&pc);
@@ -1075,35 +1086,35 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil,
 {
 	int j;
 	unsigned long flags;
-	struct pbit hard_fail;
+	struct pbit test_status;
 
 	WARN_ON(!tinfoil);
 	if (!tinfoil)
 		return;
 
-	pbit_y(&hard_fail, GS_IRRELEVANT);
+	pbit_y(&test_status, GS_IRRELEVANT);
 	pbit_n(&(tinfoil->error), -EINVAL);
 
 	spin_lock_irqsave(gs_irq_killer, flags); // Occupy all threads?
 	if (tinfoil->initialized != GS_TRUE) {
-		tinfoil->initialized = GS_FALSE;
-		tinfoil->validation_items = NULL;
-		if (slowboot_init(tinfoil,
-				  XCFG_TINFOIL_PKALGOPD,
-				  XCFG_TINFOIL_PKALGO,
-				  XCFG_TINFOIL_IDTYPE,
-				  XCFG_TINFOIL_DGLEN,
-				  XCFG_TINFOIL_HSALGO,
-				  XCFG_TINFOIL_PKLEN,
-				  XCFG_TINFOIL_NEW_LINE,
-				  XCFG_TINFOIL_HSLEN,
-				  XCFG_TINFOIL_AK_CIPHER_TYPE,
-				  XCFG_TINFOIL_AK_CIPHER_MASK,
-				  XCFG_TINFOIL_SHASH_TYPE,
-				  XCFG_TINFOIL_SHASH_MASK) != GS_SUCCESS) {
-			pbit_n(&hard_fail, GS_IRRELEVANT);
+		pbit_n(&test_status, slowboot_init(tinfoil,
+						 XCFG_TINFOIL_PKALGOPD,
+						 XCFG_TINFOIL_PKALGO,
+						 XCFG_TINFOIL_IDTYPE,
+						 XCFG_TINFOIL_DGLEN,
+						 XCFG_TINFOIL_HSALGO,
+						 XCFG_TINFOIL_PKLEN,
+						 XCFG_TINFOIL_NEW_LINE,
+						 XCFG_TINFOIL_HSLEN,
+						 XCFG_TINFOIL_AK_CIPHER_TYPE,
+						 XCFG_TINFOIL_AK_CIPHER_MASK,
+						 XCFG_TINFOIL_SHASH_TYPE,
+						 XCFG_TINFOIL_SHASH_MASK));
+
+		if (pbit_get(&test_status) != GS_SUCCESS)
 			goto out;
-		}
+		else
+			pbit_y(&test_status, GS_IRRELEVANT);
 	}
 
 	for (j = 0; j < tinfoil->slwbt_ct; j++) {
@@ -1115,14 +1126,12 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil,
 					XCFG_TINFOIL_SHASH_MASK);
 	}
 out:
-		if (tinfoil->validation_items != NULL) {
-			vfree(tinfoil->validation_items);
-			tinfoil->validation_items = NULL;
-			tinfoil->initialized = GS_TRUE;
-		}
+	if (tinfoil->validation_items != NULL) {
+		tinfoil->initialized = GS_TRUE;
+	}
 
 	if (tinfoil->failures != 0 || tinfoil->slwbt_ct == 0 ||
-	    !pbit_ok(&hard_fail))
+	    !pbit_ok(&test_status))
 		pbit_n(&(tinfoil->error), -EINVAL);
 	else
 		pbit_y(&(tinfoil->error), GS_SUCCESS);
@@ -1151,6 +1160,7 @@ static int slowboot_tinfoil_init(struct slowboot_tinfoil *tinfoil,
 	strncpy(tinfoil->config_file_signature, XCFG_TINFOIL_CFS, PATH_MAX);
 	strncpy(tinfoil->config_pkey, XCFG_TINFOIL_PK, XCFG_TINFOIL_PKLEN);
 	tinfoil->initialized = GS_FALSE;
+	tinfoil->validation_items = NULL;
 	tinfoil->failures = 0;
 	pbit_y(&(tinfoil->error), GS_SUCCESS);
 	tinfoil->st = kmalloc(sizeof(struct kstat), GFP_KERNEL);
@@ -1165,11 +1175,16 @@ static int slowboot_tinfoil_init(struct slowboot_tinfoil *tinfoil,
  * Deallocate data
  * @tinfoil: slowboot tinfoil struct
  */
-static void slowboot_tinfoil_free(struct slowboot_tinfoil *tinfoil)
+static void slowboot_tinfoil_free_internals(struct slowboot_tinfoil *tinfoil)
 {
 	if (tinfoil->st != NULL) {
 		kfree(tinfoil->st);
 		tinfoil->st = NULL;
+	}
+
+	if (tinfoil->validation_items != NULL) {
+		vfree(tinfoil->validation_items);
+		tinfoil->validation_items = NULL;
 	}
 }
 
@@ -1435,42 +1450,46 @@ int __gs_tfsb_go(const char *config_tinfoil_cf,
 	pbit_n(&pc, -EINVAL);
 	pr_info("GS TFSB START\n");
 
-	if (__gs_tfsb_verify_params(config_tinfoil_cf,
-				    config_tinfoil_cfs,
-				    config_tinfoil_pk,
-				    config_tinfoil_pklen,
-				    config_tinfoil_dglen,
-				    config_tinfoil_hslen,
-				    config_tinfoil_pkalgo,
-				    config_tinfoil_pkalgopd,
-				    config_tinfoil_hsalgo,
-				    config_tinfoil_idtype,
-				    config_tinfoil_ak_cipher_type,
-				    config_tinfoil_ak_cipher_mask,
-				    config_tinfoil_shash_type,
-				    config_tinfoil_shash_mask,
-				    gs_irq_killer,
-				    config_tinfoil_new_line,
-				    config_tinfoil_version) != GS_SUCCESS) {
-		GLOW(-EINVAL, __func__, "~Bad Parameters");
-		return -EINVAL;
-	}
+	pbit_n(&pc, __gs_tfsb_verify_params(config_tinfoil_cf,
+					    config_tinfoil_cfs,
+					    config_tinfoil_pk,
+					    config_tinfoil_pklen,
+					    config_tinfoil_dglen,
+					    config_tinfoil_hslen,
+					    config_tinfoil_pkalgo,
+					    config_tinfoil_pkalgopd,
+					    config_tinfoil_hsalgo,
+					    config_tinfoil_idtype,
+					    config_tinfoil_ak_cipher_type,
+					    config_tinfoil_ak_cipher_mask,
+					    config_tinfoil_shash_type,
+					    config_tinfoil_shash_mask,
+					    gs_irq_killer,
+					    config_tinfoil_new_line,
+					    config_tinfoil_version));
+
+	if (pbit_get(&pc) != GS_SUCCESS) {
+		GLOW(pbit_get(&pc), __func__, "~Bad Parameters");
+		goto check_status_and_exit;
+	} else
+		pbit_n(&pc, -EINVAL);
 
 	tinfoil = kmalloc(sizeof(struct slowboot_tinfoil), GFP_KERNEL);
 	if (!tinfoil) {
 		pbit_n(&pc, -ENOMEM);
-		goto out;
+		goto check_status_and_exit;
 	}
 
+	pbit_n(&pc, slowboot_tinfoil_init(tinfoil,
+					  config_tinfoil_cf,
+					  config_tinfoil_cfs,
+					  config_tinfoil_pk,
+					  config_tinfoil_pklen));
 
-	if (slowboot_tinfoil_init(tinfoil,
-				 config_tinfoil_cf,
-				 config_tinfoil_cfs,
-				 config_tinfoil_pk,
-				 config_tinfoil_pklen) != GS_SUCCESS) {
+	if (pbit_get(&pc) != GS_SUCCESS)
+		goto check_status_and_exit;
+	else
 		pbit_n(&pc, -EINVAL);
-		goto out;
-	}
 
 	slowboot_run_test(tinfoil,
 			  config_tinfoil_pkalgopd,
@@ -1487,35 +1506,31 @@ int __gs_tfsb_go(const char *config_tinfoil_cf,
 			  config_tinfoil_shash_type,
 			  config_tinfoil_shash_mask);
 
-out:
-	if (tinfoil) {
-		slowboot_tinfoil_free(tinfoil);
-
-		pr_info("GS TFSB Audit: {Total:%d/Failures:%d}\n",
-			tinfoil->slwbt_ct, tinfoil->failures);
-
-		if (!pbit_ok(&(tinfoil->error)) ||
-		    pbit_get(&(tinfoil->error)) != GS_SUCCESS) {
-			pbit_n(&pc, pbit_get(&(tinfoil->error)));
-			if (pbit_get(&(tinfoil->error)) == GS_SUCCESS)
-				pbit_n(&pc, -EINVAL);
-		} else
-			pbit_y(&pc, 0); // SUCCESS
-
-	} else {
-		pbit_n(&pc, -EINVAL);
+check_status_and_exit:
+	if (!tinfoil) {
+		__gs_tinfoil_fail_alert(&tinfoil);
+		return -EINVAL;
 	}
 
+	pr_err("GS TFSB Audit: {Total:%d/Failures:%d}\n",
+	       tinfoil->slwbt_ct, tinfoil->failures);
 
-	if (pbit_get(&pc) != GS_SUCCESS || !pbit_ok(&pc)) {
+	if (!pbit_ok(&(tinfoil->error)) ||
+	    pbit_get(&(tinfoil->error)) != GS_SUCCESS) {
+		pbit_n(&pc, pbit_get(&(tinfoil->error)));
 		__gs_tinfoil_fail_alert(&tinfoil);
-		if (tinfoil != NULL) {
-			kfree(tinfoil);
-			tinfoil = NULL;
+		if (pbit_get(&pc) == GS_SUCCESS) {
+			pbit_n(&pc, -EINVAL);
 		}
-		return pbit_ret(&pc);
 	} else
-		return pbit_ret(&pc);
+		pbit_y(&pc, 0); // SUCCESS
 
+	if (tinfoil != NULL) {
+		slowboot_tinfoil_free_internals(tinfoil);
+		kfree(tinfoil);
+		tinfoil = NULL;
+	}
+
+	return pbit_ret(&pc);
 }
 EXPORT_SYMBOL(__gs_tfsb_go);
