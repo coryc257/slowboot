@@ -296,7 +296,7 @@ static int tinfoil_read(const struct slowboot_tinfoil *tinfoil,
 	number_read = 0;
 	pbit_n(&pc, -EINVAL);
 
-	if (item->fp == NULL)
+	if (item->fp == NULL || item->buf_len == 0)
 		goto fail;
 
 	item->buf = vmalloc(item->buf_len + GS_STRING_PAD);
@@ -1296,11 +1296,15 @@ struct sdesc *__gs_init_sdesc(struct crypto_shash *alg)
 	struct sdesc *sdesc;
 	size_t size;
 
-	size = sizeof(struct shash_desc) +
-		crypto_shash_descsize(alg);
+	size = sizeof(struct shash_desc) + crypto_shash_descsize(alg);
+
+	if (size == 0)
+		return NULL;
+
 	sdesc = kmalloc(size+GS_STRING_PAD, GFP_KERNEL);
 	if (!sdesc)
 		return NULL;
+
 	memset(sdesc, GS_MEMSET_DEFAULT, size+GS_STRING_PAD);
 	sdesc->shash.tfm = alg;
 	return sdesc;
