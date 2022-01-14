@@ -194,7 +194,7 @@ int local_public_key_verify_signature(const struct public_key *pkey,
 		goto err;
 	}
 
-	pbit_n(&pc, pk_sig_verify_validate(&sv, sig))
+	pbit_n(&pc, pk_sig_verify_validate(&sv, sig));
 	if (pbit_get(&pc) == GS_SUCCESS) {
 		pbit_y(&pc, GS_SUCCESS);
 		goto out;
@@ -227,7 +227,7 @@ static int tinfoil_open(struct slowboot_validation_item *item)
 		pr_err("GS TFSB Fail:%s:%s:%d @ %s.filp_open\n",
 		       item->hash,
 		       item->path,
-		       pbit_ok(&item->is_ok),
+		       pbit_get(&pc),
 		       __func__);
 		return pbit_ret(&pc);
 	}
@@ -271,6 +271,10 @@ static void tinfoil_close(struct slowboot_validation_item *item)
 {
 	if (item != NULL && item->fp != NULL)
 		filp_close(item->fp, NULL);
+	if (item != NULL && item->buf != NULL) {
+		vfree(item->buf);
+		item->buf = NULL;
+	}
 }
 
 /*
@@ -432,18 +436,16 @@ static void tinfoil_check_free(struct tinfoil_check *c)
 	if (c == NULL)
 		return;
 
-	if (c->item != NULL && c->item->buf != NULL) {
-		vfree(c->item->buf);
-		c->item->buf = NULL;
-	}
 	if (c->sd != NULL) {
 		kfree(c->sd);
 		c->sd = NULL;
 	}
+
 	if (c->digest != NULL) {
 		kfree(c->digest);
 		c->digest = NULL;
 	}
+
 	if (c->alg != NULL) {
 		crypto_free_shash(c->alg);
 		c->alg = NULL;
@@ -467,20 +469,23 @@ static void tinfoil_check(struct slowboot_validation_item *item,
 {
 
 	struct tinfoil_check check;
+	struct pbit pc;
 
 	pbit_n(&(item->is_ok), GS_IRRELEVANT);
 
-	if (tinfoil_check_init(&check, item) != GS_SUCCESS) {
-		GLOW(-EINVAL, __func__, "tinfoil_check_init");
+	pbit_n(&pc, tinfoil_check_init(&check, item));
+	if (pbit_get(&pc) != GS_SUCCESS) {
+		GLOW(pbit_get(&pc), __func__, "tinfoil_check_init");
 		goto err;
 	}
 
-	if (tinfoil_check_allocate(&check,
-				   XCFG_TINFOIL_HSALGO,
-				   XCFG_TINFOIL_DGLEN,
-				   XCFG_TINFOIL_SHASH_TYPE,
-				   XCFG_TINFOIL_SHASH_MASK) != GS_SUCCESS) {
-		GLOW(-EINVAL, __func__, "tinfoil_check_allocate");
+	pbit_n(&pc, tinfoil_check_allocate(&check,
+					   XCFG_TINFOIL_HSALGO,
+					   XCFG_TINFOIL_DGLEN,
+					   XCFG_TINFOIL_SHASH_TYPE,
+					   XCFG_TINFOIL_SHASH_MASK));
+	if (pbit_get(&pc) != GS_SUCCESS) {
+		GLOW(pbit_get(&pc), __func__, "tinfoil_check_allocate");
 		goto err;
 	}
 
@@ -510,39 +515,47 @@ static int tinfoil_unwrap(struct slowboot_tinfoil *tinfoil,
 			  int XCFG_TINFOIL_SHASH_TYPE,
 			  int XCFG_TINFOIL_SHASH_MASK)
 {
+	struct pbit pc;
+
 	pbit_n(&(item->is_ok), GS_IRRELEVANT);
 
-	if (tinfoil_open(item) != GS_SUCCESS) {
-		GLOW(GS_TINFOIL_FAIL, __func__, "tinfoil_open");
+	pbit_n(&pc, tinfoil_open(item));
+	if (pbit_get(&pc) != GS_SUCCESS) {
+		GLOW(pbit_get(&pc), __func__, "tinfoil_open");
 		return GS_TINFOIL_FAIL;
 	}
 
-	if (tinfoil_stat_alloc(tinfoil, item) != GS_SUCCESS) {
-		GLOW(GS_TINFOIL_FAIL, __func__, "tinfoil_close");
+	pbit_n(&pc, tinfoil_stat_alloc(tinfoil, item));
+	if (pbit_get(&pc) != GS_SUCCESS) {
+		GLOW(pbit_get(&pc), __func__, "tinfoil_close");
 		tinfoil_close(item);
 		return GS_TINFOIL_FAIL;
 	}
 
-	// Do not access item->buf after this
-	if (tinfoil_read(tinfoil, item, XCFG_TINFOIL_DGLEN) != GS_SUCCESS) {
-		GLOW(GS_TINFOIL_FAIL, __func__, "tinfoil_read");
+	pbit_n(&pc, tinfoil_read(tinfoil, item, XCFG_TINFOIL_DGLEN));
+	if (pbit_get(&pc) != GS_SUCCESS) {
+		GLOW(pbit_get(&pc), __func__, "tinfoil_read");
 		tinfoil_close(item);
 		return GS_TINFOIL_FAIL;
 	}
 
 	tinfoil_check(item, XCFG_TINFOIL_HSALGO, XCFG_TINFOIL_DGLEN,
 		      XCFG_TINFOIL_SHASH_TYPE, XCFG_TINFOIL_SHASH_MASK);
-	if (!pbit_ok(&(item->is_ok))) {
+	tinfoil_close(item);
+
+	if (pbit_ok(&(item->is_ok))) {
+		pr_err("GS TFSB Success:%s:%s @ %s.tinfoil_check\n",
+		       item->path,
+		       "Success",
+		       __func__);
+		return GS_TINFOIL_SUCCESS;
+	} else {
 		pr_err("GS TFSB Fail:%s:%s @ %s.tinfoil_check\n",
 		       item->path,
 		       "Fail",
 		       __func__);
-	}
-	tinfoil_close(item);
-	if (pbit_ok(&(item->is_ok)))
-		return GS_TINFOIL_SUCCESS;
-	else
 		return GS_TINFOIL_FAIL;
+	}
 }
 
 /*
