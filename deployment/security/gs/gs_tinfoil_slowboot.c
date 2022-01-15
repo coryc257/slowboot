@@ -1098,6 +1098,7 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil,
 			      int XCFG_TINFOIL_SHASH_MASK)
 {
 	int j;
+	int tmp;
 	unsigned long flags;
 	struct pbit test_status;
 
@@ -1130,13 +1131,29 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil,
 			pbit_y(&test_status, GS_IRRELEVANT);
 	}
 
-	for (j = 0; j < tinfoil->slwbt_ct; j++) {
-		tinfoil->failures += tinfoil_unwrap(tinfoil,
+	for (j =  0; j < tinfoil->slwbt_ct; j++) {
+		tmp = tinfoil_unwrap(tinfoil,
 					&(tinfoil->validation_items[j]),
 					XCFG_TINFOIL_HSALGO,
 					XCFG_TINFOIL_DGLEN,
 					XCFG_TINFOIL_SHASH_TYPE,
 					XCFG_TINFOIL_SHASH_MASK);
+		switch (tmp) {
+		case GS_TINFOIL_SUCCESS:
+		case GS_TINFOIL_FAIL:
+			if (__gs_safe_int_add(tinfoil->failures, tmp,
+				&(tinfoil->failures)) != GS_SUCCESS) {
+				tinfoil->failures = INT_MAX-1;
+			}
+			break;
+		default:
+			if (__gs_safe_int_add(tinfoil->failures, 1,
+				&(tinfoil->failures)) != GS_SUCCESS) {
+				tinfoil->failures = INT_MAX-1;
+			}
+			break;
+		}
+
 	}
 out:
 	if (tinfoil->validation_items != NULL) {

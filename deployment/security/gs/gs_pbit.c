@@ -126,11 +126,11 @@ void pbit_check_recover(struct pbit *pc)
 
 	pc_copy = *pc;
 	if (pc_copy.ev1 == pc_copy.ev2 && pc_copy.ev3 == pc_copy.ev1)
-		pbit_check_y(&pc_copy, pc_copy.ev1);
+		pbit_check_yes(&pc_copy, pc_copy.ev1, NULL);
 	else if (pc_copy.ev1 == pc_copy.ev2 || pc_copy.ev1 == pc_copy.ev3)
-		pbit_check_n(&pc_copy, pc_copy.ev1);
+		pbit_check_no(&pc_copy, pc_copy.ev1);
 	else if (pc_copy.ev2 == pc_copy.ev3)
-		pbit_check_n(&pc_copy, pc_copy.ev3);
+		pbit_check_no(&pc_copy, pc_copy.ev3);
 	else
 		pbit_check_setup(&pc_copy, PBIT_ERR);
 	*pc = pc_copy;
