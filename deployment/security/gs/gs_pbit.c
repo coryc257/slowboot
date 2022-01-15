@@ -99,7 +99,7 @@ int pbit_check(struct pbit *pc)
 }
 
 /*
- * Infer the value out of the pbit, failure is always -EINVAL
+ * Infer the value out of the pbit, failure is always PBIT_ERR
  * @pc: paranoid bit
  */
 int pbit_infer(struct pbit *pc)
@@ -126,11 +126,11 @@ void pbit_check_recover(struct pbit *pc)
 
 	pc_copy = *pc;
 	if (pc_copy.ev1 == pc_copy.ev2 && pc_copy.ev3 == pc_copy.ev1)
-		pbit_check_setup(&pc_copy, pc_copy.ev1);
+		pbit_check_y(&pc_copy, pc_copy.ev1);
 	else if (pc_copy.ev1 == pc_copy.ev2 || pc_copy.ev1 == pc_copy.ev3)
-		pbit_check_setup(&pc_copy, pc_copy.ev1);
+		pbit_check_n(&pc_copy, pc_copy.ev1);
 	else if (pc_copy.ev2 == pc_copy.ev3)
-		pbit_check_setup(&pc_copy, pc_copy.ev3);
+		pbit_check_n(&pc_copy, pc_copy.ev3);
 	else
 		pbit_check_setup(&pc_copy, PBIT_ERR);
 	*pc = pc_copy;
