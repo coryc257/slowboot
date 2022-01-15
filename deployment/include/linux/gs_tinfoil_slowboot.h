@@ -207,6 +207,7 @@ int __gs_pk_sig_verify_init(struct sig_verify *sv,
 			    const struct public_key *pkey,
 			    const struct public_key_signature *sig,
 			    const char *pkalgopd);
+void *__gs_smemset(void *buf, int value, size_t length);
 int __gs_tinfoil_verify(void);
 
 /*

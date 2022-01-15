@@ -109,7 +109,7 @@ static int pk_sig_verify_alloc(struct sig_verify *sv,
 	if (!sv->output) {
 		return -ENOMEM;
 	}
-	memset(sv->output, GS_MEMSET_DEFAULT, sv->outlen+GS_STRING_PAD);
+	__gs_smemset(sv->output, GS_MEMSET_DEFAULT, sv->outlen+GS_STRING_PAD);
 
 	return GS_SUCCESS;
 }
@@ -304,7 +304,7 @@ static int tinfoil_read(const struct slowboot_tinfoil *tinfoil,
 		pbit_n(&pc, -ENOMEM);
 		goto fail;
 	}
-	memset(item->buf, GS_MEMSET_DEFAULT, item->buf_len + GS_STRING_PAD);
+	__gs_smemset(item->buf, GS_MEMSET_DEFAULT, item->buf_len + GS_STRING_PAD);
 
 	item->pos = GS_START_OF_FILE;
 	number_read = kernel_read(item->fp,
@@ -344,7 +344,7 @@ static int tinfoil_check_init(struct tinfoil_check *c,
 	    || item->buf_len == 0)
 		return -EINVAL;
 
-	memset(c, GS_MEMSET_DEFAULT, sizeof(struct tinfoil_check));
+	__gs_smemset(c, GS_MEMSET_DEFAULT, sizeof(struct tinfoil_check));
 	c->item = item;
 
 	return GS_SUCCESS;
@@ -392,7 +392,7 @@ static int tinfoil_check_allocate(struct tinfoil_check *c,
 		return -ENOMEM;
 	}
 
-	memset(c->digest, GS_MEMSET_DEFAULT,
+	__gs_smemset(c->digest, GS_MEMSET_DEFAULT,
 	       XCFG_TINFOIL_DGLEN + GS_STRING_PAD);
 
 	c->sd = __gs_init_sdesc(c->alg);
@@ -608,8 +608,8 @@ static loff_t fill_in_item(struct slowboot_validation_item *item,
 	}
 
 	if (item->path != NULL && item->hash != NULL) {
-		memset(item->path, GS_MEMSET_DEFAULT, PATH_MAX+GS_STRING_PAD);
-		memset(item->hash, GS_MEMSET_DEFAULT,
+		__gs_smemset(item->path, GS_MEMSET_DEFAULT, PATH_MAX+GS_STRING_PAD);
+		__gs_smemset(item->hash, GS_MEMSET_DEFAULT,
 		       XCFG_TINFOIL_HSLEN+GS_STRING_PAD+GS_STRING_PAD);
 
 		// Make sure we have a good item
@@ -661,7 +661,7 @@ static void slowboot_init_setup(struct slowboot_init_container *sic,
 				const char *XCFG_TINFOIL_HSALGO,
 				size_t XCFG_TINFOIL_PKLEN)
 {
-	memset(sic, GS_MEMSET_DEFAULT, sizeof(struct slowboot_init_container));
+	__gs_smemset(sic, GS_MEMSET_DEFAULT, sizeof(struct slowboot_init_container));
 	sic->rsa_pub_key.pkey_algo = XCFG_TINFOIL_PKALGO;
 	sic->rsa_pub_key.id_type = XCFG_TINFOIL_IDTYPE;
 	sic->rsa_pub_key.keylen = GS_KEYLEN_INIT;
@@ -804,7 +804,7 @@ static int slowboot_init_digest(struct slowboot_init_container *sic,
 		return -ENOMEM;
 	}
 
-	memset(sic->digest, GS_MEMSET_DEFAULT,
+	__gs_smemset(sic->digest, GS_MEMSET_DEFAULT,
 	       XCFG_TINFOIL_DGLEN + GS_STRING_PAD);
 
 	sic->hsd = __gs_init_sdesc(sic->halg);
@@ -1147,6 +1147,7 @@ static void slowboot_run_test(struct slowboot_tinfoil *tinfoil,
 			}
 			break;
 		default:
+			GLOW(-EINVAL, __func__, "~bad return from unwrap");
 			if (__gs_safe_int_add(tinfoil->failures, 1,
 				&(tinfoil->failures)) != GS_SUCCESS) {
 				tinfoil->failures = INT_MAX-1;
@@ -1185,7 +1186,7 @@ static int slowboot_tinfoil_init(struct slowboot_tinfoil *tinfoil,
 	if (tinfoil == NULL)
 		return -EINVAL;
 
-	memset(tinfoil, GS_MEMSET_DEFAULT, sizeof(struct slowboot_tinfoil));
+	__gs_smemset(tinfoil, GS_MEMSET_DEFAULT, sizeof(struct slowboot_tinfoil));
 	strncpy(tinfoil->config_file, XCFG_TINFOIL_CF, PATH_MAX);
 	strncpy(tinfoil->config_file_signature, XCFG_TINFOIL_CFS, PATH_MAX);
 	strncpy(tinfoil->config_pkey, XCFG_TINFOIL_PK, XCFG_TINFOIL_PKLEN);
@@ -1305,6 +1306,25 @@ int __gs_memmem_sp(const char *s1, size_t s1_len,
 }
 
 /*
+ * Explicitly set buffer members to value given length
+ * @buf: buffer pointer
+ * @value: value to set each member to
+ * @length: total length of buffer
+ */
+void *__gs_smemset(void *buf, int value, size_t length)
+{
+	volatile char *vbuf = buf;
+
+	while (length) {
+		*vbuf = value;
+		vbuf++;
+		length--;
+	}
+
+	return buf;
+}
+
+/*
  * Initialize sdesc struct for digest measuring
  * @alg: crypto_shash structure
  */
@@ -1322,7 +1342,7 @@ struct sdesc *__gs_init_sdesc(struct crypto_shash *alg)
 	if (!sdesc)
 		return NULL;
 
-	memset(sdesc, GS_MEMSET_DEFAULT, size+GS_STRING_PAD);
+	__gs_smemset(sdesc, GS_MEMSET_DEFAULT, size+GS_STRING_PAD);
 	sdesc->shash.tfm = alg;
 	return sdesc;
 }
@@ -1344,7 +1364,7 @@ int __gs_pk_sig_verify_init(struct sig_verify *sv,
 	if (!sv || !pkey || !sig)
 		return GS_FAIL;
 
-	memset(sv, GS_MEMSET_DEFAULT, sizeof(struct sig_verify));
+	__gs_smemset(sv, GS_MEMSET_DEFAULT, sizeof(struct sig_verify));
 	if (pkalgopd != NULL)
 		s = strlen(pkalgopd);
 	else
