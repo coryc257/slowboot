@@ -1501,6 +1501,7 @@ int __gs_tfsb_go(const char *config_tinfoil_cf,
 	struct slowboot_tinfoil *tinfoil;
 	struct pbit pc;
 
+	tinfoil = NULL;
 	pbit_n(&pc, -EINVAL);
 	pr_info("GS TFSB START\n");
 
